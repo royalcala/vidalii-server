@@ -1,0 +1,30 @@
+{
+  "name": "vidalii-server",
+  "version": "1.0.0",
+  "description": "vidalii server express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/royalcala/vidalii-server.git"
+  },
+  "author": "Roy Alcala Ortiz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/royalcala/vidalii-server/issues"
+  },
+  "homepage": "https://github.com/royalcala/vidalii-server#readme",
+  "dependencies": {
+    "apollo-server-express": "^2.8.1",
+    "express": "^4.17.1",
+    "express-pouchdb": "^4.1.0",
+    "graphql": "^14.4.2",
+    "pouchdb": "^7.1.1",
+    "qs-middleware": "^1.0.3",
+    "ramda": "^0.26.1",
+    "uuid": "^3.3.3"
+  }
+}
