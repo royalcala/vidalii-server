@@ -4,7 +4,47 @@ const { ApolloServer, gql } = require('apollo-server-express');
 const { readFileSync } = require('fs')
 const uuidv4 = require('uuid/v4')
 var typeDefs = readFileSync('./typeDefs.graphql', 'UTF-8')
-const validator = require('./toPackage/myschema/validator')
+const validator = require('./toPackage/vidaliischema/validator')
+const schemas = require('./toPackage/vidaliischema')
+const PouchDB = require('pouchdb');
+const myschemas = schemas({})
+
+myschemas.loadSchema({
+    name: 'schema1',
+    schemaValidator: {
+        a: ({ newValue }) => newValue,
+        b: [{ a: ({ newValue }) => newValue }]
+    },
+    // typeDB:'pouchDB',
+    url: 'http://admin:admin@localhost:5984',
+    db: 'vidaliiserver',
+    // username: 'admin',
+    // password: 'admin'
+})
+
+myschemas.loadSchema({
+    name: 'schema2',
+    schemaValidator: {
+        a: () => 1
+    }
+})
+
+// console.log('printSchemas::',
+//     myschemas.printSchemas()
+// )
+// console.log('insert',
+//     myschemas.models().schema1.insert({ a: 'first document' }).then(e => console.log(e))
+// )
+console.log('update',
+    myschemas.models().schema1.update({ _id: 'hola', a: 'first', b: [{ a: '1' }] }).then(e => console.log(e))
+)
+// var dataBase = new PouchDB(`http://admin:admin@localhost:5984/vidaliiserver`);
+// for (let index = 0; index < 10000; index++) {
+//     console.log(index)
+//     // myschemas.models().schema1.insert({ a: 'first document' })
+//     dataBase.put({ _id: uuidv4(), a: 'first document' });
+// }
+// console.log('fin')
 // Construct a schema, using GraphQL schema language
 // const typeDefs = gql`
 //   type Query {
@@ -28,62 +68,89 @@ const app = express();
 server.applyMiddleware({ app });
 
 
-var a = {
-    a: 1,
-    b: { c: 'c' }
+
+
+// app.listen({ port: 4000 }, () =>
+//     console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+// );
+
+// var a = {
+//     a: 1,
+//     b: [{ id: 1, b: 1 }]
+// }
+// var b = {
+//     a: 2,
+//     b: [{ id: 2, b: 2 }]
+// }
+// console.log('Merge::',
+//     R.mergeWithKey(a, b)
+// )
+
+// const schemaValidator = {
+//     a: ({ newValue, prevDoc, newDoc }) => {
+//         // console.log('previosDoc', prevDoc)
+//         // console.log('newDoc', newDoc)
+//         return newValue
+//     },
+//     b: ({ newValue, prevDoc, newDoc }) => {
+//         return newValue
+//     },
+//     c: {
+//         d: ({ prevDoc }) => {
+//             // console.log('previosDoc', prevDoc)
+//             return 'yes working'
+//         }, f: () => 200
+//     },
+//     d: [{
+//         a: ({ newValue, prevDoc }) => {
+//             // console.log('previosDoc', prevDoc)
+//             // console.log('newDoc', newDoc)
+//             return newValue
+//         }, b: () => 22
+//     }],
+//     f: { a: { a: () => 'Jalo' } }
+// }
+
+// const prevDoc = {
+//     a: 1,
+//     b: 2,
+//     // c: { d: 1, f: 2 }
+// }
+
+// var newDoc = {
+//     a: 2,
+//     b: 3,
+//     c: { d: 1, f: 2 },
+//     f: { a: { a: 1 } }
+// }
+
+// var newDoc2 = {
+//     id:'jaja',
+//     a: 2,
+//     b: 1,
+//     c: { d: 1, f: 2 },
+//     d: [{ a: 1, b: 2 }, { a: 2, b: 33 }],
+//     f: { a: { a: 1 } }
+// }
+
+// var result = validator({
+//     schemaValidator,
+//     prevDoc,
+//     // newDoc,
+//     newDoc: newDoc2
+// })
+
+// console.log('RESULT:', result)
+
+var previus = {
+    a: 1
 }
-console.log(a['b']['c'])
-
-app.listen({ port: 4000 }, () =>
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-);
-
-
-
-const schemaValidator = {
-    a: ({ newValue, prevDoc, newDoc }) => {
-        console.log('previosDoc', prevDoc)
-        return newValue
-    },
-    b: ({ newValue, prevDoc, newDoc }) => {
-        return newValue
-    },
-    c: {
-        d: ({ prevDoc }) => {
-            console.log('previosDoc', prevDoc)
-            return 'yes working'
-        }, f: () => 200
-    },
-    d: [{ a: ({ newValue }) => newValue, b: () => 22 }],
-    f: { a: { a: () => 'Jalo' } }
+var newD = {
+    // a: 2,
+    b: 1
 }
 
-const prevDoc = {
-    a: 1,
-    b: 2,
-    // c: { d: 1, f: 2 }
-}
-
-var newDoc = {
-    a: 2,
-    b: 3,
-    c: { d: 1, f: 2 },
-    f: { a: { a: 1 } }
-}
-
-var newDoc2 = {
-    a: 2,
-    b: 1,
-    c: { d: 1, f: 2 },
-    d: [{ a: 1, b: 2 }, { a: 2, b: 33 }]
-}
-
-var result = validator({
-    schemaValidator,
-    prevDoc,
-    // newDoc,
-    newDoc: newDoc2
-})
-
-console.log('RESULT:', result)
+console.log('merge',
+    R.mergeDeepRight(previus, newD)
+)
 

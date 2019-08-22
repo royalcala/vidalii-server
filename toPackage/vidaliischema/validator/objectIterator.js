@@ -1,5 +1,24 @@
 const R = require('ramda')
-const uuidv4 = require('uuid/v4')
+const generateAutoID = require('./generateAutoID')
+// const isArray = require('./typesNodes/isArray')
+const isObject = require('./typesNodes/isObject')
+const isFunction = require('./typesNodes/isFunction')
+
+module.exports = objectIterator
+function isArray({ key, value, schemaValidator, transformation, prevDoc, newDoc }) {
+    // console.log('transformation[0]::', transformation[0])
+
+    schemaValidator = transformation[0]
+    return value.map(
+        element => {
+            const { doc, schema } = generateAutoID({ doc: element, schemaValidator })
+            return objectIterator({ element: doc, schemaValidator: schema, prevDoc, newDoc })
+            // return objectIterator({ element, schemaValidator, prevDoc, newDoc })
+
+        }
+    )
+
+}
 
 function objectIterator({ element, schemaValidator, prevDoc, newDoc }) {
     // ({ key, value, schemaValidator, transformation, prevDoc, newDoc })
@@ -24,34 +43,7 @@ function objectIterator({ element, schemaValidator, prevDoc, newDoc }) {
         }, {})
 }
 
-function isArray({ key, value, schemaValidator, transformation, prevDoc, newDoc }) {
-    // console.log('transformation[0]::', transformation[0])
-
-    schemaValidator = transformation[0]
-    return value.map(
-        element => {
-            return objectIterator({ element, schemaValidator, prevDoc, newDoc })
-        }
-    )
-
-}
-function isObject({ key, value, schemaValidator, transformation, prevDoc, newDoc }) {
-
-    schemaValidator = transformation//next object
-    return objectIterator({ element: value, schemaValidator, prevDoc, newDoc })
-}
-
-function isFunction({ transformation, value, prevDoc, newDoc }) {
-
-    return transformation({ newValue: value, prevDoc, newDoc })
-}
 
 
-function validator({ schemaValidator, prevDoc = null, newDoc }) {
 
 
-    return objectIterator({ element: newDoc, schemaValidator, prevDoc, newDoc })
-}
-
-
-module.exports = validator
