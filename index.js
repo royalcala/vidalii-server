@@ -4,10 +4,35 @@ const { ApolloServer, gql } = require('apollo-server-express');
 const { readFileSync } = require('fs')
 const uuidv4 = require('uuid/v4')
 var typeDefs = readFileSync('./typeDefs.graphql', 'UTF-8')
-const validator = require('./toPackage/vidaliischema/validator')
-const schemas = require('./toPackage/vidaliischema')
+const validator = require('./toPackage/validatorSchema')
+const schemas = require('./toPackage/vidaliiDB')
 const PouchDB = require('pouchdb');
 const myschemas = schemas({})
+const testConvertObjects = require('./toPackage/convertArraysInObject.js')
+const testObjectPathsToArray = require('./toPackage/convertObjectsPathsToArray')
+
+const A = {
+    C: [{ _id: 1, field1: 'hellow world' }],
+    D: {
+        E: [{ _id: 1, field1: 'hellow world' }],
+        F: [{ _id: 1, field1: 'hellow world', arraynew: [{ _id: 1, hellow: 'world' }] }]
+    }
+}
+
+// const re = {
+//     A: { B: '1', C: { '1': { field1: 'hellow world' } } },
+//     D:
+//     {
+//         E:
+//         {
+//             '2':
+//                 { field1: 'hellow world D', H: { '3': { field1: 'whats up' } } }
+//         }
+//     }
+// }
+console.log('testConvertObjects::',
+    testConvertObjects({ idName: '_id', object: A })
+)
 
 myschemas.loadSchema({
     name: 'schema1',
@@ -35,9 +60,9 @@ myschemas.loadSchema({
 // console.log('insert',
 //     myschemas.models().schema1.insert({ a: 'first document' }).then(e => console.log(e))
 // )
-console.log('update',
-    myschemas.models().schema1.update({ _id: 'hola', a: 'first', b: [{ a: '1' }] }).then(e => console.log(e))
-)
+// console.log('update',
+//     myschemas.models().schema1.update({ _id: 'hola', a: 'first', b: [{ a: '1' }] }).then(e => console.log(e))
+// )
 // var dataBase = new PouchDB(`http://admin:admin@localhost:5984/vidaliiserver`);
 // for (let index = 0; index < 10000; index++) {
 //     console.log(index)
@@ -142,15 +167,5 @@ server.applyMiddleware({ app });
 
 // console.log('RESULT:', result)
 
-var previus = {
-    a: 1
-}
-var newD = {
-    // a: 2,
-    b: 1
-}
 
-console.log('merge',
-    R.mergeDeepRight(previus, newD)
-)
 

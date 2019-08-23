@@ -1,5 +1,5 @@
 const R = require('ramda')
-const validator = require('./validator')
+const validator = require('../validatorSchema')
 const selectTypeDB = require('./selectTypeDB')
 
 
