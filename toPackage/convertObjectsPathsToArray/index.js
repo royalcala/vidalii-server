@@ -3,7 +3,7 @@ const R = require('ramda')
 module.exports = main
 
 
-function main({ idName, object }) {
+function main({ paths, object }) {
     var arrayPaths = []
 
     // var pivotRoute = []

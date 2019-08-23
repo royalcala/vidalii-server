@@ -43,7 +43,7 @@ function main({ idName, object }) {
                 const newConcatRoute = [...concatRoute, key]
                 let data = R.cond([
                     // [({ transformation }) => R.is(Function, transformation), isFunction],
-                    [({ value }) => R.is(Array, value), R.pipe(isArray, isObject)],
+                    [({ value }) => R.is(Array, value), isArray],
                     [({ value }) => R.is(Object, value), isObject],
                     [R.T, isValue] // the rest types
                 ])({ key, value, idName, newConcatRoute })
@@ -67,26 +67,44 @@ function main({ idName, object }) {
     function isArray({ key, value, newConcatRoute }) {
         // pivotRoute.push(key)
         arrayPaths.push(newConcatRoute)
-        return {
-            idName,
-            value: value.reduce(
-                (acc, actual) => {
-                    return {
-                        ...acc,
-                        [actual[idName]]: {
-                            ...R.omit([idName], actual)
-                        }
+        // newConcatRoute = [...newConcatRoute, key]
+        // console.log('newConcatRoute::',newConcatRoute)
+        var toObjetID = value.reduce(
+            (acc, actual) => {
+                return {
+                    ...acc,
+                    [actual[idName]]: {
+                        ...R.omit([idName], actual)
                     }
+                }
 
-                }, null
-            )
-        }
+            }, null
+        )
+
+        return objectIterator({ element: toObjetID, concatRoute: newConcatRoute })
+
+        // return {
+        //     idName,
+        //     value: value.reduce(
+        //         (acc, actual) => {
+        //             return {
+        //                 ...acc,
+        //                 [actual[idName]]: {
+        //                     ...R.omit([idName], actual)
+        //                 }
+        //             }
+
+        //         }, null
+        //     ),
+
+        // }
+
 
     }
     function isObject({ key, value, newConcatRoute }) {
         // pivotRoute.push(key)
 
-        return objectIterator({ element: value, idName, concatRoute: newConcatRoute })
+        return objectIterator({ element: value, concatRoute: newConcatRoute })
     }
 
 }

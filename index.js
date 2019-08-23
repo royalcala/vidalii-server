@@ -12,10 +12,19 @@ const testConvertObjects = require('./toPackage/convertArraysInObject.js')
 const testObjectPathsToArray = require('./toPackage/convertObjectsPathsToArray')
 
 const A = {
-    C: [{ _id: 1, field1: 'hellow world' }],
+    // C: [{ _id: 1, field1: 'hellow world' }],
     D: {
-        E: [{ _id: 1, field1: 'hellow world' }],
-        F: [{ _id: 1, field1: 'hellow world', arraynew: [{ _id: 1, hellow: 'world' }] }]
+        // E: [{ _id: 1, field1: 'hellow world' }],
+        misArrays1: [
+            {
+                _id: 1,
+                field1: 'hellow world',
+                misArrays1sub1: [{
+                    _id: 2, field: 'hi',
+                    misArrays1sub1sub1: [{ _id: 1, field: 'heloows' }]
+                }]
+            },
+        ]
     }
 }
 
