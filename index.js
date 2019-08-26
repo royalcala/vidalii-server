@@ -11,37 +11,96 @@ const myschemas = schemas({})
 const testConvertObjects = require('./toPackage/convertArraysInObject.js')
 const testObjectPathsToArray = require('./toPackage/convertObjectsPathsToArray')
 
-const A = {
+const prevDoc = {
     // C: [{ _id: 1, field1: 'hellow world' }],
+    a: 'Im previus',
+    b: 'only on prev Doc',
     D: {
         // E: [{ _id: 1, field1: 'hellow world' }],
         misArrays1: [
             {
+                _id: 0,
+                field: 'im only on prev Doc'
+            },
+            {
                 _id: 1,
-                field1: 'hellow world',
+                field1: 'im in Both and im prev',
                 misArrays1sub1: [{
-                    _id: 2, field: 'hi',
-                    misArrays1sub1sub1: [{ _id: 1, field: 'heloows' }]
+                    _id: 2, field: 'im prev',
+                    misArrays1sub1sub1: [
+                        { _id: 1, field: 'im in Both and im prev' },
+                        { _id: 2, field: 'im prev' }
+                    ]
+                }]
+            },
+        ]
+    }
+}
+const newDoc = {
+    // C: [{ _id: 1, field1: 'hellow world' }],
+    a: 'im the new one',
+    c: 'only on new Doc',
+    D: {
+        // E: [{ _id: 1, field1: 'hellow world' }],
+        misArrays1: [
+            {
+                _id: 0.1,
+                field: 'im only on new Doc'
+            },
+            {
+                _id: 1,
+                field1: 'im in Both and im new',
+                misArrays1sub1: [{
+                    _id: 2, field: 'im new',
+                    misArrays1sub1sub1: [
+                        { _id: 1, field: 'im in Both and im new' },
+                        { _id: 3, field: 'im new' }
+                    ]
                 }]
             },
         ]
     }
 }
 
-// const re = {
-//     A: { B: '1', C: { '1': { field1: 'hellow world' } } },
-//     D:
-//     {
-//         E:
-//         {
-//             '2':
-//                 { field1: 'hellow world D', H: { '3': { field1: 'whats up' } } }
-//         }
-//     }
-// }
-console.log('testConvertObjects::',
-    testConvertObjects({ idName: '_id', object: A })
+
+var { object: prevObj, arrayPaths: prevArrayPaths } = testConvertObjects({ idName: '_id', object: prevDoc })
+var { object: newObj, arrayPaths: newArrayPaths } = testConvertObjects({ idName: '_id', object: newDoc })
+
+
+var mergeObjects = R.mergeDeepRight(prevObj, newObj)
+var mergePaths = R.concat(prevArrayPaths, newArrayPaths)
+
+// console.log('mergeBoth::',
+//     mergeObjects
+// )
+
+// console.log('mergePaths',
+//     mergePaths
+// )
+var ray1 = [['a', 'b'], ['a', 'c']]
+var ray2 = [['a', 'b'], ['a', 'd']]
+
+console.log('merge arrays',
+    // R.mergeRight(ray1, ray2),
+    // ray1.concat(ray2)
+    R.pipe(
+        R.concat(ray1),
+        R.map(R.join('.')),
+        data => data.sort(),
+        R.dropRepeats,
+        R.map(R.split('.'))
+    )(ray2)
+
+
 )
+
+
+
+// console.log('testConvertObjects::',
+//     newData
+// )
+
+
 
 myschemas.loadSchema({
     name: 'schema1',
