@@ -8,9 +8,13 @@ const validator = require('./toPackage/validatorSchema')
 const schemas = require('./toPackage/vidaliiDB')
 const PouchDB = require('pouchdb');
 const myschemas = schemas({})
-const testConvertObjects = require('./toPackage/convertArraysInObject.js')
-const testObjectPathsToArray = require('./toPackage/convertObjectsPathsToArray')
 
+const updateDoc = require('./toPackage/updateDoc')
+
+
+// const testConvertObjects = require('./toPackage/convertArraysInObject.js')
+// const testObjectPathsToArray = require('./toPackage/updateDoc/convertObjectsPathsToArray')
+// const mergePaths = require('./toPackage/mergePaths')
 const prevDoc = {
     // C: [{ _id: 1, field1: 'hellow world' }],
     a: 'Im previus',
@@ -36,6 +40,7 @@ const prevDoc = {
         ]
     }
 }
+
 const newDoc = {
     // C: [{ _id: 1, field1: 'hellow world' }],
     a: 'im the new one',
@@ -62,13 +67,16 @@ const newDoc = {
     }
 }
 
+var resultDoc = updateDoc({ idName: '_id', prevDoc, newDoc })
 
-var { object: prevObj, arrayPaths: prevArrayPaths } = testConvertObjects({ idName: '_id', object: prevDoc })
-var { object: newObj, arrayPaths: newArrayPaths } = testConvertObjects({ idName: '_id', object: newDoc })
+console.log('resultDoc::', resultDoc)
+
+// var { object: prevObj, arrayPaths: path1 } = testConvertObjects({ idName: '_id', object: prevDoc })
+// var { object: newObj, arrayPaths: path2 } = testConvertObjects({ idName: '_id', object: newDoc })
 
 
-var mergeObjects = R.mergeDeepRight(prevObj, newObj)
-var mergePaths = R.concat(prevArrayPaths, newArrayPaths)
+// var mergeObjects = R.mergeDeepRight(prevObj, newObj)
+// var mergePaths = R.concat(prevArrayPaths, newArrayPaths)
 
 // console.log('mergeBoth::',
 //     mergeObjects
@@ -77,22 +85,29 @@ var mergePaths = R.concat(prevArrayPaths, newArrayPaths)
 // console.log('mergePaths',
 //     mergePaths
 // )
-var ray1 = [['a', 'b'], ['a', 'c']]
-var ray2 = [['a', 'b'], ['a', 'd']]
+// var path1 = [['a', 'b'], ['a', 'b', 'c', 'd'], ['a', 'c']]
+// var path2 = [['a', 'b'], ['a', 'b', 'c']]
 
-console.log('merge arrays',
-    // R.mergeRight(ray1, ray2),
-    // ray1.concat(ray2)
-    R.pipe(
-        R.concat(ray1),
-        R.map(R.join('.')),
-        data => data.sort(),
-        R.dropRepeats,
-        R.map(R.split('.'))
-    )(ray2)
-
-
-)
+// var mergedPaths = mergePaths({path1, path2})
+// console.log('merge arrays',
+//     // testObjectPathsToArray({ obj: mergeObjects, path1, path2 })
+//     mergedPaths
+// R.pipe(
+//     R.concat(ray1),
+//     R.map(
+//         R.pipe(
+//             data => R.insert(0, data.length, data),
+//             R.join('.')
+//         )
+//     ),
+//     R.sort((a, b) => a > b ? -1 : 1),
+//     R.dropRepeats,
+//     R.map(R.split('.')),
+//     R.map(
+//         R.drop(1)
+//     )
+// )(ray2)
+// )
 
 
 
