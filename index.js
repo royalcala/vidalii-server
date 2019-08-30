@@ -1,20 +1,63 @@
 const R = require('ramda')
 const express = require('express');
+const PouchDB = require('pouchdb');
+var cors = require('cors');
+var bodyParser = require('body-parser')
+
 const { ApolloServer, gql } = require('apollo-server-express');
 const { readFileSync } = require('fs')
 const uuidv4 = require('uuid/v4')
 var typeDefs = readFileSync('./typeDefs.graphql', 'UTF-8')
 const validator = require('./toPackage/validatorSchema')
 const schemas = require('./toPackage/vidaliiDB')
-const PouchDB = require('pouchdb');
+
+//start pouchdb
+
+
+async function startServer() {
+    var app = express();
+    const resolvers = {
+        Query: {
+            hello: () => 'Hello world!',
+        },
+    };
+    const server = new ApolloServer({ typeDefs, resolvers });
+
+    server.applyMiddleware({ app });
+
+    app.use(require('express-pouchdb')(PouchDB));
+
+    await app.listen({ port: 4000 }, () =>
+        console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+    );
+    // var db = await new PouchDB('schemas');
+
+    // await db.put({
+    //     _id: 'dave@gmail.com',
+    //     name: 'David',
+    //     age: 69
+    // });
+
+}
+startServer()
+
+
+
 const myschemas = schemas({})
+// var s = "0"
+// console.log('String::', Boolean(s))
+const types = require('./toPackage/valuesTypes')
+
+// console.log('types:', types)
+console.log(
+    'custom::', types.custom({
+        fx: () => 'hi',
+        type: 'StringCustom'
+    })
+)
 
 const updateDoc = require('./toPackage/updateDoc')
 
-
-// const testConvertObjects = require('./toPackage/convertArraysInObject.js')
-// const testObjectPathsToArray = require('./toPackage/updateDoc/convertObjectsPathsToArray')
-// const mergePaths = require('./toPackage/mergePaths')
 const prevDoc = {
     // C: [{ _id: 1, field1: 'hellow world' }],
     a: 'Im previus',
@@ -69,51 +112,26 @@ const newDoc = {
 
 var resultDoc = updateDoc({ idName: '_id', prevDoc, newDoc })
 
-console.log('resultDoc::', resultDoc)
+const hola = () => {
+    return 'im hola'
+}
+hola.type = 'string'
+var d1 = {
+    a: hola
+}
+// console.log('type', d1.a.type)
 
-// var { object: prevObj, arrayPaths: path1 } = testConvertObjects({ idName: '_id', object: prevDoc })
-// var { object: newObj, arrayPaths: path2 } = testConvertObjects({ idName: '_id', object: newDoc })
+const customs = ({ type = null, validator = null }) => {
+    var newFx = () => 'im newFx'
+    newFx.type = type
+    return newFx
+}
+var d2 = {
+    a: customs({ type: 'string' })
+}
 
+// console.log('customs', d2.a.type)
 
-// var mergeObjects = R.mergeDeepRight(prevObj, newObj)
-// var mergePaths = R.concat(prevArrayPaths, newArrayPaths)
-
-// console.log('mergeBoth::',
-//     mergeObjects
-// )
-
-// console.log('mergePaths',
-//     mergePaths
-// )
-// var path1 = [['a', 'b'], ['a', 'b', 'c', 'd'], ['a', 'c']]
-// var path2 = [['a', 'b'], ['a', 'b', 'c']]
-
-// var mergedPaths = mergePaths({path1, path2})
-// console.log('merge arrays',
-//     // testObjectPathsToArray({ obj: mergeObjects, path1, path2 })
-//     mergedPaths
-// R.pipe(
-//     R.concat(ray1),
-//     R.map(
-//         R.pipe(
-//             data => R.insert(0, data.length, data),
-//             R.join('.')
-//         )
-//     ),
-//     R.sort((a, b) => a > b ? -1 : 1),
-//     R.dropRepeats,
-//     R.map(R.split('.')),
-//     R.map(
-//         R.drop(1)
-//     )
-// )(ray2)
-// )
-
-
-
-// console.log('testConvertObjects::',
-//     newData
-// )
 
 
 
@@ -164,23 +182,7 @@ myschemas.loadSchema({
 // console.log(uuidv4())
 
 // Provide resolver functions for your schema fields
-const resolvers = {
-    Query: {
-        hello: () => 'Hello world!',
-    },
-};
 
-const server = new ApolloServer({ typeDefs, resolvers });
-
-const app = express();
-server.applyMiddleware({ app });
-
-
-
-
-// app.listen({ port: 4000 }, () =>
-//     console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-// );
 
 // var a = {
 //     a: 1,

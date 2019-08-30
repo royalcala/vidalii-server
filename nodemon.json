@@ -1,0 +1,10 @@
+{
+    "verbose": true,
+    "ignore": [
+        "_replicator",
+        "_users",
+        "pouch__all_dbs__",
+        "log.txt",
+        "config.json"
+    ]
+}
