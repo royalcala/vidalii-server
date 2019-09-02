@@ -1,9 +1,9 @@
 module.exports = {
     schema: {
-        username: () => ''
+        client: () => ''
     },
     database: {
-        db: 'users',
+        db: 'sales',
         url: 'http://localhost:4000',
         username: '',
         password: '',

@@ -4,7 +4,7 @@ const selectTypeDB = require('./selectTypeDB')
 
 
 
-function vidaliischema({ }) {
+function main({ }) {
     var models = {}
     var errorsValidation = []
     return {
@@ -46,4 +46,4 @@ function vidaliischema({ }) {
 
 }
 
-module.exports = vidaliischema
+module.exports = main

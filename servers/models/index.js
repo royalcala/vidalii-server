@@ -1,18 +1,45 @@
-const fs = require('fs')
-const R = require('ramda')
+const mergeSchemasFiles = require('../../toPackage/mergeSchemasFiles')
 
-//schemas
-//
+console.log('mergeSchemasFiles::',
+    mergeSchemasFiles(__dirname + '/schemasInstalled')
+)
 
-const readInstalled = (pathToRead) => R.pipe(
-    fs.readdirSync,
-    R.map(x => ({
-        a: require(pathToRead + '/' + x)
-    })
-    ),
-    // R.mergeAll
-)(pathToRead)
+module.exports = mergeSchemasFiles(__dirname + '/schemasInstalled')
+// const fs = require('fs')
+// const R = require('ramda')
 
-console.log(readInstalled(__dirname + '/schemasInstalled'))
+// const mergeSchemas = R.reduce(R.mergeDeepLeft, {})
 
-module.exports = ''
+// const fileNameToArrayPath = nameFile => R.pipe(
+//     R.replace('.js', ''),
+//     R.split('.'),
+// )(nameFile)
+
+// const getSchemasFromObjects = R.map(
+//     ([nameFile, { schema, database = null }]) => {
+//         let pathObject = fileNameToArrayPath(nameFile)
+//         return {
+//             [R.head(pathObject)]: {
+//                 schema: R.assocPath(
+//                     R.drop(1, pathObject),
+//                     schema,
+//                     {}
+//                 ),
+//                 database: database === null ? {} : database
+//             }
+//         }
+//     }
+
+// )
+// const getMapObjectsFromFiles = pathToRead => R.map(fileName => [fileName, require(pathToRead + '/' + fileName)])
+
+// const readInstalled = (pathToRead) => R.pipe(
+//     fs.readdirSync,
+//     getMapObjectsFromFiles(pathToRead),
+//     getSchemasFromObjects,
+//     mergeSchemas
+// )(pathToRead)
+
+// console.log(readInstalled(__dirname + '/schemasInstalled'))
+
+// module.exports = ''

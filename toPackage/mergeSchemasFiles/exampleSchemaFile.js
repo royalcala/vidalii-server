@@ -1,3 +1,4 @@
+//user.js
 module.exports = {
     schema: {
         username: () => ''
@@ -8,5 +9,12 @@ module.exports = {
         username: '',
         password: '',
         type: 'pouchdb'
+    }
+}
+
+//user.facebook.js
+module.exports = {
+    schema: {
+        nameFacebook: () => ''
     }
 }
