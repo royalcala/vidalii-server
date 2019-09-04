@@ -1,0 +1,10 @@
+{
+  "name": "@vidalii/db",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Roy Alcala Ortiz",
+  "license": "none",
+  "dependencies": {
+    "ramda": "^0.26.1"
+  }
+}
