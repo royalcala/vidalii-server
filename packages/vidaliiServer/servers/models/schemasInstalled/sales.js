@@ -1,11 +1,11 @@
-const { string, int, custom } = require('@vidalii/db/valuesTypes')
+const { string, int, custom } = require('@vidalii/db/valuesSchemaTypes')
 module.exports = {
     schema: {
-        clientName: string
+        clientname: string
     },
     database: {
         db: 'sales',
-        url: 'http://localhost:4000',
+        url: 'http://admin:admin@localhost:5984',
         username: '',
         password: '',
         typeDB: 'pouchdb'

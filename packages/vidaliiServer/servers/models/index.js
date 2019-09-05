@@ -1,6 +1,6 @@
 const R = require('ramda')
 const mergeSchemasFiles = require('@vidalii/db/mergeSchemasFiles')(__dirname + '/schemasInstalled')
-const models = require('@vidalii/db/vidaliiDB')({})
+const models = require('@vidalii/db/models')({})
 
 
 Object.entries(mergeSchemasFiles).map(

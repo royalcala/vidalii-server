@@ -5,6 +5,8 @@
         "_users",
         "pouch__all_dbs__",
         "log.txt",
-        "config.json"
+        "config.json",
+        "servers/autoTypeDefs.graphql",
+        "servers/object.js"
     ]
 }

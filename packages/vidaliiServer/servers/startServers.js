@@ -3,7 +3,7 @@ const express = require('express');
 const PouchDB = require('pouchdb');
 const { readFileSync } = require('fs')
 const { ApolloServer } = require('apollo-server-express');
-var typeDefs = readFileSync(__dirname + '/typeDefs.graphql', 'UTF-8')
+var typeDefs = readFileSync(__dirname + '/autoTypeDefs.graphql', 'UTF-8')
 
 async function main() {
     var app = express();

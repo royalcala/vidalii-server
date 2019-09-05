@@ -5,31 +5,31 @@ const printGraphql = require('./printGraphql')
 
 
 function main({ }) {
-    var models = {}
-    var schemas = {}
+    var storeModels = {}
+    var storeSchemas = {}
     return {
-        printSchemas: () => schemas,
-        printModels: () => models,
-        printGraphql: () => printGraphql(schemas),
+        printSchemas: () => storeSchemas,
+        printModels: () => storeModels,
+        printGraphql: () => printGraphql(storeSchemas),     
         loadSchema: ({ name, schemaValidator, typeDB = 'pouchDB', url, db, username = null, password = null }) => {
             const ifDuplicateSchema = [
-                ({ name }) => models[name],
+                ({ name }) => storeModels[name],
                 ({ name }) => { throw new Error(`Your are trying to load a schema '${name}' DUPLICATED`) }
             ]
             const addToModel = ({ name, schemaValidator }) => ({
-                ...models,
+                ...storeModels,
                 [name]: selectTypeDB({ typeDB, schemaValidator, url, db, username, password })
             })
 
 
 
-            models = R.cond([
+            storeModels = R.cond([
                 ifDuplicateSchema,
                 [R.T, addToModel]
             ])({ name, schemaValidator })
 
 
-            schemas = { ...schemas, [name]: { ...schemaValidator } }
+            storeSchemas = { ...storeSchemas, [name]: { ...schemaValidator } }
 
 
         },
