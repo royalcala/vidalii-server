@@ -5,7 +5,7 @@ module.exports = {
     },
     database: {
         db: 'sales',
-        url: 'http://admin:admin@localhost:5984',
+        url: 'http://admin:admin@localhost:4000',
         username: '',
         password: '',
         typeDB: 'pouchdb'

@@ -52,9 +52,7 @@ const crud = ({ typeDB, schemaValidator, url, db, username, password }) => {
         },
         find: async (queryMango) => {
             PouchDB.plugin(PouchDBFind);
-            // console.log('queryMango::', queryMango)
             let query = queryMango === null ? { selector: { _id: { $gte: null } } } : queryMango
-            // console.log('query::', query)
             try {
                 var response = await dataBase.find(query)
                 // var response = await dataBase.allDocs({

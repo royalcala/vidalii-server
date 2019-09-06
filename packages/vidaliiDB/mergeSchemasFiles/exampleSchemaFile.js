@@ -13,6 +13,7 @@ module.exports = {
 }
 
 //user.facebook.js
+// doesnt has database params
 module.exports = {
     schema: {
         nameFacebook: () => ''
