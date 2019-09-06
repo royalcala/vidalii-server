@@ -2,9 +2,7 @@ const R = require('ramda')
 const firstUpper = require('./firstUpper')
 
 function addTypes({ storeTypes, nameType = null, childNode }) {
-
     Object.entries(childNode).map(([name, node]) => {
-        // console.log('next Map', name)
         if (R.is(Function, node)) {
             storeTypes[nameType] = `${storeTypes[nameType]} ${name}:${node.type}\n`
 

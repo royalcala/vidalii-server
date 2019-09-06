@@ -8,13 +8,13 @@ function main({ }) {
     var storeModels = {}
     var storeSchemas = {}
     return {
-        printSchemas: () => storeSchemas,
-        printModels: () => storeModels,
-        printGraphql: () => printGraphql(storeSchemas),     
+        schemas: () => storeSchemas,
+        models: () => storeModels,
+        printGraphql: () => printGraphql({ schemas: storeSchemas, models: storeModels }),
         loadSchema: ({ name, schemaValidator, typeDB = 'pouchDB', url, db, username = null, password = null }) => {
             const ifDuplicateSchema = [
                 ({ name }) => storeModels[name],
-                ({ name }) => { throw new Error(`Your are trying to load a schema '${name}' DUPLICATED`) }
+                ({ name }) => { throw new Error(`Your are trying to load a schema with name:'${name}' DUPLICATED`) }
             ]
             const addToModel = ({ name, schemaValidator }) => ({
                 ...storeModels,

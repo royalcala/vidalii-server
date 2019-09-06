@@ -7,6 +7,7 @@
         "log.txt",
         "config.json",
         "servers/autoTypeDefs.graphql",
-        "servers/object.js"
+        "servers/object.js",
+        "servers/resolvers/Query.js"
     ]
 }
