@@ -37,10 +37,9 @@ node_modules/
 packages/vidaliiDB/node_modules/
 packages/vidaliiServer/node_modules/
 jspm_packages/
-package/vidaliiServer/_replicator
-package/vidaliiServer/_users
-package/vidaliiServer/pouch__all_dbs__
-
+packages/vidaliiServer/_users/
+packages/vidaliiServer/pouch__all_dbs__/
+packages/vidaliiServer/_replicator/
 
 # TypeScript v1 declaration files
 typings/
@@ -65,3 +64,6 @@ typings/
 
 # next.js build output
 .next
+
+
+
