@@ -12,7 +12,6 @@ const readInstalled = (pathToRead) => R.pipe(
     R.mergeAll
 )(pathToRead)
 
-// console.log(readInstalled(__dirname + '/installed'))
 
 module.exports = {
     ...readInstalled(__dirname + '/installed'),

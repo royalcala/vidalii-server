@@ -5,6 +5,7 @@
   "author": "Roy Alcala Ortiz",
   "license": "none",
   "dependencies": {
+    "dataloader": "^1.4.0",
     "ramda": "^0.26.1"
   }
 }
