@@ -40,7 +40,9 @@ jspm_packages/
 packages/vidaliiServer/_users/
 packages/vidaliiServer/pouch__all_dbs__/
 packages/vidaliiServer/_replicator/
-
+packages/vidaliiServer/log.txt
+packages/vidaliiServer/_replicator
+packages/vidaliiServer/_replicator/*
 # TypeScript v1 declaration files
 typings/
 
@@ -67,3 +69,8 @@ typings/
 
 
 
+
+
+packages/vidaliiServer/log.txt
+packages/vidaliiServer/_replicator/CURRENT
+packages/vidaliiServer/_replicator/LOG.old

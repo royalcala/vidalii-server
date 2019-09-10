@@ -1,7 +1,7 @@
 const R = require('ramda')
-// const PouchDB = require('pouchdb')
-// const PouchDBFind = require('pouchdb-find')
-const PouchDB = require('./initPouchDB')
+const PouchDB = require('pouchdb')
+const PouchDBFind = require('pouchdb-find')
+// const PouchDB = require('./initPouchDB')
 const uuidv4 = require('uuid/v4')
 const validator = require('../../../schemas/validatorSchema')
 const updateDoc = require('../../../schemas/updateDoc')
@@ -52,7 +52,7 @@ const crud = ({ typeDB, schemaValidator, url, db, username, password }) => {
             return updateResponse
         },
         find: async (queryMango) => {
-            // PouchDB.plugin(PouchDBFind);
+            PouchDB.plugin(PouchDBFind);
             let query = queryMango === null ? { selector: { _id: { $gte: null } } } : queryMango
             try {
                 var response = await dataBase.find(query)

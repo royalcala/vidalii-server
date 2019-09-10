@@ -5,8 +5,17 @@ const { readFileSync } = require('fs')
 const { ApolloServer } = require('apollo-server-express');
 const models = require('./models')
 
-const { sdl, resolvers } = models.printGraphql()
-// const GraphQLJSON = require('graphql-type-json')
+const { sdl, queryResolvers } = models.printGraphql()
+console.log(
+    'sdl',
+    sdl
+)
+console.log(
+    'queryResolvers:',
+    queryResolvers
+)
+
+const GraphQLJSON = require('graphql-type-json')
 
 var _ = require('lodash');
 const PouchDBFind = require('pouchdb-find')
@@ -105,7 +114,8 @@ async function main() {
                 }
             },
             Query: {
-                ...resolvers.Query,
+                // ...resolvers.Query,
+                ...queryResolvers,
                 dataloader: async (parent, args, context, info) => {
 
                     // return [{
@@ -128,13 +138,13 @@ async function main() {
 
                 }
             },
-            // JSON: GraphQLJSON
+            JSON: GraphQLJSON
         }
     })
 
-    server.applyMiddleware({ app });
+    server.applyMiddleware({ app })
 
-    app.use(require('express-pouchdb')(PouchDB));
+    app.use(require('express-pouchdb')(PouchDB))
 
     await app.listen({ port: 4000 }, () =>
         console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
