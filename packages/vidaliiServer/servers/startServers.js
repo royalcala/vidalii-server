@@ -5,14 +5,14 @@ const { readFileSync } = require('fs')
 const { ApolloServer } = require('apollo-server-express');
 const models = require('./models')
 
-const { sdl, queryResolvers } = models.printGraphql()
+const { sdl, resolvers } = models.printGraphql()
 console.log(
     'sdl',
     sdl
 )
 console.log(
-    'queryResolvers:',
-    queryResolvers
+    ' resolvers.query:',
+    resolvers.query
 )
 
 const GraphQLJSON = require('graphql-type-json')
@@ -115,7 +115,7 @@ async function main() {
             },
             Query: {
                 // ...resolvers.Query,
-                ...queryResolvers,
+                ...resolvers.query,
                 dataloader: async (parent, args, context, info) => {
 
                     // return [{

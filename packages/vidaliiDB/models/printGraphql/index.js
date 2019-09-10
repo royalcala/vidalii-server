@@ -19,8 +19,8 @@ function main({ schemas, models }) {
 
     // const { querySDL, queryResolvers } = addQueries({ schemas, models })
     // console.log('q:::', 'sdl', querySDL, 'resolvers::', queryResolvers)
-    const { querySDL, queryResolvers } = addQueriesAndMutations({ schemas, models })
-    console.log('q:::', 'sdl', querySDL, 'resolvers::', queryResolvers)
+    const { queries, mutations } = addQueriesAndMutations({ schemas, models })
+    console.log('q:::', 'sdl', queries.sdl, 'resolvers::', queries.resolvers)
     // var queries = addQueries({ schemas })
     // console.log('queries:', queries)
     // var mutations = addMutations({ schemas })
@@ -34,8 +34,13 @@ function main({ schemas, models }) {
 
     // console.log('sdl:::',sdlConcatTypesQueriesMutations(typesSDL, querySDL, ' '))
     return {
-        sdl: sdlConcatTypesQueriesMutations(sdlTypes, querySDL, ' '),
-        queryResolvers,
+        sdl: sdlConcatTypesQueriesMutations(sdlTypes, queries.sdl, ''),
+        resolvers:{
+            query:queries.resolvers,
+            mutation:''
+        }
+        // queryResolvers: queries.resolvers,
+
 
         // types,
         // typesSLD,

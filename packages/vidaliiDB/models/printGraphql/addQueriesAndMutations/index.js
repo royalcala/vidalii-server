@@ -36,34 +36,43 @@ const getInstalled = ({ schemas, models, installed }) => R.pipe(
     R.flatten
 )(schemas)
 
-const getQueries = ({ schemas, models }) => {
-
+const getQueries = ({ schemas, models, sdlType, installedDir }) => {
     const objectQueries = getInstalled({
         schemas,
         models,
-        installed: readInstalled(__dirname + '/installedQueries')
+        installed: readInstalled(installedDir)
     })
-    console.log('queries:::', objectQueries)
-    const querySDL = extractSDlAndConcat({ object: objectQueries, sdlType: 'type Query {\n' })
-    const queryResolvers = extractResolversAndConcat(objectQueries)
-
+    // console.log('queries:::', objectQueries)
+    const sdl = extractSDlAndConcat({ object: objectQueries, sdlType })
+    const resolvers = extractResolversAndConcat(objectQueries)
+    return {
+        sdl,
+        resolvers
+    }
 }
 
 module.exports = ({ schemas, models }) => {
-    ///move all to the method
-    const objectQueries = getInstalled({
+
+    const queries = getQueries({
         schemas,
         models,
-        installed: readInstalled(__dirname + '/installedQueries')
+        sdlType: 'type Query {\n',
+        installedDir: __dirname + '/installedQueries'
     })
-    console.log('queries:::', objectQueries)
-    const querySDL = extractSDlAndConcat({ object: objectQueries, sdlType: 'type Query {\n' })
-    const queryResolvers = extractResolversAndConcat(objectQueries)
 
+    const mutations = getQueries({
+        schemas,
+        models,
+        sdlType: 'type Mutations {\n',
+        installedDir: __dirname + '/installedMutations'
+    })
 
     return {
-        querySDL,
-        queryResolvers
+        queries: {
+            sdl: queries.sdl,
+            resolvers: queries.resolvers
+        },
+
     }
 
 
