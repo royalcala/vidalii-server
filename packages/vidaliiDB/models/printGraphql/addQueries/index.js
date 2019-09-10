@@ -18,7 +18,7 @@ const concatSDL = (data) => R.pipe(
         (acc, { sdl }) =>
             R.concat(
                 acc,
-                `${sdl}`
+                `${sdl}\n`
             )
         , 'type Query {\n'),
     R.concat(R.__, '}')

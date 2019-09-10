@@ -578,3 +578,14 @@
 [Tue, 10 Sep 2019 01:25:44 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
 [Tue, 10 Sep 2019 01:25:46 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
 [Tue, 10 Sep 2019 01:25:46 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Tue, 10 Sep 2019 15:31:58 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Tue, 10 Sep 2019 15:31:59 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Tue, 10 Sep 2019 15:32:02 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Tue, 10 Sep 2019 15:32:02 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Tue, 10 Sep 2019 15:33:15 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Tue, 10 Sep 2019 15:33:15 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Tue, 10 Sep 2019 15:35:08 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Tue, 10 Sep 2019 15:35:08 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Tue, 10 Sep 2019 15:53:02 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Tue, 10 Sep 2019 15:57:06 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Tue, 10 Sep 2019 15:57:06 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200

@@ -2,29 +2,25 @@ const R = require('ramda')
 const addTypes = require('./addTypes')
 const addQueries = require('./addQueries')
 const addMutations = require('./addMutations')
-const addResolverQuery = require('./addResolvers/Query')
+const addQueriesAndMutations = require('./addQueriesAndMutations')
 
-const getQueries = require('./queries')
 
 const sdlConcatTypesQueriesMutations = (types, queries, mutations) => R.pipe(
     R.concat(queries),
     R.concat(mutations)
 )(types)
 
-const getTypesSDL = (types) => R.pipe(
-    R.toPairs,
-    R.reduce((acc, [nameType, sdl]) => R.concat(acc, sdl), '')
-)(types)
 
 function main({ schemas, models }) {
     // console.log('schemas::', schemas)
-    const types = addTypes({ schemas })
+    const { sdlTypes } = addTypes({ schemas })
     // console.log('types::', types)
-    const typesSDL = getTypesSDL(types)
+    // const typesSDL = getTypesSDL(types)
 
-    const { querySDL, queryResolvers } = getQueries({ schemas, models })
-    // console.log('q:::', querySDL, queryResolvers)
-
+    // const { querySDL, queryResolvers } = addQueries({ schemas, models })
+    // console.log('q:::', 'sdl', querySDL, 'resolvers::', queryResolvers)
+    const { querySDL, queryResolvers } = addQueriesAndMutations({ schemas, models })
+    console.log('q:::', 'sdl', querySDL, 'resolvers::', queryResolvers)
     // var queries = addQueries({ schemas })
     // console.log('queries:', queries)
     // var mutations = addMutations({ schemas })
@@ -38,9 +34,9 @@ function main({ schemas, models }) {
 
     // console.log('sdl:::',sdlConcatTypesQueriesMutations(typesSDL, querySDL, ' '))
     return {
-        sdl: sdlConcatTypesQueriesMutations(typesSDL, querySDL, ' '),
+        sdl: sdlConcatTypesQueriesMutations(sdlTypes, querySDL, ' '),
         queryResolvers,
-        
+
         // types,
         // typesSLD,
         // queries,
