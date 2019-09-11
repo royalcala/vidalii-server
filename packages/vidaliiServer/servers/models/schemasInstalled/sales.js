@@ -4,7 +4,14 @@ module.exports = {
         _id: ID,
         _id_user: ID,
         user: ref('_id_user', 'users', '_id'),
-        clientname: string
+        clientname: string,
+        arreglo: [{
+            _id: ID,
+            hi: [{
+                _id: ID,
+                subHi: string
+            }]
+        }]
     },
     database: {
         db: 'sales',

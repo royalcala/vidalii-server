@@ -22,9 +22,16 @@ function addTypes({ storeResolvers, storeTypes, nameType = null, childNode }) {
                 addTypes({ storeResolvers, storeTypes, nameType: upName, childNode: node })
             } else {
                 let upName = `${nameType}_${firstUpper(name)}`
-                storeTypes[nameType] = `${storeTypes[nameType]} ${name}:${upName}\n`
+                let childNode
+                if (R.is(Array, node)) {
+                    storeTypes[nameType] = `${storeTypes[nameType]} ${name}:[${upName}]\n`
+                    childNode = node[0]
+                } else {//if is Object only
+                    storeTypes[nameType] = `${storeTypes[nameType]} ${name}:${upName}\n`
+                    childNode = node
+                }
                 storeTypes[upName] = `type ${upName} {\n`
-                addTypes({ storeResolvers, storeTypes, nameType: upName, childNode: node })
+                addTypes({ storeResolvers, storeTypes, nameType: upName, childNode })
             }
 
 
@@ -46,7 +53,6 @@ module.exports = ({ schemas }) => {
     var storeTypes = {}
     var storeResolvers = {}
     addTypes({ storeResolvers, storeTypes, childNode: schemas })
-    console.log('storeResolvers:::', storeResolvers)
     return {
         objTypes: storeTypes,
         sdlTypes: getTypesSDL(storeTypes),
