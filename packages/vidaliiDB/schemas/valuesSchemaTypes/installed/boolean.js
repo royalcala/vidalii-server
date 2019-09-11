@@ -1,5 +1,7 @@
+const req = require('../requiredOnType')
 module.exports = {
-    fx: ({newValue}) => {
+    ...req,
+    fx: ({ newValue }) => {
         return Boolean(newValue)
     },
     type: 'Boolean'

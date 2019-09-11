@@ -1,6 +1,12 @@
 module.exports = isFunction
 
-function isFunction({ transformation, value, prevDoc, newDoc }) {
+// function isFunction({ key, transformation, value, prevDoc, newDoc }) {
 
-    return transformation({ newValue: value, prevDoc, newDoc })
+//     return transformation({ nameField: key, newValue: value, prevDoc, newDoc })
+// }
+
+function isFunction({ key, transformation, value, prevDoc, newDoc }) {
+    const { fx, type, isNodeType } = transformation
+        console.log('transformation::',transformation)
+    return fx({ nameField: key, newValue: value, prevDoc, newDoc })
 }

@@ -1,6 +1,9 @@
+const req = require('../requiredOnType')
 module.exports = {
-    fx: ({newValue}) => {
+    ...req,
+    fx: ({ newValue }) => {
         return Number(newValue)
     },
-    type: 'Float'
+    type: 'Float',
+    isNodeType: true
 }

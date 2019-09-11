@@ -1,7 +1,5 @@
 const R = require('ramda')
 const addTypes = require('./addTypes')
-const addQueries = require('./addQueries')
-const addMutations = require('./addMutations')
 const addQueriesAndMutations = require('./addQueriesAndMutations')
 
 
@@ -20,7 +18,7 @@ function main({ schemas, models }) {
     // const { querySDL, queryResolvers } = addQueries({ schemas, models })
     // console.log('q:::', 'sdl', querySDL, 'resolvers::', queryResolvers)
     const { queries, mutations } = addQueriesAndMutations({ schemas, models })
-    console.log('q:::', 'sdl', queries.sdl, 'resolvers::', queries.resolvers)
+    // console.log('q:::', 'sdl', queries.sdl, 'resolvers::', queries.resolvers)
     // var queries = addQueries({ schemas })
     // console.log('queries:', queries)
     // var mutations = addMutations({ schemas })

@@ -1,8 +1,9 @@
 const uuidv4 = require('uuid/v4')
-
+const req = require('../requiredOnType')
 module.exports = {
-    fx: ({newValue}) => {
-        return uuidv4()
+    ...req,
+    fx: ({ newValue = null }) => {
+        return newValue === null ? uuidv4() : newValue
     },
     type: 'ID'
 }

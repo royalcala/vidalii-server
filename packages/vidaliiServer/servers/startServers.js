@@ -99,7 +99,6 @@ input sales{
     hola:String
 }
 `
-console.log('SDL::', sdl)
 async function main() {
     var app = express();
     const server = new ApolloServer({
@@ -107,6 +106,11 @@ async function main() {
             ' scalar JSON ' +
             extendQuery,
         resolvers: {
+            // Sales: {
+            //     user: (parent, args, context, info) => {
+            //         return 'im Sales->user'
+            //     }
+            // },
             Sales2: {
                 joinClients2: async (parent, args, context, info) => {
 

@@ -26,7 +26,8 @@ function objectIterator({ element, schemaValidator, prevDoc, newDoc }) {
             if (schemaValidator.hasOwnProperty(key)) {
                 let transformation = schemaValidator[key]
                 let data = R.cond([
-                    [({ transformation }) => R.is(Function, transformation), isFunction],
+                    // [({ transformation }) => R.is(Function, transformation), isFunction],
+                    [({ transformation }) => R.has('isNodeType', transformation), isFunction],
                     [({ transformation }) => R.is(Array, transformation), isArray],
                     [({ transformation }) => R.is(Object, transformation), isObject]
                 ])({ key, value, schemaValidator, transformation, prevDoc, newDoc })
