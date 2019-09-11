@@ -688,3 +688,7 @@
 [Wed, 11 Sep 2019 23:07:18 GMT] [info] [<0.000.0>] ::1 - - GET /_uuids?count=1 200
 [Wed, 11 Sep 2019 23:07:28 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
 [Wed, 11 Sep 2019 23:07:28 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Wed, 11 Sep 2019 23:09:47 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Wed, 11 Sep 2019 23:09:47 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Wed, 11 Sep 2019 23:11:36 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Wed, 11 Sep 2019 23:11:36 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200

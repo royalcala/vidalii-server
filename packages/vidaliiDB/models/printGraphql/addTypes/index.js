@@ -49,6 +49,7 @@ module.exports = ({ schemas }) => {
     console.log('storeResolvers:::', storeResolvers)
     return {
         objTypes: storeTypes,
-        sdlTypes: getTypesSDL(storeTypes)
+        sdlTypes: getTypesSDL(storeTypes),
+        resolversTypes: storeResolvers
     }
 }

@@ -11,7 +11,7 @@ const sdlConcatTypesQueriesMutations = (types, queries, mutations) => R.pipe(
 
 function main({ schemas, models }) {
     // console.log('schemas::', schemas)
-    const { sdlTypes } = addTypes({ schemas })
+    const { sdlTypes, resolversTypes } = addTypes({ schemas })
     // console.log('types::', types)
     // const typesSDL = getTypesSDL(types)
 
@@ -34,6 +34,7 @@ function main({ schemas, models }) {
     return {
         sdl: sdlConcatTypesQueriesMutations(sdlTypes, queries.sdl, mutations.sdl),
         resolvers: {
+            type: resolversTypes,
             query: queries.resolvers,
             mutation: mutations.resolvers
         }

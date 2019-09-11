@@ -7,12 +7,12 @@ const models = require('./models')
 
 const { sdl, resolvers } = models.printGraphql()
 console.log(
-    'sdl',
+    'sdl:::',
     sdl
 )
 console.log(
-    ' resolvers.query:',
-    resolvers.query
+    ' resolvers:::',
+    resolvers
 )
 
 const GraphQLJSON = require('graphql-type-json')
@@ -106,6 +106,7 @@ async function main() {
             ' scalar JSON ' +
             extendQuery,
         resolvers: {
+            ...resolvers.type,
             // Sales: {
             //     user: (parent, args, context, info) => {
             //         return 'im Sales->user'
