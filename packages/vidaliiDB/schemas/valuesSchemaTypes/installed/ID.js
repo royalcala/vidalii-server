@@ -1,6 +1,8 @@
+const uuidv4 = require('uuid/v4')
+
 module.exports = {
-    fx: (newData) => {
-        return Boolean(newData)
+    fx: ({newValue}) => {
+        return uuidv4()
     },
-    type: 'Boolean'
+    type: 'ID'
 }

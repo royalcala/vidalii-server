@@ -1,6 +1,6 @@
 module.exports = {
-    fx: (newData) => {
-        return Number(newData)
+    fx: ({newValue}) => {
+        return Number(newValue)
     },
     type: 'Int'
 }

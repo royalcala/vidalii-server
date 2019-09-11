@@ -2,7 +2,6 @@ const R = require('ramda')
 const PouchDB = require('pouchdb')
 const PouchDBFind = require('pouchdb-find')
 // const PouchDB = require('./initPouchDB')
-const uuidv4 = require('uuid/v4')
 const validator = require('../../../schemas/validatorSchema')
 const updateDoc = require('../../../schemas/updateDoc')
 
@@ -12,14 +11,18 @@ const crud = ({ typeDB, schemaValidator, url, db, username, password }) => {
 
 
     return {
-        insert: async (newDoc) => {
+        insertOne: async (newDoc) => {
             var validated = validator({ schemaValidator, newDoc })
-
+            // console.log('validated::', validated)
             try {
                 var response = await dataBase.put(validated);
-                return response
+                // console.log('responseInsertOne::', response)
+                return [{
+                    ...validated,
+                    ...response
+                }]
             } catch (err) {
-                console.log(err);
+                console.log(err)
                 return err
             }
         },

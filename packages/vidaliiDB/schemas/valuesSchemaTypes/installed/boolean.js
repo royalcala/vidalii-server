@@ -1,6 +1,6 @@
 module.exports = {
-    fx: (newData) => {
-        return Boolean(newData)
+    fx: ({newValue}) => {
+        return Boolean(newValue)
     },
     type: 'Boolean'
 }

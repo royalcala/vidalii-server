@@ -34,10 +34,10 @@ function main({ schemas, models }) {
 
     // console.log('sdl:::',sdlConcatTypesQueriesMutations(typesSDL, querySDL, ' '))
     return {
-        sdl: sdlConcatTypesQueriesMutations(sdlTypes, queries.sdl, ''),
-        resolvers:{
-            query:queries.resolvers,
-            mutation:''
+        sdl: sdlConcatTypesQueriesMutations(sdlTypes, queries.sdl, mutations.sdl),
+        resolvers: {
+            query: queries.resolvers,
+            mutation: mutations.resolvers
         }
         // queryResolvers: queries.resolvers,
 

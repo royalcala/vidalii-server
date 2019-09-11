@@ -95,8 +95,11 @@ type Clients2{
     name:String
     address:String
 }
+input sales{
+    hola:String
+}
 `
-
+console.log('SDL::', sdl)
 async function main() {
     var app = express();
     const server = new ApolloServer({
@@ -137,6 +140,9 @@ async function main() {
                     }
 
                 }
+            },
+            Mutation: {
+                ...resolvers.mutation,
             },
             JSON: GraphQLJSON
         }

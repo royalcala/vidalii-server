@@ -1,6 +1,7 @@
-const { string, int, custom } = require('@vidalii/db/schemas/valuesSchemaTypes')
+const { string, ID } = require('@vidalii/db/schemas/valuesSchemaTypes')
 module.exports = {
     schema: {
+        _id: ID,
         clientname: string
     },
     database: {

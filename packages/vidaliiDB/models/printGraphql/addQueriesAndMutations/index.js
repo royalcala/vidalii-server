@@ -63,7 +63,7 @@ module.exports = ({ schemas, models }) => {
     const mutations = getQueries({
         schemas,
         models,
-        sdlType: 'type Mutations {\n',
+        sdlType: 'type Mutation {\n',
         installedDir: __dirname + '/installedMutations'
     })
 
@@ -72,7 +72,10 @@ module.exports = ({ schemas, models }) => {
             sdl: queries.sdl,
             resolvers: queries.resolvers
         },
-
+        mutations: {
+            sdl: mutations.sdl,
+            resolvers: mutations.resolvers
+        }
     }
 
 
