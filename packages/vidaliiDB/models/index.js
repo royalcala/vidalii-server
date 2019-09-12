@@ -1,8 +1,8 @@
 const R = require('ramda')
-const printGraphql = require('./printGraphql')
+const printGraphql = require('../graphql/printGraphql')
 const loadSchema = require('./loadSchema')
 
-function main({ }) {
+function main() {
     var storeModels = {}
     var storeSchemas = {}
     return {
@@ -38,7 +38,6 @@ function main({ }) {
         }
 
     }
-
 }
 
 module.exports = main

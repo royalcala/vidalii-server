@@ -5,7 +5,6 @@ function addTypes({ storeResolvers, storeTypes, nameType = null, childNode }) {
     Object.entries(childNode).map(([name, node]) => {
         // if (R.is(Function, node)) {
         //     storeTypes[nameType] = `${storeTypes[nameType]} ${name}:${node.type}\n`
-
         // } 
         if (R.has('isNodeType', node)) {
             storeTypes[nameType] = `${storeTypes[nameType]} ${name}:${node.type}\n`

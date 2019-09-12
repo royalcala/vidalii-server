@@ -67,7 +67,7 @@ const crud = ({ typeDB, schemaValidator, url, db, username, password }) => {
                 // //     selector: { _id: 'dk' },
                 // //     sort: ['_id']
                 // // });
-                console.log('response.docs::', response.docs)
+                // console.log('response.docs::', response.docs)
                 return response.docs
             } catch (err) {
                 console.log(err);

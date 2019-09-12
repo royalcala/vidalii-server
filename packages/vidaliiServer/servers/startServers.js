@@ -3,17 +3,34 @@ const express = require('express');
 const PouchDB = require('pouchdb');
 const { readFileSync } = require('fs')
 const { ApolloServer } = require('apollo-server-express');
+const vidaliiGraph = require('@vidalii/db/graphql')()
 const models = require('./models')
+vidaliiGraph.load({
+    schemas: models.schemas(),
+    models: models.models()
+})
+const { sdl, resolvers } = vidaliiGraph.buildGraphql()
 
-const { sdl, resolvers } = models.printGraphql()
-console.log(
-    'sdl:::',
-    sdl
-)
-console.log(
-    ' resolvers:::',
-    resolvers
-)
+
+
+// const { sdl, resolvers } = models.printGraphql()
+
+// console.log(
+//     'sdl:::',
+//     sdl
+// )
+// console.log(
+//     ' resolvers:::',
+//     resolvers
+// )
+// console.log(
+//     ' schemas:::',
+//     vidaliiGraph.schemas()
+// )
+// console.log(
+//     ' models:::',
+//     vidaliiGraph.models()
+// )
 
 const GraphQLJSON = require('graphql-type-json')
 
@@ -41,8 +58,6 @@ async function test() {
 }
 // test()
 var sales = new PouchDB('http://localhost:4000/sales')
-
-
 
 const DataLoader = require('dataloader')
 

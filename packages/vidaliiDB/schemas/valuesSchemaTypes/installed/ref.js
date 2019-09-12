@@ -1,7 +1,8 @@
 const req = require('../requiredOnType')
 // const firstUpper = require('packages/vidaliiDB/models/printGraphql/firstUpper.js')
-const firstUpper = require('../../../models/printGraphql/firstUpper')
+const firstUpper = require('../../../graphql/printGraphql/firstUpper')
 
+// const joinData = require('../../../models/printGraphql/joinData')
 module.exports = (idFrom, toTableName, toTableId) => ({
     ...req,
     fx: ({ nameField, newValue = null }) => {
@@ -15,9 +16,10 @@ module.exports = (idFrom, toTableName, toTableId) => ({
     },
     // type: `[${firstUpper(toTableName)}]`,
     type: 'String',
-    useTypeResolver: (parent, args, context, info) => {
-
-        console.log(parent)
+    useTypeResolver: async (parent, args, context, info) => {
+        // return await salesloader.load(parent.id_client)
+        //build a dataloader that contain all the refs
+        // console.log(parent)
         return 'Yeees'
     }
 })
