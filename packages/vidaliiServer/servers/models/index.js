@@ -15,7 +15,5 @@ vidaliiGraph.load({
     models: models.models()
 })
 
-const { sdl, resolvers } = vidaliiGraph.buildGraphql()
-module.exports = {
-    sdl,resolvers
-}
+// const { sdl, resolvers } = vidaliiGraph.buildGraphql()
+module.exports = vidaliiGraph

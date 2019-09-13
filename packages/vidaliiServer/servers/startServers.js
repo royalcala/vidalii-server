@@ -3,12 +3,8 @@ const express = require('express');
 const PouchDB = require('pouchdb');
 const { readFileSync } = require('fs')
 const { ApolloServer } = require('apollo-server-express');
-const {sdl,resolvers} = require('./models')
-
-
-
-
-// const { sdl, resolvers } = models.printGraphql()
+const vidaliiGraph = require('./models')
+const { sdl, resolvers } = vidaliiGraph.buildGraphql()
 
 // console.log(
 //     'sdl:::',
