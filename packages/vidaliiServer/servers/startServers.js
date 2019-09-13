@@ -117,6 +117,10 @@ input sales{
 async function main() {
     var app = express();
     const server = new ApolloServer({
+        context: ({ req }) => ({
+            // authScope: getScope(req.headers.authorization)
+            models: vidaliiGraph.models()
+        }),
         typeDefs: sdl +
             ' scalar JSON ' +
             extendQuery,

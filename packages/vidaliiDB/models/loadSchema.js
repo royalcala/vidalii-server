@@ -1,14 +1,14 @@
 const R = require('ramda')
 const selectTypeDB = require('./selectTypeDB')
 
-module.exports = ({ prevModels, prevSchemas }) => ({ name, schemaValidator, typeDB = 'pouchDB', url, db, username = null, password = null }) => {
+module.exports = ({ prevModels, prevSchemas, schemaTools }) => ({ name, schemaValidator, typeDB = 'pouchDB', url, db, username = null, password = null }) => {
     const ifDuplicateSchema = [
         ({ name }) => prevModels[name],
         ({ name }) => { throw new Error(`Your are trying to load a schema with name:'${name}' DUPLICATED`) }
     ]
     const addToModel = ({ name, schemaValidator }) => ({
         ...prevModels,
-        [name]: selectTypeDB({ typeDB, schemaValidator, url, db, username, password })
+        [name]: selectTypeDB({ schemaTools, typeDB, schemaValidator, url, db, username, password })
     })
 
 

@@ -2,17 +2,15 @@ const R = require('ramda')
 const PouchDB = require('pouchdb')
 const PouchDBFind = require('pouchdb-find')
 // const PouchDB = require('./initPouchDB')
-const validator = require('../../../schemas/validatorSchema')
-const updateDoc = require('../../../schemas/updateDoc')
+// const validator = require('../../../schemas/validatorDoc')
+// const updateDoc = require('../../../schemas/updateDoc')
 
-const crud = ({ typeDB, schemaValidator, url, db, username, password }) => {
+const crud = ({ schemaTools, typeDB, schemaValidator, url, db, username, password }) => {
 
     var dataBase = new PouchDB(`${url}/${db}`);
-
-
     return {
         insertOne: async (newDoc) => {
-            var validated = validator({ schemaValidator, newDoc })
+            var validated = schemaTools.validatorDoc({ schemaValidator, newDoc })
             // console.log('validated::', validated)
             try {
                 var response = await dataBase.put(validated);
@@ -27,7 +25,7 @@ const crud = ({ typeDB, schemaValidator, url, db, username, password }) => {
             }
         },
         replace: async (newDoc) => {
-            var validated = validator({ schemaValidator, newDoc })
+            var validated = schemaTools.validatorDoc({ schemaValidator, newDoc })
 
             try {
                 var response = await dataBase.put(validated);
@@ -42,7 +40,7 @@ const crud = ({ typeDB, schemaValidator, url, db, username, password }) => {
 
             try {
                 var prevDoc = await dataBase.get(docToUpdate._id);
-                var validated = validator({ schemaValidator, newDoc: docToUpdate, prevDoc })
+                var validated = schemaTools.validatorDoc({ schemaValidator, newDoc: docToUpdate, prevDoc })
                 //pending merge with arrays
                 var final = R.mergeDeepRight(prevDoc, validated)
                 console.log(final)
