@@ -1,6 +1,6 @@
 const R = require('ramda')
 const { mergeSchemasFiles, updateDoc, validatorDoc } = require('@vidalii/db/schemas')
-// const mergeSchemasFiles = require('@vidalii/db/schemas/mergeSchemasFiles')
+const vidaliiGraph = require('@vidalii/db/graphql')()
 
 const models = require('@vidalii/db/models')({
     updateDoc,
@@ -10,15 +10,12 @@ models.loadManySchemas(
     mergeSchemasFiles(__dirname + '/schemasInstalled')
 )
 
-// Object.entries(mergeSchemasFiles).map(
-//     ([nameSchema, { schema, database }]) => {
-//         models.loadSchema({
-//             name: nameSchema,
-//             schemaValidator: schema,
-//             ...database
-//         })
-//     }
-// )
-// console.log(models.models())
+vidaliiGraph.load({
+    schemas: models.schemas(),
+    models: models.models()
+})
 
-module.exports = models
+const { sdl, resolvers } = vidaliiGraph.buildGraphql()
+module.exports = {
+    sdl,resolvers
+}

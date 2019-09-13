@@ -771,3 +771,6 @@
 [Fri, 13 Sep 2019 00:40:31 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
 [Fri, 13 Sep 2019 00:40:38 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - PUT /sales/9cd42c30-f552-4be7-ad09-cc88c6177614 201
 [Fri, 13 Sep 2019 00:40:40 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - PUT /sales/4732b095-a5db-4325-b832-2f37a4c5ccf5 201
+[Fri, 13 Sep 2019 00:43:04 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Fri, 13 Sep 2019 00:43:04 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - PUT /sales/8e655c89-ead1-4860-91fa-dd7891cdd068 201
+[Fri, 13 Sep 2019 00:48:01 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - PUT /sales/508d29f1-c63e-4d71-bdba-3d80165c08fb 201
