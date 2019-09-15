@@ -5,9 +5,9 @@ const isNodeType = [
     ({ key, value }) => R.has('isNodeType', value),
     ({ key, value }) => ({
         type: 'isNodeType',
-        sdl: `${key}:${value.type}\n`,
-        resolver: R.has('useTypeResolver', node) ? {
-            [key]: node.useTypeResolver({})//send the name of the model used in the schema
+        sdl: `${key}:${value.type}`,
+        resolver: R.has('useTypeResolver', value) ? {
+            [key]: value.useTypeResolver({})//send the name of the model used in the schema
         } : {}
     })
 ]
@@ -45,7 +45,6 @@ const isObj = [
 ]
 
 
-const hasObjects = () => ''
 
 const buildType = ({ parentSDL, parentResolvers, nameType, tree }) => {
     let newTypeName = `${firstUpper(nameType)}`
@@ -60,51 +59,67 @@ const buildType = ({ parentSDL, parentResolvers, nameType, tree }) => {
                 isObj
             ])({ key, value, parentName: newTypeName })
         )
-    )
+    )(tree)
 
     let concatSDL = R.pipe(
-        R.reduce((acc, { sdl }) => `${acc}\n${sdl}\n`, `type ${newTypeName} {`),
+        R.reduce((acc, { sdl }) => `${acc} ${sdl}\n`, `type ${newTypeName} {\n`),
         R.concat(R.__, '}\n'),
         R.concat(parentSDL)
     )(branches)
-
+    
+    const hasResolvers = x => R.pipe(R.keys, R.length)(x) > 0
     let dataResolvers = R.pipe(
         R.reduce((acc, { resolver }) => ({ ...acc, ...resolver }), {}),
-        R.assoc(newTypeName, R.__, {}),
-        x => ({ ...x, ...parentResolvers })
+        R.ifElse(
+            hasResolvers,
+            R.pipe(
+                R.assoc(newTypeName, R.__, {}),
+                x => ({ ...x, ...parentResolvers })
+            ),
+            x => ({ ...parentResolvers })
+        )
+        // R.assoc(newTypeName, R.__, {}),
+        // x => ({ ...x, ...parentResolvers })
     )(branches)
 
-    return R.reduce((acc, node) => {
-        if (R.has('nextToProcess', node)) {
-            return buildType({
-                parentSDL: acc.sdl,
-                parentResolvers: acc.resolvers,
-                nameType: node.nextToProcess.nameType,
-                tree: node.nextToProcess.tree
-            })
-        } else {
-            return {
-                sdl: acc.sdl,
-                resolvers: acc.resolvers
-            }
-        }
-    }, {
-        sdl: concatSDL,
-        resolvers: dataResolvers
-    }, branches)
-
-    // if (hasObjects(branches) === true) {
-    //     return
-    // } else {
-    //     return {
-    //         sdl: concatSDL,
-    //         resolvers: ''
-    //     }
-    // }
+    return R.reduce(
+        (acc, node) => {
+            return R.ifElse(
+                R.has('nextToProcess'),
+                () => buildType({
+                    parentSDL: acc.sdl,
+                    parentResolvers: acc.resolvers,
+                    nameType: node.nextToProcess.nameType,
+                    tree: node.nextToProcess.tree
+                }),
+                () => ({
+                    sdl: acc.sdl,
+                    resolvers: acc.resolvers
+                })
+            )(node)
+            // if (R.has('nextToProcess', node)) {
+            //     return buildType({
+            //         parentSDL: acc.sdl,
+            //         parentResolvers: acc.resolvers,
+            //         nameType: node.nextToProcess.nameType,
+            //         tree: node.nextToProcess.tree
+            //     })
+            // } else {
+            //     return {
+            //         sdl: acc.sdl,
+            //         resolvers: acc.resolvers
+            //     }
+            // }
+        },
+        {
+            sdl: concatSDL,
+            resolvers: dataResolvers
+        },
+        branches)
 }
 
-function pointers(tree) {
-    var mainBranches = R.toPairs(tree)
+function pointers(schemas) {
+    var mainBranches = R.toPairs(schemas)
     // var pendingBranchesToProcess = []
     var getMainTypes = R.map(
         ([key, value]) => buildType({
@@ -115,6 +130,7 @@ function pointers(tree) {
         }),
         mainBranches
     )
+    return getMainTypes
 
 }
 
@@ -170,6 +186,9 @@ module.exports = ({ schemas }) => {
     var storeTypes = {}
     var storeResolvers = {}
     addTypes({ storeResolvers, storeTypes, childNode: schemas })
+    console.log(
+        'pointers::',
+        pointers(schemas))
     return {
         objTypes: storeTypes,
         sdlTypes: getTypesSDL(storeTypes),
