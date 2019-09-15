@@ -14,7 +14,7 @@ module.exports = {
         }]
     },
     database: {
-        db: 'sales',
+        // db: 'sales', is the name of the schema
         url: 'http://admin:admin@localhost:4000',
         username: '',
         password: '',

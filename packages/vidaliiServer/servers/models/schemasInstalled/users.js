@@ -6,7 +6,7 @@ module.exports = {
         password: string
     },
     database: {
-        db: 'users',
+        // db: 'users', is the name of the schema
         url: 'http://admin:admin@localhost:5984',
         username: '',
         password: '',

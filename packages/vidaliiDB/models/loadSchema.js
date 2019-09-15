@@ -8,7 +8,7 @@ module.exports = ({ prevModels, prevSchemas, schemaTools }) => ({ name, schemaVa
     ]
     const addToModel = ({ name, schemaValidator }) => ({
         ...prevModels,
-        [name]: selectTypeDB({ schemaTools, typeDB, schemaValidator, url, db, username, password })
+        [name]: selectTypeDB({ nameSchema: name, schemaTools, typeDB, schemaValidator, url, db, username, password })
     })
 
 

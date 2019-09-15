@@ -800,3 +800,13 @@
 [Fri, 13 Sep 2019 17:03:57 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
 [Fri, 13 Sep 2019 17:03:58 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - PUT /sales/af9c32a3-c62d-4f8c-a1b7-8adab0c4b7c1 201
 [Fri, 13 Sep 2019 17:03:59 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Sun, 15 Sep 2019 00:23:40 GMT] [info] [<0.000.0>] ::1 - - GET / 304
+[Sun, 15 Sep 2019 00:23:41 GMT] [info] [<0.000.0>] ::1 - - GET /favicon.ico 404
+[Sun, 15 Sep 2019 00:23:52 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Sun, 15 Sep 2019 00:23:52 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Sun, 15 Sep 2019 00:37:29 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Sun, 15 Sep 2019 00:37:29 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Sun, 15 Sep 2019 00:38:27 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Sun, 15 Sep 2019 01:01:04 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Sun, 15 Sep 2019 01:01:04 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Sun, 15 Sep 2019 01:01:09 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - PUT /sales/2a83590d-7ab5-4416-ae4e-b0fc24af152f 201

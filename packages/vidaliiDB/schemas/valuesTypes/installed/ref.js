@@ -12,11 +12,10 @@ module.exports = (idFrom, toTableName, toTableId) => ({
             its only a reference to other table`)
         }
         return 'hola'
-
     },
     // type: `[${firstUpper(toTableName)}]`,
     type: 'String',
-    useTypeResolver: async (parent, args, context, info) => {
+    useTypeResolver: ({}) => async (parent, args, context, info) => {
         const { models } = context
         // console.log('models from context::',models)
         // return await salesloader.load(parent.id_client)
