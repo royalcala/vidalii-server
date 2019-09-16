@@ -4,24 +4,12 @@ const PouchDB = require('pouchdb');
 const { readFileSync } = require('fs')
 const { ApolloServer } = require('apollo-server-express');
 const vidaliiGraph = require('./models')
-const { sdl, resolvers } = vidaliiGraph.buildGraphql()
+const { sdl, types, queries, mutations } = vidaliiGraph.buildGraphql()
 
-// console.log(
-//     'sdl:::',
-//     sdl
-// )
-// console.log(
-//     ' resolvers:::',
-//     resolvers
-// )
-// console.log(
-//     ' schemas:::',
-//     vidaliiGraph.schemas()
-// )
-// console.log(
-//     ' models:::',
-//     vidaliiGraph.models()
-// )
+console.log(
+    'sdl::->',
+    sdl
+)
 
 const GraphQLJSON = require('graphql-type-json')
 
@@ -116,7 +104,8 @@ async function main() {
             ' scalar JSON ' +
             extendQuery,
         resolvers: {
-            ...resolvers.type,
+            // ...resolvers.type,
+            ...types.resolvers,
             // Sales: {
             //     user: (parent, args, context, info) => {
             //         return 'im Sales->user'
@@ -133,7 +122,8 @@ async function main() {
             },
             Query: {
                 // ...resolvers.Query,
-                ...resolvers.query,
+                // ...resolvers.query,
+                ...queries.resolvers,
                 dataloader: async (parent, args, context, info) => {
 
                     // return [{
@@ -157,7 +147,8 @@ async function main() {
                 }
             },
             Mutation: {
-                ...resolvers.mutation,
+                // ...resolvers.mutation,
+                ...mutations.resolvers
             },
             JSON: GraphQLJSON
         }

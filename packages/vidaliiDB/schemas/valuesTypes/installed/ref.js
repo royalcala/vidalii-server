@@ -1,6 +1,6 @@
 const req = require('../requiredOnType')
 // const firstUpper = require('packages/vidaliiDB/models/printGraphql/firstUpper.js')
-const firstUpper = require('../../../graphql/printGraphql/firstUpper')
+const firstUpper = require('../../../graphql/firstUpper')
 
 
 module.exports = (idFrom, toTableName, toTableId) => ({

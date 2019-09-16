@@ -66,7 +66,7 @@ const buildType = ({ parentSDL, parentResolvers, nameType, tree }) => {
         R.concat(R.__, '}\n'),
         R.concat(parentSDL)
     )(branches)
-    
+
     const hasResolvers = x => R.pipe(R.keys, R.length)(x) > 0
     let dataResolvers = R.pipe(
         R.reduce((acc, { resolver }) => ({ ...acc, ...resolver }), {}),
@@ -119,18 +119,12 @@ const buildType = ({ parentSDL, parentResolvers, nameType, tree }) => {
 }
 
 function pointers(schemas) {
-    var mainBranches = R.toPairs(schemas)
-    // var pendingBranchesToProcess = []
-    var getMainTypes = R.map(
-        ([key, value]) => buildType({
-            parentSDL: '',
-            parentResolvers: {},
-            nameType: key,
-            tree: value
-        }),
-        mainBranches
-    )
-    return getMainTypes
+    // var mainBranches = R.toPairs(schemas)
+    return {
+        types: getObjTypes(schemas),
+        mergeSLD: '',
+        mergeResolvers: ''
+    }
 
 }
 
@@ -182,14 +176,57 @@ const getTypesSDL = (types) => R.pipe(
     R.reduce((acc, [nameType, sdl]) => R.concat(acc, sdl), '')
 )(types)
 
+
+const mergeSDL = getObjTypes => R.pipe(
+    R.toPairs,
+    R.reduce((acc, [nameSchema, { sdl }]) => R.concat(acc, sdl), '')
+)(getObjTypes)
+
+const mergeResolvers = getObjTypes => R.pipe(
+    R.toPairs,
+    R.reduce((acc, [nameSchema, { resolvers }]) => ({ ...acc, ...resolvers }), {})
+)(getObjTypes)
+
+const getObjTypes = schemas => R.pipe(
+    R.toPairs,
+    R.map(
+        ([key, value]) => ({
+            [key]: buildType({
+                parentSDL: '',
+                parentResolvers: {},
+                nameType: key,
+                tree: value
+            })
+        })
+
+    ),
+    R.mergeAll
+)(schemas)
+
 module.exports = ({ schemas }) => {
     var storeTypes = {}
     var storeResolvers = {}
     addTypes({ storeResolvers, storeTypes, childNode: schemas })
+
+    // const {pointers(schemas)
+    const types = getObjTypes(schemas)
     console.log(
-        'pointers::',
-        pointers(schemas))
+        'getObjTypes::',
+        types
+    )
+    console.log(
+        'mergeResolvers::',
+        mergeResolvers(types)
+    )
+    console.log(
+        'mergeSDL::',
+        mergeSDL(types)
+    )
+
     return {
+        types,
+        resolvers: mergeResolvers(types),
+        sdl: mergeSDL(types),
         objTypes: storeTypes,
         sdlTypes: getTypesSDL(storeTypes),
         resolversTypes: storeResolvers
