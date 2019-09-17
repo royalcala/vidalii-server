@@ -3,11 +3,14 @@ const firstUpper = require('../firstUpper')
 
 const isNodeType = [
     ({ key, value }) => R.has('isNodeType', value),
-    ({ key, value }) => ({
+    ({ tools, key, value }) => ({
         type: 'isNodeType',
         sdl: `${key}:${value.type}`,
         resolver: R.has('useTypeResolver', value) ? {
-            [key]: value.useTypeResolver({})//send the name of the model used in the schema
+            [key]: value.useTypeResolver({
+                models: tools.models,
+                schemaName: tools.schemaName
+            })
         } : {}
     })
 ]
@@ -47,9 +50,10 @@ const isObj = [
     }
 ]
 
-const buildType = ({ parentSDL, parentResolvers, nameType, tree }) => {
+
+
+const buildType = ({ tools, parentSDL, parentResolvers, nameType, tree }) => {
     let newTypeName = `${firstUpper(nameType)}`
-    // let newTypeName = R.pipe(R.split('_'), R.splitAt(1))(nameType)
 
     let branches = R.pipe(
         R.toPairs,
@@ -58,7 +62,7 @@ const buildType = ({ parentSDL, parentResolvers, nameType, tree }) => {
                 isNodeType,
                 isArray,//must to be before the isObj
                 isObj
-            ])({ key, value, parentName: newTypeName })
+            ])({ tools, key, value, parentName: newTypeName })
         )
     )(tree)
 
@@ -79,8 +83,6 @@ const buildType = ({ parentSDL, parentResolvers, nameType, tree }) => {
             ),
             x => ({ ...parentResolvers })
         )
-        // R.assoc(newTypeName, R.__, {}),
-        // x => ({ ...x, ...parentResolvers })
     )(branches)
 
     return R.reduce(
@@ -88,6 +90,7 @@ const buildType = ({ parentSDL, parentResolvers, nameType, tree }) => {
             return R.ifElse(
                 R.has('nextToProcess'),
                 () => buildType({
+                    tools,
                     parentSDL: acc.sdl,
                     parentResolvers: acc.resolvers,
                     nameType: node.nextToProcess.nameType,
@@ -98,19 +101,6 @@ const buildType = ({ parentSDL, parentResolvers, nameType, tree }) => {
                     resolvers: acc.resolvers
                 })
             )(node)
-            // if (R.has('nextToProcess', node)) {
-            //     return buildType({
-            //         parentSDL: acc.sdl,
-            //         parentResolvers: acc.resolvers,
-            //         nameType: node.nextToProcess.nameType,
-            //         tree: node.nextToProcess.tree
-            //     })
-            // } else {
-            //     return {
-            //         sdl: acc.sdl,
-            //         resolvers: acc.resolvers
-            //     }
-            // }
         },
         {
             sdl: concatSDL,
@@ -119,11 +109,12 @@ const buildType = ({ parentSDL, parentResolvers, nameType, tree }) => {
         branches)
 }
 
-const getObjTypes = schemas => R.pipe(
+const getObjTypes = ({ schemas, models }) => R.pipe(
     R.toPairs,
     R.map(
         ([key, value]) => ({
             [key]: buildType({
+                tools: { models, schemaName: key },
                 parentSDL: '',
                 parentResolvers: {},
                 nameType: key,

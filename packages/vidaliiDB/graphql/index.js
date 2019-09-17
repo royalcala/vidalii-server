@@ -16,7 +16,7 @@ function main() {
             // console.log('', sdl)
             // storeGraphql = { sdl, resolvers }
             // return storeGraphql
-            let types = getTypes({ schemas: storeSchemas })
+            let types = getTypes({ schemas: storeSchemas, models: storeModels })
             let QandM = getQueriesAndMutations({
                 schemas: storeSchemas,
                 models: storeModels
