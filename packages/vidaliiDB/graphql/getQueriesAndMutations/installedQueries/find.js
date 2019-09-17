@@ -1,10 +1,10 @@
 const R = require('ramda')
 
-const firstUpper = require('../../firstUpper')
+const formatType = require('../../formatType')
 module.exports = ({ schemaName, schemaData, models }) => {
 
     return {
-        sdl: `${schemaName}(query:String):[${firstUpper(schemaName)}]`,
+        sdl: `${schemaName}(query:String):[${formatType({ child: schemaName })}]`,
         resolverName: schemaName,
         resolver: (parent, args, context, info) => {
             const { query = null } = args

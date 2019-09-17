@@ -1,10 +1,10 @@
 const R = require('ramda')
-const firstUpper = require('../../firstUpper')
+const formatType = require('../../formatType')
 
 module.exports = ({ schemaName, schemaData, models }) => {
     const name = `${schemaName}_insertOne`
     return {
-        sdl: `${name}(data:JSON):[${firstUpper(schemaName)}]`,
+        sdl: `${name}(data:JSON):[${formatType({ child: schemaName })}]`,
         resolverName: name,
         resolver: (parent, args, context, info) => {
             const { data = null } = args

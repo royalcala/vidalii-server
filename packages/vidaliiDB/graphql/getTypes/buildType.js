@@ -1,5 +1,5 @@
 const R = require('ramda')
-const firstUpper = require('../firstUpper')
+const formatType = require('../formatType')
 
 const isNodeType = [
     ({ key, value }) => R.has('isNodeType', value),
@@ -18,9 +18,8 @@ const isNodeType = [
 const isArray = [
     ({ key, value }) => R.is(Array, value),
     ({ key, value, parentName }) => {
-        // let newTypeName = `${parentName}_${firstUpper(key)}`
-        // let newTypeName = firstUpper(`${parentName}_${key}`)
-        let newTypeName = `${parentName}_${key}`
+        // let newTypeName = `${parentName}_${key}`
+        let newTypeName = formatType({ parent: parentName, child: key })
         return {
             type: 'isArray',
             nextToProcess: {
@@ -36,8 +35,8 @@ const isArray = [
 const isObj = [
     ({ key, value }) => R.is(Object, value),
     ({ key, value, parentName }) => {
-        // let newTypeName = `${parentName}_${firstUpper(key)}`
-        let newTypeName = `${parentName}_${key}`
+        // let newTypeName = `${parentName}_${key}`
+        let newTypeName = formatType({ parent: parentName, child: key })
         return {
             type: 'isObj',
             nextToProcess: {
@@ -53,7 +52,8 @@ const isObj = [
 
 
 const buildType = ({ tools, parentSDL, parentResolvers, nameType, tree }) => {
-    let newTypeName = `${firstUpper(nameType)}`
+    // let newTypeName = `${firstUpper(nameType)}`
+    let newTypeName = formatType({ parent: null, child: nameType })
 
     let branches = R.pipe(
         R.toPairs,
