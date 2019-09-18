@@ -14,7 +14,6 @@ const batchData = async ({ dataBase, nameKey, keys }) => {
                 }
             }
         }
-        console.log('query::', query)
         // var response = await clients.find({
         let response = await dataBase.find(query)
         // console.log('response::', response)
@@ -27,13 +26,14 @@ const batchData = async ({ dataBase, nameKey, keys }) => {
     }
 }
 // var salesloader = new DataLoader(keys => batchData(keys))
-
+const formatNameCache = ({ tableName, fieldName }) => `${tableName}|${fieldName}`
 const dataLoaders = () => {
     var caches = {}
+
     return {
         load: ({ dataBase, joinData, cache = true }) => {
             const { toField, fromField } = joinData
-            let nameCache = `${toField.tableName}|${toField.fieldName}`
+            let nameCache = formatNameCache({ tableName: toField.tableName, fieldName: toField.fieldName })
             if (R.has(nameCache, caches)) {
                 return caches[nameCache].load(fromField.value)
             } else {
@@ -47,6 +47,11 @@ const dataLoaders = () => {
                 )
                 return caches[nameCache].load(fromField.value)
             }
+        },
+        unload: ({ tableName, fieldName, fieldValue }) => {
+            // let nameCache = `${toField.tableName}|${toField.fieldName}`
+            let nameCache = formatNameCache({ tableName, fieldName })
+            return caches[nameCache].clear(fieldValue)
         }
     }
 

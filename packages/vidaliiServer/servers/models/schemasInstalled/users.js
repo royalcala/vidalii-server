@@ -11,5 +11,11 @@ module.exports = {
         username: '',
         password: '',
         typeDB: 'pouchdb'
+    },
+    pre: {
+        insert: ''
+    },
+    post: {
+        insert: ''
     }
 }

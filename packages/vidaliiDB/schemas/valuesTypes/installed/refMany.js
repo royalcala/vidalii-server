@@ -13,7 +13,8 @@ module.exports = (nameFromField, toTableName, toFieldName) => ({
         return 'hola'
     },
     // type: `[${firstUpper(toTableName)}]`,
-    type: `${formatType({ child: toTableName })}`,
+    type: `[${formatType({ child: toTableName })}]`,
+    // type: `${formatType({ child: toTableName })}`,
     // type: 'String',
     useTypeResolver: ({ models, schemaName }) => async (parent, args, context, info) => {
         const { models } = context
@@ -27,8 +28,10 @@ module.exports = (nameFromField, toTableName, toFieldName) => ({
                 fieldName: toFieldName
             }
         }
-        let result = await models[toTableName].join(data)
+        // let result = await models[toTableName].join(data)
+        let result = models[toTableName].join(data)
         // console.log('result::', result)
-        return result[0]
+        // return result[0]
+        return result
     }
 })
