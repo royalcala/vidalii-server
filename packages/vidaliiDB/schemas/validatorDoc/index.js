@@ -5,8 +5,8 @@ const objectIterator = require('./objectIterator')
 
 
 
-function validator({ schemaValidator, prevDoc = null, newDoc }) {
-    const { doc, schema } = generateAutoID({ doc: newDoc, schemaValidator })
+function validator({ schemaValidator, prevDoc = null, newDoc }) {    
+    const { doc, schema } = generateAutoID({ doc: newDoc, schemaValidator })    
     return objectIterator({ element: doc, schemaValidator: schema, prevDoc, newDoc: doc })
 }
 

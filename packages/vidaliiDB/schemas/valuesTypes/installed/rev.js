@@ -5,7 +5,7 @@ module.exports = {
     fx: ({ newValue = null }) => {
         // return newValue === null ? uuidv4() : newValue
         //remove from field on insert
-        return ''
+        return newValue
     },
     type: 'ID'
 }

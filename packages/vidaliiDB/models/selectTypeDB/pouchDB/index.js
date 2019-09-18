@@ -15,7 +15,8 @@ const main = ({ schemaTools, typeDB, schemaValidator, url, nameSchema, username,
     return {
         insertOne: crud.insertOne(initData),
         find: crud.find(initData),
-        join: crud.join(initData)
+        join: crud.join(initData),
+        updateOne: crud.updateOne(initData)
     }
 }
 const pouchDB = [

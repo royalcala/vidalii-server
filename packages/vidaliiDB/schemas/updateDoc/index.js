@@ -16,6 +16,6 @@ function main({ idName, prevDoc, newDoc }) {
     var mergedPaths = mPaths({ path1: prevPath, path2: newPath })
 
     var restructured = restructure({ idName, object: mergedObjects, paths: mergedPaths })
-
+    console.log('restructure:::',restructured)
     return restructured
 }

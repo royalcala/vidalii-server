@@ -2,6 +2,7 @@ const R = require('ramda')
 const uuidv4 = require('uuid/v4')
 
 module.exports = function generateAutoID({ doc, schemaValidator }) {
+    // console.log('doc::', doc)
     const ifSchemaDoesntHasID = [
         ({ schemaValidator }) => !R.has('_id', schemaValidator),
         ({ doc, schemaValidator }) => ({
@@ -27,7 +28,8 @@ module.exports = function generateAutoID({ doc, schemaValidator }) {
     ]
     var data = R.cond([
         ifDocDoesntHasID,
-        ifSchemaDoesntHasID
+        ifSchemaDoesntHasID,
+        [R.T, x => x]
     ])({ doc, schemaValidator })
 
     // console.log('DATAKEYS::', R.keys(data))
