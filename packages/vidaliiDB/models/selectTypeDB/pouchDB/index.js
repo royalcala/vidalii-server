@@ -12,12 +12,19 @@ const main = ({ schemaTools, typeDB, schemaValidator, url, nameSchema, username,
         schemaTools,
         schemaValidator
     }
-    return {
-        insertOne: crud.insertOne(initData),
-        find: crud.find(initData),
-        join: crud.join(initData),
-        updateOne: crud.updateOne(initData)
-    }
+    // return {
+    //     insertOne: crud.insertOne(initData),
+    //     find: crud.find(initData),
+    //     join: crud.join(initData),
+    //     updateOne: crud.updateOne(initData),
+    // }
+    return R.pipe(
+        R.toPairs,
+        R.reduce(
+            (acc, [fxName, fx]) => R.assoc(fxName, fx(initData), acc),
+            {}
+        )
+    )(crud)
 }
 const pouchDB = [
     ({ typeDB }) => R.equals('pouchDB'),

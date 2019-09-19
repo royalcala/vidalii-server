@@ -7,5 +7,4 @@ function selectTypeDB({...data}) {
     ])(data)
 }
 
-
 module.exports = selectTypeDB

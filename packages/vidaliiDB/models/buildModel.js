@@ -11,8 +11,6 @@ module.exports = ({ prevModels, prevSchemas, schemaTools }) => ({ name, schemaVa
         [name]: selectTypeDB({ nameSchema: name, schemaTools, typeDB, schemaValidator, url, db, username, password })
     })
 
-
-
     var newModels = R.cond([
         ifDuplicateSchema,
         [R.T, addToModel]

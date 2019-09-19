@@ -1,6 +1,6 @@
 const R = require('ramda')
 // const printGraphql = require('../graphql/printGraphql')
-const loadSchema = require('./loadSchema')
+const buildModel = require('./buildModel')
 
 function main({ validatorDoc, updateDoc }) {
     var storeModels = {}
@@ -14,7 +14,7 @@ function main({ validatorDoc, updateDoc }) {
         models: () => storeModels,
         // printGraphql: () => printGraphql({ schemas: storeSchemas, models: storeModels }),
         loadSchema: ({ ...newModelData }) => {
-            let { newModels, newSchemas } = loadSchema({
+            let { newModels, newSchemas } = buildModel({
                 prevModels: storeModels,
                 prevSchemas: storeSchemas,
                 schemaTools
@@ -26,7 +26,7 @@ function main({ validatorDoc, updateDoc }) {
         loadManySchemas: objectSchemas => {
             Object.entries(objectSchemas).map(
                 ([nameSchema, { schema, database }]) => {
-                    let { newModels, newSchemas } = loadSchema({
+                    let { newModels, newSchemas } = buildModel({
                         prevModels: storeModels,
                         prevSchemas: storeSchemas,
                         schemaTools

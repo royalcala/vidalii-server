@@ -23,19 +23,22 @@ const validation = ({ schemaTools, schemaValidator, newDoc }) => {
     return result
 }
 
-module.exports = ({ dataBase, schemaTools, schemaValidator }) => async (newDoc) => {
-    try {
-        let resultValidation = validation({ schemaTools, schemaValidator, newDoc })
-        let response = await dataBase.put(resultValidation)
-        response._rev = response.rev
-        let final = {
-            ...resultValidation,
-            ...response
+module.exports = ({ dataBase, schemaTools, schemaValidator }) => (newDoc) => {
+    return {
+        save: async () => {
+            try {
+                let resultValidation = validation({ schemaTools, schemaValidator, newDoc })
+                let response = await dataBase.put(resultValidation)
+                response._rev = response.rev
+                let final = {
+                    ...resultValidation,
+                    ...response
+                }
+                return final
+            } catch (err) {
+                console.log(err)
+                return err
+            }
         }
-        // console.log('final pouchdb::', final)
-        return final
-    } catch (err) {
-        console.log(err)
-        return err
     }
 }

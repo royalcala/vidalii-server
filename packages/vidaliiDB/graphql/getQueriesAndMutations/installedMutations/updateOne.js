@@ -8,8 +8,8 @@ module.exports = ({ schemaName, schemaData, models }) => {
         resolverName: name,
         resolver: (parent, args, context, info) => {
             const { data = null } = args
-            
-            let result = models[schemaName].updateOne({ newDoc: { ...data } })
+
+            let result = models[schemaName].updateOne({ newDoc: { ...data } }).save()
             return result
         },
     }
