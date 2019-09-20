@@ -23,13 +23,15 @@ const validation = ({ schemaTools, schemaValidator, newDoc }) => {
     return result
 }
 
-module.exports = ({ dataBase, schemaTools, schemaValidator }) => (newDoc) => {
+module.exports = ({ dataBase, schemaTools, schemaValidator }) => ({ newDoc, context = false }) => {
     return {
         print: () => {
             return {
-                schemaName: '',
-                method: 'insertOne',
-                data: newDoc
+                name: {
+                    schema: '',
+                    method: 'insertOne'
+                },
+                newDoc
             }
         },
         save: async () => {

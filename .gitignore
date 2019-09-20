@@ -78,3 +78,5 @@ packages/vidaliiServer/log.txt
 packages/vidaliiServer/_replicator/CURRENT
 packages/vidaliiServer/_replicator/LOG
 packages/vidaliiServer/_users/LOG.old
+packages/vidaliiServer/_replicator/CURRENT
+packages/vidaliiServer/pouch__all_dbs__/LOG.old

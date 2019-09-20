@@ -20,11 +20,11 @@ module.exports = (type = 'pouchDB') => {
         load: (modelBeforeSave) => {
             storeModels.push(modelBeforeSave)
         },
-        save: async () => {
+        save: () => {
             //go through each array
             try {
                 storeModels.map(
-                    (fx) => {
+                    async (fx) => {
                         //1.-
                         let result = await fx.save()
                         //2.-Save changes in the document with the uuidv4 connected

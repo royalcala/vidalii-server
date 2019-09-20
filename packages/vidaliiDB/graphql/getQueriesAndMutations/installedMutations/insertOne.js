@@ -8,9 +8,8 @@ module.exports = ({ schemaName, schemaData, models }) => {
         resolverName: name,
         resolver: (parent, args, context, info) => {
             const { data = null, transaction = true } = args
-            // let toJson = query !== null ? JSON.parse(query) : null
-            // console.log('data::',args)            
-            let result = models[schemaName].insertOne(data).save()
+            // let context = transaction === true ? '' : ''
+            let result = models[schemaName].insertOne({ newDoc: data }).save()
 
             // console.log('result GQL::', result)
             return result
