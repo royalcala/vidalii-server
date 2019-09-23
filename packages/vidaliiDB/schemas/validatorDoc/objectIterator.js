@@ -1,10 +1,23 @@
 const R = require('ramda')
 const generateAutoID = require('./generateAutoID')
 // const isArray = require('./typesNodes/isArray')
-const isObject = require('./typesNodes/isObject')
-const isFunction = require('./typesNodes/isFunction')
+// const isObject = require('./typesNodes/isObject')
+// const isFunction = require('./typesNodes/isFunction')
 
 module.exports = objectIterator
+
+function isFunction({ key, transformation, value, prevDoc, newDoc }) {
+    const { fx, type, isNodeType, } = transformation        
+    return fx({ nameField: key, newValue: value, prevDoc, newDoc })
+}
+
+function isObject({ key, value, schemaValidator, transformation, prevDoc, newDoc }) {
+    console.log('transformation::', transformation)
+    console.log('objectIterator:::', objectIterator)
+    schemaValidator = transformation//next object
+    return objectIterator({ element: value, schemaValidator, prevDoc, newDoc })
+}
+
 function isArray({ key, value, schemaValidator, transformation, prevDoc, newDoc }) {
     // console.log('transformation[0]::', transformation[0])
 

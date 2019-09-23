@@ -1,6 +1,13 @@
 const R = require('ramda')
 const readInstalled = require('./readInstalled')
-const extraFxs = readInstalled(__dirname + '/installedExtraFxs')
+const plugins = R.pipe(
+    R.reduce(
+        (acc, [name, fx]) => ({ ...acc, [name]: fx }),
+        {}
+    )
+)(readInstalled(__dirname + '/installedPlugins'))
+// reduce((acc, [name, fx]) => ({ ...acc, [name]: fx }), {})
+// console.log('extraFxs::', extraFxs)
 
 const extractResolversAndConcat = (data) => R.pipe(
     R.reduce(
@@ -29,7 +36,7 @@ const getInstalled = ({ schemas, models, installed }) => R.pipe(
     R.map(
         ([schemaName, schemaData]) => {
             return installed.map(
-                ([nameFile, fx]) => fx({ schemaName, schemaData, models })
+                ([nameFile, fx]) => fx({ schemaName, schemaData, models, plugins })
             )
         }
     ),

@@ -1,7 +1,7 @@
 const R = require('ramda')
 
-const formatType = require('../../formatType')
-module.exports = ({ schemaName, schemaData, models }) => {
+const formatType = require('../../../shared/graphql.formatType')
+module.exports = ({ schemaName, schemaData, models, plugins }) => {
 
     return {
         sdl: `${schemaName}(query:String):[${formatType({ child: schemaName })}]`,
@@ -12,6 +12,4 @@ module.exports = ({ schemaName, schemaData, models }) => {
             return models[schemaName].find(toJson)
         },
     }
-
-
 }

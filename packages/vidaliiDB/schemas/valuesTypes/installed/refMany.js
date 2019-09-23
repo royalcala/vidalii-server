@@ -1,6 +1,6 @@
 const R = require('ramda')
 const req = require('../requiredOnType')
-const formatType = require('../../../graphql/formatType')
+const formatType = require('../../../shared/graphql.formatType')
 
 module.exports = (nameFromField, toTableName, toFieldName) => ({
     ...req,

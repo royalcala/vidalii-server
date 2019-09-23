@@ -1,5 +1,5 @@
 const R = require('ramda')
-const formatType = require('../formatType')
+const formatType = require('../../shared/graphql.formatType')
 
 const isNodeType = [
     ({ key, value }) => R.has('isNodeType', value),

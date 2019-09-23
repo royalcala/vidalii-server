@@ -16,10 +16,6 @@ const validationResult = result => R.cond([
 
 const validation = ({ schemaTools, schemaValidator, newDoc }) => {
     let result = schemaTools.validatorDoc({ schemaValidator, newDoc })
-    // console.log('result::',result)
-    // let checkResult = validationResult(result)
-
-    // return checkResult
     return result
 }
 

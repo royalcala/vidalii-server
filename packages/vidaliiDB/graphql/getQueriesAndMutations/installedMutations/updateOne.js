@@ -1,5 +1,5 @@
 const R = require('ramda')
-const formatType = require('../../formatType')
+const formatType = require('../../../shared/graphql.formatType')
 
 module.exports = ({ schemaName, schemaData, models }) => {
     const name = `${schemaName}_updateOne`
