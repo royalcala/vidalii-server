@@ -1604,3 +1604,14 @@
 [Mon, 23 Sep 2019 20:16:56 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - PUT /transactions/02a5cf76-5142-4b69-bcef-3711bda8da3a 201
 [Mon, 23 Sep 2019 22:44:46 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
 [Mon, 23 Sep 2019 22:44:46 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200
+[Mon, 23 Sep 2019 23:08:08 GMT] [info] [<0.000.0>] ::1 - - GET /_utils/ 304
+[Mon, 23 Sep 2019 23:08:08 GMT] [info] [<0.000.0>] ::1 - - GET /_utils/dashboard.assets/css/styles-a9623008fc27e79da2388441deeacfab.css 304
+[Mon, 23 Sep 2019 23:08:08 GMT] [info] [<0.000.0>] ::1 - - GET /_utils/dashboard.assets/js/bundle-34997e32896293a1fa5d71f79eb1b4f7.js 200
+[Mon, 23 Sep 2019 23:08:09 GMT] [info] [<0.000.0>] ::1 - - GET /_session 200
+[Mon, 23 Sep 2019 23:08:09 GMT] [info] [<0.000.0>] ::1 - - GET /_session 304
+[Mon, 23 Sep 2019 23:08:09 GMT] [info] [<0.000.0>] ::1 - - GET / 304
+[Mon, 23 Sep 2019 23:08:09 GMT] [info] [<0.000.0>] ::1 - - GET /_utils/dashboard.assets/img/pouchdb-site.png 304
+[Mon, 23 Sep 2019 23:08:09 GMT] [info] [<0.000.0>] ::1 - - GET /_utils/dashboard.assets/fonts/fauxtonicon5.woff 304
+[Mon, 23 Sep 2019 23:08:09 GMT] [info] [<0.000.0>] ::1 - - GET /_utils/dashboard.assets/img/pouchdb-favicon.png 304
+[Mon, 23 Sep 2019 23:08:13 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - GET /sales/ 200
+[Mon, 23 Sep 2019 23:08:13 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /sales/_find 200

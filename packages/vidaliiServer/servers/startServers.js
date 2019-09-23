@@ -1,7 +1,7 @@
 const R = require('ramda')
 const express = require('express');
 const PouchDB = require('pouchdb');
-const { readFileSync } = require('fs')
+// const { readFileSync } = require('fs')
 const { ApolloServer } = require('apollo-server-express');
 const vidaliiDB = require('./models')
 // const { sdl, types, queries, mutations } = vidaliiGraph.buildGraphql()
