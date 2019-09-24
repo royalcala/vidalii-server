@@ -9,12 +9,10 @@ const dataloaders = require('../cacheDataLoader')
 //         fieldName: toFieldName
 //     }
 // }
-module.exports = ({ dataBase, dbName }) => async ({ fieldName, fieldValue }) => {
-    // PouchDB.plugin(PouchDBFind)
-    // console.log('dbName used::', dbName)
-    // return ''
+module.exports = () => async ({ fieldName, fieldValue }) => {
+    const { modelName } = crudPlugins
     return dataloaders.unload({
-        tableName: dbName,
+        tableName: modelName,
         fieldName,
         fieldValue
     })

@@ -9,10 +9,10 @@ const dataloaders = require('../cacheDataLoader')
 //         fieldName: toFieldName
 //     }
 // }
-module.exports = ({ dataBase, dbName }) => async (data) => {
-
+module.exports = (crudPlugins) => async (data) => {
+    const { db } = crudPlugins
     return dataloaders.load({
-        dataBase,
+        dataBase: db,
         joinData: { ...data }
     })
 }

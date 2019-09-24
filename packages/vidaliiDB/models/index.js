@@ -1,46 +1,56 @@
 const R = require('ramda')
 // const printGraphql = require('../graphql/printGraphql')
-const buildModel = require('./buildModel')
+// const buildModel = require('./buildModel')
+const selectTypeDB = require('./selectTypeDB')
 
-function main({ validatorDoc, updateDoc }) {
+function main({ crudPlugins }) {
     var storeModels = {}
     var storeSchemas = {}
-    var schemaTools = {
-        validatorDoc,
-        updateDoc
-    }
+    // var crudPlugins = {
+    //     validatorDoc,
+    //     updateDoc
+    // }
     return {
         schemas: () => storeSchemas,
         models: () => storeModels,
-        // printGraphql: () => printGraphql({ schemas: storeSchemas, models: storeModels }),
-        loadSchema: ({ ...newModelData }) => {
-            let { newModels, newSchemas } = buildModel({
-                prevModels: storeModels,
-                prevSchemas: storeSchemas,
-                schemaTools
-            })(newModelData)
+        // loadSchema: ({ ...newModelData }) => {
+        //     let { newModels, newSchemas } = buildModel({
+        //         prevModels: storeModels,
+        //         prevSchemas: storeSchemas,
+        //         schemaTools
+        //     })(newModelData)
+        //     storeModels = newModels
+        //     storeSchemas = newSchemas
+        // },
+        loadManySchemas: ({ oSchemas }) => {
+            let models = R.pipe(
+                R.toPairs,
+                R.reduce(
+                    (acc, [nameSchema, valueSchema]) =>
+                        R.assoc(nameSchema, selectTypeDB({ nameSchema, valueSchema, crudPlugins }), acc),
+                    storeModels
+                )
+            )(oSchemas)
+            // console.log('modelsLoad:',models)
+            storeModels = models
+            storeSchemas = { ...storeSchemas, ...oSchemas }
+            // Object.entries(oSchemas).map(
+            //     ([nameSchema, { schema, database }]) => {
+            //         let { newModels, newSchemas } = buildModel({
+            //             prevModels: storeModels,
+            //             prevSchemas: storeSchemas,
+            //             schemaTools
+            //         })({
+            //             name: nameSchema,
+            //             schemaValidator: schema,
+            //             ...database
+            //         })
 
-            storeModels = newModels
-            storeSchemas = newSchemas
-        },
-        loadManySchemas: objectSchemas => {
-            Object.entries(objectSchemas).map(
-                ([nameSchema, { schema, database }]) => {
-                    let { newModels, newSchemas } = buildModel({
-                        prevModels: storeModels,
-                        prevSchemas: storeSchemas,
-                        schemaTools
-                    })({
-                        name: nameSchema,
-                        schemaValidator: schema,
-                        ...database
-                    })
+            //         storeModels = newModels
+            //         storeSchemas = newSchemas
 
-                    storeModels = newModels
-                    storeSchemas = newSchemas
-
-                }
-            )
+            //     }
+            // )
         }
 
     }

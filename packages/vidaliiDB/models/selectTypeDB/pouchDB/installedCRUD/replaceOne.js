@@ -1,12 +1,32 @@
 const R = require('ramda')
 
-module.exports = ({ dataBase, schemaTools, schemaValidator }) => ({ newDoc, context = false }) => {
+// const ifResultNull = [
+//     (result) => {
+//         // R.isNil(result) || R.isEmpty(result)
+//         console.log('nil:', R.isNil(result))
+//         console.log('empty:', R.isEmpty(result))
+//         return true
+//     },
+//     (result) => { throw new Error(`Result:${result}.The result of the validation cant be null,undefined or empty.`) }
+// ]
+// const validationResult = result => R.cond([
+//     ifResultNull,
+//     [R.T, (result) => result]
+// ])(result)
+
+// const validation = ({ schemaTools, schemaValidator, newDoc }) => {
+//     let result = schemaTools.validatorDoc({ schemaValidator, newDoc })
+//     return result
+// }
+
+module.exports = (crudPlugins) => ({ newDoc }) => {
+    const { db, validatorDoc, valueSchema: { schema } } = crudPlugins
     return {
         print: () => {
             return {
                 name: {
                     schema: '',
-                    method: 'replaceOne'
+                    method: 'insertOne'
                 },
                 newDoc
             }
@@ -14,10 +34,11 @@ module.exports = ({ dataBase, schemaTools, schemaValidator }) => ({ newDoc, cont
         save: async () => {
             try {
                 // let resultValidation = validation({ schemaTools, schemaValidator, newDoc })
-                let response = await dataBase.put(newDoc)
+                let resultValidation = validatorDoc({ schemaValidator: schema, newDoc })
+                let response = await db.put(resultValidation)
                 response._rev = response.rev
                 let final = {
-                    ...newDoc,
+                    ...resultValidation,
                     ...response
                 }
                 return final

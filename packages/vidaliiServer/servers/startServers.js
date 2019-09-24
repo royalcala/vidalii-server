@@ -37,7 +37,6 @@ const GraphQLJSON = require('graphql-type-json')
 
 var sales = new PouchDB('http://localhost:4000/sales')
 
-
 async function main() {
     var app = express();
     const server = new ApolloServer({

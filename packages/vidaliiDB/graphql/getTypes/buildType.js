@@ -109,21 +109,26 @@ const buildType = ({ tools, parentSDL, parentResolvers, nameType, tree }) => {
         branches)
 }
 
-const getObjTypes = ({ schemas, models }) => R.pipe(
-    R.toPairs,
-    R.map(
-        ([key, value]) => ({
-            [key]: buildType({
-                tools: { models, schemaName: key },
-                parentSDL: '',
-                parentResolvers: {},
-                nameType: key,
-                tree: value
-            })
-        })
+const getObjTypes = ({ schemas, models }) => {
+    // console.log('schemas::',schemas)
+    // console.log('models::',models)   
 
-    ),
-    R.mergeAll
-)(schemas)
+    return R.pipe(
+        R.toPairs,
+        R.map(
+            ([key, value]) => ({
+                [key]: buildType({
+                    tools: { models, schemaName: key },
+                    parentSDL: '',
+                    parentResolvers: {},
+                    nameType: key,
+                    tree: value.schema
+                })
+            })
+
+        ),
+        R.mergeAll
+    )(schemas)
+}
 
 module.exports = getObjTypes

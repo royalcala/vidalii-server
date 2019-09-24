@@ -1,9 +1,10 @@
 const R = require('ramda')
 const pouchDB = require('./pouchDB')
 
-function selectTypeDB({...data}) {
+function selectTypeDB(data) {
     return R.cond([
-        pouchDB
+        pouchDB,
+        // [R.T, pouchDB[1]]
     ])(data)
 }
 

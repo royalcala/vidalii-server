@@ -2,15 +2,20 @@ const R = require('ramda')
 const dataBase = require('./initDatabase')
 const crud = require('./readInstalled')(__dirname + '/installedCRUD')
 
-const main = ({ schemaTools, typeDB, schemaValidator, url, nameSchema, username, password }) => {
-
+// const main = ({ schemaTools, typeDB, schemaValidator, url, nameSchema, username, password }) => {
+const main = ({ nameSchema, valueSchema, crudPlugins }) => {
+    // const { schema, database } = valueSchema
     // var dataBase = new PouchDB(`${url}/${db}`)
-    var initData = {
-        dataBase: dataBase({ url, dbName: nameSchema }),
-        dbName: nameSchema,
-        url,
-        schemaTools,
-        schemaValidator
+    var sendToCRUDMethods = {
+        ...crudPlugins,
+        db: dataBase({ url: valueSchema.database.url, dbName: nameSchema }),
+        modelName: nameSchema,
+        nameSchema,
+        valueSchema,
+
+        // url,
+        // schemaTools,
+        // schemaValidator
     }
     // return {
     //     insertOne: crud.insertOne(initData),
@@ -21,13 +26,13 @@ const main = ({ schemaTools, typeDB, schemaValidator, url, nameSchema, username,
     return R.pipe(
         R.toPairs,
         R.reduce(
-            (acc, [fxName, fx]) => R.assoc(fxName, fx(initData), acc),
+            (acc, [fxName, fx]) => R.assoc(fxName, fx(sendToCRUDMethods), acc),
             {}
         )
     )(crud)
 }
 const pouchDB = [
-    ({ typeDB }) => R.equals('pouchDB'),
+    ({ valueSchema }) => R.equals('pouchdb', R.toLower(valueSchema.database.typeDB)),
     main
 ]
 

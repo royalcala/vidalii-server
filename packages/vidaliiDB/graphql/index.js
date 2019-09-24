@@ -3,7 +3,7 @@ const R = require('ramda')
 const getTypes = require('./getTypes')
 const getQueriesAndMutations = require('./getQueriesAndMutations')
 
-function main() {
+function main({ shared }) {
     var storeModels = {}
     var storeSchemas = {}
     var storeGraphql = {}
