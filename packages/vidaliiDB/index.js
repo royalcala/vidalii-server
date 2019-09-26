@@ -7,7 +7,6 @@ const shared = {
 module.exports = ({ pathSchemas }) => {
     const models = require('./models')({
         crudPlugins: {
-            // formatType,
             transactions: shared.transactions,
             updateDoc,
             validatorDoc,

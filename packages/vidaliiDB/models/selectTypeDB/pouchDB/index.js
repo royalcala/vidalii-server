@@ -12,7 +12,6 @@ const main = ({ nameSchema, valueSchema, crudPlugins }) => {
         modelName: nameSchema,
         nameSchema,
         valueSchema,
-
         // url,
         // schemaTools,
         // schemaValidator

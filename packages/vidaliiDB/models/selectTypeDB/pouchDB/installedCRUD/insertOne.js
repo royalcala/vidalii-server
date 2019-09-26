@@ -1,24 +1,5 @@
 const R = require('ramda')
 
-// const ifResultNull = [
-//     (result) => {
-//         // R.isNil(result) || R.isEmpty(result)
-//         console.log('nil:', R.isNil(result))
-//         console.log('empty:', R.isEmpty(result))
-//         return true
-//     },
-//     (result) => { throw new Error(`Result:${result}.The result of the validation cant be null,undefined or empty.`) }
-// ]
-// const validationResult = result => R.cond([
-//     ifResultNull,
-//     [R.T, (result) => result]
-// ])(result)
-
-// const validation = ({ schemaTools, schemaValidator, newDoc }) => {
-//     let result = schemaTools.validatorDoc({ schemaValidator, newDoc })
-//     return result
-// }
-
 module.exports = (crudPlugins) => ({ newDoc }) => {
     const { db, validatorDoc, valueSchema } = crudPlugins
     return {
