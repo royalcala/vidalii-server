@@ -8,6 +8,24 @@ const vidaliiDB = require('./models')
 
 const GraphQLJSON = require('graphql-type-json')
 
+// async function hola2() {
+//     try {
+//         hola3()
+//         console.log('hola2')
+//     } catch (error) {
+//         console.log('hola2()',error)
+//     }
+// }
+
+// async function hola() {
+//     try {
+//       hola2() 
+//       console.log('hola1')
+//     } catch (error) {
+//         console.log('hola()',error)
+//     }
+// }
+// hola()
 // var clients = new PouchDB('http://localhost:5984/clients')
 
 // async function get_data() {

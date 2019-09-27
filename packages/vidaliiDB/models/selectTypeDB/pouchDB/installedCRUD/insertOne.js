@@ -1,6 +1,6 @@
 const R = require('ramda')
 
-module.exports = (crudPlugins) => ({ newDoc }) => {
+module.exports = (crudPlugins) => ({ newDoc, errorMsg = null }) => {
     const { db, validatorDoc, valueSchema } = crudPlugins
     return {
         print: () => {

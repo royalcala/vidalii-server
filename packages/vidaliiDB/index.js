@@ -1,13 +1,11 @@
 const { mergeSchemasFiles, updateDoc, validatorDoc } = require('./schemas')
-const shared = {
-    formatType: require('./shared/graphql.formatType'),
-    transactions: require('./shared/model.transactions')
-}
+
+// const formatType = require('./shared/graphql.formatType'),
+const transactions = require('./shared/model.transactions')
 
 module.exports = ({ pathSchemas }) => {
     const models = require('./models')({
         crudPlugins: {
-            transactions: shared.transactions,
             updateDoc,
             validatorDoc,
         }
@@ -15,8 +13,9 @@ module.exports = ({ pathSchemas }) => {
     models.loadManySchemas({
         oSchemas: mergeSchemasFiles(pathSchemas)
     })
+    transactions.checkAndRestore({ models: models.models() })
 
-    const vidaliiGraph = require('./graphql')({ shared })
+    const vidaliiGraph = require('./graphql')({ shared: null })
 
     vidaliiGraph.load({
         schemas: models.schemas(),

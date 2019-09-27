@@ -1,32 +1,13 @@
 const R = require('ramda')
 
-// const ifResultNull = [
-//     (result) => {
-//         // R.isNil(result) || R.isEmpty(result)
-//         console.log('nil:', R.isNil(result))
-//         console.log('empty:', R.isEmpty(result))
-//         return true
-//     },
-//     (result) => { throw new Error(`Result:${result}.The result of the validation cant be null,undefined or empty.`) }
-// ]
-// const validationResult = result => R.cond([
-//     ifResultNull,
-//     [R.T, (result) => result]
-// ])(result)
-
-// const validation = ({ schemaTools, schemaValidator, newDoc }) => {
-//     let result = schemaTools.validatorDoc({ schemaValidator, newDoc })
-//     return result
-// }
-
-module.exports = (crudPlugins) => ({ newDoc }) => {
-    const { db, validatorDoc, valueSchema: { schema } } = crudPlugins
+module.exports = (crudPlugins) => ({ newDoc, errorMsg = null }) => {
+    const { db, validatorDoc, valueSchema } = crudPlugins
     return {
         print: () => {
             return {
                 name: {
                     schema: '',
-                    method: 'insertOne'
+                    method: 'replaceOne'
                 },
                 newDoc
             }
@@ -34,16 +15,16 @@ module.exports = (crudPlugins) => ({ newDoc }) => {
         save: async () => {
             try {
                 // let resultValidation = validation({ schemaTools, schemaValidator, newDoc })
-                let resultValidation = validatorDoc({ schemaValidator: schema, newDoc })
-                let response = await db.put(resultValidation)
+                // let resultValidation = validatorDoc({ schemaValidator: valueSchema.schema, newDoc })
+                let response = await db.put(newDoc)
                 response._rev = response.rev
                 let final = {
-                    ...resultValidation,
+                    ...newDoc,
                     ...response
                 }
                 return final
             } catch (err) {
-                console.log(err)
+                console.log(errorMsg, err)
                 return err
             }
         }
