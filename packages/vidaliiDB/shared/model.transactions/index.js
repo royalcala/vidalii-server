@@ -1,8 +1,8 @@
-const checkAndRestore = require('./checkAndRestore')
-const transactions = require('./transactions')
+const rollback = require('./rollback')
+const queue = require('./queue')
 
 
 module.exports = {
-    checkAndRestore,
-    transactions
+    rollback,
+    queue
 }

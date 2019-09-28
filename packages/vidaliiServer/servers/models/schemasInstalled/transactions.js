@@ -1,22 +1,24 @@
-const { jsonstring, ID, ref, rev, string, json } = require('@vidalii/db/schemas/valuesTypes')
+const { ID, rev, string, json, enums } = require('@vidalii/db/schemas/valuesTypes')
 module.exports = {
     schema: {
         _id: ID,
         _rev: rev,
         idTransaction: ID,
+        process: {
+            state: enums(['queued', 'rollbacked', 'commited', 'error']),
+            lastProcess: string,
+            response: json,
+        },
         model: {
+            _id: ID,
             schemaName: string,
-        },
-        data: {
-            prev: json,
-            new: json
-        },
-        time: {
-            created: string
+            data: {
+                prev: json,
+                new: json
+            },
         }
     },
     database: {
-        // db: 'sales', is the name of the schema
         url: 'http://admin:admin@localhost:4000',
         username: '',
         password: '',

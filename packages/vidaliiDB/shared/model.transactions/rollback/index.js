@@ -1,36 +1,7 @@
 const R = require('ramda')
 const PouchDB = require('pouchdb')
-var db = new PouchDB('http://localhost:4000/transactions')
-
-const ifCorrect = [
-    ({ response }) => R.equals(true, response.ok),
-    ({ doc, response }) => {
-        doc.time = {
-            lastProcess: new Date().toISOString()
-        }
-        doc.status = response
-        db.put(doc)
-        return ''
-    }
-]
-
-const ifConflict = [
-    ({ response }) => R.equals('conflict', response.error),
-    ({ doc, response }) => {
-        // console.log('write that ther is a conflict with the _rev')
-        doc.time = {
-            lastProcess: new Date().toISOString()
-        }
-        doc.status = response
-        db.put(doc)
-        return ''
-    }
-]
-const resultProcess = data => R.cond([
-    ifConflict,
-    ifCorrect
-])(data)
-
+var db = new PouchDB('transactions')
+const resultProcess = require('./resultProcess')
 
 const processInParallel = async ({ rows, models }) => {
     // console.log('models::', models)
@@ -62,11 +33,11 @@ const processInParallel = async ({ rows, models }) => {
     });
     // wait until all promises are resolved
     let resolveAll = await Promise.all(promises);
-    console.log('Resolved promises Done!')
+    console.log('Resolved promises Done of Rollback!')
     return resolveAll
 }
 
-const checkAndRestore = async ({ models }) => {
+const rollback = async ({ models }) => {
 
     // db.info().then(function (info) {
     //     console.log(info);
@@ -77,9 +48,9 @@ const checkAndRestore = async ({ models }) => {
 
         return await processInParallel({ rows: transactions.rows, models })
     } {
-        return "Doesnt exist documents to restore."
+        return "Doesnt exist documents to rollBack."
     }
 
 }
 
-module.exports = checkAndRestore
+module.exports = rollback

@@ -1,4 +1,4 @@
-const transactions = () => {
+const queue = () => {
     var storeTransactions = {}
     return {
         new: () => {
@@ -31,4 +31,4 @@ const transactions = () => {
 
     }
 }
-module.exports = transactions
+module.exports = queue
