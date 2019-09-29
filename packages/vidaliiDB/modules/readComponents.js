@@ -22,7 +22,10 @@ const readComponents = ({ pathToComponents }) => R.pipe(
                     pathToComponent: pathToComponents + '/' + nameComponent
                 })
             }),
-            () => ({})
+            () => {
+                console.log(nameComponent, ' fxComponent not Found ')
+                return {}
+            }
         )(fxComponents)
 
         // R.cond([
