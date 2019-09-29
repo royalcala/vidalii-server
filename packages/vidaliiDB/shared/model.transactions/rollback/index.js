@@ -19,7 +19,7 @@ const processInParallel = async ({ rows, models }) => {
                 _rev: doc.data.new._rev,
                 _id: doc.model._id
             }
-            console.log('newDoc::', newDoc)
+            // console.log('newDoc::', newDoc)
             let response = await models[doc.model.schemaName].replaceOne({
                 newDoc,
                 errorMsg: "From model.transactions.processInParallel "

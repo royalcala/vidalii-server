@@ -4,10 +4,13 @@ const PouchDB = require('pouchdb');
 // const { readFileSync } = require('fs')
 const { ApolloServer } = require('apollo-server-express');
 const vidaliiDB = require('./models')
-// const { sdl, types, queries, mutations } = vidaliiGraph.buildGraphql()
-
 const GraphQLJSON = require('graphql-type-json')
 
+const modules = require('@vidalii/db/modules')
+console.log(
+    'modules::',
+    modules({ pathToModules: __dirname + '/modules' })
+)
 // async function hola2() {
 //     try {
 //         hola3()

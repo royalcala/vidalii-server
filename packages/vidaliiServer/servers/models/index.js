@@ -19,6 +19,7 @@
 // // const { sdl, resolvers } = vidaliiGraph.buildGraphql()
 // // module.exports = vidaliiGraph
 // module.exports = vidaliiGraph
+
 const vidaliiDB = require('@vidalii/db')({
     pathSchemas: __dirname + '/schemasInstalled'
 })
