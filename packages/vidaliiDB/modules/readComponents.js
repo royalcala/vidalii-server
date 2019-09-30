@@ -1,16 +1,6 @@
 const fs = require('fs')
 const R = require('ramda')
-const readfxComponents = (pathToComponents) => R.pipe(
-    fs.readdirSync,
-    R.map(x => {
-        let nameFile = R.replace('.js', '', x)
-        return {
-            [nameFile]: require(pathToComponents + '/' + x)
-        }
-    }),
-    R.mergeAll
-)(pathToComponents)
-const fxComponents = readfxComponents(__dirname + '/installedTypesComponents')
+const fxComponents = require('./readFxComponents')
 
 const readComponents = ({ pathToComponents }) => R.pipe(
     fs.readdirSync,

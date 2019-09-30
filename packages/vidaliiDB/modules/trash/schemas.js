@@ -28,15 +28,10 @@ const readSchemas = pathToRead => R.pipe(
 )(pathToRead)
 
 module.exports = ({ pathToComponent }) => {
-    //read each schema, 
-    //or read one if its merged already
     const schema = R.pipe(
         readSchemas,
         composeSchemas
-    )(pathToComponent)
-
-    console.log('schema::', Object.keys(schema))
+    )(pathToComponent)    
 
     return schema
-
 }

@@ -13,6 +13,6 @@ module.exports = ({ schemaName, schemaData, models }) => {
             let result = models[schemaName].insertOne({ newDoc: data }).save()
 
             return result
-        },
+        }
     }
 }

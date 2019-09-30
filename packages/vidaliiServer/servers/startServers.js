@@ -11,6 +11,14 @@ console.log(
     'modules::',
     modules({ pathToModules: __dirname + '/modules' })
 )
+
+var a = {
+    b: 'existe',
+    c: 'existe'
+}
+a.c = a.c || 'no existia'
+
+console.log('a::', a)
 // async function hola2() {
 //     try {
 //         hola3()
