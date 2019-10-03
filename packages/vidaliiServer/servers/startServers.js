@@ -9,16 +9,16 @@ const GraphQLJSON = require('graphql-type-json')
 const modules = require('@vidalii/db/modules')
 console.log(
     'modules::',
-    modules({ pathToModules: __dirname + '/modules' })
+    modules({ pathToInputs: __dirname + '/inputs' })
 )
 
-var a = {
-    b: 'existe',
-    c: 'existe'
-}
-a.c = a.c || 'no existia'
+// var a = {
+//     b: 'existe',
+//     c: 'existe'
+// }
+// a.c = a.c || 'no existia'
 
-console.log('a::', a)
+// console.log('a::', a)
 // async function hola2() {
 //     try {
 //         hola3()

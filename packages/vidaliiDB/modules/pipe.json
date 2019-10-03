@@ -1,0 +1,8 @@
+{
+    "fxs": [
+        "input",
+        "schemas",
+        "databases_merge",
+        "databases_model"
+    ]
+}

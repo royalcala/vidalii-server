@@ -1,18 +1,18 @@
 const fs = require('fs')
 const R = require('ramda')
 
-const readModules = ({ pathToModules, readComponets }) => R.pipe(
+const readModules = ({ pathToInputs, readComponets }) => R.pipe(
     fs.readdirSync,
     R.map(nameModule => {
         return {
             [nameModule]: {
                 components: readComponets({
-                    pathToComponents: pathToModules + '/' + nameModule
+                    pathToComponents: pathToInputs + '/' + nameModule
                 })
             }
         }
     }),
     R.mergeAll
-)(pathToModules)
+)(pathToInputs)
 
 module.exports = readModules
