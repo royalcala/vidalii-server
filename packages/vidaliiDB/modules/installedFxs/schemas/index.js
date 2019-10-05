@@ -2,6 +2,9 @@ const R = require('ramda')
 const fs = require('fs')
 const types = require('./valuesTypes')
 
+//pending define
+//id defaults _id and _rev
+
 module.exports = ({ input }) => R.pipe(
     R.toPairs,
     R.map(

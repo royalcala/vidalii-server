@@ -7,6 +7,7 @@ const vidaliiDB = require('./models')
 const GraphQLJSON = require('graphql-type-json')
 
 const modules = require('@vidalii/db/modules')
+
 console.log(
     'modules::',
     modules({ pathToInputs: __dirname + '/inputs' })
@@ -62,7 +63,6 @@ console.log(
 //     }
 // }
 // get_data()
-
 
 var sales = new PouchDB('http://localhost:4000/sales')
 

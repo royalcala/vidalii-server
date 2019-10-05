@@ -1,10 +1,6 @@
 const R = require('ramda')
 
-
-
 const execPipe = listFxs => initialValue => {
-
-    console.log('initialValue:::', initialValue)
 
     return R.pipe(
         R.reduce(
@@ -36,9 +32,6 @@ const orderedPipe = listFxs => fxs => R.pipe(
 )(listFxs)
 
 module.exports = ({ pipe, fxs }) => {
-    console.log('fxs::', fxs)
     const listFxs = orderedPipe(pipe.fxs)(fxs)
-    console.log('listFxs::', listFxs)
-
     return execPipe(listFxs)
 }

@@ -2,7 +2,7 @@
     "fxs": [
         "input",
         "schemas",
-        "databases_merge",
-        "databases_model"
+        "databases",
+        "databases_schema_validation"
     ]
 }

@@ -12,17 +12,17 @@ const pipe = require('./pipe.json')
 const vidaliiPipe = require('./vidaliiPipe')
 module.exports = ({ pathToInputs }) => {
 
-    console.log('pipe::', pipe)
+    // console.log('pipe::', pipe)
 
     const inputData = readInputs({
         pathToInputs
     })
-    console.log('inputData::', inputData)
+    // console.log('inputData::', inputData)
 
     const nodesTypesComponents = readNodes({
         pathToNodes: __dirname + '/installedTypesComponents'
     })
-    console.log('nodesTypesComponents::', nodesTypesComponents)
+    // console.log('nodesTypesComponents::', nodesTypesComponents)
 
 
     const result = vidaliiPipe({
@@ -32,11 +32,15 @@ module.exports = ({ pathToInputs }) => {
         })
     })
 
-    console.log(
-        'result vidaliiPipe::',
-        result({
-            pathToInputs
-        }))
+    result({
+        pathToInputs
+    })
+    // console.log(
+    //     'result vidaliiPipe::',
+    //     result({
+    //         pathToInputs
+    //     })
+    //     )
     // const firstLayer = processLayer({
     //     inputData,
     //     // pathToLayer: __dirname + '/installedTypesComponents'
