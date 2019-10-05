@@ -70,6 +70,6 @@ const initialization = ({ input }) => R.pipe(
 
 module.exports = ({ input }) => {
     const init = initialization({ input })
-    console.log('databases::', init)
+    // console.log('databases::', init)
     return init
 }

@@ -12,6 +12,14 @@ console.log(
     'modules::',
     modules({ pathToInputs: __dirname + '/inputs' })
 )
+// let a = [[1,2],[3,4]]
+
+// let b = [
+//     ...a,
+//     [5,6]
+// ]
+
+// console.log(b)
 
 // var a = {
 //     b: 'existe',

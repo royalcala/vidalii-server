@@ -1,16 +1,38 @@
 const R = require('ramda')
 
+const withShardsCrud = ({ condShards, databases_models }) => R.pipe(
+    R.toPairs,
+    R.map(
+        ([nameDatabase, shard]) => ''
+    )
+)(condShards)
 
-const getCondShards = ({ databases }) => R.pipe(
+
+const getCondShards = ({ databases, databases_models }) => R.pipe(
     R.toPairs,
     R.map(
         ([nameDatabase, dataShards]) => ({
             [nameDatabase]: R.pipe(
                 R.toPairs,
-                R.map(
-                    ([nameShard, dataShard]) => ({
-                        [nameShard]: dataShard.cond
-                    })
+                R.reduce(
+                    (acc, [nameShard, dataShard]) => ({
+                        // ...databases_models[nameDatabase][nameShard],
+                        insertOne: [
+                            ...acc.insertOne,
+                            [
+                                dataShard.cond,
+                                databases_models[nameDatabase][nameShard].insertOne
+                            ]
+                        ],
+                        find: [
+                            ...acc.find,
+                            databases_models[nameDatabase][nameShard].find
+                        ]
+                    }),
+                    {
+                        insertOne: [],
+                        find: []
+                    }
                 ),
                 R.mergeAll
             )(dataShards)
@@ -18,33 +40,23 @@ const getCondShards = ({ databases }) => R.pipe(
     )
 )(databases)
 
-const initialization = ({ databases, databases_models }) => {
-    let condShards = getCondShards({ databases })
-    console.log('condShards::', condShards)
-    return ''
-    // return R.pipe(
-    //     R.toPairs,
-    //     R.map(
-    //         ([nameDatabase, shards]) => R.pipe(
-    //             R.toPairs,
-    //             R.map(
-    //                 ([nameShard, crud]) => {
-
-    //                     return {
-    //                         [nameShard]: input[nameDatabase].databases[nameShard].shard.cond
-    //                     }
-    //                 }
-    //             )
-    //         )(shards)
-    //     )
-    // )(databases)
-}
-module.exports = ({ databases }) => {
+// const initialization = ({ databases, databases_models }) => {
+//     let condShards = getCondShards({ databases })
+//     console.log('condShards::', condShards)
+//     return ''
+// }
+module.exports = ({ databases, databases_models }) => {
     // console.log('input::', input)
-    // console.log('databases::', databases)
-    const init = initialization({
-        databases
-    })
+    console.log('databases::', databases)
+    console.log('databases_models::', databases_models)
+
+    let condShards = getCondShards({ databases, databases_models })
+    console.log('condShards::', condShards)
+
+    let shardsCrud = withShardsCrud({ condShards, databases_models })
+    console.log('shardsCrud', shardsCrud)
+
+
     // console.log('shards::', init)
     // console.log('init::', init)
     return ''
