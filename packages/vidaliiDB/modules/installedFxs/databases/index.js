@@ -1,7 +1,7 @@
 const R = require('ramda')
 // const fs = require('fs')
 const typesDB = require('./readInstalled')(__dirname + '/' + 'installedTypesDB')
-const validators = require('./readInstalled')(__dirname + '/' + 'installedValidators')
+// const validators = require('./readInstalled')(__dirname + '/' + 'installedValidators')
 
 // const defaultsValues = databases => R.pipe(
 //     R.map(schema => {
@@ -30,40 +30,38 @@ const validators = require('./readInstalled')(__dirname + '/' + 'installedValida
 
 //     return 'Im databases_merge'
 // }
-const initDatabase = ({ nameModule }) => schema => R.pipe(
-    s => s.typeDB({
-        url: s.url,
-        dbName: nameModule
-    })
-)(schema)
+// const initDatabase = ({ nameModule }) => schema => R.pipe(
+//     s => s.typeDB({
+//         url: s.url,
+//         dbName: nameModule
+//     })
+// )(schema)
 
 
-const defaultsValues = schema => R.pipe(
-    (s) => {
-        s.validateDoc = s.validateDoc || validators.validateDoc
-        s.updateDoc = s.updateDoc || validators.updateDoc
-        return s
-    }
-)(schema)
+// const defaultsValues = schema => R.pipe(
+//     (s) => {
+//         s.validateDoc = s.validateDoc || validators.validateDoc
+//         s.updateDoc = s.updateDoc || validators.updateDoc
+//         return s
+//     }
+// )(schema)
 
 const initialization = ({ input }) => R.pipe(
     R.toPairs,
     R.map(
-        ([nameModule, { databases }]) => {
+        ([nameModule, { shards }]) => {
             return {
                 [nameModule]: R.pipe(
                     R.toPairs,
                     R.map(
                         ([nameSchema, valueSchema]) => ({
-                            [nameSchema]: R.pipe(
-                                valueSchema,
-                                // defaultsValues,
-                                initDatabase({ nameModule })
-                            )({ typesDB })
+                            [nameSchema]: valueSchema({
+                                typesDB
+                            })
                         })
                     ),
                     R.mergeAll
-                )(databases)
+                )(shards)
             }
         }
     ),
@@ -72,6 +70,6 @@ const initialization = ({ input }) => R.pipe(
 
 module.exports = ({ input }) => {
     const init = initialization({ input })
-    // console.log('init::', init)
+    console.log('databases::', init)
     return init
 }

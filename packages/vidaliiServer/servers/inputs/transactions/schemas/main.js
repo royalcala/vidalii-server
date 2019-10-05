@@ -4,7 +4,8 @@ module.exports = ({ types }) => {
     return {
         _id: ID,
         _rev: rev,
-        idTransaction: ID
+        idTransaction: ID,
+        typeShard: string
     }
 
 }

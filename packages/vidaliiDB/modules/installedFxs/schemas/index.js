@@ -2,10 +2,8 @@ const R = require('ramda')
 const fs = require('fs')
 const types = require('./valuesTypes')
 
-//pending define
-//id defaults _id and _rev
 
-module.exports = ({ input }) => R.pipe(
+const initialization = ({ input }) => R.pipe(
     R.toPairs,
     R.map(
         ([nameModule, { schemas }]) => {
@@ -31,6 +29,11 @@ module.exports = ({ input }) => R.pipe(
     ),
     R.mergeAll
 )(input)
+
+module.exports = ({ input }) => {
+    const init = initialization({ input })
+    return init
+}
 
 
 // const composeSchemas = schemas => R.pipe(

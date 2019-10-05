@@ -42,9 +42,20 @@ const R = require('ramda')
 //     ),
 //     R.mergeAll
 // )(input)
+const initialization = ({ input, schemas, databases }) => {
+    return R.pipe(
+        R.toPairs,
 
-module.exports = ({ databases, schemas }) => {
-    // const init = initialization({ input })
-    console.log('databases::',databases)
-    return 'im database'
+    )(databases)
+}
+
+module.exports = ({ input, schemas, databases }) => {
+    // console.log('input::', input)
+    // console.log('databases::', databases)
+    // console.log('schemas::', schemas)
+    // const init = initialization({
+    //     input, schemas, databases
+    // })
+    // console.log('init::', init)
+    return ''
 }

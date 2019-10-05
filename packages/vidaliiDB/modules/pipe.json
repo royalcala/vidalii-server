@@ -3,6 +3,7 @@
         "input",
         "schemas",
         "databases",
-        "databases_schema_validation"
+        "databases_models",
+        "databases_models_shards"
     ]
 }
