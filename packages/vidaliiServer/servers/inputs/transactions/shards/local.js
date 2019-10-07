@@ -1,7 +1,7 @@
 module.exports = ({ typesDB }) => {
     return {
         url: 'http://admin:admin@localhost:4000',
-        cond: ({ doc }) => doc.local === true ? true : false,
+        cond: ({ newDoc }) => newDoc.branch === 'local' ? true : false,
         gql: {
             queries: {},
             mutations: {}

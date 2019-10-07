@@ -2,16 +2,32 @@ const R = require('ramda')
 const express = require('express');
 const PouchDB = require('pouchdb');
 // const { readFileSync } = require('fs')
-const { ApolloServer } = require('apollo-server-express');
-const vidaliiDB = require('./models')
-const GraphQLJSON = require('graphql-type-json')
+// const { ApolloServer } = require('apollo-server-express');
+// const vidaliiDB = require('./models')
+// const GraphQLJSON = require('graphql-type-json')
 
 const modules = require('@vidalii/db/modules')
 
-console.log(
-    'modules::',
-    modules({ pathToInputs: __dirname + '/inputs' })
-)
+var v = modules({ pathToInputs: __dirname + '/inputs' })
+
+// console.log('v::', v)
+async function insertOne() {
+    console.log('before result::')
+    let result1 = await v.databases_models.transactions.local.insertOne({ newDoc: { branch: 'local' } })
+    console.log('after result1::', result1)
+    let result2 = await v.databases_models.transactions.remote.insertOne({ newDoc: { branch: 'remote' } })
+    console.log('after result2::', result2)
+}
+insertOne()
+async function insertOne_withShards() {
+    console.log('before result::')
+    let result1 = await v.databases_models_shards.transactions.insertOne({ newDoc: { branch: 'local' } })
+    console.log('after result1::', result1)
+    let result2 = await v.databases_models_shards.transactions.insertOne({ newDoc: { branch: 'remote' } })
+    console.log('after result2::', result2)
+}
+
+// insertOne_withShards()
 // let a = [[1,2],[3,4]]
 
 // let b = [
@@ -114,4 +130,5 @@ async function main() {
 }
 
 
-module.exports = main
+// module.exports = main
+module.exports = ()=>''

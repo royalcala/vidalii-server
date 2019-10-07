@@ -8,7 +8,7 @@ const initialization = ({ databases }) => R.pipe(
                 R.toPairs,
                 R.map(
                     ([nameShard, dataShard]) => ({
-                        [nameShard]: dataShard.typeDB({
+                        [nameShard]: dataShard.typeDB.crud({
                             url: dataShard.url,
                             dbName: nameDatabase
                         })

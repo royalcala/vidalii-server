@@ -7,6 +7,7 @@ const readInstalled = (pathToRead) => R.pipe(
         let nameFile = R.replace('.js', '', x)
         return {
             [nameFile]: require(pathToRead + '/' + x)
+
         }
     }),
     R.mergeAll

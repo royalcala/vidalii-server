@@ -1,6 +1,19 @@
 const R = require('ramda')
 // const fs = require('fs')
-const typesDB = require('./readInstalled')(__dirname + '/' + 'installedTypesDB')
+const typesDB = R.pipe(
+    require('./readInstalled'),
+    R.toPairs,
+    R.map(
+        ([nameDB, crudDB]) => ({
+            [nameDB]: {
+                crud: crudDB,
+                nameDB
+            }
+        })
+    ),
+    R.mergeAll
+)(__dirname + '/' + 'installedTypesDB')
+
 // const validators = require('./readInstalled')(__dirname + '/' + 'installedValidators')
 
 // const defaultsValues = databases => R.pipe(

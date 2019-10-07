@@ -32,23 +32,11 @@ module.exports = ({ pathToInputs }) => {
         })
     })
 
-    result({
+    // result({
+    //     pathToInputs
+    // })
+
+    return result({
         pathToInputs
     })
-    // console.log(
-    //     'result vidaliiPipe::',
-    //     result({
-    //         pathToInputs
-    //     })
-    //     )
-    // const firstLayer = processLayer({
-    //     inputData,
-    //     // pathToLayer: __dirname + '/installedTypesComponents'
-    //     nodes: nodesTypesComponents
-    // })
-    // console.log('firstLayer::', firstLayer)
-
-    // const modules = readModules({ pathToInputs, readComponets })
-    // return modules
-    return ''
 }
