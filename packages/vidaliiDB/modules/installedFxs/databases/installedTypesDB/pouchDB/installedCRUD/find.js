@@ -3,11 +3,15 @@ const PouchDBFind = require('pouchdb-find')
 // PouchDB.plugin(PouchDBFind);
 // module.exports = ({ dataBase, schemaTools, schemaValidator }) => async (queryMango) => {
 
-module.exports = ({ db }) => async (queryMango) => {
+module.exports = ({ db }) => async ({ query = null }) => {
     PouchDB.plugin(PouchDBFind)
     try {
-        let query = queryMango === null ? { selector: { _id: { $gte: null } } } : queryMango
-        let response = await db.find(query)
+        // let query = queryMango === null ? { selector: { _id: { $gte: null } } } : queryMango
+        // let response = await db.find(query)
+        let response = R.cond([
+            [R.equals(null), () => db.find({ selector: { _id: { $gte: null } } })],
+            [R.T, db.find]
+        ])(query)
         return response.docs
     } catch (err) {
         console.log(err)

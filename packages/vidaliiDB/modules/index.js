@@ -1,12 +1,12 @@
 const fs = require('fs')
 const R = require('ramda')
-const readModules = require('./readModules')
-const readComponets = require('./readComponents')
+// const readModules = require('./readModules')
+// const readComponets = require('./readComponents')
 
 
 const readInputs = require('./readInputs')
 const readNodes = require('./readNodes')
-const processLayer = require('./processLayer')
+// const processLayer = require('./processLayer')
 
 const pipe = require('./pipe.json')
 const vidaliiPipe = require('./vidaliiPipe')
@@ -22,8 +22,6 @@ module.exports = ({ pathToInputs }) => {
     const nodesTypesComponents = readNodes({
         pathToNodes: __dirname + '/installedTypesComponents'
     })
-    // console.log('nodesTypesComponents::', nodesTypesComponents)
-
 
     const result = vidaliiPipe({
         pipe,
@@ -32,9 +30,7 @@ module.exports = ({ pathToInputs }) => {
         })
     })
 
-    // result({
-    //     pathToInputs
-    // })
+  
 
     return result({
         pathToInputs

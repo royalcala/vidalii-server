@@ -57,5 +57,5 @@ module.exports = ({ input, schemas, databases }) => {
     //     input, schemas, databases
     // })
     // console.log('init::', init)
-    return ''
+    return { ok: true }
 }

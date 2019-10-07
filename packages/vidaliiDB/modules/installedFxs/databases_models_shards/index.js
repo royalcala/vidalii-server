@@ -1,31 +1,28 @@
 const R = require('ramda')
-const shardsTypesDB = require('./readInstalled')(__dirname + '/' + 'installedShardsTypeDB')
-// const withShardsCrud = ({ condShards, databases_models }) => R.pipe(
-//     R.toPairs,
-//     R.map(
-//         ([nameDatabase, shard]) => ''
-//     )
-// )(condShards)
+
 const initCondShards = ({ condShards }) => R.pipe(
     R.toPairs,
     R.map(
         ([nameDatabase, condShard]) => ({
-            insertOne: R.cond([
-                ...condShard.insertOne
-            ]),
-            find: ({ shard = null, ...data }) => R.cond([
-                [R.equals(null), () => R.pipe(
-                    R.toPairs,
-                    R.map(
-                        async ([nameShard, crudFind]) => {
-                            return await crudFind(data)
-                        }
-                    )
-                )(condShard.find)]
-            ])(shard)
+            [nameDatabase]: {
+                insertOne: R.cond([
+                    ...condShard.insertOne
+                ]),
+                find: ({ shard = null, ...data }) => R.cond([
+                    [R.equals(null), () => R.pipe(
+                        R.toPairs,
+                        R.map(
+                            async ([nameShard, crudFind]) => {
+                                return await crudFind(data)
+                            }
+                        )
+                    )(condShard.find)]
+                ])(shard)
+            }
         })
-    )
-)
+    ),
+    R.mergeAll
+)(condShards)
 
 const getCondShards = ({ databases, databases_models }) => R.pipe(
     R.toPairs,
@@ -35,7 +32,6 @@ const getCondShards = ({ databases, databases_models }) => R.pipe(
                 R.toPairs,
                 R.reduce(
                     (acc, [nameShard, dataShard]) => ({
-                        // ...databases_models[nameDatabase][nameShard],
                         insertOne: [
                             ...acc.insertOne,
                             [
@@ -83,8 +79,10 @@ module.exports = ({ databases, databases_models }) => {
     // console.log('shardsTypesDB::', shardsTypesDB)
 
     let condShards = getCondShards({ databases, databases_models })
-    let result = initCondShards({ condShards })
     // console.log('condShards::', condShards)
+    let result = initCondShards({ condShards })
+    // console.log('result::', result)
+
 
     // let shardsCrud = withShardsCrud({ condShards, databases_models })
     // console.log('shardsCrud', shardsCrud)
