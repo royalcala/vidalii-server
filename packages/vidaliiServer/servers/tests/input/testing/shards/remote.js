@@ -1,6 +1,7 @@
+const { url } = require('../../../serversConfig')
 module.exports = ({ typesDB }) => {
     return {
-        url: 'http://admin:admin@localhost:5984',
+        url: url.remote,
         cond: ({ newDoc }) => newDoc.branch === 'remote' ? true : false,
         gql: {
             queries: {},

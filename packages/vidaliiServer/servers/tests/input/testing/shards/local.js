@@ -1,6 +1,7 @@
+const { url } = require('../../../serversConfig')
 module.exports = ({ typesDB }) => {
     return {
-        url: 'http://admin:admin@localhost:4000',
+        url: url.local,
         cond: ({ newDoc }) => newDoc.branch === 'local' ? true : false,
         gql: {
             queries: {},
