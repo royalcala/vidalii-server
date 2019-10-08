@@ -4,19 +4,19 @@ const PouchDBFind = require('pouchdb-find')
 // PouchDB.plugin(PouchDBFind);
 // module.exports = ({ dataBase, schemaTools, schemaValidator }) => async (queryMango) => {
 
-module.exports = ({ db }) => async (data = {}, opt = {}) => {
+module.exports = ({ db }) => async (mangoQuery = {}, opt = {}) => {
     PouchDB.plugin(PouchDBFind)
     try {
         // let query = queryMango === null ? { selector: { _id: { $gte: null } } } : queryMango
         // let query = R.cond([
-        //     [R.has('query'), () => data.query]
-        // ])(data)
+        //     [R.has('query'), () => mangoQuery.query]
+        // ])(mangoQuery)
         // let response = await db.find(query)
-        // console.log('data:::::', data)
+        // console.log('mangoQuery:::::', mangoQuery)
         let response = await R.cond([
-            [R.has('selector'), () => db.find(data)],
+            [R.has('selector'), () => db.find(mangoQuery)],
             [R.T, () => db.find({ selector: { _id: { $gte: null } } })]
-        ])(data)
+        ])(mangoQuery)
         return response.docs
     } catch (err) {
         console.log(err)

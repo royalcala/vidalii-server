@@ -4,14 +4,22 @@ describe('Using databases_models.testing INSERT', () => {
     test('.local.insertOne ', async () => {
         const { vidalii } = await initSever
         let result = await vidalii.databases_models.testing.local.insertOne({ newDoc: { branch: 'local' } })
-        expect(result.ok).toBe(true)
+        let findResult = await vidalii.databases_models.testing.local.find({
+            selector: { _id: { $eq: result._id } }
+        })
+        expect(result._id).toBe(findResult[0]._id)
+        //   expect(result.ok).toBe(true)
     });
 
     test('.remote.insertOne ', async () => {
         const { vidalii } = await initSever
         let result = await vidalii.databases_models
             .testing.remote.insertOne({ newDoc: { branch: 'remote' } })
-        expect(result.ok).toBe(true)
+        let findResult = await vidalii.databases_models.testing.remote.find({
+            selector: { _id: { $eq: result._id } }
+        })
+        expect(result._id).toBe(findResult[0]._id)
+        // expect(result.ok).toBe(true)
     });
 
 })
@@ -38,7 +46,6 @@ describe('Using databases_models.testing FIND', () => {
         // console.log('una query::', result)
         expect(Array.isArray(result)).toBe(true)
     });
-
 
     test('.remote.find with {query:querymangoFormat} parameter', async () => {
         const { vidalii } = await initSever

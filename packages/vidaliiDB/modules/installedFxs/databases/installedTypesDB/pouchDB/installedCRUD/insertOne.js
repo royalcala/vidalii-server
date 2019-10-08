@@ -14,7 +14,7 @@ module.exports = ({ db }) => async ({ newDoc }) => {
                 }
             )]
         ])(newDoc)
-        
+        response._id = response.id
         response._rev = response.rev
         let final = {
             ...newDoc,

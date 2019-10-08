@@ -8,16 +8,36 @@ const initCondShards = ({ condShards }) => R.pipe(
                 insertOne: R.cond([
                     ...condShard.insertOne
                 ]),
-                find: ({ shard = null, ...data }) => R.cond([
-                    [R.equals(null), () => R.pipe(
-                        R.toPairs,
-                        R.map(
-                            async ([nameShard, crudFind]) => {
-                                return await crudFind(data)
-                            }
-                        )
-                    )(condShard.find)]
-                ])(shard)
+                find: async (mangoQuery = {}, opt = {}) => {
+                    const { shards = [] } = opt
+                    return await promise.all(
+                        R.cond([
+                            [//without filter shard
+                                R.isEmpty,
+                                () => R.pipe(
+                                    R.toPairs,
+                                    R.map(
+                                        ([nameShard, crudFind]) => {
+                                            return crudFind(mangoQuery, opt)
+                                        }
+                                    ),
+                                    R.flatten
+                                )(condShard.find)
+                            ],
+                            [//with filter shards
+                                R.T,
+                                R.map(
+                                    (nameShard) => R.ifElse(
+                                        R.has(nameShard),
+                                        () => condShard.find[nameShard](mangoQuery, opt),
+                                        () => []
+                                    )(condShard.find)
+                                ),
+                                R.flatten
+                            ]
+                        ])(shards)
+                    )
+                }
             }
         })
     ),

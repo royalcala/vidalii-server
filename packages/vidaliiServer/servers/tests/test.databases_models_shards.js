@@ -1,10 +1,11 @@
 const initSever = require('./initServers')
 
-describe('IN SHARDS MULTIPLE SHARDS. Using databases_models_shards.testing', () => {
+describe('INSERT MULTIPLE SHARDS. Using databases_models_shards.testing', () => {
     test('.insertOne LOCAL', async () => {
         const { vidalii } = await initSever
         let result = await vidalii.databases_models_shards
             .testing.insertOne({ newDoc: { branch: 'local' } })
+
         expect(result.ok).toBe(true)
     });
 
@@ -16,7 +17,7 @@ describe('IN SHARDS MULTIPLE SHARDS. Using databases_models_shards.testing', () 
     });
 })
 
-describe('IN SHARDS ONE SHARD. Using databases_models_shards.testingnoshards', () => {
+describe('INSERT ONE SHARD. Using databases_models_shards.testingnoshards', () => {
     test('.insertOne LOCAL', async () => {
         const { vidalii } = await initSever
         let result = await vidalii.databases_models_shards
@@ -32,3 +33,16 @@ describe('IN SHARDS ONE SHARD. Using databases_models_shards.testingnoshards', (
     });
 })
 
+
+describe('FIND MULTIPLE SHARD. Using databases_models_shards.testing', () => {
+    test('.find LOCAL', async () => {
+        const { vidalii } = await initSever
+        // let result = await vidalii.databases_models_shards
+        //     .testing.insertOne({ newDoc: { branch: 'local', msg: "with branch local" } })
+        let find = await vidalii.databases_models_shards
+            .testing.find(
+                { selector: { _id: { $gte: null } } }
+            )
+        expect(result.ok).toBe(true)
+    });
+})
