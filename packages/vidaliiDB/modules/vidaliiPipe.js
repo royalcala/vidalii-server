@@ -15,7 +15,6 @@ const execPipe = listFxs => initialValue => {
                     console.log(error)
                     // return new Error("Can't divide by zero")
                 }
-
             },
             initialValue
         )
@@ -31,7 +30,7 @@ const orderedPipe = listFxs => fxs => R.pipe(
     )
 )(listFxs)
 
-module.exports = ({ pipe, fxs }) => {
-    const listFxs = orderedPipe(pipe.fxs)(fxs)
+module.exports = ({ configPipe, fxs }) => {
+    const listFxs = orderedPipe(configPipe.fxs)(fxs)
     return execPipe(listFxs)
 }

@@ -1,28 +1,20 @@
 const R = require('ramda')
-
-const initialization = ({ databases }) => R.pipe(
-    R.toPairs,
-    R.map(
-        ([nameDatabase, shards]) => ({
-            [nameDatabase]: R.pipe(
-                R.toPairs,
-                R.map(
-                    ([nameShard, dataShard]) => ({
-                        [nameShard]: dataShard.typeDB.crud({
-                            url: dataShard.url,
-                            dbName: nameDatabase
-                        })
-                    })
-                ),
-                R.mergeAll
-            )(shards)
-        })
-    ),
-    R.mergeAll
-)(databases)
+const modelsTypes = require('./readInstalled')(__dirname + '/' + 'installedModelsTypes')
 
 module.exports = ({ databases }) => {
-    const init = initialization({ databases })
-    // console.log('models:::', init)
-    return init
+    // const init = initialization({ databases })
+
+    const init = R.pipe(
+        R.toPairs,
+        R.map(
+            ([nameModelType, fxModelType]) => ({
+                [nameModelType]: fxModelType({ databases })
+            })
+        ),
+        R.mergeAll
+    )(modelsTypes)
+    
+    // return init
+
+    return init.simple
 }

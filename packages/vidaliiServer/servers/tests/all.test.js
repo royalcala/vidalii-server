@@ -1,7 +1,7 @@
 const initSever = require('./initServers')
 
 test('Init Local DataBase', async () => {
-    const { ok, vidalii } = await initSever
+    const { ok, vidalii } = await initSever    
     // expect(ok).toBe(true)
     expect(vidalii).toEqual({
         pathToInputs: expect.any(String),
@@ -12,7 +12,7 @@ test('Init Local DataBase', async () => {
         databases_models_shards: expect.any(Object),
         // databases_schema_validation: expect.any(Object)        
     });
-});
+})
 
 require('./test.databases_models')
 

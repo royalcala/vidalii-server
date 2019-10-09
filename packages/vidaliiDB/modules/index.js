@@ -8,7 +8,7 @@ const readInputs = require('./readInputs')
 const readNodes = require('./readNodes')
 // const processLayer = require('./processLayer')
 
-const pipe = require('./pipe.json')
+const configPipe = require('./pipe.json')
 const vidaliiPipe = require('./vidaliiPipe')
 module.exports = ({ pathToInputs }) => {
 
@@ -24,7 +24,7 @@ module.exports = ({ pathToInputs }) => {
     })
 
     const result = vidaliiPipe({
-        pipe,
+        configPipe,
         fxs: readNodes({
             pathToNodes: __dirname + '/installedFxs'
         })
