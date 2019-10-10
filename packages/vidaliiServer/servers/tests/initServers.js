@@ -2,7 +2,7 @@ const express = require('express');
 const PouchDB = require('pouchdb');
 
 
-async function startServer() {    
+async function startServer() {
     var app = express();
     const port = 4000
     try {
@@ -10,7 +10,7 @@ async function startServer() {
         await app.listen(port);
         console.log(`Server start on port ${port}`)
         var vidalii = require('@vidalii/db/modules')({ pathToInputs: __dirname + '/input' })
-       
+        console.log('vidalii,', vidalii)
         return {
             ok: true,
             vidalii,

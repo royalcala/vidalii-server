@@ -10,5 +10,10 @@
         "servers/object.js",
         "servers/resolvers/Query.js",
         "sales"
-    ]
+    ],
+    "events": {
+        "restart": "kill-port 4000",
+        "crash": "kill-port 4000"
+    },
+    "delay": "1500"
 }

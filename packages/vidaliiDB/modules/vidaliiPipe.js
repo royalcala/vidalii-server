@@ -30,7 +30,7 @@ const orderedPipe = listFxs => fxs => R.pipe(
     )
 )(listFxs)
 
-module.exports = ({ configPipe, fxs }) => {
-    const listFxs = orderedPipe(configPipe.fxs)(fxs)
+module.exports = ({ configFxs, fxs }) => {
+    const listFxs = orderedPipe(configFxs.processOrder)(fxs)
     return execPipe(listFxs)
 }

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "testOne": "jest all.test.js",
-    "testOne2":"npm run kill && jest servers/tests/all.test.js",
+    "testModules": "jest servers/tests/modules.test.js",
+    "testCrudDatabase": "npm run kill && jest servers/tests/all.test.js",
     "dev": "nodemon servers",
     "kill": "./killport.sh"
   },
