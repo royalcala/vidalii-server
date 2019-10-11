@@ -35,8 +35,6 @@ module.exports = ({ pathToInputs }) => {
         );
     })
 
-
-
     var methodes = result({ pathToInputs })
 
     describe('installedFxs', () => {

@@ -8,6 +8,7 @@ module.exports = ({ pathToInputs }) => {
         expect(index).toEqual(
             expect.any(Object)
         );
+        ///add expexted minimum (schema, shards)
     })
     return index
 }

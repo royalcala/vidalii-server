@@ -8,13 +8,15 @@ module.exports = ({ databases }) => {
         expect(index).toEqual(
             expect.any(Object)
         );
-        const processData = require('../../index.test.data').get()
-        processData.databases_models.map(
-            x => {
-                // test create data,
-                //get data and check
-            }
-        )
+        
+        // const processData = require('../../index.test.data').get()
+        // console.log('processData::',processData)
+        // processData.databases_models.map(
+        //     x => {
+        //         // test create data,
+        //         //get data and check
+        //     }
+        // )
     })
 
 
