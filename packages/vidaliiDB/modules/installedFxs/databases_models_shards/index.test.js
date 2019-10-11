@@ -2,7 +2,7 @@
 
 module.exports = ({ databases, databases_models }) => {
     const index = require('./index')({
-        input
+        databases, databases_models
     })
     test('databases_models_shards', async () => {
         expect(index).toEqual(

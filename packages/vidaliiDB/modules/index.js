@@ -20,13 +20,15 @@ module.exports = ({ pathToInputs }) => {
     // const nodesTypesComponents = readNodes({
     //     pathToNodes: __dirname + '/installedTypesComponents'
     // })
-
+    console.log('pathToInputs:::',pathToInputs)
+    const fxs = readNodes({
+        pathToNodes: __dirname + '/installedFxs'
+    })
+    console.log('fxs:::',fxs)
     const result = vidaliiPipe({
         configFxs,
-        fxs: readNodes({
-            pathToNodes: __dirname + '/installedFxs'
-        })
-    })    
+        fxs
+    })
     // console.log('result:::', result)
 
 

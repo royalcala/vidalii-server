@@ -1,0 +1,16 @@
+{
+  "name": "routerone",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Roy Alcala Ortiz",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest config_router/all.test.js"
+  },
+  "dependencies": {
+    "@vidalii/db": "^1.0.0"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}

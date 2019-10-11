@@ -4,7 +4,6 @@ module.exports = ({ pathToInputs }) => {
     const index = require('./index')({
         pathToInputs
     })
-    // console.log('index::', index)
     test('input', async () => {
         expect(index).toEqual(
             expect.any(Object)

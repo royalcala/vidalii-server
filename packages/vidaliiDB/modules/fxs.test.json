@@ -1,5 +1,10 @@
 {
     "processOrder": [
-        "input"
+        "input",
+        "schemas",
+        "validation",
+        "databases",
+        "databases_models",
+        "databases_models_shards"
     ]
 }

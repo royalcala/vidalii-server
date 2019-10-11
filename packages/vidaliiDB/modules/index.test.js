@@ -1,13 +1,6 @@
 const fs = require('fs')
 const R = require('ramda')
-// const readModules = require('./readModules')
-// const readComponets = require('./readComponents')
-
-
-
 const readNodes = require('./readInstalled.test.js')
-// const processLayer = require('./processLayer')
-
 const configFxs = require('./fxs.test.json')
 const vidaliiPipe = require('./vidaliiPipe.test')
 
@@ -36,7 +29,7 @@ module.exports = ({ pathToInputs }) => {
     })
 
 
-    test('get a function vidaliiPipe', async () => {
+    test('get a function in vidaliiPipe', async () => {
         expect(result).toEqual(
             expect.any(Function)
         );
@@ -44,12 +37,10 @@ module.exports = ({ pathToInputs }) => {
 
 
 
+    var methodes = result({ pathToInputs })
 
-    //test results
     describe('installedFxs', () => {
-
-        var methodes = result({ pathToInputs })
-
+        //test in result all the installedFxs
         test('resulted of vidaliiPipe({ pathToInputs }) matched with fxs.test.json', async () => {
             expect(
                 Object.keys(methodes)
@@ -59,18 +50,19 @@ module.exports = ({ pathToInputs }) => {
                         'pathToInputs',
                         ...configFxs.processOrder
                     ]
-                //     [
-                //     'pathToInputs',
-                //     'input',
-                //     'schemas',
-                //     'validation',
-                //     'databases',
-                //     'databases_models',
-                //     'databases_models_shards',
-                // ]
+                    //     [
+                    //     'pathToInputs',
+                    //     'input',
+                    //     'schemas',
+                    //     'validation',
+                    //     'databases',
+                    //     'databases_models',
+                    //     'databases_models_shards',
+                    // ]
                 )
             );
         })
 
     })
+    return methodes
 }
