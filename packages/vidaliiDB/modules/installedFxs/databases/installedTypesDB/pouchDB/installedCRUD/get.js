@@ -1,3 +1,3 @@
 module.exports = ({ db }) => async (id) => {
-    return db.get(id)
+    return await db.get(id)
 }

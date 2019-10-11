@@ -8,7 +8,15 @@ const initData = () => {
         }
     }
     return {
-        init: ({ data }) => {
+        init: ({ data }) => {            
+            // test(`example data`, () => {
+            //     expect(data).toEqual(
+            //         expect.objectContaining({
+            //           databases_models: expect.any(Object),
+            //           y: expect.any(Number),
+            //         }),
+            //       );
+            // })
             dataStore = data
         },
         get: () => dataStore
