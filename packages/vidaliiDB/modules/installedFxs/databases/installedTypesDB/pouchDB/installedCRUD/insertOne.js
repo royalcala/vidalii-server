@@ -1,6 +1,6 @@
 const R = require('ramda')
 const uuidv4 = require('uuid/v4')
-module.exports = ({ db }) => async ({ newDoc }) => {
+module.exports = ({ db }) => async (newDoc = {}, options = {}) => {
     try {
         // let resultValidation = validation({ schemaTools, schemaValidator, newDoc })
         // let resultValidation = validatorDoc({ schemaValidator: valueSchema.schema, newDoc })

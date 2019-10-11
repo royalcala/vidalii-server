@@ -11,7 +11,7 @@ module.exports = ({ databases, databases_models }) => R.pipe(
                             ...acc.insertOne,
                             [
                                 dataShard.cond,
-                                databases_models[nameDatabase][nameShard].insertOne
+                                ({ newDoc, options }) => databases_models[nameDatabase][nameShard].insertOne(newDoc, options)
                             ]
                         ],
                         find: {

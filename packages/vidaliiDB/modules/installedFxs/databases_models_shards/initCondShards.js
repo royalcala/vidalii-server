@@ -5,9 +5,9 @@ module.exports = ({ condShards }) => R.pipe(
     R.map(
         ([nameDatabase, condShard]) => ({
             [nameDatabase]: {
-                insertOne: R.cond([
+                insertOne: (newDoc = {}, options = {}) => R.cond([
                     ...condShard.insertOne
-                ]),
+                ])({ newDoc, options }),
                 find: async (mangoQuery = {}, opt = {}) => {
                     const { shardsFilter = [] } = opt
                     let results = await Promise.all(
