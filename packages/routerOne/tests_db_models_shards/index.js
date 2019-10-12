@@ -86,7 +86,7 @@ const find_with_filterShard = [
 ]
 
 
-const databases_models_shards = {
+const db_models_shards = {
     insertOne: [
         ...noID_insertOne,
         ...withID_insertOne
@@ -96,4 +96,4 @@ const databases_models_shards = {
         ...find_with_filterShard
     ]
 }
-module.exports = databases_models_shards                                                                        
+module.exports = db_models_shards                                                                        

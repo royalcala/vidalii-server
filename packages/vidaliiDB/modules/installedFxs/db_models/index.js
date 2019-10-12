@@ -1,7 +1,7 @@
 const R = require('ramda')
 // const modelsTypes = require('./readInstalled')(__dirname + '/' + 'installedModelsTypes')
 
-const initialization = ({ databases }) => R.pipe(
+const initialization = ({ db }) => R.pipe(
     R.toPairs,
     R.map(
         ([nameDatabase, shards]) => ({
@@ -20,17 +20,17 @@ const initialization = ({ databases }) => R.pipe(
         })
     ),
     R.mergeAll
-)(databases)
+)(db)
 
-module.exports = ({ databases }) => {
-    const init = initialization({ databases })
+module.exports = ({ db }) => {
+    const init = initialization({ db })
     return init
 
     // const init = R.pipe(
     //     R.toPairs,
     //     R.map(
     //         ([nameModelType, fxModelType]) => ({
-    //             [nameModelType]: fxModelType({ databases })
+    //             [nameModelType]: fxModelType({ db })
     //         })
     //     ),
     //     R.mergeAll

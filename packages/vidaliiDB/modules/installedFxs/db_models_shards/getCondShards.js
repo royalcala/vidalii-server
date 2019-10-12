@@ -1,5 +1,5 @@
 const R = require('ramda')
-module.exports = ({ databases, databases_models }) => R.pipe(
+module.exports = ({ db, db_models }) => R.pipe(
     R.toPairs,
     R.map(
         ([nameDatabase, dataShards]) => ({
@@ -11,20 +11,20 @@ module.exports = ({ databases, databases_models }) => R.pipe(
                             ...acc.insertOne,
                             [
                                 dataShard.cond,
-                                ({ newDoc, options }) => databases_models[nameDatabase][nameShard].insertOne(newDoc, options)
+                                ({ newDoc, options }) => db_models[nameDatabase][nameShard].insertOne(newDoc, options)
                             ]
                         ],
                         find: {
                             ...acc.find,
-                            [nameShard]: databases_models[nameDatabase][nameShard].find
+                            [nameShard]: db_models[nameDatabase][nameShard].find
                         },
                         get: {
                             ...acc.get,
-                            [nameShard]: databases_models[nameDatabase][nameShard].get
+                            [nameShard]: db_models[nameDatabase][nameShard].get
                         },
                         replaceOne: {
                             ...acc.replaceOne,
-                            [nameShard]: databases_models[nameDatabase][nameShard].replaceOne
+                            [nameShard]: db_models[nameDatabase][nameShard].replaceOne
                         }
                     }),
                     {
@@ -39,4 +39,4 @@ module.exports = ({ databases, databases_models }) => R.pipe(
         })
     ),
     R.mergeAll
-)(databases)
+)(db)

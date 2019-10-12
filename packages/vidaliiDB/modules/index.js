@@ -11,26 +11,13 @@ const readNodes = require('./readInstalled')
 const configFxs = require('./fxs.json')
 const vidaliiPipe = require('./vidaliiPipe')
 module.exports = ({ pathToInputs }) => {
-    // console.log('pipe::', pipe)    
-    // const inputData = readInputs({
-    //     pathToInputs
-    // })
-    // console.log('inputData::', inputData)
-
-    // const nodesTypesComponents = readNodes({
-    //     pathToNodes: __dirname + '/installedTypesComponents'
-    // })
-    console.log('pathToInputs:::',pathToInputs)
     const fxs = readNodes({
         pathToNodes: __dirname + '/installedFxs'
-    })
-    console.log('fxs:::',fxs)
+    })    
     const result = vidaliiPipe({
         configFxs,
         fxs
     })
-    // console.log('result:::', result)
-
 
     return result({
         pathToInputs

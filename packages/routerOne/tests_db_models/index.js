@@ -51,7 +51,7 @@ const noID_insertOne = [
         ]
     }
 ]
-const databases_models = {
+const db_models = {
     insertOne: [
         ...noID_insertOne,
         ...withID_insertOne
@@ -77,4 +77,4 @@ const databases_models = {
     ]
 }
 
-module.exports = databases_models
+module.exports = db_models

@@ -7,20 +7,20 @@ const getCondShards = require('./getCondShards')
 //     console.log('condShards::', condShards)
 //     return ''
 // }
-module.exports = ({ databases, databases_models }) => {
+module.exports = ({ db, db_models }) => {
     // console.log('input::', input)
-    // console.log('databases::', databases)
-    // console.log('databases_models::', databases_models)
+    // console.log('db::', db)
+    // console.log('db_models::', db_models)
 
     // console.log('shardsTypesDB::', shardsTypesDB)
 
-    let condShards = getCondShards({ databases, databases_models })
+    let condShards = getCondShards({ db, db_models })
     // console.log('condShards::', condShards)
     let result = initCondShards({ condShards })
     // console.log('result::', result)
 
 
-    // let shardsCrud = withShardsCrud({ condShards, databases_models })
+    // let shardsCrud = withShardsCrud({ condShards, db_models })
     // console.log('shardsCrud', shardsCrud)
 
 

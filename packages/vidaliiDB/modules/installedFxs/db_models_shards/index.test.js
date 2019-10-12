@@ -1,14 +1,14 @@
 const R = require('ramda')
 
-const test_find = ({ listFinds, databases_models_shards }) => {
+const test_find = ({ listFinds, db_models_shards }) => {
     R.map(
         ({ databaseName, testingData }) =>
             R.map(
                 ({ args: [arg1, arg2 = {}] }) => {
-                    var model = databases_models_shards[databaseName]
+                    var model = db_models_shards[databaseName]
                     test(`${databaseName}.find`, async () => {
                         let findResult = await model.find(arg1, arg2)
-                        expect(R.has('_id', findResult[0])).toBe(true)                        
+                        expect(R.has('_id', findResult[0])).toBe(true)
                     })
 
                 }
@@ -16,12 +16,13 @@ const test_find = ({ listFinds, databases_models_shards }) => {
     )(listFinds)
 }
 
-const test_insertOne = ({ listInserts, databases_models_shards }) => {
+const test_insertOne = ({ listInserts, db_models_shards }) => {
     R.map(
         ({ databaseName, testingData }) =>
             R.map(
                 ({ args: [arg1, arg2 = {}] }) => {
-                    var model = databases_models_shards[databaseName]
+                    var model = db_models_shards[databaseName]
+                    // console.log('db_models_shards::',db_models_shards)
                     test(`${databaseName}.insertOne`, async () => {
                         let result = await model.insertOne(arg1, arg2)
                         //without shardsFilter, search in all db
@@ -46,54 +47,49 @@ const test_insertOne = ({ listInserts, databases_models_shards }) => {
     )(listInserts)
 }
 
-const testCrud = (databases_models_shards) => {
+const testCrud = (db_models_shards) => {
     const processData = require('../../index.test.data').get()
 
-    describe('databases_models_shards CRUD', () => {
-        if (R.hasPath(['databases_models_shards', 'insertOne'], processData)) {
+    describe('db_models_shards CRUD', () => {
+        if (R.hasPath(['db_models_shards', 'insertOne'], processData)) {
             test_insertOne({
-                listInserts: processData.databases_models_shards.insertOne,
-                databases_models_shards
+                listInserts: processData.db_models_shards.insertOne,
+                db_models_shards
             })
         }
-        if (R.hasPath(['databases_models_shards', 'find'], processData)) {
+        if (R.hasPath(['db_models_shards', 'find'], processData)) {
             test_find({
-                listFinds: processData.databases_models_shards.find,
-                databases_models_shards
+                listFinds: processData.db_models_shards.find,
+                db_models_shards
             })
         }
 
 
     })
-
-
-
 }
 
-module.exports = ({ databases, databases_models }) => {
-    test('databases_models_shards Arguments', () => {
-        expect(databases).toEqual(
+module.exports = ({ db, db_models }) => {
+    test('db_models_shards Arguments', () => {
+        expect(db).toEqual(
             expect.any(Object)
         )
-        expect(databases_models).toEqual(
+        expect(db_models).toEqual(
             expect.any(Object)
         )
     })
 
-    const databases_models_shards = require('./index')(
-        { databases, databases_models }
+    const db_models_shards = require('./index')(
+        { db, db_models }
     )
 
-    test('databases_models result', () => {
-        expect(databases_models_shards).toEqual(
+    test('db_models result', () => {
+        expect(db_models_shards).toEqual(
             expect.any(Object)
         );
     })
 
-    testCrud(databases_models_shards)
+    testCrud(db_models_shards)
 
-
-
-    return databases_models_shards
+    return db_models_shards
 
 }
