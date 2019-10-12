@@ -8,36 +8,35 @@ module.exports = ({ condShards }) => R.pipe(
                 insertOne: (newDoc = {}, options = {}) => R.cond([
                     ...condShard.insertOne
                 ])({ newDoc, options }),
-                find: async (mangoQuery = {}, opt = {}) => {
-                    const { shardsFilter = [] } = opt
-                    let results = await Promise.all(
-                        R.cond([
-                            [//without filter shard
-                                R.isEmpty,
-                                () => R.pipe(
-                                    R.toPairs,
-                                    R.map(
-                                        ([nameShard, crudFind]) => {
-                                            return crudFind(mangoQuery, opt)
-                                        }
-                                    ),
-                                    // R.flatten
-                                )(condShard.find)
-                            ],
-                            [//with filter shardsFilter
-                                R.T,
+                find: async (mangoQuery = {}, options = {}) => {
+                    const { shardsFilter = [] } = options
+                    let resultsPromises = R.cond([
+                        [//without filter shard
+                            R.isEmpty,
+                            () => R.pipe(
+                                R.toPairs,
                                 R.map(
-                                    (nameShard) => R.ifElse(
-                                        R.has(nameShard),
-                                        () => condShard.find[nameShard](mangoQuery, opt),
-                                        () => []
-                                    )(condShard.find)
+                                    ([nameShard, crudFind]) => {
+                                        return crudFind(mangoQuery, options)
+                                    }
                                 ),
                                 // R.flatten
-                            ]
-                        ])(shardsFilter)
-                    )
-                    // console.log('results:::', R.flatten(results))
+                            )(condShard.find)
+                        ],
+                        [//with filter shardsFilter
+                            R.T,
+                            R.map(
+                                (nameShard) => R.ifElse(
+                                    R.has(nameShard),
+                                    () => condShard.find[nameShard](mangoQuery, options),
+                                    () => []
+                                )(condShard.find)
+                            ),
+                            // R.flatten
+                        ]
+                    ])(shardsFilter)
+
+                    let results = await Promise.all(resultsPromises)
 
                     return R.flatten(results)
                 }

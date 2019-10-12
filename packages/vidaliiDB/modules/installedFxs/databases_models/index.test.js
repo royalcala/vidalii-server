@@ -3,7 +3,28 @@ var conectTests = {
     testOnlineDB: true
 }
 
-const test_crud_insertOne = ({ listInserts, databases_models }) => {
+const test_find = ({ listFinds, databases_models }) => {
+    R.map(
+        ({ databaseName, testingData }) =>
+            R.map(
+                ({ shardName, args: [arg1, arg2 = {}] }) => {
+                    var model = databases_models[databaseName][shardName]
+                    test(`${databaseName}.${shardName}.find`, async () => {
+                        // let result = await model.find(arg1, arg2)
+                        // let findResult = await model.find({
+                        //     selector: { _id: { $eq: result._id } }
+                        // })
+                        let findResult = await model.find(arg1, arg2)
+                        expect(R.has('_id', findResult[0])).toBe(true)
+                        // expect(result._id).toBe(findResult[0]._id)
+                    })
+
+                }
+            )(testingData)
+    )(listFinds)
+}
+
+const test_insertOne = ({ listInserts, databases_models }) => {
     R.map(
         ({ databaseName, testingData }) =>
             R.map(
@@ -14,6 +35,10 @@ const test_crud_insertOne = ({ listInserts, databases_models }) => {
                         let findResult = await model.find({
                             selector: { _id: { $eq: result._id } }
                         })
+                        // console.log('result::',result)
+                        // console.log('findResult::',findResult)
+                        expect(R.has('_id', result)).toBe(true)
+                        expect(R.has('_id', findResult[0])).toBe(true)
                         expect(result._id).toBe(findResult[0]._id)
                     })
 
@@ -25,10 +50,14 @@ const test_crud_insertOne = ({ listInserts, databases_models }) => {
 const testCrud = (databases_models) => {
     const processData = require('../../index.test.data').get()
 
-    describe('databases_models TEST CRUD', () => {
+    describe('databases_models CRUD', () => {
         if (R.hasPath(['databases_models', 'insertOne'], processData)) {
-            test_crud_insertOne({
+            test_insertOne({
                 listInserts: processData.databases_models.insertOne,
+                databases_models
+            })
+            test_find({
+                listFinds: processData.databases_models.find,
                 databases_models
             })
         }
@@ -37,7 +66,7 @@ const testCrud = (databases_models) => {
 }
 
 const testOnlineDB = (databases_models) => {
-    describe('databases_models online check', () => {
+    describe('databases_models are online db.info()?', () => {
         R.pipe(
             R.toPairs,
             R.map(
