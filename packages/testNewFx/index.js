@@ -73,9 +73,18 @@ const recursive = (newDocNode) => (listNodes) => {
                 [R.is(Function), () => 2],
                 [R.is(Array), () => {
                     // console.log('array value::', value)
-                    // console.log('after=>newDocNode::', newDocNode[key][0])
-                    let n = nextNewDocNodeObject({ key, newDocNode: newDocNode[key][0] })
+                    console.log('after=>newDocNode::', newDocNode[key][0])
+                    // let n = nextNewDocNodeObject({ key, newDocNode: newDocNode[key][0] })
+                    let n
+                    if (newDocNode[key][0]) {
+                        console.log('exist array')
+                        n=newDocNode[key][0]
+                    } else {
+                        console.log('not exist')
+                        n={ _noExist: true }
+                    }
                     console.log(
+                        'array ',
                         'schemaNode:', value[0],
                         '===',
                         'docNode:',
@@ -91,6 +100,7 @@ const recursive = (newDocNode) => (listNodes) => {
                 [R.is(Object), () => {
                     let n = nextNewDocNodeObject({ key, newDocNode })
                     console.log(
+                        'object ',
                         'schemaNode:', value,
                         '===',
                         'docNode:',
