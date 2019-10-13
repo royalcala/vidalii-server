@@ -1,7 +1,7 @@
 const R = require('ramda')
 // const modelsTypes = require('./readInstalled')(__dirname + '/' + 'installedModelsTypes')
 
-const initialization = ({ db }) => R.pipe(
+const initCRUD = ({ db }) => R.pipe(
     R.toPairs,
     R.map(
         ([nameDatabase, shards]) => ({
@@ -23,7 +23,7 @@ const initialization = ({ db }) => R.pipe(
 )(db)
 
 module.exports = ({ db }) => {
-    const init = initialization({ db })
+    const init = initCRUD({ db })
     return init
 
     // const init = R.pipe(

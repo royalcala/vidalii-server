@@ -1,4 +1,4 @@
-const initCondShards = require('./initCondShards')
+const extendCRUD = require('./extendCRUD')
 const getCondShards = require('./getCondShards')
 
 
@@ -16,9 +16,8 @@ module.exports = ({ db, db_models }) => {
 
     let condShards = getCondShards({ db, db_models })
     // console.log('condShards::', condShards)
-    let result = initCondShards({ condShards })
+    let result = extendCRUD({ condShards })
     // console.log('result::', result)
-
 
     // let shardsCrud = withShardsCrud({ condShards, db_models })
     // console.log('shardsCrud', shardsCrud)
