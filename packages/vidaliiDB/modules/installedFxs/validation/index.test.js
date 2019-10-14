@@ -1,18 +1,27 @@
 const validationFxs = require('./readInstalled')(__dirname + '/installedFxs')
 
-module.exports = () => {
-    const index = require('./index')()
 
-    test('validation', async () => {
-        expect(
-            Object.keys(index)
-        ).toEqual(
-            expect.arrayContaining(
-                Object.keys(validationFxs)
+module.exports = () => {
+
+    describe("validation", () => {
+        test('.readinstalledFxs', () => {
+            const index = require('./index')()
+            expect(
+                Object.keys(index)
+            ).toEqual(
+                expect.arrayContaining(
+                    Object.keys(validationFxs)
+                )
             )
-        )
+        })
+
+        require('./installedFxs/validateDoc/index.test')()
+
     })
 
-    return index
+
+
+
+    return require('./index')()
 
 }

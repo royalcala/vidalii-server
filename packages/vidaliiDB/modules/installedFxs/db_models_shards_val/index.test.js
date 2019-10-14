@@ -6,7 +6,7 @@ module.exports = ({ db_models_shards, validation, schemas }) => {
         expect(schemas).toEqual(
             expect.any(Object)
         )
-        console.log('schemas::', schemas)
+        // console.log('schemas::', schemas)
         expect(validation).toEqual(
             expect.any(Object)
         )
