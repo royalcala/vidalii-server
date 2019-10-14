@@ -796,3 +796,6 @@
 [Sat, 12 Oct 2019 23:59:10 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /testing/_find 200
 [Sat, 12 Oct 2019 23:59:10 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /testing/_find 200
 [Sat, 12 Oct 2019 23:59:10 GMT] [info] [<0.000.0>] ::ffff:127.0.0.1 - - POST /testing/_find 200
+[Mon, 14 Oct 2019 01:21:52 GMT] [info] [<0.000.0>] ::1 - - POST /testing/_find 200
+[Mon, 14 Oct 2019 17:26:24 GMT] [info] [<0.000.0>] ::1 - - POST /testing/_find 200
+[Mon, 14 Oct 2019 17:26:24 GMT] [info] [<0.000.0>] ::1 - - POST /testing/_find 200

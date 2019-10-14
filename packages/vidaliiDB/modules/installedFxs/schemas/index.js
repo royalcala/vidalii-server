@@ -2,6 +2,8 @@ const R = require('ramda')
 const fs = require('fs')
 const types = require('./valuesTypes')
 
+//bulid aditional schemas
+//1 required nodes schema, required
 
 const initialization = ({ input }) => R.pipe(
     R.toPairs,
