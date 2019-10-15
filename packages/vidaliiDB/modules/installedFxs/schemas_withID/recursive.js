@@ -1,62 +1,98 @@
 const R = require('ramda')
-// const uuidv4 = require('uuid/v4')
-// const id1 = uuidv4()
-// const fxValuator = (fx, value) => {
-//     return fx(value)
-// }
-// const ifNoTExistInObj1 = [({ valueNextObj1 }) => R.isNil(valueNextObj1), ({ acc }) => acc]
-// const ifExistInObj1 =
-//     ({ acc, valueNextObj1, nameNextObj2, valueNextObj2 }) => ({
-//         ...acc,
-//         [nameNextObj2]: R.cond([
-//             [R.is(Function), () => fxValuator(valueNextObj1, valueNextObj2)],
-//             [R.is(Array), () => {
-//                 return [recursive({
-//                     obj1: valueNextObj1[0],
-//                     obj2: valueNextObj2[0]
-//                 })]
-//             }],
-//             [R.is(Object), () => {
-//                 return recursive({
-//                     obj1: valueNextObj1,
-//                     obj2: valueNextObj2
-//                 })
-//             }]
-//         ])(valueNextObj1)
-//     })
+var globalData = {
+    fx_id: null,
+    fx_rev: null
+}
+const initGlobal = ({ fx_id, fx_rev }) => {
+    globalData.fx_id = fx_id
+    globalData.fx_rev = fx_rev
+}
 
-//
 const addID = schema => R.pipe(
     R.ifElse(
         R.has('_id'),
         x => x,
         x => ({
-            _id: () => '',
+            _id: globalData.fx_id,
             ...x
         })
         // R.assoc('_id', () => '')
     )
 )(schema)
 
-const searchForAddIdInArray = (schema) => R.pipe(
-    R.toPairs,
-    R.reduce(
-        (acc, [nameNextObj, valueNextObj]) => ({
-            ...acc,
-            [nameNextObj]: R.cond([
-                [R.is(Function), () => valueNextObj],
-                [R.is(Array), () => {
-                    return [
-                        addID(searchForAddIdInArray(valueNextObj[0]))
-                    ]
-                }],
-                [R.is(Object), () => {
-                    return searchForAddIdInArray(valueNextObj)
-                }]
-            ])(valueNextObj)
-        }),
-        {})
-)(schema)
+
+
+
+// const next_searchForAddIdInArray = (schema) => R.pipe(
+//     R.toPairs,
+//     R.reduce(
+//         (acc, [nameNextObj, valueNextObj]) => ({
+//             ...acc,
+//             [nameNextObj]: R.cond([
+//                 // [R.is(Function), () => valueNextObj],
+//                 [R.is(Array), () => {
+//                     return [
+//                         addID(searchForAddIdInArray(valueNextObj[0]))
+//                     ]
+//                 }],
+//                 [R.is(Object), () => {
+//                     return searchForAddIdInArray(valueNextObj)
+//                 }]
+//             ])(valueNextObj)
+//         }),
+//         {})
+// )(schema)
+
+const searchForAddIdInArray = (schema) => {
+    // const listSchema = R.toPairs(schema)
+
+    return R.cond([
+        [R.propEq('isNodeType', true), () => schema],
+        [R.T, R.pipe(
+            R.toPairs,
+            R.reduce(
+                (acc, [nameNextObj, valueNextObj]) => ({
+                    ...acc,
+                    [nameNextObj]: R.cond([
+                        // [R.is(Function), () => valueNextObj],
+                        [R.is(Array), () => {
+                            return [
+                                addID(searchForAddIdInArray(valueNextObj[0]))
+                            ]
+                        }],
+                        [R.is(Object), () => {
+                            return searchForAddIdInArray(valueNextObj)
+                        }],
+                        [R.T,
+                        () => valueNextObj
+                        ]
+                    ])(valueNextObj)
+                }),
+                {})
+        )]
+    ])(schema)
+
+    // return R.pipe(
+    //     R.toPairs,
+    //     R.reduce(
+    //         (acc, [nameNextObj, valueNextObj]) => ({
+    //             ...acc,
+    //             [nameNextObj]: R.cond([
+    //                 // [R.is(Function), () => valueNextObj],
+    //                 [R.is(Array), () => {
+    //                     return [
+    //                         addID(searchForAddIdInArray(valueNextObj[0]))
+    //                     ]
+    //                 }],
+    //                 [R.is(Object), () => {
+    //                     return searchForAddIdInArray(valueNextObj)
+    //                 }]
+    //             ])(valueNextObj)
+    //         }),
+    //         {})
+    // )(listSchema)
+}
+
 
 
 const addIdAndRevInRoot = schema => R.pipe(
@@ -64,7 +100,7 @@ const addIdAndRevInRoot = schema => R.pipe(
         R.has('_rev'),
         x => x,
         x => ({
-            _rev: () => '',
+            _rev: globalData.fx_rev,
             ...x
         })
         // R.assoc('_rev', () => '')
@@ -73,14 +109,16 @@ const addIdAndRevInRoot = schema => R.pipe(
         R.has('_id'),
         x => x,
         x => ({
-            _id: () => '',
+            _id: globalData.fx_id,
             ...x
         })
         // R.assoc('_id', () => '')
     )
 )(schema)
 
-module.exports = ({ schema }) => {
+module.exports = ({ schema, fx_id, fx_rev }) => {
+    // console.log('fx_id::', fx_id)
+    initGlobal({ fx_id, fx_rev })
 
     const extendedSchema = R.pipe(
         addIdAndRevInRoot,

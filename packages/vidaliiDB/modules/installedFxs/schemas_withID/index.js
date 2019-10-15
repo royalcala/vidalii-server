@@ -9,7 +9,11 @@ module.exports = ({ schemas, libraries }) => {
         R.toPairs,
         R.map(
             ([nameDb, schemaDb]) => ({
-                [nameDb]: getExtendedSchema({ schema: schemaDb })
+                [nameDb]: getExtendedSchema({
+                    schema: schemaDb,
+                    fx_id: libraries.schema_fxs_types.ID,
+                    fx_rev: libraries.schema_fxs_types.ID
+                })
             })
         ),
         R.mergeAll

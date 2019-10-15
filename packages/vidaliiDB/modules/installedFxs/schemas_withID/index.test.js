@@ -3,7 +3,6 @@ const R = require('ramda')
 var index = null
 module.exports = ({ schemas, libraries }) => {
 
-
     describe('schemas_withID', () => {
         test('Arguments', () => {
             expect(schemas).toEqual(
@@ -27,9 +26,9 @@ module.exports = ({ schemas, libraries }) => {
         test('schemas has More than 0 objects', () => {
             expect(Object.keys(index).length > 0).toEqual(true);
         })
-        console.log(Object.entries(index)[0][1])
+        // console.log(Object.entries(index)[0][1])
 
-        test('First Object  has an _id and _rev field', () => {
+        test('Has added an _id and _rev fields. Test in first Object', () => {
             expect(
                 R.pipe(
                     R.toPairs,
@@ -37,8 +36,8 @@ module.exports = ({ schemas, libraries }) => {
                     ([n, v]) => v
                 )(index)
             ).toEqual(expect.objectContaining({
-                _id: expect.any(Function),
-                _rev: expect.any(Function)
+                _id: expect.objectContaining({ isNodeType: true }),
+                _rev: expect.objectContaining({ isNodeType: true }),
             }))
         })
         // test('Has an _id field', () => {
