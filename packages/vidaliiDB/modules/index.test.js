@@ -39,7 +39,7 @@ module.exports = ({ pathToInputs }) => {
 
     describe('installedFxs', () => {
         //test in result all the installedFxs
-        test('resulted of vidaliiPipe({ pathToInputs }) matched with fxs.test.json', async () => {
+        test('Match of vidaliiPipe({ pathToInputs }) with fxs.test.json', async () => {
             expect(
                 Object.keys(methodes)
             ).toEqual(

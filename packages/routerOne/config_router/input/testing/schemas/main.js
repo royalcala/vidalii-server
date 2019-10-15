@@ -2,8 +2,10 @@
 module.exports = ({ types }) => {
     const { ID, rev, enums, json, string, } = types
     return {
-        _id: ID,
-        _rev: rev,
+        //_id, _rev. Are added in automatic by schema_withID
+        // _id: ID,
+        // _rev: rev,
+        arre: [{ arra: string, arrb: string }],
         idTransaction: ID,
         branch: string,
         msg: string

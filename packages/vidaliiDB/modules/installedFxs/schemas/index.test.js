@@ -1,19 +1,29 @@
 // const pathToInputs = "/home/roy/Documents/desarrollo/proys/vidalii-server/packages/vidaliiServer/servers/inputs"
+var index = null
+module.exports = ({ input, libraries }) => {
 
-module.exports = ({ input }) => {
-    test('schemas arguments', async () => {
-        expect(input).toEqual(
-            expect.any(Object)
-        )
+
+    describe('schemas', () => {
+        test('Arguments', async () => {
+            expect(input).toEqual(
+                expect.any(Object)
+            )
+            expect(libraries).toEqual(
+                expect.any(Object)
+            )
+        })
+        const schemas = require('./index')({
+            input, libraries
+        })
+        index = schemas
+        test('Result', async () => {
+            expect(index).toEqual(expect.any(Object))
+        })
+        test('More than Cero Object', async () => {
+            expect(Object.keys(index).length > 0).toEqual(true)
+        })
     })
-    const index = require('./index')({
-        input
-    })
-    test('schemas result', async () => {
-        expect(index).toEqual(
-            expect.any(Object)
-        );
-    })
+
     return index
 
 }

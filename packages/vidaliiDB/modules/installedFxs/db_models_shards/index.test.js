@@ -68,6 +68,7 @@ const testCrud = (db_models_shards) => {
     })
 }
 
+var db_models_shards = null
 module.exports = ({ db, db_models }) => {
     test('db_models_shards Arguments', () => {
         expect(db).toEqual(
@@ -78,11 +79,14 @@ module.exports = ({ db, db_models }) => {
         )
     })
 
-    const db_models_shards = require('./index')(
-        { db, db_models }
-    )
+
 
     test('db_models result', () => {
+        const index = require('./index')(
+            { db, db_models }
+        )
+        db_models_shards = index
+        
         expect(db_models_shards).toEqual(
             expect.any(Object)
         );

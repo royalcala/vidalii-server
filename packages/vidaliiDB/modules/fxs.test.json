@@ -1,11 +1,8 @@
 {
     "processOrder": [
+        "libraries",
         "input",
         "schemas",
-        "validation",
-        "db",
-        "db_models",
-        "db_models_shards",
-        "db_models_shards_val"
+        "schemas_withID"
     ]
 }

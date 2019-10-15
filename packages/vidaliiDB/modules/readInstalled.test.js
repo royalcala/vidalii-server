@@ -8,9 +8,14 @@ const readNodes = ({ pathToNodes }) => R.pipe(
         // console.log('nameFile::', nameFile)
         let pathName = pathToNodes + '/' + x + '/' + 'index.test.js'
         // console.log('pathName::',pathName)
-        return {
-            [nameFile]: require(pathName)
+        try {
+            return {
+                [nameFile]: require(pathName)
+            }
+        } catch (error) {
+            console.log('NO EXIST THE index.test.js in function:', nameFile)
         }
+
     }),
     R.mergeAll
 )(pathToNodes)

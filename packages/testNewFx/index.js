@@ -99,7 +99,7 @@ function start(schema, newDoc) {
         obj1: schema,
         obj2: newDoc
     })
-    return R.pipe(R.mergeAll)(result)
+    return result
 }
 
 var result = start(schema, newDoc)

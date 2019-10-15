@@ -5,9 +5,9 @@ const execPipe = listFxs => initialValue => {
     return R.pipe(
         R.reduce(
             (acc, { nameFx, fx }) => {
-                // console.log('acc::', acc)
-               
-                try {                   
+                // console.log('acc::', Object.keys(acc))
+
+                try {
                     return {
                         ...acc,
                         [nameFx]: fx(acc)

@@ -93,21 +93,25 @@ const testOnlineDB = (db_models) => {
 
 }
 
+var db_models = null
 module.exports = ({ db }) => {
     test('db_models Arguments', () => {
         expect(db).toEqual(
             expect.any(Object)
         )
     })
-    const db_models = require('./index')({
-        db
-    })
 
     test('db_models result', () => {
+        const index = require('./index')({
+            db
+        })
+        db_models = index
+
         expect(db_models).toEqual(
             expect.any(Object)
         );
     })
+    
     testOnlineDB(db_models)
     if (conectTests.testOnlineDB === true) {
         testCrud(db_models)
