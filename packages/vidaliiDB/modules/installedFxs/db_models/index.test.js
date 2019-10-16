@@ -50,7 +50,7 @@ const test_insertOne = ({ listInserts, db_models }) => {
 const testCrud = (db_models) => {
     const processData = require('../../index.test.data').get()
     // console.log('processData::',processData)
-    describe('db_models CRUD', () => {
+    describe('->CRUD', () => {
         if (R.hasPath(['db_models', 'insertOne'], processData)) {
             test_insertOne({
                 listInserts: processData.db_models.insertOne,
@@ -66,7 +66,7 @@ const testCrud = (db_models) => {
 }
 
 const testOnlineDB = (db_models) => {
-    describe('db_models are online db.info()?', () => {
+    describe('->are online db.info()?', () => {
         R.pipe(
             R.toPairs,
             R.map(
@@ -95,27 +95,46 @@ const testOnlineDB = (db_models) => {
 
 var db_models = null
 module.exports = ({ db }) => {
-    test('db_models Arguments', () => {
-        expect(db).toEqual(
-            expect.any(Object)
-        )
-    })
+    // console.log(db)
+    describe('db_models', () => {
 
-    test('db_models result', () => {
+        test('Arguments', () => {
+            expect(db).toEqual(
+                expect.any(Object)
+            )
+        })
         const index = require('./index')({
             db
         })
         db_models = index
+        test('result Object?', () => {
+            expect(db_models).toEqual(
+                expect.any(Object)
+            )
+        })
+        test('has insertOne() been added?. Test in first element', () => {
+            expect(
+                R.pipe(
+                    R.toPairs,
+                    dbs => dbs[0][1],
+                    R.toPairs,
+                    shards => shards[0][1],
+                )(db_models)
+            ).toEqual(
+                expect.objectContaining({
+                    insertOne: expect.any(Function)
+                    // _rev: expect.objectContaining({ isNodeType: true }),
+                })
+            )
+        })
 
-        expect(db_models).toEqual(
-            expect.any(Object)
-        );
+        testOnlineDB(db_models)
+        if (conectTests.testOnlineDB === true) {
+            testCrud(db_models)
+        }
     })
-    
-    testOnlineDB(db_models)
-    if (conectTests.testOnlineDB === true) {
-        testCrud(db_models)
-    }
+
+
 
 
 

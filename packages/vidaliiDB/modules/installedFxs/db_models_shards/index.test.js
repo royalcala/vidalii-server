@@ -22,7 +22,7 @@ const test_insertOne = ({ listInserts, db_models_shards }) => {
             R.map(
                 ({ args: [arg1, arg2 = {}] }) => {
                     var model = db_models_shards[databaseName]
-                    // console.log('db_models_shards::',db_models_shards)
+                    // console.log('db_models_shards::', db_models_shards)
                     test(`${databaseName}.insertOne`, async () => {
                         let result = await model.insertOne(arg1, arg2)
                         //without shardsFilter, search in all db
@@ -50,7 +50,7 @@ const test_insertOne = ({ listInserts, db_models_shards }) => {
 const testCrud = (db_models_shards) => {
     const processData = require('../../index.test.data').get()
 
-    describe('db_models_shards CRUD', () => {
+    describe('->CRUD', () => {
         if (R.hasPath(['db_models_shards', 'insertOne'], processData)) {
             test_insertOne({
                 listInserts: processData.db_models_shards.insertOne,
@@ -64,36 +64,50 @@ const testCrud = (db_models_shards) => {
             })
         }
 
-
     })
 }
 
-var db_models_shards = null
+var index = null
 module.exports = ({ db, db_models }) => {
-    test('db_models_shards Arguments', () => {
-        expect(db).toEqual(
-            expect.any(Object)
-        )
-        expect(db_models).toEqual(
-            expect.any(Object)
-        )
-    })
+    describe('db_models_shards', () => {
 
-
-
-    test('db_models result', () => {
-        const index = require('./index')(
+        test('Arguments are Objects?', () => {
+            expect(db).toEqual(
+                expect.any(Object)
+            )
+            expect(db_models).toEqual(
+                expect.any(Object)
+            )
+        })
+        const db_models_shards = require('./index')(
             { db, db_models }
         )
-        db_models_shards = index
-        
-        expect(db_models_shards).toEqual(
-            expect.any(Object)
-        );
+        index = db_models_shards
+
+        test('Result is a Object?', () => {
+            expect(index).toEqual(
+                expect.any(Object)
+            )
+        })
+        test('has insertOne() been added?. test in first element', () => {
+            expect(
+                R.pipe(
+                    R.toPairs,
+                    dbs => dbs[0][1],
+                    // R.toPairs,
+                    // shards => shards[0][1],
+                )(index)
+            ).toEqual(
+                expect.objectContaining({
+                    insertOne: expect.any(Function)
+                    // _rev: expect.objectContaining({ isNodeType: true }),
+                })
+            )
+        })
+
+        testCrud(db_models_shards)
     })
 
-    testCrud(db_models_shards)
-
-    return db_models_shards
+    return index
 
 }

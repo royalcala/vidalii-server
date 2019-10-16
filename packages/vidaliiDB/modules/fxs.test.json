@@ -3,6 +3,9 @@
         "libraries",
         "input",
         "schemas",
-        "schemas_withID"
+        "schemas_withID",
+        "db",
+        "db_models",
+        "db_models_shards"
     ]
 }

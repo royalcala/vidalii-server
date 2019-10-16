@@ -2,7 +2,7 @@
 var index = null
 module.exports = ({ input }) => {
     describe('db', () => {
-        test('Arguments', async () => {
+        test('Arguments Object?', async () => {
             expect(input).toEqual(
                 expect.any(Object)
             )
@@ -11,7 +11,8 @@ module.exports = ({ input }) => {
             input
         })
         index = db
-        test('databases result', async () => {
+        // console.log('db::',index)
+        test('result Object?', async () => {
             expect(index).toEqual(
                 expect.any(Object)
             );

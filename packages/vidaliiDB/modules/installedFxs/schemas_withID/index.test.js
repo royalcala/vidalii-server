@@ -35,10 +35,12 @@ module.exports = ({ schemas, libraries }) => {
                     x => x[0],
                     ([n, v]) => v
                 )(index)
-            ).toEqual(expect.objectContaining({
-                _id: expect.objectContaining({ isNodeType: true }),
-                _rev: expect.objectContaining({ isNodeType: true }),
-            }))
+            ).toEqual(
+                expect.objectContaining({
+                    _id: expect.objectContaining({ isNodeType: true }),
+                    _rev: expect.objectContaining({ isNodeType: true }),
+                })
+            )
         })
         // test('Has an _id field', () => {
         //     expect(index).toEqual(expect.objectContaining({

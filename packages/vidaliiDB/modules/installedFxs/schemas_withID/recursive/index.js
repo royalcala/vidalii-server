@@ -20,31 +20,7 @@ const addID = schema => R.pipe(
     )
 )(schema)
 
-
-
-
-// const next_searchForAddIdInArray = (schema) => R.pipe(
-//     R.toPairs,
-//     R.reduce(
-//         (acc, [nameNextObj, valueNextObj]) => ({
-//             ...acc,
-//             [nameNextObj]: R.cond([
-//                 // [R.is(Function), () => valueNextObj],
-//                 [R.is(Array), () => {
-//                     return [
-//                         addID(searchForAddIdInArray(valueNextObj[0]))
-//                     ]
-//                 }],
-//                 [R.is(Object), () => {
-//                     return searchForAddIdInArray(valueNextObj)
-//                 }]
-//             ])(valueNextObj)
-//         }),
-//         {})
-// )(schema)
-
 const searchForAddIdInArray = (schema) => {
-    // const listSchema = R.toPairs(schema)
 
     return R.cond([
         [R.propEq('isNodeType', true), () => schema],
@@ -57,7 +33,9 @@ const searchForAddIdInArray = (schema) => {
                         // [R.is(Function), () => valueNextObj],
                         [R.is(Array), () => {
                             return [
-                                addID(searchForAddIdInArray(valueNextObj[0]))
+                                addID(
+                                    searchForAddIdInArray(valueNextObj[0])
+                                )
                             ]
                         }],
                         [R.is(Object), () => {
@@ -71,26 +49,6 @@ const searchForAddIdInArray = (schema) => {
                 {})
         )]
     ])(schema)
-
-    // return R.pipe(
-    //     R.toPairs,
-    //     R.reduce(
-    //         (acc, [nameNextObj, valueNextObj]) => ({
-    //             ...acc,
-    //             [nameNextObj]: R.cond([
-    //                 // [R.is(Function), () => valueNextObj],
-    //                 [R.is(Array), () => {
-    //                     return [
-    //                         addID(searchForAddIdInArray(valueNextObj[0]))
-    //                     ]
-    //                 }],
-    //                 [R.is(Object), () => {
-    //                     return searchForAddIdInArray(valueNextObj)
-    //                 }]
-    //             ])(valueNextObj)
-    //         }),
-    //         {})
-    // )(listSchema)
 }
 
 
