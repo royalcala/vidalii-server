@@ -1,5 +1,5 @@
 const R = require('ramda')
-const req = require('../requiredOnType')
+// const req = require('../requiredOnType')
 // const formatType = require('../../../shared/graphql.formatType')
 
 
@@ -8,10 +8,10 @@ const condOptions = options => R.cond([
     [R.T, options => options]
 ])(options)
 
-module.exports = (arrayValueOptions, options) => {
+module.exports = ()=>(arrayValueOptions, options) => {
     const initOptions = condOptions(options)
     return {
-        ...req,
+        // ...req,
         fx: ({ nameField, newValue = null }) => {
 
             if (newValue !== null) {

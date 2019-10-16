@@ -11,8 +11,8 @@ module.exports = ({ schemas, libraries }) => {
             ([nameDb, schemaDb]) => ({
                 [nameDb]: getExtendedSchema({
                     schema: schemaDb,
-                    fx_id: libraries.schema_fxs_types.ID,
-                    fx_rev: libraries.schema_fxs_types.ID
+                    fx_id: libraries.schema_types.ID,
+                    fx_rev: libraries.schema_types.ID
                 })
             })
         ),

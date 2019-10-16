@@ -1,10 +1,10 @@
 const R = require('ramda')
-const req = require('../requiredOnType')
+// const req = require('../requiredOnType')
 
 const formatType = require('../../../../../../shared/graphql.formatType')
 
-module.exports = (nameFromField, toTableName, toFieldName) => ({
-    ...req,
+module.exports = ()=>(nameFromField, toTableName, toFieldName) => ({
+    // ...req,
     fx: ({ nameField, newValue = null }) => {
         if (newValue !== null) {
             throw new Error(`

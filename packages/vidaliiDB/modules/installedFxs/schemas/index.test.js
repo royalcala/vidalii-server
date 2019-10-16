@@ -49,6 +49,7 @@ module.exports = ({ input, libraries }) => {
             input, libraries
         })
         index = schemas
+        // console.log(schemas.testing.process)
         test('Result', () => {
             expect(index).toEqual(expect.any(Object))
         })

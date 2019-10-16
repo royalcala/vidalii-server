@@ -2,7 +2,7 @@ const R = require('ramda')
 const fs = require('fs')
 // const types = require('./valuesTypes')
 
-const initialization = ({ input, types }) => R.pipe(
+const initialization = ({ input, schema_types }) => R.pipe(
     R.toPairs,
     R.map(
         ([nameModule, { schemas }]) => {
@@ -10,12 +10,12 @@ const initialization = ({ input, types }) => R.pipe(
                 [nameModule]: R.pipe(
                     R.toPairs,
                     R.reduce(
-                        (acc, [nameSchema, valueSchema]) =>
+                        (acc, [nameSchema, fxLibrariesForSchema]) =>
                             R.mergeDeepLeft(
                                 acc,
                                 R.assocPath(
                                     R.split('.', nameSchema),
-                                    valueSchema({ types }),
+                                    fxLibrariesForSchema({ schema_types }),
                                     {}
                                 )
                             )
@@ -29,7 +29,7 @@ const initialization = ({ input, types }) => R.pipe(
     R.mergeAll
 )(input)
 
-module.exports = ({ input, libraries: { schema_fxs_types } }) => {
-    const init = initialization({ input, types: schema_fxs_types })
+module.exports = ({ input, libraries: { schema_types } }) => {
+    const init = initialization({ input, schema_types })
     return init
 }

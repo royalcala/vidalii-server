@@ -37,30 +37,30 @@ module.exports = ({ pathToInputs }) => {
 
     var methodes = result({ pathToInputs })
 
-    describe('installedFxs', () => {
-        //test in result all the installedFxs
-        test('Match of vidaliiPipe({ pathToInputs }) with fxs.test.json', async () => {
-            expect(
-                Object.keys(methodes)
-            ).toEqual(
-                expect.arrayContaining(
-                    [
-                        'pathToInputs',
-                        ...configFxs.processOrder
-                    ]
-                    //     [
-                    //     'pathToInputs',
-                    //     'input',
-                    //     'schemas',
-                    //     'validation',
-                    //     'databases',
-                    //     'databases_models',
-                    //     'databases_models_shards',
-                    // ]
-                )
-            );
-        })
-
+    
+    //test in result all the installedFxs
+    test('Match of vidaliiPipe({ pathToInputs }) with fxs.test.json', async () => {
+        expect(
+            Object.keys(methodes)
+        ).toEqual(
+            expect.arrayContaining(
+                [
+                    'pathToInputs',
+                    ...configFxs.processOrder
+                ]
+                //     [
+                //     'pathToInputs',
+                //     'input',
+                //     'schemas',
+                //     'validation',
+                //     'databases',
+                //     'databases_models',
+                //     'databases_models_shards',
+                // ]
+            )
+        );
     })
+
+    
     return methodes
 }
