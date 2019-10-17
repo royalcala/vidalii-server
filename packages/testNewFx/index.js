@@ -2,27 +2,105 @@ const R = require('ramda')
 console.clear()
 console.log('start testNewFx')
 
-const add = (b) => (d) => a + b + c + d;
-const curried_add = R.curry(add);
-// const uncurried_add = R.uncurryN(2)
+
+const changeToArrayAllObjects = ({ doc, pointArrayName = '_isArray' }) => {
+
+    const recursive = (schema) => R.pipe(
+        R.toPairs,
+        R.reduce(
+            (acc, [nameNextObj, valueNextObj]) => R.ifElse(
+                R.equals(pointArrayName),
+                () => R.pipe(
+                    R.toPairs,
+                    R.map(
+                        ([k, v]) => recursive(v)
+                    )
+                )(valueNextObj),
+                () => ({
+                    ...acc,
+                    [nameNextObj]: R.cond([
+                        [R.is(Object), () => recursive(valueNextObj)],
+                        [R.T, () => valueNextObj]
+                    ])(valueNextObj)
+                })
+            )(nameNextObj),
+            {})
+    )(schema)
+
+    return recursive(doc)
+}
 
 
+const changeToObjectAllArrays = ({ idName, doc, pointArrayName = '_isArray' }) => {
 
-// const storeOnParams = (store) => (params) => R.pipe(
-//     x => {
-//         store.a = store.a + params
-//     },
-//     x => store
-// )(params)
-// console.log(
-//     storeOnParams({ a: 1 })(10)
-// )
+    const recursive = (schema) => R.pipe(
+        R.toPairs,
+        R.reduce(
+            (acc, [nameNextObj, valueNextObj]) => {
+                return {
+                    ...acc,
+                    [nameNextObj]: R.cond([[
+                        R.is(Array), R.pipe(
+                            R.map(
+                                (oneDoc) => R.ifElse(
+                                    R.has(idName),
+                                    x => ({ [x[idName]]: x }),
+                                    () => {
+                                        throw new Error(`Update Error.
+                                        Doesnt exist idField:${idName} 
+                                        on doc:${JSON.stringify(doc)}
+                                        on row:${JSON.stringify(oneDoc)}`)
+                                    }
+                                )(oneDoc)
+                            ),
+                            R.mergeAll,
+                            o => ({ [pointArrayName]: o }),
+                            recursive
+                        )
+                    ],
+                    [R.is(Object), () => recursive(valueNextObj)],
+                    [R.T, () => valueNextObj]
+                    ])(valueNextObj)
+                }
+            },
+            {})
+    )(schema)
 
-// const a = data => b(1) + 100
+    return recursive(doc)
+}
 
-// const b = data => a(1) + 10
+const updateDocWithID = ({ prevDoc, newDoc, idName }) => {
+    const unFoldPrevDoc = changeToObjectAllArrays({ idName, doc: prevDoc })
+    const unFoldNewDoc = changeToObjectAllArrays({ idName, doc: newDoc })
+    const merged = R.mergeDeepRight(unFoldPrevDoc, unFoldNewDoc)
+    const foldMerged = changeToArrayAllObjects({ doc: merged })
 
+    console.log('unFoldPrevDoc::', unFoldPrevDoc)
+    console.log('unFoldNewDoc::', unFoldNewDoc)
+    console.log('merged:', merged)
+    return foldMerged
+}
 
-// console.log(
-//     b(0)
-// )
+const prevDoc = {
+    _id: 1,
+    a: 1,
+    b: [
+        { _id: 1, a: 1 },
+        { _id: 2, a: 1 },
+        { _id: 3, a: 1, b: 1, sub_b: [{ _id: 1, a: 1, b: 1 }] },
+    ]
+}
+
+const newDoc = {
+    _id: 1,
+    b: [{ _id: 3, a: 2, sub_b: [
+        { _id: 1, a: 2 },
+        { _id: 2, a: 2 }
+    ] }]
+}
+console.log('prevDoc:', prevDoc)
+console.log('newDoc:', newDoc)
+console.log('result:',
+    updateDocWithID({ prevDoc, newDoc, idName: '_id' })
+
+)

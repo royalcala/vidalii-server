@@ -5,7 +5,7 @@ module.exports = () => {
 
     describe('libraries', () => {
 
-        test('schema_types. all are functions?', () => {
+        test('schema_types. Are all functions?', () => {
             const schema_types = require('./installed/schema_types')
             expect(
                 R.all(

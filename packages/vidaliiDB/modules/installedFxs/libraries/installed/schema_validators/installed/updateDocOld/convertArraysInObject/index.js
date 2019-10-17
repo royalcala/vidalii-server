@@ -5,10 +5,6 @@ module.exports = main
 
 function main({ idName, object }) {
     var arrayPaths = []
-
-    // var pivotRoute = []
-    // var parentRoute = null
-    // // var arrayPaths = acumArrayPaths()
     // var arrayPaths = acumArrayPaths()
     return {
         object: objectIterator({ element: object }),
@@ -16,30 +12,11 @@ function main({ idName, object }) {
         arrayPaths
     }
 
-    // function acumArrayPaths() {
-    //     var storeRoutes = []
-    //     return {
-    //         addRoute: route => storeRoutes.push(route),
-    //         getRoutes: storeRoutes
-    //     }
-    // }
-    // function buildRoute() {
-    //     var storeRoute = []
-    //     return {
-    //         addNode: (key) => storeRoute.push(key)
-    //     }
-    // }
-
 
     function objectIterator({ element, concatRoute = [] }) {
         // var historyRoute = []
         return Object.entries(element).reduce(
             (acc, [key, value]) => {
-                // var route = buildRoute()
-                // historyRoute.push(key)
-                // pivotRoute.push(key)
-                // pivotRoute.push(key)
-                // const sourceArray = [1, 2, 3];
                 const newConcatRoute = [...concatRoute, key]
                 let data = R.cond([
                     // [({ transformation }) => R.is(Function, transformation), isFunction],
@@ -48,20 +25,12 @@ function main({ idName, object }) {
                     [R.T, isValue] // the rest types
                 ])({ key, value, idName, newConcatRoute })
                 let result = R.assoc(key, data, acc)
-
-                // arrayPaths.push(pivotRoute)
-                // pivotRoute = []
                 return result
 
 
             }, {})
     }
     function isValue({ key, value, newConcatRoute }) {
-        // pivotRoute.push(...historyRoute)
-        // pivotRoute.push(key)
-        // arrayPaths.push(newConcatRoute)
-
-        // pivotRoute = []
         return value
     }
     function isArray({ key, value, newConcatRoute }) {
@@ -82,23 +51,6 @@ function main({ idName, object }) {
         )
 
         return objectIterator({ element: toObjetID, concatRoute: newConcatRoute })
-
-        // return {
-        //     idName,
-        //     value: value.reduce(
-        //         (acc, actual) => {
-        //             return {
-        //                 ...acc,
-        //                 [actual[idName]]: {
-        //                     ...R.omit([idName], actual)
-        //                 }
-        //             }
-
-        //         }, null
-        //     ),
-
-        // }
-
 
     }
     function isObject({ key, value, newConcatRoute }) {
