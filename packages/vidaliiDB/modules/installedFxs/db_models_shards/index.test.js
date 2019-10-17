@@ -6,7 +6,10 @@ const test_find = ({ listFinds, db_models_shards }) => {
             R.map(
                 ({ args: [arg1, arg2 = {}] }) => {
                     var model = db_models_shards[databaseName]
-                    test(`${databaseName}.find`, async () => {
+                    test(`${databaseName}.find(
+                        arg1:${JSON.stringify(arg1)},
+                        arg2:${JSON.stringify(arg2)}
+                    )`, async () => {
                         let findResult = await model.find(arg1, arg2)
                         expect(R.has('_id', findResult[0])).toBe(true)
                     })
@@ -23,7 +26,10 @@ const test_insertOne = ({ listInserts, db_models_shards }) => {
                 ({ args: [arg1, arg2 = {}] }) => {
                     var model = db_models_shards[databaseName]
                     // console.log('db_models_shards::', db_models_shards)
-                    test(`${databaseName}.insertOne`, async () => {
+                    test(`${databaseName}.insertOne(
+                        arg1:${JSON.stringify(arg1)},
+                        arg2:${JSON.stringify(arg2)}
+                    )`, async () => {
                         let result = await model.insertOne(arg1, arg2)
                         //without shardsFilter, search in all db
                         let findResult = await model.find({

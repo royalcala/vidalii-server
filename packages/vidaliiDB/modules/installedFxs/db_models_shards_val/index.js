@@ -1,10 +1,5 @@
 const R = require('ramda')
 
-
-const validatorSchema = () => {
-
-}
-
 const extendCrud = ({ db_models_shards, validation, schemas }) => R.pipe(
     R.toPairs,
     R.map(
