@@ -5,17 +5,6 @@ module.exports = () => {
 
     describe('libraries', () => {
 
-        test('schema_types. Are all functions?', () => {
-            const schema_types = require('./installed/schema_types')
-            expect(
-                R.all(
-                    ([n, v]) => R.equals('Function', R.type(v))
-                )(
-                    R.toPairs(schema_types)
-                )
-            ).toEqual(true)
-        })
-
         const libraries = require('./index')()
         index = libraries
         test('types and validators exist in libraries and are objects', () => {
@@ -27,8 +16,9 @@ module.exports = () => {
             }))
             // console.log(index)
         })
+        require('./installed/schema_types/index.test')
 
-
+        require('./installed/schema_validators/index.test')
     })
     // console.log('index::',index)
 

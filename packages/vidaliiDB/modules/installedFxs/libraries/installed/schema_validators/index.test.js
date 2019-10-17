@@ -1,27 +1,9 @@
-const validationFxs = require('./readInstalled')(__dirname + '/installedFxs')
+// const validationFxs = require('./readInstalled')(__dirname + '/installedFxs')
+
+describe("schema_validators", () => {
+
+    require('./installed/updateDoc/index.test.js')
 
 
-module.exports = () => {
+})
 
-    describe("validation", () => {
-        test('.readinstalledFxs', () => {
-            const index = require('./index')()
-            expect(
-                Object.keys(index)
-            ).toEqual(
-                expect.arrayContaining(
-                    Object.keys(validationFxs)
-                )
-            )
-        })
-
-        require('./installedFxs/validateDoc/index.test')()
-
-    })
-
-
-
-
-    return require('./index')()
-
-}
