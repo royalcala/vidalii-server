@@ -1,3 +1,5 @@
+console.clear()
+console.log('******Starting index.test.data******')
 const initData = () => {
     var dataStore = {
         databases_models: {
@@ -8,7 +10,7 @@ const initData = () => {
         }
     }
     return {
-        init: ({ data }) => {            
+        init: ({ data }) => {
             // test(`example data`, () => {
             //     expect(data).toEqual(
             //         expect.objectContaining({
