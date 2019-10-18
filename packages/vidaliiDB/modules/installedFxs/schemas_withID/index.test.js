@@ -1,19 +1,16 @@
 // const pathToInputs = "/home/roy/Documents/desarrollo/proys/vidalii-server/packages/vidaliiServer/servers/inputs"
 const R = require('ramda')
 var index = null
-module.exports = ({ schemas, libraries }) => {
+module.exports = ({ schemas, schemaTypes }) => {
 
     describe('schemas_withID', () => {
-        test('Arguments', () => {
-            expect(schemas).toEqual(
-                expect.any(Object)
-            )
-            expect(libraries).toEqual(
-                expect.any(Object)
-            )
+        test('All Arguments are not empty?', () => {
+            expect(R.isEmpty(schemas)).toEqual(false)
+            expect(R.isEmpty(schemaTypes)).toEqual(false)
+
         })
         const schemas_withID = require('./index')({
-            schemas, libraries
+            schemas, schemaTypes
         })
         index = schemas_withID
 

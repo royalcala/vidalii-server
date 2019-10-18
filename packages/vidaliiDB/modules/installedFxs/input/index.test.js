@@ -1,21 +1,23 @@
 // const pathToInputs = "/home/roy/Documents/desarrollo/proys/vidalii-server/packages/vidaliiServer/servers/inputs"
 const fs = require('fs')
+const R = require('ramda')
 var index = ''
 module.exports = ({ pathToInputs }) => {
 
     describe('input', () => {
-        test('Arguments', () => {
+        test('Exist the pathToInputs?', () => {
             expect(fs.existsSync(pathToInputs)).toEqual(true)
         })
-        const input = require('./index')({
+        index = require('./index')({
             pathToInputs
         })
-        index = input
-        test('result', () => {
-            expect(index).toEqual(
-                expect.any(Object)
-            )
+
+        test('is not empty?', () => {
+            expect(
+                R.isEmpty(index)
+            ).toEqual(false)
         })
+
     })
 
     return index

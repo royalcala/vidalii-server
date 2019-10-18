@@ -1,6 +1,6 @@
 // const { ID, rev, string, json, enums } = require('@vidalii/db/schemas/valuesTypes')
-module.exports = ({ schema_types }) => {
-    const { ID, rev, enums, json, string, } = schema_types
+module.exports = ({ schemaTypes }) => {
+    const { ID, rev, enums, json, string, } = schemaTypes
 
     return {
         _id: ID,

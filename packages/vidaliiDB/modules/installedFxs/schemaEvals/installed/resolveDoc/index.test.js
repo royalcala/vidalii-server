@@ -59,10 +59,12 @@ const resultValidation = {
 
 module.exports = () => {
 
-    test('.validateDoc', async () => {
+    test('.resolveDoc', async () => {
         const index = require('./index')(
-            test_schema,
-            test_newDoc
+            {
+                schema: test_schema,
+                newDoc: test_newDoc
+            }
         )
 
         expect(

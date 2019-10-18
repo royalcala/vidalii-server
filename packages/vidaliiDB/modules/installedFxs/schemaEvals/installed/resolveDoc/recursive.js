@@ -45,7 +45,7 @@ const recursive = ({ obj1, obj2 }) => {
 }
 
 
-module.exports = (schema, newDoc) => {
+module.exports = ({schema, newDoc}) => {
     // const {
     //     extend: {
     //         beforeValidate: []

@@ -34,19 +34,19 @@ const recursiveSearch = schema => {
     return has_isNodeType
 }
 var index = null
-module.exports = ({ input, libraries }) => {
+module.exports = ({ input, schemaTypes }) => {
 
     describe('schemas', () => {
         test('Arguments', () => {
             expect(input).toEqual(
                 expect.any(Object)
             )
-            expect(libraries).toEqual(
+            expect(schemaTypes).toEqual(
                 expect.any(Object)
             )
         })
         const schemas = require('./index')({
-            input, libraries
+            input, schemaTypes
         })
         index = schemas
         // console.log(schemas.testing.process)
