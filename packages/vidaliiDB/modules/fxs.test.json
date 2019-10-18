@@ -7,6 +7,7 @@
         "schemas_withID",
         "db",
         "db_models",
+        "transactions",
         "db_models_shards",
         "db_models_shards_val"
     ]
