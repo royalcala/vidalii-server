@@ -7,8 +7,8 @@
         "schemas_withID",
         "db",
         "db_models",
-        "transactions",
         "db_models_shards",
+        "transactions",
         "db_models_shards_val"
     ]
 }

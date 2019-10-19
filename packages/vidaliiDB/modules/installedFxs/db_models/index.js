@@ -1,20 +1,38 @@
 const R = require('ramda')
-// const modelsTypes = require('./readInstalled')(__dirname + '/' + 'installedModelsTypes')
 
-const initCRUD = ({ db }) => R.pipe(
+// manage errors here
+const initEachShardCRUD = ({ dbName }) => R.map(
+    ([shardName, shardConfig]) => {
+        const crud = shardConfig.typeDB.crud({
+            shardConfig,
+            url: shardConfig.url,
+            dbName,
+            shardName
+        })
+        return {
+            [shardName]: {
+                ...crud,
+                insertOne: async (newDoc = {}, options = {}) => {
+                    let result = await crud.insertOne(newDoc, options)
+                    return {
+                        ...result,
+                        db_models: {
+                            shardName
+                        }
+                    }
+                }
+            }
+        }
+    }
+)
+
+const initEachDbCRUD = ({ db }) => R.pipe(
     R.toPairs,
     R.map(
-        ([nameDatabase, shards]) => ({
-            [nameDatabase]: R.pipe(
+        ([dbName, shards]) => ({
+            [dbName]: R.pipe(
                 R.toPairs,
-                R.map(
-                    ([nameShard, dataShard]) => ({
-                        [nameShard]: dataShard.typeDB.crud({
-                            url: dataShard.url,
-                            dbName: nameDatabase
-                        })
-                    })
-                ),
+                initEachShardCRUD({ dbName }),
                 R.mergeAll
             )(shards)
         })
@@ -23,7 +41,7 @@ const initCRUD = ({ db }) => R.pipe(
 )(db)
 
 module.exports = ({ db }) => {
-    const init = initCRUD({ db })
+    const init = initEachDbCRUD({ db })
     return init
 
     // const init = R.pipe(
