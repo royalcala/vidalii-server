@@ -29,18 +29,38 @@ const test_insertOne = ({ listInserts, db_models }) => {
         ({ databaseName, testingData }) =>
             R.map(
                 ({ shardName, args: [arg1, arg2 = {}] }) => {
-                    var model = db_models[databaseName][shardName]
-                    test(`${databaseName}.${shardName}.insertOne`, async () => {
-                        let result = await model.insertOne(arg1, arg2)
-                        let findResult = await model.find({
-                            selector: { _id: { $eq: result._id } }
+                    describe(`${databaseName}.${shardName}.insertOne`, () => {
+                        var model = db_models[databaseName][shardName]
+                        var pointerResult = null
+                        test(`exec(
+                            arg1:${JSON.stringify(arg1)},
+                            arg2:${JSON.stringify(arg2)},
+                            result is correct?, has _id?`, async () => {
+                            let result = await model.insertOne(arg1, arg2)
+                            pointerResult = result
+                            let findResult = await model.find({
+                                selector: { _id: { $eq: result._id } }
+                            })
+                            // console.log('result::', result)
+                            // console.log('findResult::',findResult)
+                            expect(R.has('_id', result)).toBe(true)
+
                         })
-                        // console.log('result::',result)
-                        // console.log('findResult::',findResult)
-                        expect(R.has('_id', result)).toBe(true)
-                        expect(R.has('_id', findResult[0])).toBe(true)
-                        expect(result._id).toBe(findResult[0]._id)
+                        test(`the result has the extendResult of db_model?`, async () => {
+
+                            expect(R.has('extendedResult', pointerResult)).toBe(true)
+                        })
+                        test(`exec model.find to find the result on database`, async () => {
+                            let findResult = await model.find({
+                                selector: { _id: { $eq: pointerResult._id } }
+                            })
+                            expect(R.has('_id', findResult[0])).toBe(true)
+                            expect(pointerResult._id).toBe(findResult[0]._id)
+                        })
+
+
                     })
+
 
                 }
             )(testingData)

@@ -35,8 +35,8 @@ const main = () => {
 
     return {
         getID: crud.getID,
-        insertOne: crud.transaction({ db, type: 'insertOne' }),
-        updateOne: crud.transaction({ db, type: 'updateOne' }),
+        insertOne: crud.transaction({ db, type: 'insertOne', shardName }),
+        updateOne: crud.transaction({ db, type: 'updateOne', shardName }),
         commit: crud.commit({ db }),
         rollback: crud.rollback({ db })
     }

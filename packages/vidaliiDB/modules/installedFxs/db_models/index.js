@@ -1,5 +1,7 @@
 const R = require('ramda')
 
+const extendCrud = require('./extendCrud')
+
 // manage errors here
 const initEachShardCRUD = ({ dbName }) => R.map(
     ([shardName, shardConfig]) => {
@@ -9,18 +11,11 @@ const initEachShardCRUD = ({ dbName }) => R.map(
             dbName,
             shardName
         })
+        console.log('extended::', extendCrud({ crud, shardName }))
         return {
             [shardName]: {
                 ...crud,
-                insertOne: async (newDoc = {}, options = {}) => {
-                    let result = await crud.insertOne(newDoc, options)
-                    return {
-                        ...result,
-                        db_models: {
-                            shardName
-                        }
-                    }
-                }
+                ...extendCrud({ crud, shardName })
             }
         }
     }
