@@ -1,0 +1,13 @@
+{
+  "name": "internaldb",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Roy Alcala Ortiz",
+  "license": "MIT",
+  "scripts":{
+    "dev":"nodemon index.js"
+  },
+  "dependencies": {
+    "pouchdb": "^7.1.1"
+  }
+}
