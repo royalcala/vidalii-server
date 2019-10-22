@@ -1,8 +1,8 @@
 const uuidv4 = require('uuid/v4')
 
-module.exports = ({ db }) => async ({ idTransaction }) => {
+module.exports = ({ dbs }) => async ({ idTransaction }) => {
     try {
-        var response = await db.put({
+        var response = await dbs.transactions.put({
             _id: uuidv4(),
             type: 'commit',
             idTransaction

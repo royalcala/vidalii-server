@@ -1,24 +1,21 @@
-const uuidv4 = require('uuid/v4')
 
-module.exports = ({ db, type }) => async ({ idTransaction, schema, newData, prevData }) => {
-    try {
-        var response = await db.put({
-            _id: uuidv4(),
-            type,
-            schema,
-            //shard: '',
-            idTransaction,
-            prevData: {
-                rev: prevData.rev,
-                doc: prevData.doc,
-            },
-            newData: {
-                rev: newData.rev,
-                doc: newData.doc
-            },
-        });
-        return response
-    } catch (err) {
-        console.log(err);
-    }
+module.exports = async ({ private, public }) => {
+    const { db_cache, type } = private
+    const { idTransaction, shardName, prevData, newData } = public
+    let result = await db_cache.addTransaction({
+        _id: uuidv4(),
+        type,
+        schema,
+        idTransaction,
+        prevData: {
+            rev: prevData.rev,
+            doc: prevData.doc,
+        },
+        newData: {
+            rev: newData.rev,
+            doc: newData.doc
+        }
+    })
+
+
 }

@@ -38,9 +38,6 @@ const test_insertOne = ({ listInserts, db_models }) => {
                             result is correct?, has _id?`, async () => {
                             let result = await model.insertOne(arg1, arg2)
                             pointerResult = result
-                            let findResult = await model.find({
-                                selector: { _id: { $eq: result._id } }
-                            })
                             // console.log('result::', result)
                             // console.log('findResult::',findResult)
                             expect(R.has('_id', result)).toBe(true)
@@ -56,6 +53,13 @@ const test_insertOne = ({ listInserts, db_models }) => {
                             })
                             expect(R.has('_id', findResult[0])).toBe(true)
                             expect(pointerResult._id).toBe(findResult[0]._id)
+                        })
+                        test(`test model.get(id) to get the result on database`, async () => {
+                            let getResult = await model.get(pointerResult._id)
+
+                            expect(R.has('_id', getResult)).toBe(true)
+                            expect(pointerResult._id).toBe(getResult._id)
+                            // expect(pointerResult._id).toBe(findResult[0]._id)
                         })
 
 

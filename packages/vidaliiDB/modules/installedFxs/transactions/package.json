@@ -8,6 +8,9 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
+    "level": "^6.0.0",
+    "leveldown": "^5.4.0",
+    "levelup": "^4.3.2",
     "pouchdb": "^7.1.1",
     "pouchdb-find": "^7.1.1",
     "uuid": "^3.3.3"

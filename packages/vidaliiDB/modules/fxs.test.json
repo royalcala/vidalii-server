@@ -9,6 +9,6 @@
         "db_models",
         "db_models_shards",
         "transactions",
-        "db_models_shards_val"
+        "db_models_shards_eval"
     ]
 }
