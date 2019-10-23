@@ -609,6 +609,15 @@ abstract-leveldown@^6.1.1, abstract-leveldown@~6.2.1:
     level-supports "~1.0.0"
     xtend "~4.0.0"
 
+abstract-leveldown@^6.2.1:
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/abstract-leveldown/-/abstract-leveldown-6.2.2.tgz#677425beeb28204367c7639e264e93ea4b49971a"
+  integrity sha512-/a+Iwj0rn//CX0EJOasNyZJd2o8xur8Ce9C57Sznti/Ilt/cb6Qd8/k98A4ZOklXgTG+iAYYUs1OTG0s1eH+zQ==
+  dependencies:
+    level-concat-iterator "~2.0.0"
+    level-supports "~1.0.0"
+    xtend "~4.0.0"
+
 abstract-leveldown@~6.0.0, abstract-leveldown@~6.0.1:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/abstract-leveldown/-/abstract-leveldown-6.0.3.tgz#b4b6159343c74b0c5197b2817854782d8f748c4a"
@@ -1715,6 +1724,16 @@ encoding-down@^6.2.0:
   integrity sha512-XlIoQMBMbU4aE01uSKpAix0sXBJWK8YPhuOdvKa1CroThZyUpj0zWzt+bbe7g1KWsdhNFFzHkQHSdDymVtpJ1w==
   dependencies:
     abstract-leveldown "^6.1.1"
+    inherits "^2.0.3"
+    level-codec "^9.0.0"
+    level-errors "^2.0.0"
+
+encoding-down@^6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/encoding-down/-/encoding-down-6.3.0.tgz#b1c4eb0e1728c146ecaef8e32963c549e76d082b"
+  integrity sha512-QKrV0iKR6MZVJV08QY0wp1e7vF6QbhnbQhb07bwpEyuz4uZiZgPlEGdkCROuFkUwdxlFaiPIhjyarH1ee/3vhw==
+  dependencies:
+    abstract-leveldown "^6.2.1"
     inherits "^2.0.3"
     level-codec "^9.0.0"
     level-errors "^2.0.0"
@@ -3320,6 +3339,16 @@ level-js@^4.0.0:
     ltgt "^2.1.2"
     typedarray-to-buffer "~3.1.5"
 
+level-js@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/level-js/-/level-js-5.0.0.tgz#ad79d40248634a7517f53f3a1bb94a6127f1d46d"
+  integrity sha512-BIevs/NlfX1DCbuzt8+p2LCumiuDf6IHq5ehktqmcJVRxzfVdc6lXV2FB5cGkTYg4KAr7WfVkeUBAiTgevy19g==
+  dependencies:
+    abstract-leveldown "~6.2.1"
+    immediate "~3.2.3"
+    inherits "^2.0.3"
+    ltgt "^2.1.2"
+
 level-packager@^5.0.0:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/level-packager/-/level-packager-5.0.3.tgz#e22bc9887663d0808ab092453d691bc319b7e5a2"
@@ -3327,6 +3356,14 @@ level-packager@^5.0.0:
   dependencies:
     encoding-down "^6.2.0"
     levelup "^4.2.0"
+
+level-packager@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/level-packager/-/level-packager-5.1.0.tgz#9c01c6c8e2380d3196d61e56bd79c2eff4a9d5c3"
+  integrity sha512-3pbJmDgGvp/lUQNULPoYQZtUbhMI8KoViYDw7Sa0kWl1mPeHWWJF7T/9upWI/NTMuEikkEE/cd6wBvmrW1+ZnQ==
+  dependencies:
+    encoding-down "^6.3.0"
+    levelup "^4.3.2"
 
 level-supports@~1.0.0:
   version "1.0.0"
@@ -3352,6 +3389,16 @@ level@5.0.1:
     leveldown "^5.0.0"
     opencollective-postinstall "^2.0.0"
 
+level@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/level/-/level-6.0.0.tgz#d216fb9b9c3940bcec15c5880d8da775ca086c5c"
+  integrity sha512-3oAi7gXLLNr7pHj8c4vbI6lHkXf35m8qb7zWMrNTrOax6CXBVggQAwL1xnC/1CszyYrW3BsLXsY5TMgTxtKfFA==
+  dependencies:
+    level-js "^5.0.0"
+    level-packager "^5.1.0"
+    leveldown "^5.4.0"
+    opencollective-postinstall "^2.0.0"
+
 leveldown@5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/leveldown/-/leveldown-5.0.2.tgz#c8edc2308c8abf893ffc81e66ab6536111cae92c"
@@ -3371,6 +3418,15 @@ leveldown@^5.0.0:
     napi-macros "~2.0.0"
     node-gyp-build "~4.1.0"
 
+leveldown@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/leveldown/-/leveldown-5.4.0.tgz#fd6731af2c7fd717c878eb05c87c12036e986e93"
+  integrity sha512-uKwfJT+jgXL3mdb3UR/bOaO13VX85R7yGaunK+WJNuGWSoxskp3JgYwFCKfPruulx/bVn2xI7XmyNHVQkVC/Ig==
+  dependencies:
+    abstract-leveldown "~6.2.1"
+    napi-macros "~2.0.0"
+    node-gyp-build "~4.1.0"
+
 levelup@4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/levelup/-/levelup-4.0.2.tgz#bcb8d28d0a82ee97f1c6d00f20ea6d32c2803c5b"
@@ -3381,7 +3437,7 @@ levelup@4.0.2:
     level-iterator-stream "~4.0.0"
     xtend "~4.0.0"
 
-levelup@^4.2.0:
+levelup@^4.2.0, levelup@^4.3.2:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/levelup/-/levelup-4.3.2.tgz#31c5b1b29f146d1d35d692e01a6da4d28fa55ebd"
   integrity sha512-cRTjU4ktWo59wf13PHEiOayHC3n0dOh4i5+FHr4tv4MX9+l7mqETicNq3Aj07HKlLdk0z5muVoDL2RD+ovgiyA==
