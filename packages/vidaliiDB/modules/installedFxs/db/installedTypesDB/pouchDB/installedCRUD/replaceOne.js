@@ -1,17 +1,20 @@
 // const R = require('ramda')
 
-module.exports = ({ db }) => async ({ _id, newDoc }) => {
+module.exports = ({ db }) => async ({ _id, _rev, ...newDoc }, opt = {}) => {
     try {
         // let resultValidation = validation({ schemaTools, schemaValidator, newDoc })
         // let resultValidation = validatorDoc({ schemaValidator: valueSchema.schema, newDoc })
         let response = await db.put({
             _id,
+            _rev,
             ...newDoc
         })
-        response._rev = response.rev
+        // response._rev = response.rev
         let final = {
+            _id,
+            _rev: response.rev,
             ...newDoc,
-            ...response
+
         }
         return final
     } catch (err) {

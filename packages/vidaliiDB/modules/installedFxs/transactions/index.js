@@ -19,6 +19,7 @@ const useDBS = () => {
     // var rollbacked = new PouchDB('./dbs/rollbacked')
     var committed = level('./dbs/committed', { valueEncoding: 'json' })
     var rollbacked = level('./dbs/rollbacked', { valueEncoding: 'json' })
+    var errors = level('./dbs/errors', { valueEncoding: 'json' })
     return {
         dbs: {
             transactions,
@@ -62,11 +63,9 @@ const readTransactionsFromDB = () => new Promise((resolve, reject) => {
         })
 })
 
-
-
-const cacheTransactions = ({ db_models, db_models_shards }) => {
+const cacheTransactions = ({ initialData = {}, db_models, db_models_shards }) => {
     const { dbs } = useDBS()
-    var inMemoryStore = {}
+    var inMemoryStore = initialData
     return {
         addTransaction: ({ idTransaction, ...data }) => {
             const idForDB = uuidv4()
@@ -77,25 +76,18 @@ const cacheTransactions = ({ db_models, db_models_shards }) => {
                 })
             }
             const writeInMemory = () => {
-                const existInMemory = () => {
+                if (inMemoryStore[idTransaction]) {
                     inMemoryStore[idTransaction].push({
                         _id: idForDB,
                         data
                     })
-                }
-                const notExistInMemory = () => {
+                } else {
                     inMemoryStore[idTransaction] = []
                     inMemoryStore[idTransaction].push({
                         _id: idForDB,
                         data
                     })
                 }
-
-                R.ifElse(
-                    R.has(data.idTransaction),
-                    existInMemory,
-                    notExistInMemory
-                )(inMemoryStore)
             }
 
             writeInMemory()
@@ -108,8 +100,36 @@ const cacheTransactions = ({ db_models, db_models_shards }) => {
 
         },
         rollback: ({ idTransaction }) => {
-            //check transaction and in each row, change to previous doc
+            //check transaction in each row, change to previous doc
             //move transactions to one row on db.rollbacked
+            if (inMemoryStore[idTransaction]) {
+                const restoreDoc = (listTransactions) => R.pipe(
+                    R.map(
+                        async ({ _id, db, shardName, prevDoc, newDoc }) => {
+                            let response = await db_models[db][shardName].replaceOne({
+                                ...prevDoc,
+                                _id,
+                                _rev: newDoc._rev,
+                            })
+
+                            return {
+                                _id, db, shardName,
+                                response,
+                                prevDoc,
+                                newDoc
+                            }
+                        }
+                    )
+                )(listTransactions)
+                const backupChanges = ({ idTransaction, listRestores }) => {
+                    dbs.rollbacked.put(idTransaction, listRestores)
+                }
+                restoreDoc(inMemoryStore[idTransaction])
+                backupChanges({ idTransaction, listRestores })
+
+
+            }
+
         },
         onStartServer: () => {
 
@@ -120,7 +140,7 @@ const cacheTransactions = ({ db_models, db_models_shards }) => {
 const addCrudTypes = (cacheTransactions) => {
     return {
         ...cacheTransactions,
-        insertOne: ({ idTransaction, shardName, prevDoc, newDoc }) => cacheTransactions.addTransaction({
+        insertOne: ({ idTransaction, db, shardName, prevDoc, newDoc }) => cacheTransactions.addTransaction({
             typeCRUD: 'insertOne',
             idTransaction, shardName, prevDoc, newDoc
         }),
@@ -144,7 +164,7 @@ var level2 = require('level')
 db = level2('./dbs/test2', { valueEncoding: 'json' })
 
 // 2) Put a key & value
-db.put('name', { a: 1 }, function (err) {
+db.put('name', [{ a: 1 }], function (err) {
     if (err) return console.log('Ooops!', err) // some kind of I/O error
 
     // 3) Fetch by key
@@ -152,7 +172,7 @@ db.put('name', { a: 1 }, function (err) {
         if (err) return console.log('Ooops!', err) // likely the key was not found
 
         // Ta da!
-        console.log('name=' + value.a)
+        console.log('name1=' + value[0].a)
         // console.log('name:', JSON.parse(value.toString()))
     })
 })
@@ -163,13 +183,6 @@ db.get('name', function (err, value) {
     // Ta da!
     console.log('name=' + value)
 })
-
-// db.get('name2').then(a => {
-//     console.log('after promise::', a)
-// }, e => {
-//     console.log('error no encontrado')
-// })
-
 
 
 var store = {}
