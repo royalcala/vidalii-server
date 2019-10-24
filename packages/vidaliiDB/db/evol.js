@@ -1,11 +1,11 @@
 const R = require('ramda')
 
 //fxs [fx,'alias']
-module.exports = (initial, ...fxs) => {
-    var store = { initial }
+module.exports = (...fxs) => {
+    var store = {}
     return R.pipe(
         R.reduce(
-            (accStore, [fx, alias]) => {
+            (accStore, [alias, fx]) => {
                 return {
                     ...accStore,
                     [alias]: fx(accStore)
