@@ -5,6 +5,7 @@ const readNodes = (pathToNodes) => R.pipe(
     R.map(x => {
         let nameFile = R.replace('.js', '', x)
         return {
+            //waring N-API in the require
             [nameFile]: require(pathToNodes + '/' + x)
         }
     }),
