@@ -1,16 +1,16 @@
 const R = require('ramda')
 let n = 10000000
-// testArrays(n)
+testArrays(n)
 // testObject(n)
 // testMaps(n)
-testMaps2()
+// testMaps2()
 function testArrays(n) {
     var posts = []
     // var oData = {}
     const mockData = (number) => {
 
         for (let i = 0; i < number; i++) {
-            posts.push([i, i])
+            posts.push(i)
             // oData[i] = data[i]
         }
         // return data
@@ -23,6 +23,10 @@ function testArrays(n) {
     console.time('posts.length');
     posts.length
     console.timeEnd('posts.length');
+
+    console.time('sort()');
+    posts.sort((a,b)=>a-b);
+    console.timeEnd('sort()');
 
     console.time('posts.find');
     posts.find(function (element) {
@@ -107,6 +111,21 @@ function testObject() {
     mockData(n)
     console.timeEnd('mockDataObject');
 
+    console.time('symbol.iterator')
+    posts[Symbol.iterator] = function () {
+        return {
+            // current: this.from,
+            // last: this.to,
+            next() {
+                // if (this.current <= this.last) {
+                //     return { done: false, value: this.current++ };
+                // } else {
+                //     return { done: true };
+                // }
+            }
+        }
+    }
+    console.timeEnd('symbol.iterator');
 
     console.time('Object.keys(user)');
     Object.keys(posts)
@@ -128,6 +147,14 @@ function testObject() {
     // console.time('Object.fromEntries()');
     // Object.fromEntries(posts)
     // console.timeEnd('Object.fromEntries()');
+
+
+    console.time(' for (key in posts)')
+    let key
+    for (key in posts) {
+        // alert(key + ' => ' + p[key]);
+    }
+    console.timeEnd(' for (key in posts)')
 
 
     var sum = 0;
@@ -164,12 +191,6 @@ function testObject() {
     });
     console.timeEnd('Object.entries(myObj).forEach');
 
-    console.time(' for (key in posts)')
-    let key
-    for (key in posts) {
-        // alert(key + ' => ' + p[key]);
-    }
-    console.timeEnd(' for (key in posts)')
 }
 
 
@@ -198,6 +219,25 @@ function testMaps(n) {
     // mockData2(n)
     // var map2 = new Map(arrays)
     // console.timeEnd('mockDataMap_type2');
+
+    console.time('myMap[Symbol.iterator]()');
+    const mapIter = map[Symbol.iterator]();
+    console.timeEnd('myMap[Symbol.iterator]()');
+
+
+    //mapIter.next().value
+
+    // console.time('mapIterator.next()');
+    // for(let i of mapIter){
+    //     
+    // }
+    // console.timeEnd('mapIterator.next()');
+
+    // console.time('mapIterator');
+    // for(let i of mapIter){
+    //     // mapIter.next().value
+    // }
+    // console.timeEnd('mapIterator');
 
     console.time('map.size');
     map.size

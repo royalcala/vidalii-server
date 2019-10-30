@@ -5,7 +5,9 @@
   "author": "Roy Alcala Ortiz",
   "license": "MIT",
   "dependencies": {
-    "ramda": "^0.26.1"
+    "apollo-server": "^2.9.7",
+    "ramda": "^0.26.1",
+    "uuid": "^3.3.3"
   },
   "scripts": {
     "dev": "nodemon index.js"

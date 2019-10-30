@@ -1,0 +1,22 @@
+{
+  "name": "withbabel",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Roy Alcala",
+  "license": "MIT",
+  "scripts": {
+    "babel": "nodemon --exec babel-node index.js"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
+    "@babel/preset-env": "^7.6.3"
+  },
+  "dependencies": {
+    "babel-plugin-ramda": "^2.0.0",
+    "leveldown": "^5.4.1",
+    "levelup": "^4.3.2",
+    "require-context": "^1.1.0"
+  }
+}
