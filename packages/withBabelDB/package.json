@@ -5,13 +5,16 @@
   "author": "Roy Alcala",
   "license": "MIT",
   "scripts": {
-    "babel": "nodemon --exec babel-node index.js"
+    "babel": "nodemon --exec babel-node index.js",
+    "babel:jest": "babel-jest",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.4",
     "@babel/node": "^7.6.3",
-    "@babel/preset-env": "^7.6.3"
+    "@babel/preset-env": "^7.6.3",
+    "babel-jest": "^24.9.0"
   },
   "dependencies": {
     "babel-plugin-ramda": "^2.0.0",
@@ -19,6 +22,7 @@
     "leveldown": "^5.4.1",
     "levelup": "^4.3.2",
     "lexicographic-integer": "^1.1.0",
+    "node-dir": "^0.1.17",
     "require-context": "^1.1.0"
   }
 }
