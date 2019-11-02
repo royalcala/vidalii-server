@@ -16,7 +16,8 @@ export default ({ i, db, docTest }) => {
             var exist
             try {
                 var response = await db.get(docTest.key)
-                exist = isNil(response)
+                //if not exits throw a error catch
+                exist = true
             } catch (error) {
                 exist = false
             }
