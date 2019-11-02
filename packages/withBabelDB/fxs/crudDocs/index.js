@@ -1,12 +1,7 @@
 import evol from '../../evol'
 import get from './fxs/get'
 import insertOne from './fxs/insertOne'
-
 const fxsToEvol = [
-    [
-        'init',
-        init => init
-    ],
     [
         'get',
         get
@@ -17,14 +12,13 @@ const fxsToEvol = [
     ]
 ]
 
-const evolved = evol(...fxsToEvol)
-export default ({ up_encoded_db: db, crudRev, standarizedResponse }) => {
-    const result = evolved({
-        db,
-        crudRev,
-        standarizedResponse
-    })
+export default ({ up_encoded_db: dbs, standarizedResponse }) => {
+    const initialData = { dbs, standarizedResponse }
+
+    const evolved = evol(...fxsToEvol)(initialData)
+
     return {
-        insertOne,
+        get: evolved.get,
+        insertOne: evolved.insertOne
     }
 }

@@ -2,7 +2,12 @@ import evol from './evol'
 import db from './fxs/db/index.test'
 import encoded_db from './fxs/encoded_db'
 import up_encoded_db from './fxs/up_encoded_db/index.test'
-const fxsToEvol = [
+// import crudDocs from './fxs/crudDocs/index.test'
+
+const fs = require('fs-extra')
+
+
+const getFxs = () => ([
     [
         'config',
         (initialValue) => initialValue,
@@ -30,11 +35,18 @@ const fxsToEvol = [
         'up_encoded_db',
         up_encoded_db
     ],
-]
-
-
-var resultEvol = evol(...fxsToEvol)({
-    alias: 'test1',
+    // [
+    //     'crudDocs',
+    //     crudDocs
+    // ]
+])
+const processEvol = ({ fxs, initialData }) => {
+    var resultEvol = evol(...fxs)(initialData)
+    return resultEvol
+}
+const initialData = () => ({
+    // alias: 'test1',
+    uuid: '591bb671-15a8-4bb8-84ef-5904271745a8',
     env: {
         type: 'node',//browser||node
         encoding: {
@@ -42,7 +54,7 @@ var resultEvol = evol(...fxsToEvol)({
             value: 'json'//must be default and unique in json
         },
         nodeConfig: {
-            pathdb: __dirname + '/data'
+            pathdb: __dirname + '/testingdata'
         },
         browserConfig: {
 
@@ -58,12 +70,29 @@ var resultEvol = evol(...fxsToEvol)({
         byFx: [
             { fx: (doc) => '' }
         ]
-    },
+    }
 })
+const removeDataBase = ({ pathDB }) => {
+    console.log('pathDb::', pathDB)
+    var existPath = fs.existsSync(pathDB)
+    if (existPath) {
+        var removed = fs.removeSync(pathDB + '/')
+        existPath = false
+    }
+    test('database was removed?', () => {
+        expect(existPath).toEqual(false);
+    })
+}
 
 describe('root', () => {
+    removeDataBase({ pathDB: initialData().env.nodeConfig.pathdb })
 
-    test('resultEvol', () => {
-        expect(resultEvol).toEqual(expect.any(Object));
+    var result = processEvol({
+        fxs: getFxs(),
+        initialData: initialData()
     })
+    test('resultEvol is a Object?', () => {
+        expect(result).toEqual(expect.any(Object));
+    })
+
 })

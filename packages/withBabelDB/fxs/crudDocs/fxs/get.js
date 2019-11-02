@@ -1,19 +1,16 @@
-export default ({ init }) => {
-    const { db, standarizedResponse } = init
-
+export default ({ dbs, standarizedResponse }) => {
     return async (_id) => {
         try {
-            var result = await db.docs.get(_id)
-            return standarizedResponse({
-                data: result
+            var response = await db.get(_id)
+            standarizedResponse({
+                data: response
             })
         } catch (error) {
-            return standarizedResponse({
+            standarizedResponse({
                 error: {
-                    msg: error
+                    msg: 'Error on Get/ or Not Found' + error
                 }
             })
         }
-
     }
 }
