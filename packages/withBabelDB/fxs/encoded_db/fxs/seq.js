@@ -11,6 +11,7 @@ export default ({ db, config }) => encode(db.seq, {
         },
         decode: (n) => {
             var toDecode = n.split('!');
+            // console.log('decode:', toDecode)
             return {
                 _idDB: toDecode[0],
                 _seq: lexint.unpack(toDecode[1])

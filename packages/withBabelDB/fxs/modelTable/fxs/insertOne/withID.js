@@ -7,7 +7,7 @@ const responseDuplicated = ({ _id, standarizedResponse }) => {
         }
     })
 }
-const isDuplicatedID = ({ _id, get }) => {
+const isDuplicatedID = async ({ _id, get }) => {
     var duplicatedID = await get(_id)
     if (duplicatedID.error !== null) {
         return true
@@ -16,11 +16,11 @@ const isDuplicatedID = ({ _id, get }) => {
     }
 }
 
-export default data => {
-    var duplicated = isDuplicatedID(data)
+export default async args => {
+    var duplicated = await isDuplicatedID(args)
     if (duplicated === true) {
-        return responseDuplicated(data)
+        return responseDuplicated(args)
     } else {
-        return insertDocAndResponse(data)
+        return insertDocAndResponse(args)
     }
 }

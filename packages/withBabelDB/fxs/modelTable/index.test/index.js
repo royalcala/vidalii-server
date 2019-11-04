@@ -1,11 +1,10 @@
-import crud from '../index'
-// import dbDocsTest from './dbDocs'
-// import dbRevTest from './dbRev'
+import modelTable from '../index'
+import insertOneTests from './insertOne'
 //https://github.com/marak/Faker.js/
-export default ({ up_encoded_db }) => {
+export default ({ up_encoded_db, standarizedResponse }) => {
     var index = null
 
-    describe('fxs.crud', () => {
+    describe('fxs.modelTable', () => {
         test('Arguments?', () => {
             expect(up_encoded_db).toEqual(
                 expect.objectContaining({
@@ -15,34 +14,37 @@ export default ({ up_encoded_db }) => {
                 }),
             );
         })
-        index = crud({ up_encoded_db })
-        test('crud has get, insertOne Functions?', () => {
+        index = modelTable({ up_encoded_db, standarizedResponse })
+        test('modelTable has Functions:get, insertOne?', () => {
             expect(index).toEqual(
                 expect.objectContaining({
-                    get: expect.any(Function),
+                    getDoc: expect.any(Function),
                     insertOne: expect.any(Function)
                 }),
             );
         })
-        // var docsTest = [
-        //     {
-        //         key: 1,
-        //         value: {
-        //             dataString: 'hola',
-        //             dataNumber: 1,
-        //             dataObject: { hola: 1 }
-        //         }
-        //     },
-        //     {
-        //         key: 2,
-        //         value: {
-        //             dataString: 'hola',
-        //             dataNumber: 1,
-        //             dataObject: { hola: 1 }
-        //         }
-        //     }
-        // ]
-        // dbDocsTest({ db: index.docs, docsTest })
+
+
+     
+        var docsTest = [
+            {
+                // _id: 1,
+                string: 'hola im string',
+                number: 11,
+                array: ['1', 2],
+                object: { a: 1 }
+            }
+        ]
+
+        insertOneTests({
+            modelTable: index,
+            docsTest
+        })
+        //insert without ID
+
+
+        //insert with ID
+
         // var revTest = [
         //     {
         //         key: { _id: 1, _rev: 1 },

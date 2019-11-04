@@ -53,7 +53,9 @@ export default ({ config }) => {
     return {
         docs: createdb({ config, name: 'docs' }),
         rev: createdb({ config, name: 'rev' }),
-        seq: createdb({ config, name: 'seq' })
+        seq: createdb({ config, name: 'seq' }),
+        //save which sequence server is it 
+        // log: createdb({ config, name: 'log' })
     }
 
 }

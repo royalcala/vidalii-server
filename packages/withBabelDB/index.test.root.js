@@ -1,8 +1,9 @@
 import evol from './evol'
 import db from './fxs/db/index.test'
+import up_db from './fxs/up_db'
 import encoded_db from './fxs/encoded_db'
 import up_encoded_db from './fxs/up_encoded_db/index.test'
-// import crudDocs from './fxs/crudDocs/index.test'
+import modelTable from './fxs/modelTable/index.test'
 
 const fs = require('fs-extra')
 
@@ -27,6 +28,11 @@ const getFxs = () => ([
         'db',
         db
     ],
+    //only one instance by db is supported with levelup
+    // [
+    //     'up_db',
+    //     up_db
+    // ],
     [
         'encoded_db',
         encoded_db
@@ -35,10 +41,10 @@ const getFxs = () => ([
         'up_encoded_db',
         up_encoded_db
     ],
-    // [
-    //     'crudDocs',
-    //     crudDocs
-    // ]
+    [
+        'modelTable',
+        modelTable
+    ]
 ])
 const processEvol = ({ fxs, initialData }) => {
     var resultEvol = evol(...fxs)(initialData)

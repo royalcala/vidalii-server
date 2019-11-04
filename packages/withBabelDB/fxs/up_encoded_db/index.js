@@ -1,4 +1,5 @@
 
+
 export default ({ encoded_db }) => {
     // console.log(encoded_db)
     var levelup = require('levelup')
