@@ -1,5 +1,5 @@
 const getLastSeq = ({ dbs }) => new Promise((resolve, reject) => {
-    var store
+    var store = 0
     var search = {
         lt: { _seq: 999999999 },
         limit: 1,

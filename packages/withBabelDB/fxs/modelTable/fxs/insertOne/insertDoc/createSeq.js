@@ -8,8 +8,10 @@ export const hasError = ({ sequence }) => equals(true, sequence.error)
 
 export const create = async ({ dbs, seqHelpers }) => {
     var error
+    // await seqHelpers
+    // console.log('seqHelpers.seqCounter.add():', seqHelpers.seqCounter.add())
     var _seq = seqHelpers.seqCounter.add()
-    console.log('seqHelpers:', seqHelpers)
+
     try {
         var response = await dbs.seq.put({ _seq }, {
             // from: ''

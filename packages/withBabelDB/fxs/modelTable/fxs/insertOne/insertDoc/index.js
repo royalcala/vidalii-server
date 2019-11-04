@@ -41,9 +41,9 @@ const revProcess = args => {
     )(args)
 }
 
-export default async ({ _id, dataDoc, get, dbs, standarizedResponse }) => {
+export default async ({ _id, dataDoc, get, dbs, standarizedResponse, seqHelpers }) => {
     var revision = await rev.create({ _id, dataDoc, dbs })
-    console.log('revision::', revision)
-    return revProcess({ revision, _id, dataDoc, get, dbs, standarizedResponse })
+    // console.log('seqHelpers::', await seqHelpers)
+    return revProcess({ revision, _id, dataDoc, get, dbs, standarizedResponse, seqHelpers })
 
 }

@@ -2,11 +2,11 @@ export default ({ dbs, standarizedResponse }) => {
     return async (_id) => {
         try {
             var response = await dbs.docs.get(_id)
-            standarizedResponse({
+            return standarizedResponse({
                 data: response
             })
         } catch (error) {
-            standarizedResponse({
+            return standarizedResponse({
                 error: {
                     msg: 'Error on Get/ or Not Found' + error
                 }

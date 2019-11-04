@@ -6,8 +6,7 @@ import insertWithID from './withID'
 const isIdNull = ({ _id }) => isNil(_id)
 export default ({ dbs, get, standarizedResponse, seqHelpers }) => {
 
-    return async ({ _id = null, ...dataDoc }) => {
-        // console.log('dataDoc::',dataDoc)
+    return async ({ _id = null, ...dataDoc }) => {        
         var response = await ifElse(
             isIdNull,
             insertWithNoID,

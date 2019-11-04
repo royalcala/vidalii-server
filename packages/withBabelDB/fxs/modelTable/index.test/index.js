@@ -2,9 +2,10 @@ import modelTable from '../index'
 import insertOneTests from './insertOne'
 //https://github.com/marak/Faker.js/
 export default ({ up_encoded_db, standarizedResponse }) => {
-    var index = null
+
 
     describe('fxs.modelTable', () => {
+
         test('Arguments?', () => {
             expect(up_encoded_db).toEqual(
                 expect.objectContaining({
@@ -14,8 +15,9 @@ export default ({ up_encoded_db, standarizedResponse }) => {
                 }),
             );
         })
-        index = modelTable({ up_encoded_db, standarizedResponse })
-        test('modelTable has Functions:get, insertOne?', () => {
+
+        test('modelTable has Functions:get, insertOne?', async () => {
+            var index = await modelTable({ up_encoded_db, standarizedResponse })
             expect(index).toEqual(
                 expect.objectContaining({
                     getDoc: expect.any(Function),
@@ -24,9 +26,14 @@ export default ({ up_encoded_db, standarizedResponse }) => {
             );
         })
 
-
-     
-        var docsTest = [
+        var docsNoId = [
+            {
+                // _id: 1,
+                string: 'hola im string',
+                number: 11,
+                array: ['1', 2],
+                object: { a: 1 }
+            },
             {
                 // _id: 1,
                 string: 'hola im string',
@@ -34,13 +41,33 @@ export default ({ up_encoded_db, standarizedResponse }) => {
                 array: ['1', 2],
                 object: { a: 1 }
             }
+
         ]
 
-        insertOneTests({
-            modelTable: index,
-            docsTest
-        })
+        var docsWithId = [
+            {
+                _id: 12,
+                string: 'hola im string1',
+                number: 11,
+                array: ['1', 2],
+                object: { a: 1 }
+            },
+            {
+                _id: 11,
+                string: 'hola im string1',
+                number: 11,
+                array: ['1', 2],
+                object: { a: 1 }
+            }
+        ]
+
         //insert without ID
+        insertOneTests({
+            waitingModelTable: modelTable({ up_encoded_db, standarizedResponse }),
+            docsNoId,
+            docsWithId
+        })
+
 
 
         //insert with ID
@@ -67,6 +94,6 @@ export default ({ up_encoded_db, standarizedResponse }) => {
 
 
     })
-    return index
+    return ''
 
 }

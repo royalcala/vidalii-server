@@ -13,9 +13,9 @@ import insertOne from './fxs/insertOne'
 //     ]
 // ]
 
-export default ({ up_encoded_db: dbs, standarizedResponse }) => {
+export default async ({ up_encoded_db: dbs, standarizedResponse }) => {
     // const initialData = { dbs, standarizedResponse }
-    var init_seqHelpers = seqHelpers({ dbs })
+    var init_seqHelpers = await seqHelpers({ dbs })
     var init_get = getDoc({ dbs, standarizedResponse })
     var init_insertOne = insertOne({
         get: init_get,
