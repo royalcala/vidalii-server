@@ -6,11 +6,11 @@ export const responseError = ({ standarizedResponse }) => standarizedResponse({
         msg: `Error happened creating the document.`
     }
 })
-export const create = async ({ dbs, _id, dataDoc }) => {
+export const create = async ({ dbs, _id, dataToInsert, revision }) => {
     var error
-
+    dataToInsert._rev = revision._rev
     try {
-        var response = await dbs.docs.put(_id, dataDoc)
+        var response = await dbs.docs.put(_id, dataToInsert)
         error = false
     } catch (error) {
         console.log('Error createDocument:', error)

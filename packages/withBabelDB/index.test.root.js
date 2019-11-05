@@ -1,6 +1,6 @@
 import evol from './evol'
 import db from './fxs/db/index.test'
-import up_db from './fxs/up_db'
+// import up_db from './fxs/up_db'
 import encoded_db from './fxs/encoded_db'
 import up_encoded_db from './fxs/up_encoded_db/index.test'
 import modelTable from './fxs/modelTable/index.test'

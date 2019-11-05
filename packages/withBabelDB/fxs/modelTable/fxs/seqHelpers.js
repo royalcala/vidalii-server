@@ -31,7 +31,15 @@ export default async ({ dbs }) => {
                 storeCounter += 1
                 return storeCounter
             },
-            get: () => storeCounter
+            get: () => storeCounter,
+            // recheck: async ({ _seq }) => {
+            //     try {
+            //         var response = await dbs.seq.get(_seq) 
+            //     } catch (error) {
+                    
+            //     }
+               
+            // }
         }
 
     }

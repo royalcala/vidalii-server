@@ -1,10 +1,12 @@
 console.clear()
 console.log('on testing fx')
-const inMemory = {}
-const a = {
-    b: 1
-}
+var id = '111-111-111-1111'
+var rev = '1'
+var store = {}
 
-
-inMemory[a.b]=[]
-inMemory[a.b].push({data:1})
+store[`${id}!${rev}`] = 'inProcess'
+console.log(store)
+console.log(store.hasOwnProperty(`${id}!${rev}`))
+delete store[`${id}!${rev}`]
+console.log(store)
+console.log(store.hasOwnProperty(`${id}!${rev}`))

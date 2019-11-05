@@ -1,4 +1,4 @@
-import insertDocAndResponse from './insertDoc'
+import insertDocAndResponse from './insertProcess'
 
 const responseDuplicated = ({ _id, standarizedResponse }) => {
     return standarizedResponse({
@@ -7,9 +7,9 @@ const responseDuplicated = ({ _id, standarizedResponse }) => {
         }
     })
 }
-const isDuplicatedID = async ({ _id, get }) => {
+const isDuplicatedID = async ({ _id, getDoc }) => {
     // console.log('get::',get)
-    var duplicatedID = await get(_id)
+    var duplicatedID = await getDoc(_id)
     // console.log('duplicatedID::', duplicatedID)
 
     if (duplicatedID.error === null) {

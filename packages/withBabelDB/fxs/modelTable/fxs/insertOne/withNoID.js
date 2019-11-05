@@ -1,4 +1,4 @@
-import insertDocAndResponse from './insertDoc'
+import insertDocAndResponse from './insertProcess'
 const uuidv1 = require('uuid/v1');
 const create_id = () => {
     return uuidv1()
