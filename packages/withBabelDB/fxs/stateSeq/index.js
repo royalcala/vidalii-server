@@ -23,8 +23,10 @@ const getLastSeq = ({ dbs }) => new Promise((resolve, reject) => {
 
 })
 
-export default async ({ dbs }) => {
+export default async ({ db_encode_up: dbs }) => {
+    // console.log('in stateSeq')
     var storeCounter = await getLastSeq({ dbs })
+    // console.log('storeCounter:',storeCounter)
     return {
         seqCounter: {
             add: () => {
@@ -36,9 +38,9 @@ export default async ({ dbs }) => {
             //     try {
             //         var response = await dbs.seq.get(_seq) 
             //     } catch (error) {
-                    
+
             //     }
-               
+
             // }
         }
 

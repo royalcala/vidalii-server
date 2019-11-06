@@ -4,14 +4,14 @@ import insertWithID from './withID'
 
 
 const isIdNull = ({ _id }) => isNil(_id)
-export default ({ dbs, getDoc, standarizedResponse, seqHelpers }) => {
+export default ({ dbs, getDoc, standarizedResponse, stateSeq }) => {
 
     return async ({ _id = null, ...dataToInsert }) => {
         var response = await ifElse(
             isIdNull,
             insertWithNoID,
             insertWithID
-        )({ _id, dataToInsert, dbs, getDoc, standarizedResponse, seqHelpers })
+        )({ _id, dataToInsert, dbs, getDoc, standarizedResponse, stateSeq })
         return response
     }
 }

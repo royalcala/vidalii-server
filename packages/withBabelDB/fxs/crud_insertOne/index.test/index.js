@@ -1,4 +1,4 @@
-import modelTable from '../index'
+import crud_insertOne from '../index'
 
 //https://github.com/marak/Faker.js/
 
@@ -13,16 +13,16 @@ const fakeData = (obj, times, fxToChange) => {
     return finalData
 }
 
-export default async ({ up_encoded_db, standarizedResponse }) => {
+export default async ({ db_encode_up, standarizedResponse, stateSeq, stateRev, crud_get }) => {
 
     var index
-    describe('fxs.modelTable', () => {
+    describe('fxs.crud_insertOne', () => {
 
         beforeAll(async () => {
-            index = await modelTable({ up_encoded_db, standarizedResponse })
+            index = await crud_insertOne({ db_encode_up, standarizedResponse, stateSeq, crud_get })
         });
         test('Arguments?', () => {
-            expect(up_encoded_db).toEqual(
+            expect(db_encode_up).toEqual(
                 expect.objectContaining({
                     docs: expect.any(Object),
                     rev: expect.any(Object),
@@ -31,15 +31,15 @@ export default async ({ up_encoded_db, standarizedResponse }) => {
             );
         })
 
-        test('modelTable has Functions:get, insertOne?', () => {
-            // 
-            expect(index).toEqual(
-                expect.objectContaining({
-                    getDoc: expect.any(Function),
-                    insertOne: expect.any(Function)
-                }),
-            );
-        })
+        // test('crud_insertOne has Functions:get, insertOne?', () => {
+        //     // 
+        //     expect(index).toEqual(
+        //         expect.objectContaining({
+        //             getDoc: expect.any(Function),
+        //             insertOne: expect.any(Function)
+        //         }),
+        //     );
+        // })
         var seq = 0
         describe('.insertOne', () => {
             describe('withNoId', () => {
@@ -54,7 +54,7 @@ export default async ({ up_encoded_db, standarizedResponse }) => {
                     '%#',
                     async (obj) => {
                         // console.log(obj)
-                        var inserted = await index.insertOne(obj)
+                        var inserted = await index(obj)
                         // console.log('inserted:', inserted.data._seq)
                         expect(inserted.error).toEqual(null)
                         seq += 1
@@ -82,7 +82,7 @@ export default async ({ up_encoded_db, standarizedResponse }) => {
                     '%#',
                     async (obj) => {
                         // console.log(obj)
-                        var inserted = await index.insertOne(obj)
+                        var inserted = await index(obj)
                         // console.log('inserted:', inserted.data._seq)
                         expect(inserted.error).toEqual(null)
                         seq += 1
@@ -112,7 +112,7 @@ export default async ({ up_encoded_db, standarizedResponse }) => {
                     '%#',
                     async (obj) => {
                         // console.log(obj)
-                        var inserted = await index.insertOne(obj)
+                        var inserted = await index(obj)
                         // console.log('inserted:', inserted)
                         expect(inserted.error).not.toEqual(null)
                     })

@@ -1,14 +1,14 @@
-import up_encoded_db from '../index'
+import db_encode_up from '../index'
 import dbDocsTest from './dbDocs'
 import dbRevTest from './dbRev'
 import dbSeqTest from './dbSeq'
 //https://github.com/marak/Faker.js/
-export default ({ encoded_db }) => {
+export default ({ db_encode }) => {
     var index = null
 
-    describe('fxs.up_encoded_db', () => {
+    describe('fxs.db_encode_up', () => {
         test('Arguments?', () => {
-            expect(encoded_db).toEqual(
+            expect(db_encode).toEqual(
                 expect.objectContaining({
                     docs: expect.any(Object),
                     rev: expect.any(Object),
@@ -16,8 +16,8 @@ export default ({ encoded_db }) => {
                 }),
             );
         })
-        index = up_encoded_db({ encoded_db })
-        test('up_encoded_db is a object?', () => {
+        index = db_encode_up({ db_encode })
+        test('db_encode_up is a object?', () => {
             expect(index).toEqual(
                 expect.objectContaining({
                     docs: expect.any(Object),

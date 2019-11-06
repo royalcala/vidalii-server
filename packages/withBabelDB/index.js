@@ -1,8 +1,8 @@
 import evol from './evol'
 import { cond, equals } from 'ramda'
 import db from './fxs/db'
-import encoded_db from './fxs/encoded_db'
-import up_encoded_db from './fxs/up_encoded_db'
+import db_encode from './fxs/db_encode'
+import db_encode_up from './fxs/db_encode_up'
 
 // import hola from './src'
 // import data1 from './src/data1'
@@ -13,7 +13,7 @@ console.clear()
 console.log('Screen cleaned. In WithBabel')
 const test_db = [
     'test_db',
-    ({ up_encoded_db: db }) => {
+    ({ db_encode_up: db }) => {
         // test_seq()
         test_rev()
         function test_docs() {
@@ -164,12 +164,12 @@ const fxsToEvol = [
         db
     ],
     [
-        'encoded_db',
-        encoded_db
+        'db_encode',
+        db_encode
     ],
     [
-        'up_encoded_db',
-        up_encoded_db
+        'db_encode_up',
+        db_encode_up
     ],
     [
         'crudRev',

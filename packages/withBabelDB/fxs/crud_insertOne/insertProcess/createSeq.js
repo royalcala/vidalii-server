@@ -6,11 +6,11 @@ export const responseError = ({ standarizedResponse }) => standarizedResponse({
 })
 export const hasError = ({ sequence }) => equals(true, sequence.error)
 
-export const create = async ({ dbs, seqHelpers }) => {
+export const create = async ({ dbs, stateSeq }) => {
     var error
-    // await seqHelpers
-    // console.log('seqHelpers.seqCounter.add():', seqHelpers.seqCounter.add())
-    var _seq = seqHelpers.seqCounter.add()
+    // await stateSeq
+    // console.log('stateSeq.seqCounter.add():', stateSeq.seqCounter.add())
+    var _seq = stateSeq.seqCounter.add()
 
     try {
         var response = await dbs.seq.put({ _seq }, {

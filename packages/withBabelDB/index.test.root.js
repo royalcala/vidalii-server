@@ -1,9 +1,11 @@
 import evol from './evol'
 import db from './fxs/db/index.test'
 // import up_db from './fxs/up_db'
-import encoded_db from './fxs/encoded_db'
-import up_encoded_db from './fxs/up_encoded_db/index.test'
-import modelTable from './fxs/modelTable/index.test'
+import db_encode from './fxs/db_encode'
+import db_encode_up from './fxs/db_encode_up/index.test'
+import stateSeq from './fxs/stateSeq'
+import crud_get from './fxs/crud_get'
+import crud_insertOne from './fxs/crud_insertOne/index.test'
 
 const fs = require('fs-extra')
 
@@ -34,16 +36,24 @@ const getFxs = () => ([
     //     up_db
     // ],
     [
-        'encoded_db',
-        encoded_db
+        'db_encode',
+        db_encode
     ],
     [
-        'up_encoded_db',
-        up_encoded_db
+        'db_encode_up',
+        db_encode_up
     ],
     [
-        'modelTable',
-        modelTable
+        'stateSeq',
+        stateSeq
+    ],
+    [
+        'crud_get',
+        crud_get
+    ],
+    [
+        'crud_insertOne',
+        crud_insertOne
     ]
 ])
 const processEvol = ({ fxs, initialData }) => {
