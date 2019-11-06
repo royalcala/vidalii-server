@@ -1,5 +1,3 @@
-import crud_insertOne from '../index'
-
 //https://github.com/marak/Faker.js/
 
 const fakeData = (obj, times, fxToChange) => {
@@ -13,23 +11,23 @@ const fakeData = (obj, times, fxToChange) => {
     return finalData
 }
 
-export default async ({ db_encode_up, standarizedResponse, stateSeq, stateRev, crud_get }) => {
-
-    var index
+export default ({ crud_insertOne, stateSeq }) => {
+    var oSeq
     describe('fxs.crud_insertOne', () => {
 
         beforeAll(async () => {
-            index = await crud_insertOne({ db_encode_up, standarizedResponse, stateSeq, crud_get })
+            const { seqCounter } = await stateSeq
+            oSeq = seqCounter
         });
-        test('Arguments?', () => {
-            expect(db_encode_up).toEqual(
-                expect.objectContaining({
-                    docs: expect.any(Object),
-                    rev: expect.any(Object),
-                    seq: expect.any(Object),
-                }),
-            );
-        })
+        // test('Arguments?', () => {
+        //     expect(db_encode_up).toEqual(
+        //         expect.objectContaining({
+        //             docs: expect.any(Object),
+        //             rev: expect.any(Object),
+        //             seq: expect.any(Object),
+        //         }),
+        //     );
+        // })
 
         // test('crud_insertOne has Functions:get, insertOne?', () => {
         //     // 
@@ -54,11 +52,12 @@ export default async ({ db_encode_up, standarizedResponse, stateSeq, stateRev, c
                     '%#',
                     async (obj) => {
                         // console.log(obj)
-                        var inserted = await index(obj)
+                        var inserted = await crud_insertOne(obj)
                         // console.log('inserted:', inserted.data._seq)
                         expect(inserted.error).toEqual(null)
                         seq += 1
-                        expect(inserted.data._seq).toEqual(seq)
+                        expect(inserted.data._seq).toEqual(oSeq.get())
+                        expect(seq).toEqual(oSeq.get())
                     })
 
             })
@@ -82,11 +81,12 @@ export default async ({ db_encode_up, standarizedResponse, stateSeq, stateRev, c
                     '%#',
                     async (obj) => {
                         // console.log(obj)
-                        var inserted = await index(obj)
+                        var inserted = await crud_insertOne(obj)
                         // console.log('inserted:', inserted.data._seq)
                         expect(inserted.error).toEqual(null)
                         seq += 1
-                        expect(inserted.data._seq).toEqual(seq)
+                        expect(inserted.data._seq).toEqual(oSeq.get())
+                        expect(seq).toEqual(oSeq.get())
                     })
             })
 
@@ -112,7 +112,7 @@ export default async ({ db_encode_up, standarizedResponse, stateSeq, stateRev, c
                     '%#',
                     async (obj) => {
                         // console.log(obj)
-                        var inserted = await index(obj)
+                        var inserted = await crud_insertOne(obj)
                         // console.log('inserted:', inserted)
                         expect(inserted.error).not.toEqual(null)
                     })
@@ -120,6 +120,5 @@ export default async ({ db_encode_up, standarizedResponse, stateSeq, stateRev, c
 
         })
     })
-    return index
 
 }

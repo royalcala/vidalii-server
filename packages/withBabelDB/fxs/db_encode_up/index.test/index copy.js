@@ -1,9 +1,31 @@
+import db_encode_up from '../index'
 import dbDocsTest from './dbDocs'
 import dbRevTest from './dbRev'
 import dbSeqTest from './dbSeq'
 //https://github.com/marak/Faker.js/
-export default ({ db_encode_up }) => {
+export default ({ db_encode }) => {
+    var index = null
+
     describe('fxs.db_encode_up', () => {
+        test('Arguments?', () => {
+            expect(db_encode).toEqual(
+                expect.objectContaining({
+                    docs: expect.any(Object),
+                    rev: expect.any(Object),
+                    seq: expect.any(Object),
+                }),
+            );
+        })
+        index = db_encode_up({ db_encode })
+        test('db_encode_up is a object?', () => {
+            expect(index).toEqual(
+                expect.objectContaining({
+                    docs: expect.any(Object),
+                    rev: expect.any(Object),
+                    seq: expect.any(Object),
+                }),
+            );
+        })
         var docsTest = [
             {
                 key: 1,
@@ -22,7 +44,7 @@ export default ({ db_encode_up }) => {
                 }
             }
         ]
-        dbDocsTest({ db: db_encode_up.docs, docsTest })
+        dbDocsTest({ db: index.docs, docsTest })
 
         var revTest = [
             {
@@ -42,7 +64,7 @@ export default ({ db_encode_up }) => {
                 }
             }
         ]
-        dbRevTest({ db: db_encode_up.rev, docsTest: revTest })
+        dbRevTest({ db: index.rev, docsTest: revTest })
 
 
         var seqTest = [
@@ -63,9 +85,10 @@ export default ({ db_encode_up }) => {
                 }
             }
         ]
-        dbSeqTest({ db: db_encode_up.seq, docsTest: seqTest })
+        dbSeqTest({ db: index.seq, docsTest: seqTest })
 
 
     })
- 
+    return index
+
 }
