@@ -1,21 +1,11 @@
-import { ifElse, isNil } from 'ramda'
-import insertWithNoID from './withNoID'
-import insertWithID from './withID'
+import process from './process'
 
-const isIdNull = ({ _id }) => isNil(_id)
-export default ({ stateSeq, ...otherArgs }) => {
+export default ({ db_encode_up, stateRev, stateSeq, standarizedResponse, crud_get }) => {
 
-    return async ({ _id = null, ...dataToInsert }) => {
-        var init_stateSeq = await stateSeq
-        var response = await ifElse(
-            isIdNull,
-            insertWithNoID,
-            insertWithID
-        )({
-            _id, dataToInsert,
-            ...otherArgs,
-            stateSeq: init_stateSeq
-        })
-        return response
-    }
+    return process({
+        db_encode_up, stateRev,
+        stateSeq, standarizedResponse,
+        crud_get
+    })
+
 }

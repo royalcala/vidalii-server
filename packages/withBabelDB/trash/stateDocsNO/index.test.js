@@ -13,20 +13,20 @@ const fakeData = (obj, times, fxToChange) => {
 
 export default [
     [
-        'crud_insertOne_test1',
-        ({ crud_insertOne, stateSeq }) => {
-            describe('crud_insertOne', () => {
+        'stateDocs_test1',
+        ({ stateDocs, stateSeq }) => {
+            describe('stateDocs', () => {
                 var seqCounter
                 beforeAll(async () => {
                     const init1 = await stateSeq
                     seqCounter = init1.seqCounter
                 });
-                // test('has methods: insertOne?', () => {
-                //     expect(
-                //         Object.keys(crud_insertOne)
-                //     ).toEqual(expect.arrayContaining(['insertOne']))
+                test('has methods: insertOne?', () => {
+                    expect(
+                        Object.keys(stateDocs)
+                    ).toEqual(expect.arrayContaining(['insertOne']))
 
-                // })
+                })
                 describe('withNoId', () => {
                     var docsNoId = fakeData({
                         string: 'hola im string1',
@@ -39,7 +39,7 @@ export default [
                         '%#',
                         async (obj) => {
                             // console.log(obj)
-                            var inserted = await crud_insertOne(obj)
+                            var inserted = await stateDocs.insertOne(obj)
                             // console.log('inserted:', inserted.data._seq)
                             expect(inserted.error).toEqual(null)
                             expect(inserted.data._seq).toEqual(
@@ -72,7 +72,7 @@ export default [
                         '%#',
                         async (obj) => {
                             // console.log(obj)
-                            var inserted = await crud_insertOne(obj)
+                            var inserted = await stateDocs.insertOne(obj)
                             // console.log('inserted:', inserted.data._seq)
                             expect(inserted.error).toEqual(null)
                             expect(inserted.data._seq).toEqual(
@@ -98,19 +98,19 @@ export default [
                             array: ['1', 2],
                             object: { a: 1 }
                         }
-
+    
                     ]
                     test.each(docswithErrorDuplicatedID)(
                         '%#',
                         async (obj) => {
                             // console.log(obj)
-                            var inserted = await crud_insertOne(obj)
+                            var inserted = await stateDocs.insertOne(obj)
                             // console.log('inserted:', inserted)
                             expect(inserted.error).not.toEqual(null)
                         })
                 })
                 // test('.insertOne(withNoId)', async () => {
-                //     var response = await crud_insertOne.insertOne({ string: 'string1' })
+                //     var response = await stateDocs.insertOne({ string: 'string1' })
 
                 //     expect(
                 //         response.error
@@ -123,7 +123,7 @@ export default [
 
                 // })
                 // test('.insertOne(withId)', async () => {
-                //     var response = await crud_insertOne.insertOne({ _id: 1, string: 'string1' })
+                //     var response = await stateDocs.insertOne({ _id: 1, string: 'string1' })
                 //     expect(
                 //         response.error
                 //     ).toEqual(null)
