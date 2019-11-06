@@ -1,34 +1,38 @@
-// const getLastSeq = ({ dbs }) => new Promise((resolve, reject) => {
-//     var store = 0
-//     var search = {
-//         lt: { _seq: 999999999 },
-//         limit: 1,
-//         reverse: true
-//     }
-//     dbs.seq.createKeyStream(search)
-//         .on('data', function ({ _idDB, _seq }) {
-//             // console.log(data.key, '=', data.value)
-//             store = _seq
-//         })
-//         .on('error', function (err) {
-//             console.log('Oh my!', err)
-//         })
-//         .on('close', function () {
-//             // console.log('Stream closed')
-//             resolve(store)
-//         })
-//         .on('end', function () {
-//             // console.log('Stream ended')
-//         })
+const initUpdateOne = ({ db_encode_up }) =>
+    async ({ }) => {
 
-// })
+    }
 
-export default async () => {
-    // var storeCounter = await getLastSeq({ dbs })
-    return {
-        nextRev: ({ _rev }) => {
-            return _rev + 1
+const initInsertOne = ({ db_encode_up, firstRev }) =>
+    async ({ _id, dataDoc }) => {
+        var error
+        var _rev = firstRev()
+        try {
+            var response = await db_encode_up.rev.put({ _id, _rev }, dataDoc)
+            error = false
+        } catch (error) {
+            console.log('Error createRevision:', error)
+            error = true
         }
+        return {
+            error,
+            _rev
+        }
+    }
+
+const nextRev = ({ prevRev }) => {
+    return prevRev + 1
+}
+const firstRev = () => {
+    return 1
+}
+
+export default ({ db_encode_up }) => {
+
+    var insertOne = initInsertOne({ db_encode_up, firstRev })
+
+    return {
+        insertOne
     }
 
 }

@@ -23,26 +23,37 @@ const getLastSeq = ({ dbs }) => new Promise((resolve, reject) => {
 
 })
 
-export default async ({ db_encode_up: dbs }) => {
-    // console.log('in stateSeq')
-    var storeCounter = await getLastSeq({ dbs })
-    // console.log('storeCounter:',storeCounter)
+const initSeqCounter = ({ storeCounter }) => ({
+    add: () => {
+        storeCounter += 1
+        return storeCounter
+    },
+    get: () => storeCounter
+})
+
+const initInsertOne = ({ dbs, seqCounter }) => async () => {
+    var error
+    var _seq = seqCounter.add()
+
+    try {
+        var response = await dbs.seq.put({ _seq }, {})
+        error = false
+    } catch (error) {
+        console.log('seq.put Error:', error)
+        error = true
+    }
     return {
-        seqCounter: {
-            add: () => {
-                storeCounter += 1
-                return storeCounter
-            },
-            get: () => storeCounter,
-            // recheck: async ({ _seq }) => {
-            //     try {
-            //         var response = await dbs.seq.get(_seq) 
-            //     } catch (error) {
+        error,
+        _seq
+    }
+}
 
-            //     }
-
-            // }
-        }
-
+export default async ({ db_encode_up: dbs }) => {
+    var storeCounter = await getLastSeq({ dbs })
+    var seqCounter = initSeqCounter({ storeCounter })
+    var insertOne = initInsertOne({ dbs, seqCounter })
+    return {
+        seqCounter,
+        insertOne
     }
 }

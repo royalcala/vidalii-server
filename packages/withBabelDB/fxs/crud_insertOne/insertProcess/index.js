@@ -1,7 +1,7 @@
 import { ifElse } from 'ramda'
-import * as seq from './createSeq'
+import * as seq from './responseSeq'
 import * as doc from './createDoc'
-import * as rev from './createRev'
+import * as rev from './responseRev'
 
 const responseAllCorrect = ({ _id, document, sequence, revision, standarizedResponse }) =>
     standarizedResponse({
@@ -13,7 +13,7 @@ const responseAllCorrect = ({ _id, document, sequence, revision, standarizedResp
     })
 
 const seqProcess = async args => {
-    var sequence = await seq.create(args)
+    var sequence = await args.stateSeq.insertOne()
     return ifElse(
         seq.hasError,
         seq.responseError,
@@ -41,9 +41,8 @@ const revProcess = args => {
     )(args)
 }
 
-export default async ({ _id, dataToInsert, get, dbs, standarizedResponse, stateSeq }) => {
-    var revision = await rev.create({ _id, dataToInsert, dbs })
+export default async ({ _id, dataToInsert, db_encode_up: dbs, stateRev, ...otherArgs }) => {
+    var revision = await stateRev.insertOne({ _id, dataToInsert })
     // console.log('stateSeq::', await stateSeq)
-    return revProcess({ revision, _id, dataToInsert, get, dbs, standarizedResponse, stateSeq })
-
+    return revProcess({ revision, _id, dataToInsert, dbs, ...otherArgs })
 }

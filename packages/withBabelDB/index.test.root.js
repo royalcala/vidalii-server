@@ -6,14 +6,18 @@ import db_encode_up from './fxs/db_encode_up'
 
 import stateSeq from './fxs/stateSeq'
 import stateRev from './fxs/stateRev'
+import stateDocs from './fxs/stateDocs'
 import crud_get from './fxs/crud_get'
 import crud_insertOne from './fxs/crud_insertOne'
 import crud_queue from './fxs/crud_queue'
 
 
 import test_db_encode_up from './fxs/db_encode_up/index.test'
-import test_crud_insertOne from './fxs/crud_insertOne/index.test'
+import test_stateRev from './fxs/stateRev/index.test'
+import test_stateSeq from './fxs/stateSeq/index.test'
+// import test_crud_insertOne from './fxs/crud_insertOne/index.test'
 import test_queue from './fxs/crud_queue/index.test'
+import test_stateDocs from './fxs/stateDocs/index.test'
 
 const fs = require('fs-extra')
 
@@ -52,8 +56,12 @@ const getFxs = () => ([
         db_encode_up
     ],
     [
-        'test_db_encode_up',
-        test_db_encode_up
+        'crud_queue',
+        crud_queue
+    ],
+    [
+        'crud_get',
+        crud_get
     ],
     [
         'stateSeq',
@@ -64,22 +72,26 @@ const getFxs = () => ([
         stateRev
     ],
     [
-        'crud_queue',
-        crud_queue
+        'stateDocs',
+        stateDocs
     ],
+
     ...test_queue,
     [
-        'crud_get',
-        crud_get
+        'test_db_encode_up',
+        test_db_encode_up
     ],
-    [
-        'crud_insertOne',
-        crud_insertOne
-    ],
-    [
-        'test_crud_insertOne',
-        test_crud_insertOne
-    ]
+    ...test_stateRev,
+    ...test_stateSeq,
+    ...test_stateDocs
+    // [
+    //     'crud_insertOne',
+    //     crud_insertOne
+    // ],
+    // [
+    //     'test_crud_insertOne',
+    //     test_crud_insertOne
+    // ]
 ])
 const processEvol = ({ fxs, initialData }) => {
     var resultEvol = evol(...fxs)(initialData)
