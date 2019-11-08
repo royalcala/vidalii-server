@@ -14,7 +14,10 @@
     "@babel/core": "^7.6.4",
     "@babel/node": "^7.6.3",
     "@babel/preset-env": "^7.6.3",
-    "babel-jest": "^24.9.0"
+    "@babel/preset-flow": "^7.0.0",
+    "babel-jest": "^24.9.0",
+    "flow-bin": "^0.111.3",
+    "flow-typed": "^2.6.2"
   },
   "dependencies": {
     "babel-plugin-ramda": "^2.0.0",
