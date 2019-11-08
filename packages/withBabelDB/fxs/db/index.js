@@ -1,4 +1,3 @@
-
 import { cond, equals, reduce, assoc, toPairs } from 'ramda'
 import type_inStorage from './typesDb/inStorage'
 import type_inMemory from './typesDb/inMemory'

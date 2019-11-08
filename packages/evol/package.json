@@ -1,0 +1,23 @@
+{
+  "name": "@vidalii/evol",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Roy Alcala Ortiz",
+  "license": "MIT",
+  "scripts": {
+    "babel": "nodemon --exec babel-node index.js",
+    "babel:out:dir": "npx babel src --out-dir lib",
+    "babel:out:dir:onefile": "npx babel src --out-file src-onefile.js",
+    "babel:out:file": "npx babel index.js --out-file script-compiled.js"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
+    "@babel/preset-env": "^7.6.3",
+    "babel-plugin-ramda": "^2.0.0"
+  },
+  "dependencies": {
+    "ramda": "^0.26.1"
+  }
+}
