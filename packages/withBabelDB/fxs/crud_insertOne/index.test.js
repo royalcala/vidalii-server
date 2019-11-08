@@ -14,7 +14,7 @@ const fakeData = (obj, times, fxToChange) => {
 export default [
     [
         'crud_insertOne_test1',
-        ({ crud_insertOne, stateSeq }) => {
+        ({ crud_insertOne, stateSeq, db_encode_up }) => {
             describe('crud_insertOne', () => {
                 var seqCounter
                 beforeAll(async () => {
@@ -35,22 +35,25 @@ export default [
                         object: { a: 1 }
                     }, 2, (obj) => obj)
 
+
                     test.each(docsNoId)(
-                        '%#',
+                        'inserted:%#',
                         async (obj) => {
-                            // console.log(obj)
                             var inserted = await crud_insertOne(obj)
-                            // console.log('inserted:', inserted.data._seq)
-                            expect(inserted.error).toEqual(null)
-                            expect(inserted.data._seq).toEqual(
+                            const { data, error } = inserted
+                            expect(error).toEqual(null)
+                            expect(data._seq).toEqual(
                                 seqCounter.get()
                             )
-                            expect(inserted.data._rev).toEqual(1)
-                            // // seq += 1
-                            // expect(inserted.data._seq).toEqual(oSeq.get())
-                            // expect(seq).toEqual(oSeq.get())
-                        })
+                            expect(data._rev).toEqual(1)
 
+                            
+                            var inRev = await db_encode_up.rev.get({
+                                _id:191919,
+                                _rev: data._rev
+                            })
+                            console.log(inRev)
+                        })
                 })
                 describe('withId', () => {
                     var store = {
@@ -69,7 +72,7 @@ export default [
                     })
                     // console.log(docsWithID)
                     test.each(docsWithID)(
-                        '%#',
+                        'inserted:%#',
                         async (obj) => {
                             // console.log(obj)
                             var inserted = await crud_insertOne(obj)
@@ -101,7 +104,7 @@ export default [
 
                     ]
                     test.each(docswithErrorDuplicatedID)(
-                        '%#',
+                        'NoInserted:%#',
                         async (obj) => {
                             // console.log(obj)
                             var inserted = await crud_insertOne(obj)

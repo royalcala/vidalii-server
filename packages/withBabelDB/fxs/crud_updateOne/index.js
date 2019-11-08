@@ -24,7 +24,7 @@ const idProcess = args => ifElse(
 )(args)
 
 
-export default ({ db_encode_up: dbs, crud_get, stateRev, standarizedResponse }) => {
+export default ({ db_encode_up: dbs, crud_getOne, stateRev, standarizedResponse }) => {
     var queueUpdate = initQueueUpdate()
 
     return async ({ _id, _rev, ...dataToUpdate }) => {
@@ -32,11 +32,11 @@ export default ({ db_encode_up: dbs, crud_get, stateRev, standarizedResponse }) 
         if (queueUpdate.checkExistQueue({ _id, _rev }) === false) {
             queueUpdate.addQueue({ _id, _rev })
 
-            var prevDoc = await crud_get(_id)
+            var prevDoc = await crud_getOne(_id)
             var response = await idProcess({
                 prevDoc,
                 _id, _rev, dataToUpdate,
-                dbs, crud_get, standarizedResponse,
+                dbs, crud_getOne, standarizedResponse,
                 stateRev
             })
             queueUpdate.elimateQueue({ _id, _rev })

@@ -8,12 +8,12 @@ const initUpdateOne = ({ db_encode_up }) =>
 
 
 
-export default ({ db_encode_up, stateRev, stateSeq, standarizedResponse, crud_get }) => {
+export default ({ db_encode_up, stateRev, stateSeq, standarizedResponse, crud_getOne }) => {
 
     var insertOne = initInsertOne({
         db_encode_up, stateRev,
         stateSeq, standarizedResponse,
-        crud_get
+        crud_getOne
     })
 
     return {

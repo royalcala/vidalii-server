@@ -55,7 +55,7 @@ const processWithNoId = async args => {
     return processRev({ ...args, _id })
 }
 const processWithId = async args => {
-    var duplicatedID = await args.crud_get(args._id)
+    var duplicatedID = await args.crud_getOne(args._id)
     if (duplicatedID.error === null) {
         //if error is null, the id exist, because was found
         //so is duplicated id

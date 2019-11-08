@@ -1,7 +1,18 @@
-const initUpdateOne = ({ db_encode_up }) =>
-    async ({ }) => {
-
+const initGetOne = async ({ db_encode_up, standarizedResponse }) => {
+    var error = null
+    var data = null
+    try {
+        var data = await db_encode_up.rev.get({ _id, _rev })
+    } catch (error) {
+        error = {
+            msg: `The _id:${_id} with _rev:${_rev} doesnt found on db of Revisions `
+        }
     }
+    return standarizedResponse({
+        data,
+        error
+    })
+}
 
 const initInsertOne = ({ db_encode_up, firstRev }) =>
     async ({ _id, dataDoc }) => {
@@ -20,19 +31,17 @@ const initInsertOne = ({ db_encode_up, firstRev }) =>
         }
     }
 
-const nextRev = ({ prevRev }) => {
-    return prevRev + 1
-}
 const firstRev = () => {
     return 1
 }
 
-export default ({ db_encode_up }) => {
-
+export default ({ db_encode_up, standarizedResponse }) => {
+    var getOne = initGetOne({ db_encode_up, standarizedResponse })
     var insertOne = initInsertOne({ db_encode_up, firstRev })
 
     return {
-        insertOne
+        insertOne,
+        getOne
     }
 
 }

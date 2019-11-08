@@ -7,9 +7,9 @@ const responseDuplicated = ({ _id, standarizedResponse }) => {
         }
     })
 }
-const isDuplicatedID = async ({ _id, crud_get }) => {
+const isDuplicatedID = async ({ _id, crud_getOne }) => {
     // console.log('get::',get)
-    var duplicatedID = await crud_get(_id)
+    var duplicatedID = await crud_getOne(_id)
     // console.log('duplicatedID::', duplicatedID)
 
     if (duplicatedID.error === null) {
