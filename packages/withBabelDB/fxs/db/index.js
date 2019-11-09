@@ -1,70 +1,77 @@
-import { cond, equals, reduce, assoc, toPairs } from 'ramda'
-import type_inStorage from './typesDb/inStorage'
-import type_inMemory from './typesDb/inMemory'
+import { compose, cond, equals, reduce, assoc, toPairs, toLower } from 'ramda'
+import typedb_inStorage from './typesDb/inStorage'
+import typedb_inMemory from './typesDb/inMemory'
 
-const condTables = args => cond([
-    type_inStorage,
-    type_inMemory
-])(args)
+// const condTables = args => cond([
+//     type_inStorage,
+//     type_inMemory
+// ])(args)
 
-const createTables = args => reduce(
-    (acc, [tableName, tableConfig]) =>
-        assoc
-            (
-                tableName,
-                condTables({ tableName, tableConfig }),
-                acc
-            ),
-    {}
-)(toPairs(args.config.tables))
+// const createTables = args => reduce(
+//     (acc, [tableName, tableConfig]) =>
+//         assoc
+//             (
+//                 tableName,
+//                 condTables({ tableName, tableConfig }),
+//                 acc
+//             ),
+//     {}
+// )(toPairs(args.config.tables))
 
-export default ({ config }) => {
-    var tables = createTables({ config })
-    // console.log('tables::', tables)
-    return tables
-}
-
-// [
-//     'db',
-//     ({ config }) => {
-//         var fs = require('fs')
-//         var levelup = require('levelup')
-//         var leveldown = require('leveldown')
+// export default ({ config }) => {
+//     var tables = createTables({ config })
+//     // console.log('tables::', tables)
+//     return tables
+// }
 
 
-//         const createdb = ({ config, name }) => {
-//             const pathDir = config.env.nodeConfig.pathdb
-//             const pathNameDb = `${config.env.nodeConfig.pathdb}/${name}`
-//             // console.log(pathdb)
-//             if (!fs.existsSync(pathDir)) {
-//                 fs.mkdirSync(pathDir);
-//             }
-//             if (!fs.existsSync(pathNameDb)) {
-//                 fs.mkdirSync(pathNameDb);
-//             }
-//             var db = levelup(leveldown(pathNameDb))
-//             return db
-//         }
-//         const isNode = ({ config }) => {
+const reduce_tables_assoc = globalData => assoc_cond =>
+    reduce(
+        assoc_cond,
+        {}
+    )(toPairs(globalData.config.tables))
 
-//             return {
-//                 docs: createdb({ config, name: 'docs' }),
-//                 rev: createdb({ config, name: 'rev' }),
-//                 seq: createdb({ config, name: 'seq' })
-//             }
+const assoc_cond = cond_typedb => (acc, [tableName, tableConfig]) =>
+    assoc
+        (
+            tableName,
+            cond_typedb({ tableName, tableConfig }),
+            acc
+        )
 
-//         }
-//         const ifIsBrowser = [
-//             ({ config }) => equals(config.env.type, 'browser'),
-//             () => 'is browser enviroment'
-//         ]
-//         const ifIsNode = [
-//             ({ config }) => equals(config.env.type, 'node'),
-//             isNode
-//         ]
-//         return cond([
-//             ifIsBrowser,
-//             ifIsNode
-//         ])({ config })
-//     }
-// ]
+const cond_typedb = () => assoc_cond_args => cond([
+    typedb_inStorage,
+    typedb_inMemory
+])(assoc_cond_args)
+// const cond_typedb = () => async ({ tableName, tableConfig }) => {
+//     // https://v8.dev/features/dynamic-import
+//     toLower(tableConfig.typeDb)
+//     // const moduleSpecifier = './utils.mjs';
+//     const moduleSpecifier = toLower('./' + tableConfig.typeDb + '.js')
+//     console.log('moduleSpecifier::', moduleSpecifier)
+//     const module = await import('./typesDb/inStorage')
+//     console.log('module::', module)
+//     return module.default
+//     // module.default();
+//     // → logs 'Hi from the default export!'
+//     // module.doStuff();
+//     // → logs 'Doing stuff…'
+
+// }
+
+
+
+// const moduleSpecifier = './utils.mjs';
+// import(moduleSpecifier)
+//   .then((module) => {
+//     module.default();
+//     // → logs 'Hi from the default export!'
+//     module.doStuff();
+//     // → logs 'Doing stuff…'
+//   });
+
+export default globalData => compose(
+    reduce_tables_assoc(globalData),
+    assoc_cond,
+    cond_typedb,
+)({})

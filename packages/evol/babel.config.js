@@ -9,5 +9,8 @@ module.exports = {
       },
     ]
   ],
-  "plugins": ["ramda"]
+  "plugins": [
+    ["ramda"],
+    ["@babel/plugin-syntax-dynamic-import"]
+  ]
 };

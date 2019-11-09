@@ -1,4 +1,5 @@
 // import evol from './evol'
+import { compose } from 'ramda'
 import { evol } from '@vidalii/evol'
 import db from './fxs/db'
 // import up_db from './fxs/up_db'
@@ -24,6 +25,8 @@ import test_db_encode_up_crud from './fxs/db_encoder_up_crud/index.test'
 
 
 const fs = require('fs-extra')
+
+
 
 
 const getFxs = () => ([

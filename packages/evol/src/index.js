@@ -14,3 +14,20 @@
 //this page will load on client, 
 //and after that, each export until if its required
 export { default as evol } from "./fxs/evol"
+// console.log('in @vidalii/evol')
+// const cond_typedb = async () => {
+//     // https://v8.dev/features/dynamic-import
+//     // toLower(tableConfig.typeDb)
+//     // const moduleSpecifier = './utils.mjs';
+//     // const moduleSpecifier = toLower('./' + tableConfig.typeDb + '.js')
+//     // console.log('moduleSpecifier::', moduleSpecifier)
+//     const module = await import('./fxs/evol')
+//     console.log('module::', module.default)
+
+//     // module.default();
+//     // → logs 'Hi from the default export!'
+//     // module.doStuff();
+//     // → logs 'Doing stuff…'
+
+// }
+// cond_typedb()

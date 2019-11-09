@@ -1,216 +1,250 @@
-import evol from './evol'
-import { cond, equals } from 'ramda'
-import db from './fxs/db'
-import db_encode from './fxs/db_encode'
-import db_encode_up from './fxs/db_encode_up'
-
-// import hola from './src'
-// import data1 from './src/data1'
-// yarn add @babel/preset-env --dev
-// npx babel index.js --out-file script-compiled.js
-
+// import evol from './evol'
 console.clear()
-console.log('Screen cleaned. In WithBabel')
-const test_db = [
-    'test_db',
-    ({ db_encode_up: db }) => {
-        // test_seq()
-        test_rev()
-        function test_docs() {
-            var obj = {
-                number: 1,
-                string: `string`
-            }
-            // obj = JSON.stringify(obj)
-            // obj = Buffer.from(JSON.stringify(obj));
-            // console.log('--->', obj)
-            // JSON.parse(obj);
-            db.docs.put(1, obj, function (err) {
-                if (err) return console.log('Ooops!', err) // some kind of I/O error
+console.log('clearing console...')
+import { compose, pipe } from 'ramda'
+// import { evol } from '@vidalii/evol'
+import db from './fxs/db'
+// import up_db from './fxs/up_db'
+import db_encode from './fxs/db_encode'
+import db_up from './fxs/db_up'
+import db_o_tac from './fxs/db_o_tac'
+import models_seq from './fxs/models_seq'
+// import stateSeq from './fxs/stateSeq'
+// import stateRev from './fxs/stateRev'
+// // import stateDocs from './fxs/stateDocs'
+// import crud_getOne from './fxs/crud_getOne'
+// import crud_insertOne from './fxs/crud_insertOne'
+// import crud_queue from './fxs/crud_queue'
 
-                // 3) Fetch by key
-                db.docs.get(1, function (err, value) {
-                    if (err) return console.log('Ooops!', err) // likely the key was not found
-                    console.log(
-                        'value=>'
-                        , value,
-                        'typeOf=>',
-                        // typeof result.parsed.string
-                        typeof value.number
-                    )
-
-                    db.docs.createReadStream()
-                        .on('data', function (data) {
-                            console.log('KEY:', data.key, '=>', 'VAlUE:', data.value)
-                        })
-                        .on('error', function (err) {
-                            console.log('Oh my!', err)
-                        })
-                        .on('close', function () {
-                            console.log('Stream closed')
-                        })
-                        .on('end', function () {
-                            console.log('Stream ended')
-                        })
-
-                })
-            })
-        }
-        function test_rev() {
-            db.rev.put({ _id: 1, _rev: 1 }, { number: '1' }, function (err) {
-                if (err) return console.log('Ooops!', err) // some kind of I/O error
-
-                db.rev.get({ _id: 1, _rev: 1 }, function (err, value) {
-                    if (err) return console.log('Ooops!', err) // likely the key was not found
-                    console.log(
-                        'value=>'
-                        , value,
-                        'typeOf=>',
-                        // typeof result.parsed.string
-                        typeof value.number
-                    )
+import test_db from './fxs/db/index.test'
+import test_db_encode_up from './fxs/db_up/index.test'
+import test_db_encode_up_crud from './fxs/db_o_tac/index.test'
+// import test_stateRev from './fxs/stateRev/index.test'
+// import test_stateSeq from './fxs/stateSeq/index.test'
+// // import test_crud_insertOne from './fxs/crud_insertOne/index.test'
+// import test_queue from './fxs/crud_queue/index.test'
+// // import test_stateDocs from './fxs/stateDocs/index.test'
+// import test_crud_insertOne from './fxs/crud_insertOne/index.test'
 
 
-                })
-            })
+const fs = require('fs-extra')
 
-            // db.rev.put(2, { dataRev: 'here' })
-            // db.rev.put(10, { dataRev: 'here' })
-            db.rev.put({ _id: 1, _rev: 1000000000 }, { dataRev: 'here' })
-            db.rev.put({ _id: 1, _rev: 2 }, { dataRev: 'here' })
-
-            db.rev.createReadStream({
-                //  gte: { _id: 1, _rev: 0 } 
-                reverse: true,
-                limit: 1
-            })
-                .on('data', function (data) {
-                    console.log('KEY:', data.key, '=>', 'VAlUE:', data.value)
-                })
-                .on('error', function (err) {
-                    console.log('Oh my!', err)
-                })
-                .on('close', function () {
-                    console.log('Stream closed')
-                })
-                .on('end', function () {
-                    console.log('Stream ended')
-                })
-        }
-        function test_seq() {
-            db.seq.get(1, function (err, value) {
-                console.log(value)
-            })
-
-            db.seq.put(1, { dataRev: 'here' }, function (err) {
-                if (err) return console.log('Ooops!', err) // some kind of I/O error
-
-                // 3) Fetch by key
-                // db.seq.get(1, function (err, value) {
-                //     if (err) return console.log('Ooops!', err) // likely the key was not found
-                //     // console.log(
-                //     //     'value=>'
-                //     //     , value,
-                //     //     'typeOf=>',
-                //     //     // typeof result.parsed.string
-                //     //     typeof value.number
-                //     // )
-
-
-                // })
-            })
-
-            db.seq.put(2, { dataRev: 'here' })
-            db.seq.put(10, { dataRev: 'here' })
-            db.seq.put(1000000000, { dataRev: 'here' })
-            db.seq.put(20, { dataRev: 'here' })
-
-            // db.seq.createReadStream()
-            //     .on('data', function (data) {
-            //         console.log('KEY:', data.key, '=>', 'VAlUE:', data.value)
-            //     })
-            //     .on('error', function (err) {
-            //         console.log('Oh my!', err)
-            //     })
-            //     .on('close', function () {
-            //         console.log('Stream closed')
-            //     })
-            //     .on('end', function () {
-            //         console.log('Stream ended')
-            //     })
-        }
-
+const standarizedResponse = () => ({ error = null, data = null }) => {
+    //log errors
+    return {
+        data,
+        error
+        // ...(error === null ? {} : { error })
     }
-]
-
-const fxsToEvol = [
-    [
-        'config',
-        (initialValue) => initialValue,
-    ],
-    [
-        'standarizedResponse',
-        () => ({ error = null, data = null }) => {
-            //log errors
-            return {
-                data,
-                error
-                // ...(error === null ? {} : { error })
-            }
-        }
-    ],
-    [
-        'db',
-        db
-    ],
-    [
-        'db_encode',
-        db_encode
-    ],
-    [
-        'db_encode_up',
-        db_encode_up
-    ],
-    [
-        'crudRev',
-        rev
-    ],
-    [
-        'crudDocs',
-        docs
-    ],
-    test_db,
-]
-
-var resultEvol = evol(...fxsToEvol)({
-    alias: 'test1',
+}
+const initialData = () => ({
+    // alias: 'test1',
+    uuid: '591bb671-15a8-4bb8-84ef-5904271745a8',
     env: {
         type: 'node',//browser||node
         encoding: {
             // key: '',
             value: 'json'//must be default and unique in json
         },
-        nodeConfig: {
-            pathdb: __dirname + '/data'
+        pathdb: {
+            backend: __dirname + '/db_testing'
         },
-        browserConfig: {
+        // nodeConfig: {
+        //     pathdb: __dirname + '/testingdata'
+        // },
+        // browserConfig: {
 
-        }
+        // }
     },
-    rev: {
-        number: 10
+    tables: {
+        docs: {
+            //typeDb:[
+            // 'inMemory:backend&&fronted',
+            // 'leveldb:backend',
+            // 'leveljs:browser'
+            // ]
+            // typeDb: 'inMemory',
+            typeDb: 'inStorage',
+            path: __dirname + '/db_testing'
+        },
+        rev: {
+            typeDb: 'inStorage',
+            path: __dirname + '/db_testing'
+        },
+        seq: {
+            typeDb: 'inStorage',
+            path: __dirname + '/db_testing'
+        },
     },
-    replication: {
-        byDatabase: [
-            { db: '', from: true, to: false }
-        ],
-        byFx: [
-            { fx: (doc) => '' }
-        ]
-    },
+    // replication: {
+    //     byDatabase: [
+    //         { db: '', from: true, to: false }
+    //     ],
+    //     byFx: [
+    //         { fx: (doc) => '' }
+    //     ]
+    // }
 })
+const globalData = {
+    standarizedResponse,
+    config: initialData()
+}
 
-// console.log(
-//     'resultEvol:',
-//     resultEvol
+const table = globalData => compose(
+    db_o_tac(globalData),//tryAndCatch
+    db_up,
+    db_encode(globalData),
+    db
+)(globalData)
+
+// const table = globalData => pipe(
+//     db,
+//     db_encode(globalData),
+//     db_up,
+//     db_o_tac(globalData),//tryAndCatch
+// )(globalData)
+const instanceTable = table(
+    globalData
+)
+console.log(
+    'instanceTable::',
+    instanceTable.docs.tac.put
+)
+console.log(
+    'keys::',
+    Object.keys(instanceTable.docs.tac)
+)
+// instanceTable.docs.tac.put('name', 'levelup', function (err) {
+//     if (err) return console.log('Ooops!', err) // some kind of I/O error
+//     // 3) Fetch by key
+//     instanceTable.docs.get('name', function (err, value) {
+//         if (err) return console.log('Ooops!', err) // likely the key was not found
+//         // Ta da!
+//         console.log('name=' + value)
+//     })
+// })
+// const models = globalData => compose(
+//     // models_o_rev,
+//     models_seq
+// )(globalData)
+// const instanceModels = models({
+//     ...instanceTable, ///db and tac
+//     ...globalData
+// }).then(
+//     r => {
+//         console.log('instanceModels::', r)
+//     }
 // )
+// console.log(
+//     'instanceModels::',
+//     instanceModels
+// )
+
+
+
+// const getFxs = () => ([
+//     //added on initial value
+//     // [
+//     //     'config',
+//     //     (initialValue) => initialValue,
+//     // ],
+//     [
+//         'standarizedResponse',
+//         () => ({ error = null, data = null }) => {
+//             //log errors
+//             return {
+//                 data,
+//                 error
+//                 // ...(error === null ? {} : { error })
+//             }
+//         }
+//     ],
+//     [
+//         'db',
+//         db
+//     ],
+//     // //only one instance by db is supported with levelup
+//     // // [
+//     // //     'up_db',
+//     // //     up_db
+//     // // ],
+//     [
+//         'db_encode',
+//         db_encode
+//     ],
+//     [
+//         'db_encode_up',
+//         db_encode_up
+//     ],
+//     [
+//         'db_encode_up_crud',
+//         db_encode_up_crud
+//     ],
+//     // [
+//     //     'crud_queue',
+//     //     crud_queue
+//     // ],
+//     // [
+//     //     'crud_getOne',
+//     //     crud_getOne
+//     // ],
+//     // [
+//     //     'stateSeq',
+//     //     stateSeq
+//     // ],
+//     // [
+//     //     'stateRev',
+//     //     stateRev
+//     // ],
+//     // [
+//     //     'crud_insertOne',
+//     //     crud_insertOne
+//     // ],
+//     ...test_db,
+//     // ...test_queue,
+//     [
+//         'test_db_encode_up',
+//         test_db_encode_up
+//     ],
+//     ...test_db_encode_up_crud
+//     // ...test_stateRev,
+//     // ...test_stateSeq,
+//     // ...test_crud_insertOne
+
+// ])
+// const processEvol = ({ fxs, initialData }) => {
+//     var resultEvol = evol(...fxs)(
+//         all => all
+//     )({
+//         config: initialData
+//     })
+//     return resultEvol
+// }
+
+// const removeDataBase = ({ pathDB }) => {
+//     // console.log('pathDb::', pathDB)
+
+//     if (fs.existsSync(pathDB)) {
+//         var removed = fs.removeSync(pathDB)
+//         var existDir = fs.existsSync(pathDB)
+//         test(`database path was removed in ${pathDB}`, () => {
+//             expect(existDir).toEqual(false);
+//         })
+//     }
+
+// }
+
+// describe('root', () => {
+//     removeDataBase({ pathDB: initialData().tables.docs.path })
+//     removeDataBase({ pathDB: initialData().tables.rev.path })
+//     removeDataBase({ pathDB: initialData().tables.seq.path })
+
+//     var result = processEvol({
+//         fxs: getFxs(),
+//         initialData: initialData()
+//     })
+//     test('resultEvol is a Object?', () => {
+//         expect(result).toEqual(expect.any(Object));
+//     })
+
+// })
