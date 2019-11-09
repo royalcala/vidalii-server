@@ -5,15 +5,20 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _ramda = require("ramda");
+var _reduce2 = _interopRequireDefault(require("ramda/src/reduce"));
 
-var _default = (...fxs) => initialValue => {
+var _pipe2 = _interopRequireDefault(require("ramda/src/pipe"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _default = (...fxs) => selection => connection => {
   // var store = {}
-  return (0, _ramda.pipe)((0, _ramda.reduce)((accStore, [alias, fx]) => {
+  var evolution = (0, _pipe2.default)((0, _reduce2.default)((accStore, [alias, fx]) => {
     return { ...accStore,
       [alias]: fx(accStore)
     };
-  }, initialValue))(fxs);
+  }, connection))(fxs);
+  return selection(evolution);
 };
 
 exports.default = _default;

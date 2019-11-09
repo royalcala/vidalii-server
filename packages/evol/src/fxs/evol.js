@@ -1,9 +1,8 @@
 import { pipe, reduce } from 'ramda'
 
-//fxs [fx,'alias']
-export default (...fxs) => (initialValue) => {
+export default (...fxs) => selection => connection => {
     // var store = {}
-    return pipe(
+    var evolution = pipe(
         reduce(
             (accStore, [alias, fx]) => {
 
@@ -12,7 +11,10 @@ export default (...fxs) => (initialValue) => {
                     [alias]: fx(accStore)
                 }
             },
-            initialValue
+            connection
         )
     )(fxs)
+
+    return selection(evolution)
+
 }

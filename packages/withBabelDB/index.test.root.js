@@ -1,16 +1,16 @@
-import evol from './evol'
+// import evol from './evol'
+import { evol } from '@vidalii/evol'
 import db from './fxs/db'
 // import up_db from './fxs/up_db'
 import db_encode from './fxs/db_encode'
 import db_encode_up from './fxs/db_encode_up'
-
+import db_encode_up_crud from './fxs/db_encoder_up_crud'
 // import stateSeq from './fxs/stateSeq'
 // import stateRev from './fxs/stateRev'
 // // import stateDocs from './fxs/stateDocs'
 // import crud_getOne from './fxs/crud_getOne'
 // import crud_insertOne from './fxs/crud_insertOne'
 // import crud_queue from './fxs/crud_queue'
-
 
 import test_db from './fxs/db/index.test'
 import test_db_encode_up from './fxs/db_encode_up/index.test'
@@ -21,14 +21,16 @@ import test_db_encode_up from './fxs/db_encode_up/index.test'
 // // import test_stateDocs from './fxs/stateDocs/index.test'
 // import test_crud_insertOne from './fxs/crud_insertOne/index.test'
 
+
 const fs = require('fs-extra')
 
 
 const getFxs = () => ([
-    [
-        'config',
-        (initialValue) => initialValue,
-    ],
+    //added on initial value
+    // [
+    //     'config',
+    //     (initialValue) => initialValue,
+    // ],
     [
         'standarizedResponse',
         () => ({ error = null, data = null }) => {
@@ -57,6 +59,35 @@ const getFxs = () => ([
         'db_encode_up',
         db_encode_up
     ],
+    [
+        'db_encode_up_crud',
+        db_encode_up_crud
+    ],
+    [
+        'test11',
+        ({ db_encode_up_crud }) => {
+
+            test('db_encode_up_crud', async () => {
+                console.log('db_encode_up_crud:',
+                    Object.keys(db_encode_up_crud)
+                )
+                var result = await db_encode_up_crud.docs.put('911', { jolai: 1 })
+                console.log(result)
+                expect(result.error).toEqual(null)
+                var getResult = await db_encode_up_crud.docs.get('911')
+                expect(getResult.data.value).toEqual({ jolai: 1 })
+
+                var deleted = await db_encode_up_crud.docs.del('911')
+                expect(deleted.error).toEqual(null)
+
+                var getResult2 = await db_encode_up_crud.docs.get('911')
+                console.log('getResult2:',getResult2)
+                expect(getResult2.error).not.toEqual(null)
+            })
+
+
+        }
+    ],
     // [
     //     'crud_queue',
     //     crud_queue
@@ -77,19 +108,23 @@ const getFxs = () => ([
     //     'crud_insertOne',
     //     crud_insertOne
     // ],
-    ...test_db,
+    // ...test_db,
     // ...test_queue,
-    [
-        'test_db_encode_up',
-        test_db_encode_up
-    ],
+    // [
+    //     'test_db_encode_up',
+    //     test_db_encode_up
+    // ],
     // ...test_stateRev,
     // ...test_stateSeq,
     // ...test_crud_insertOne
 
 ])
 const processEvol = ({ fxs, initialData }) => {
-    var resultEvol = evol(...fxs)(initialData)
+    var resultEvol = evol(...fxs)(
+        all => all
+    )({
+        config: initialData
+    })
     return resultEvol
 }
 const initialData = () => ({

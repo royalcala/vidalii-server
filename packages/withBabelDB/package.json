@@ -20,6 +20,7 @@
     "flow-typed": "^2.6.2"
   },
   "dependencies": {
+    "@vidalii/evol": "^1.0.0",
     "babel-plugin-ramda": "^2.0.0",
     "encoding-down": "^6.3.0",
     "fs-extra": "^8.1.0",

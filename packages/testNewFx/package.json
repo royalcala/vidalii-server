@@ -5,6 +5,7 @@
   "author": "Roy Alcala Ortiz",
   "license": "MIT",
   "dependencies": {
+    "@vidalii/evol": "^1.0.0",
     "apollo-server": "^2.9.7",
     "ramda": "^0.26.1",
     "uuid": "^3.3.3"

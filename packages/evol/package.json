@@ -1,14 +1,14 @@
 {
   "name": "@vidalii/evol",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "lib",
   "author": "Roy Alcala Ortiz",
   "license": "MIT",
   "scripts": {
-    "babel": "nodemon --exec babel-node index.js",
+    "babel": "nodemon --exec babel-node src",
     "babel:out:dir": "npx babel src --out-dir lib",
     "babel:out:dir:onefile": "npx babel src --out-file src-onefile.js",
-    "babel:out:file": "npx babel index.js --out-file script-compiled.js"
+    "babel:out:file": "npx babel src --out-file script-compiled.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
