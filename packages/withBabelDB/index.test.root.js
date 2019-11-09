@@ -14,6 +14,7 @@ import db_encode_up_crud from './fxs/db_encoder_up_crud'
 
 import test_db from './fxs/db/index.test'
 import test_db_encode_up from './fxs/db_encode_up/index.test'
+import test_db_encode_up_crud from './fxs/db_encoder_up_crud/index.test'
 // import test_stateRev from './fxs/stateRev/index.test'
 // import test_stateSeq from './fxs/stateSeq/index.test'
 // // import test_crud_insertOne from './fxs/crud_insertOne/index.test'
@@ -63,31 +64,6 @@ const getFxs = () => ([
         'db_encode_up_crud',
         db_encode_up_crud
     ],
-    [
-        'test11',
-        ({ db_encode_up_crud }) => {
-
-            test('db_encode_up_crud', async () => {
-                console.log('db_encode_up_crud:',
-                    Object.keys(db_encode_up_crud)
-                )
-                var result = await db_encode_up_crud.docs.put('911', { jolai: 1 })
-                console.log(result)
-                expect(result.error).toEqual(null)
-                var getResult = await db_encode_up_crud.docs.get('911')
-                expect(getResult.data.value).toEqual({ jolai: 1 })
-
-                var deleted = await db_encode_up_crud.docs.del('911')
-                expect(deleted.error).toEqual(null)
-
-                var getResult2 = await db_encode_up_crud.docs.get('911')
-                console.log('getResult2:',getResult2)
-                expect(getResult2.error).not.toEqual(null)
-            })
-
-
-        }
-    ],
     // [
     //     'crud_queue',
     //     crud_queue
@@ -108,12 +84,13 @@ const getFxs = () => ([
     //     'crud_insertOne',
     //     crud_insertOne
     // ],
-    // ...test_db,
+    ...test_db,
     // ...test_queue,
-    // [
-    //     'test_db_encode_up',
-    //     test_db_encode_up
-    // ],
+    [
+        'test_db_encode_up',
+        test_db_encode_up
+    ],
+    ...test_db_encode_up_crud
     // ...test_stateRev,
     // ...test_stateSeq,
     // ...test_crud_insertOne
