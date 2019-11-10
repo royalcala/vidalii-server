@@ -29,7 +29,7 @@ import test_db_encode_up_crud from './fxs/db_o_tac/index.test'
 
 const fs = require('fs-extra')
 
-const standarizedResponse = () => ({ error = null, data = null }) => {
+const standarizedResponse = ({ error = null, data = null }) => {
     //log errors
     return {
         data,
@@ -106,14 +106,14 @@ const table = globalData => compose(
 const instanceTable = table(
     globalData
 )
-console.log(
-    'instanceTable::',
-    instanceTable.docs.tac.put
-)
-console.log(
-    'keys::',
-    Object.keys(instanceTable.docs.tac)
-)
+// console.log(
+//     'instanceTable::',
+//     instanceTable.docs.tac.put
+// )
+// console.log(
+//     'keys::',
+//     Object.keys(instanceTable.docs.tac)
+// )
 // instanceTable.docs.tac.put('name', 'levelup', function (err) {
 //     if (err) return console.log('Ooops!', err) // some kind of I/O error
 //     // 3) Fetch by key
@@ -123,22 +123,26 @@ console.log(
 //         console.log('name=' + value)
 //     })
 // })
-// const models = globalData => compose(
-//     // models_o_rev,
-//     models_seq
-// )(globalData)
-// const instanceModels = models({
-//     ...instanceTable, ///db and tac
-//     ...globalData
-// }).then(
-//     r => {
-//         console.log('instanceModels::', r)
+// instanceTable.docs.tac.put('1', { holis: 'holis1' }).then(
+//     async response => {
+//         console.log('response:', response)
+//         var get = await instanceTable.docs.tac.get('1')
+//         console.log('get:', get)
 //     }
 // )
-// console.log(
-//     'instanceModels::',
-//     instanceModels
-// )
+const models = globalData => compose(
+    // models_o_rev,
+    models_seq
+)(globalData)
+const instanceModels = models({
+    db: instanceTable,
+    ...globalData
+}).then(
+    r => {
+        console.log('instanceModels::', r)
+    }
+)
+
 
 
 

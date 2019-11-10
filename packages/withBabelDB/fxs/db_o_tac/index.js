@@ -36,7 +36,7 @@ export default globalData => db => {
         assoc_fxs
     )(globalData)
 
- 
+
     return newFxs
     // console.log(
     //     db

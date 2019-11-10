@@ -1,4 +1,4 @@
-import { pipe, then } from 'ramda'
+import { compose, pipe, then, curry } from 'ramda'
 const getLastSeq = globalData => new Promise((resolve, reject) => {
     var store = 0
     var search = {
@@ -37,7 +37,29 @@ const seqCounter = getLastSeq => async globalData => {
         get: () => storeCounter
     }
 }
-const insertOne = globalData => async seqCounter => {
+// const insertOne = globalData => async seqCounter => {
+//     var error = null
+//     var data = null
+//     var _seq = seqCounter.add()
+
+//     try {
+//         var response = await globalData.db.seq.put({ _seq }, {})
+//         data = {
+//             _seq
+//         }
+//     } catch (e) {
+//         // console.log('seq.put Error:', error)
+//         error = {
+//             msg: e + `. Error trying to db.seq.put(${_seq},{})`
+//         }
+//     }
+//     return globalData.standarizedResponse({
+//         error,
+//         data
+//     })
+// }
+
+const insertOne = globalData => seqCounter => async () => {
     var error = null
     var data = null
     var _seq = seqCounter.add()
@@ -59,11 +81,37 @@ const insertOne = globalData => async seqCounter => {
     })
 }
 
-export default globalData => pipe(
-    seqCounter(getLastSeq),
-    then(s => ({
-        insertOne: () => insertOne(globalData)(s)
-    }))
+const exportModel = (insertOne) => then(seqCounter => {
+    return {
+        insertOne: () => insertOne(seqCounter)
+    }
+})
+export default globalData => compose(
+    exportModel(
+        insertOne(globalData)
+    ),
+    // then(s => () => ''),
+    seqCounter(getLastSeq)
 )(
     globalData
 )
+
+// export default globalData => compose(
+//     then(
+//         (seqCounter) => ({
+//             insertOne: () => insertOne(globalData)(seqCounter)
+//         })
+//     ),
+//     seqCounter(getLastSeq)
+// )(
+//     globalData
+// )
+
+// export default globalData => pipe(
+//     seqCounter(getLastSeq),
+//     then(s => ({
+//         insertOne: () => insertOne(globalData)(s)
+//     }))
+// )(
+//     globalData
+// )
