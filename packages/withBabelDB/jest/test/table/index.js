@@ -1,0 +1,1 @@
+export { default as tac } from "./tac"

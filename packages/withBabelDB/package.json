@@ -5,9 +5,10 @@
   "author": "Roy Alcala",
   "license": "MIT",
   "scripts": {
-    "babel": "nodemon --exec babel-node index.js",
+    "babel": "nodemon --exec babel-node src/index.js",
     "babel:jest": "babel-jest",
-    "test": "jest"
+    "test": "jest jest/test",
+    "test:watch": "yarn test -- --watch"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",

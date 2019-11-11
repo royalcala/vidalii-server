@@ -14,6 +14,8 @@
 //this page will load on client, 
 //and after that, each export until if its required
 export { default as evol } from "./fxs/evol"
+export { default as evolPipe } from "./fxs/evolPipe"
+export { default as evolCompose } from "./fxs/evolCompose"
 // console.log('in @vidalii/evol')
 // const cond_typedb = async () => {
 //     // https://v8.dev/features/dynamic-import
