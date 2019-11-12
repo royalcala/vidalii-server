@@ -1,4 +1,4 @@
-//define defaults here 
+import { mergeDeepRight } from 'ramda'
 
 export default () => (schema = {}) => {
     const defaultEncoderBuffer = {

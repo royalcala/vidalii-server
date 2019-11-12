@@ -3,7 +3,7 @@ var lexint = require('lexicographic-integer')
 export default ({ parent: { config }, db_encoder, db_encoder_many }) =>
     db_encoder({
         keyEncoding: {
-            encode: ({ _seq }) => {
+            encode: ({ _id }) => {
                 var toEncode = config.uuid + '!' + lexint.pack(_seq, 'hex')
                 return toEncode
             },

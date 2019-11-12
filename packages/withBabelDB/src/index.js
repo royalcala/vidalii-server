@@ -8,8 +8,8 @@ import db from './fxs/db'
 // import db_encode from './trash2/db_encode'
 import db_up from './fxs/db.up'
 
-import db_encode from './fxs/db.encoder'
-import db_encode_many from './fxs/db.encoder.many'
+import db_encoder from './fxs/db.encoder'
+import db_encoder_many from './fxs/db.encoder.many'
 import db_encode_docs from './fxs/db.encoder.docs'
 import db_encode_rev from './fxs/db.encoder.rev'
 import db_encode_seq from './fxs/db.encoder.seq'
@@ -57,7 +57,7 @@ const init_db = evol(
 const encoders = parent =>
   evol(
     ['db_encoder', db_encoder],
-    ['db_encoder_many', db_encode_many]
+    ['db_encoder_many', db_encoder_many],
     ['docs', db_encode_docs],
     ['rev', db_encode_rev],
     ['seq', db_encode_seq],
@@ -73,7 +73,7 @@ const table = (globalData/*: TableInput */) /*: TableOutput */ => evol(
         ['init_db', init_db],
         ['encoders', encoders],
         ['db_add_tac', db_add_tac],
-        ['db_add_queryStream', query_stream]
+        // ['db_add_queryStream', query_stream]
       )(
         c => c.db_add_tac
       )({ parent })

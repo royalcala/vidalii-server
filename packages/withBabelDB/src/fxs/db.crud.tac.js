@@ -5,7 +5,8 @@ import { evolCompose } from '@vidalii/evol'
 const mergeInDB = ({ init_db, reduce_dbs_assoc }) => {
     for (var i in init_db) {
         // console.log(i)        
-        init_db[i].tac = reduce_dbs_assoc[i]
+        init_db[i].tac = reduce_dbs_assoc[i].withoutEncoder
+        init_db[i].tace = reduce_dbs_assoc[i].withEncoder
     }
     return init_db
 }
