@@ -20,7 +20,7 @@ const encoder = ({ globalData }) => ({
 // var s = []
 // var store = (key) => s.push(key)
 
-const queryServer = ({ globalData }) => ({
+const queryServer = ({ globalData, encoder }) => ({
     query,
     encoder = true,
     onData,
@@ -122,53 +122,6 @@ const storeSeqCounter = async ({ globalData, getLastSeq, queryServer }) => {
     // get: () => storeCounter
 }
 
-
-// const insertOne = globalData => seqCounter => async () => {
-//     var error = null
-//     var data = null
-//     var _seq = seqCounter.encode()
-
-//     try {
-//         var response = await globalData.table.tac.seq.put({ _seq }, {})
-//         data = {
-//             _seq
-//         }
-//     } catch (e) {
-//         // console.log('seq.put Error:', error)
-//         error = {
-//             msg: e + `. Error trying to table.seq.put(${_seq},{})`
-//         }
-//     }
-//     return globalData.standarizedResponse({
-//         error,
-//         data
-//     })
-// }
-// const exportModel = (insertOne) => then(seqCounter => {
-//     return {
-//         insertOne: () => insertOne(seqCounter)()
-//     }
-// })
-// const encode = () => ({
-//     keyEncoding: {
-//         type: 'sequence',
-//         encode: ({ _seq }) => {
-//             var toEncode = config.uuid + '!' + lexint.pack(_seq, 'hex')
-//             // console.log('encode:', toEncode)
-//             return toEncode
-//         },
-//         decode: (n) => {
-//             var toDecode = n.split('!');
-//             // console.log('decode:', toDecode)
-//             return {
-//                 _idDB: toDecode[0],
-//                 _seq: lexint.unpack(toDecode[1])
-//             }
-//         },
-//         buffer: false
-//     },
-//     valueEncoding: 'json'
-// })
 
 const insertOne = ({ globalData, encoder, storeSeqCounter }) => async () => {
     var storeSeq = await storeSeqCounter

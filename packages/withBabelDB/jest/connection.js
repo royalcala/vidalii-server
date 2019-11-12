@@ -7,6 +7,8 @@ var initTable = table({
     fxs: { ...globalFxs },
     config
 })
+// console.log('initTable1::',initTable)
+
 var initModels = models({
     table: initTable,
     fxs: { ...globalFxs },

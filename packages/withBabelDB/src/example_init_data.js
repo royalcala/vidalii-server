@@ -29,7 +29,8 @@ export const configTable = {
             // ]
             // typeDb: 'inMemory',
             typeDb: 'inStorage',
-            path: completePathDB
+            path: completePathDB,
+
         },
         rev: {
             typeDb: 'inStorage',
@@ -37,7 +38,7 @@ export const configTable = {
         },
         seq: {
             typeDb: 'inStorage',
-            path: completePathDB
+            path: completePathDB,
         },
     },
     // replication: {
