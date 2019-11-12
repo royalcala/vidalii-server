@@ -6,7 +6,8 @@ export default globalData => db => {
 
     return {
         docs: docs({ db }),
-        rev: rev({ db }),
+        // rev: rev({ db }),
+        rev: db.rev,
         seq: seq({ db, config: globalData.config })
     }
 }

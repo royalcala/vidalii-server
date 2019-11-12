@@ -7,18 +7,13 @@ import { evol, evolCompose, evolPipe } from '@vidalii/evol'
 import db from './fxs/db'
 import db_encode from './fxs/db_encode'
 import db_up from './fxs/db_up'
-import db_o_tac from './fxs/db_o_tac'
+import db_add_tac from './fxs/db_add_tac'
 
 import models_seq from './fxs/models_seq'
+import models_rev from './fxs/models_rev'
 
 const fs = require('fs-extra')
 
-// console.log('evolCompose::',evolCompose)
-// console.log(globalFxs)
-// const globalData = {
-//     standarizedResponse,
-//     config: initialData()
-// }
 /*::
 type TableInput = {
   fxs: any,
@@ -34,19 +29,18 @@ type ModelsOutput = ()=>any
 */
 
 const table = (globalData /*: TableInput */) /*: TableOutput */ => compose(
-  db_o_tac(globalData),//tryAndCatch
+  db_add_tac(globalData),//tryAndCatch
   db_up,
-  db_encode(globalData),
+  // db_encode(globalData),
   db
 )(globalData)
 
-
-const models = (globalData/*: ModelsInput */) /*: ModelsOutput */ => evolCompose(
-  // models_o_rev,
-  ['seq', models_seq]
+const models = (globalData/*: ModelsInput */) /*: ModelsOutput */ => evol(
+  ['seq', models_seq],
+  // ['rev', models_rev]
 )(
-  selection => ({
-    seq: selection.seq
+  composition => ({
+    seq: composition.seq
   })
 )
   (globalData)

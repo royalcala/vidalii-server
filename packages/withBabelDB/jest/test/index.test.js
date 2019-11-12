@@ -1,16 +1,21 @@
 import connection from '../connection'
-import { tac } from './table'
+import tableTests from './table'
+import modelsTests from './models'
+
 describe('root.index', () => {
     var table, models
     beforeAll(async () => {
+        // console.log('before1 ')
         // console.log('beforeAll:', connection)
         // var connection = connection.table
         // console.log('connection::', connection)
         // table = global.table
-        table = connection.table
+        table = await connection.table
         global.table = connection.table
-        models = await connection.models
-        console.log('models', models)
+        global.models = await connection.models
+
+        // console.log('models', models)
+
     });
     afterAll(async () => {
         console.log('afterAll:')
@@ -20,42 +25,44 @@ describe('root.index', () => {
         console.log('close-3-3:', close1, close2, close3)
 
     });
-    describe('table', () => {
-        test('has:docs,rev,seq?', async () => {
-            expect(Object.keys(table)).toEqual(expect.arrayContaining(
-                ['docs', 'rev', 'seq']
-            ));
-        })
-        test('has:docs.tac,[etc].tac?', async () => {
-            for (var nameTable in table) {
-                expect(
-                    Object.keys(table[nameTable])
-                ).toEqual(expect.arrayContaining(
-                    ['tac']
-                ));
-            }
+    tableTests()
+    // modelsTests()
+    // describe('table', () => {
+    //     test('has:docs,rev,seq?', async () => {
+    //         expect(Object.keys(table)).toEqual(expect.arrayContaining(
+    //             ['docs', 'rev', 'seq']
+    //         ));
+    //     })
+    //     test('has:docs.tac,[etc].tac?', async () => {
+    //         for (var nameTable in table) {
+    //             expect(
+    //                 Object.keys(table[nameTable])
+    //             ).toEqual(expect.arrayContaining(
+    //                 ['tac']
+    //             ));
+    //         }
 
-        })
-        tac()
-    })
+    //     })
+    //     tableTests()
+    // })
 
-    describe('models', () => {
-        test('has:docs,rev,seq?', async () => {
-            expect(Object.keys(table)).toEqual(expect.arrayContaining(
-                ['docs', 'rev', 'seq']
-            ));
-        })
-        test('has:docs.tac,[etc].tac?', async () => {
-            for (var nameTable in table) {
-                expect(
-                    Object.keys(table[nameTable])
-                ).toEqual(expect.arrayContaining(
-                    ['tac']
-                ));
-            }
+    // describe('models', () => {
+    //     test('has:docs,rev,seq?', async () => {
+    //         expect(Object.keys(table)).toEqual(expect.arrayContaining(
+    //             ['docs', 'rev', 'seq']
+    //         ));
+    //     })
+    //     test('has:docs.tac,[etc].tac?', async () => {
+    //         for (var nameTable in table) {
+    //             expect(
+    //                 Object.keys(table[nameTable])
+    //             ).toEqual(expect.arrayContaining(
+    //                 ['tac']
+    //             ));
+    //         }
 
-        })
-        tac()
-    })
+    //     })
+    //     tac()
+    // })
 })
 
