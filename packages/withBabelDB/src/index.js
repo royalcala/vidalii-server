@@ -54,28 +54,34 @@ const init_db = evol(
   ['db_up', db_up]
 )(c => c.db_up)
 
-const encoders = parent =>
-  evol(
-    ['db_encoder', db_encoder],
-    ['db_encoder_many', db_encoder_many],
-    ['docs', db_encode_docs],
-    ['rev', db_encode_rev],
-    ['seq', db_encode_seq],
-    ['default', () => db_encoder()()]
-  )(
-    omit(['parent', 'db_encoder', 'db_encoder_many'])
-  )({ parent })
+const encoders = evol(
+  ['db_encoder', db_encoder],
+  ['db_encoder_many', db_encoder_many],
+  ['docs', db_encode_docs],
+  ['rev', db_encode_rev],
+  ['seq', db_encode_seq],
+  ['default', () => db_encoder()()]
+)(
+  omit(['parent', 'db_encoder', 'db_encoder_many'])
+)
 
 const table = (globalData/*: TableInput */) /*: TableOutput */ => evol(
   [
     'table', parent =>
       evol(
         ['init_db', init_db],
-        ['encoders', encoders],
-        ['db_add_tac', db_add_tac],
-        // ['db_add_queryStream', query_stream]
+
+        ['withCrudPlugins',
+          evol(
+            ['encoders', encoders],
+            ['db_add_tac', db_add_tac],
+            ['db_add_queryStream', query_stream]
+          )(
+            c => c.db_add_queryStream
+          )
+        ]
       )(
-        c => c.db_add_tac
+        c => c.withCrudPlugins
       )({ parent })
   ]
 )(
@@ -89,9 +95,6 @@ const models = (globalData/*: ModelsInput */) /*: ModelsOutput */ =>
     // ['query_stream', query_stream],
     ['models_seq', parent => evol(
       ['models_config', models_seq_config],
-      ['test', data => {
-        console.log(data)
-      }]
       // ['model', models_seq],
     )(children => children)({ parent })
     ],

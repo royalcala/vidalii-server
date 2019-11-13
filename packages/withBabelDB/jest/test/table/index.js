@@ -1,6 +1,7 @@
 // export { default as tac } from "./tac"
 import tac from './tac'
-
+import tace from './tace';
+import queryStream from './queryStream'
 
 export default () => {
     describe('table', () => {
@@ -15,7 +16,7 @@ export default () => {
                 ['docs', 'rev', 'seq']
             ));
         })
-        test('has:docs.tac,[etc].tac?', async () => {
+        test('has:docs.tac,[etc]...?', async () => {
             for (var nameTable in table) {
                 expect(
                     Object.keys(table[nameTable])
@@ -25,6 +26,18 @@ export default () => {
             }
 
         })
+        test('has:docs.queryStream,[etc]...?', async () => {
+            for (var nameTable in table) {
+                expect(
+                    Object.keys(table[nameTable])
+                ).toEqual(expect.arrayContaining(
+                    ['queryStream']
+                ));
+            }
+
+        })
         tac()
+        tace()
+        queryStream()
     })
 }

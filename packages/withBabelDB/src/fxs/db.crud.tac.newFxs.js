@@ -7,10 +7,15 @@ export default ({ parent: { fxs: { standarizedResponse } } }) =>
                     put: async (key, value) => {
                         var error = null
                         var data = null
+                        var insertData = {
+                            key: keyEncoding.encode(key),
+                            value: valueEncoding.encode(value)
+                        }
+
                         try {
                             var response = await valueTable.put(
-                                keyEncoding.encode(key),
-                                valueEncoding.encode(value)
+                                insertData.key,
+                                insertData.value
                             )
                             data = 'ok'
                         } catch (e) {
@@ -28,9 +33,12 @@ export default ({ parent: { fxs: { standarizedResponse } } }) =>
                     get: async (key) => {
                         var error = null
                         var data = null
+                        var dataToGet = {
+                            key: keyEncoding.encode(key)
+                        }
                         try {
                             var response = await valueTable.get(
-                                keyEncoding.encode(key)
+                                dataToGet.key
                             )
                             data = {
                                 key,

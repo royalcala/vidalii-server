@@ -14,6 +14,7 @@ var initModels = models({
     fxs: { ...globalFxs },
     config
 })
+
 export default {
 
     table: initTable,

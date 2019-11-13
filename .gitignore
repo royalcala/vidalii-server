@@ -43,6 +43,7 @@ packages/vidaliiServer/_replicator/
 packages/vidaliiServer/log.txt
 packages/vidaliiServer/_replicator
 packages/vidaliiServer/_replicator/*
+packages/vidaliiServer/withBabelDB/db_testing/
 # TypeScript v1 declaration files
 typings/
 
