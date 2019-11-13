@@ -25,8 +25,9 @@ describe('root.index', () => {
         console.log('close-3-3:', close1, close2, close3)
 
     });
-    tableTests()
+    // tableTests()
     // modelsTests()
+
     // describe('table', () => {
     //     test('has:docs,rev,seq?', async () => {
     //         expect(Object.keys(table)).toEqual(expect.arrayContaining(

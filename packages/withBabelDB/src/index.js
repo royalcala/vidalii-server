@@ -1,6 +1,6 @@
 //@flow
-import { compose, pipe, omit } from 'ramda'
-import { evol } from '@vidalii/evol'
+import { omit, keys, pipe, toPairs, map, reduce, compose, curry, assoc } from 'ramda'
+import { evol, evolCompose } from '@vidalii/evol'
 
 // import * as globalFxs from './globalFxs'
 //resulse globalFxs {standarizedResponse,...}
@@ -20,8 +20,133 @@ import models_seq_config from './fxs/models.seq.config'
 import models_seq from './fxs/models_seq'
 import models_rev from './fxs/models_rev'
 
+import { configTable } from './example_init_data'
+import { standarizedResponse } from './globalFxs'
+
+
 const fs = require('fs-extra')
 
+const evolComposeReturnNews = (...branchs) => (initialParents = {}) =>
+  evolCompose(...branchs)(
+    allObjects => omit(keys(initialParents), allObjects)
+  )(initialParents)
+
+const evolComposeReturnTop = (...branchs) => (initialParents = {}) => {
+  var nameTop = branchs[0][0]
+  return evolCompose(...branchs)(
+    allObjects => allObjects[nameTop]
+  )(initialParents)
+}
+const curryTop = (top, ...otherFxs) => (initData) => {
+  const curryTop = curry(top)
+  const wrapOthers = map(
+    fx => {
+      return fxCurry => fxCurry(fx)
+    }
+  )(otherFxs)
+
+  return pipe(
+    (init) => curryTop(init),
+    ...wrapOthers
+  )(initData)
+}
+
+// console.log(
+//   'curryTop:',
+//   curryTop(
+//     (init, a, b) => init+a()+b(),
+//     a => 'a',
+//     b => 'b'
+//   )('hola')
+// )
+
+// const evolCurryWithTop = pipe(
+//   ()=>(a,b)=>b+a,
+//     R.curry,
+//     (curry)=>curry('a'),
+//     (curry)=>curry('b')
+//   )('')
+//   console.log(pip)
+
+// const testEvolComposeReturnTop = evolComposeReturnTop(
+//   ['1', () => 'dataOne'],
+//   ['2', evolComposeReturnNews(
+//     ['2.1', () => 'data2.1'],
+//     [2.2, evolComposeReturnNews(
+//       ['2.2.1', () => 'data2.2.1']
+//     )
+//     ]
+//   )
+//   ]
+// )({
+//   config: 'parentData'
+// })
+// console.log('testEvolComposeReturnTop::', testEvolComposeReturnTop)
+
+// const testComposeReturnNews = evolComposeReturnNews(
+//   ['1', () => 'dataOne'],
+//   ['2', evolComposeReturnNews(
+//     ['2.1', () => 'data2.1'],
+//     [2.2, evolComposeReturnNews(
+//       ['2.2.1', () => 'data2.2.1']
+//     )
+//     ]
+//   )
+//   ]
+// )({
+//   config: 'parentData'
+// })
+
+// console.log('testComposeReturnNews::', testComposeReturnNews)
+
+
+const tableFinal = evolComposeReturnNews(
+  ['table', () => ({
+    //One
+    insertOne: '',
+    updateOne: '',
+    getOne: '',
+    findOne: ''
+    //Many
+  })],
+  ['models', evolComposeReturnNews(
+    ['docs', () => 'data2.1'],
+    ['seq', () => 'data2.1'],
+    ['rev', () => 'data2.1'],
+    ['tools', evolComposeReturnNews(
+      ['2.2.1', () => 'data2.2.1']
+    )
+    ]
+  )
+  ],
+  ['db',
+    evolComposeReturnTop(
+      ['db_levelup', () => 'levelUP'],
+      //in memory
+      //in leveldown
+      //in browser
+      ['db', evolComposeReturnTop(
+        ['tables', ({ assoc_cond, config, }) =>
+          reduce(
+            assoc_cond,
+            {},
+            toPairs(config.tables)
+          )
+        ],
+        ['assoc_cond', ({ cond_typeDB }) =>
+          (acc, [tableName, tableConfig]) =>
+            assoc
+        ],
+
+      )]
+    )
+  ]
+)({
+  config: configTable,
+  standarizedResponse
+})
+
+console.log('tableFinal::', tableFinal)
 /*::
 type TableInput = {
   fxs: any,
@@ -49,6 +174,28 @@ type ModelsOutput = ()=>any
 //   ['db_add_tac', db_add_tac]
 // )(c => c.db_add_tac)({ parent })
 // ]
+
+
+// const table = evolCompose(
+//   //Table
+//   ['table', ({ models }) => ({
+//       insertOne: ({ _id, ...dataToInsert })/*: InsertOne*/ => '',
+//       updateOne: ({ _id, _rev, ...dataToUpdate })/*: UpdateOne*/ => ''
+//   })],
+//   //Models
+//   ['models', () => {
+
+//   }],
+//   //model
+//   ['dbs_extended', evolCompose(
+//       ['query']
+//   )],
+//   ['dbs', () => compose(
+//       //levelup
+//       //leveldown||memory||browser
+//   )]
+// )
+
 const init_db = evol(
   ['db', db],
   ['db_up', db_up]
