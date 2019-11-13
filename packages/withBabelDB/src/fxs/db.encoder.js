@@ -1,15 +1,40 @@
-import { mergeDeepRight } from 'ramda'
-
-export default () => (schema = {}) => {
-    const defaultEncoderBuffer = {
-        keyEncoding: {
-            encode: a => a,
-            decode: a => a
-        },
-        valueEncoding: {
-            encode: a => a,
-            decode: a => a
-        }
+import { mergeDeepRight, evolve } from 'ramda'
+const addTryAndCatch = fxEncoding => dataToEncoding => {
+    try {
+        var result = fxEncoding(dataToEncoding)
+        return result
+    } catch (e) {
+        console.log('Error encoding:')
+        return dataToEncoding
     }
-    return mergeDeepRight(defaultEncoderBuffer, schema)
+}
+
+const transformations = {
+    keyEncoding: {
+        encode: addTryAndCatch,
+        decode: addTryAndCatch
+    },
+    valueEncoding: {
+        encode: addTryAndCatch,
+        decode: addTryAndCatch
+    }
+}
+
+const defaultEncoderBuffer = {
+    keyEncoding: {
+        encode: a => a,
+        decode: a => a
+    },
+    valueEncoding: {
+        encode: a => a,
+        decode: a => a
+    }
+}
+export default () => (schema = {}) => {
+
+    var schemaWithDefaults = mergeDeepRight(defaultEncoderBuffer, schema)
+
+    var result = evolve(transformations, schemaWithDefaults)
+
+    return result
 }

@@ -1,6 +1,3 @@
-
-
-
 export default () => {
     describe('.queryStream', () => {
         var table, tableKeys
@@ -14,18 +11,15 @@ export default () => {
         //     // var close3 = await table.seq.close()
         //     // console.log('close-3-3:', close1, close2, close3)
         // });
+
         test.each([
             ['docs'], ['rev'], ['seq']
         ])(
-            "%p.put&&get",
+            "%p.queryStream",
             async (tableName) => {
-                var data = {
-                    key: Buffer.from('key'),
-                    value: Buffer.from('value'),
-                }
                 var db = table[tableName]
                 var response = await db.queryStream({
-                    withEncoder: false,
+                    withEncoder: true,
                     onData: (d) => {
                         console.log(d)
                     }
@@ -34,5 +28,4 @@ export default () => {
             }
         );
     })
-
 }
