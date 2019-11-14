@@ -1,5 +1,5 @@
-//@flow
-import { omit, keys, pipe, toPairs, map, reduce, compose, curry, assoc } from 'ramda'
+
+import { omit, keys, __, cond, pipe, toPairs, map, reduce, compose, curry, assoc } from 'ramda'
 import { evol, evolCompose } from '@vidalii/evol'
 
 // import * as globalFxs from './globalFxs'
@@ -23,10 +23,16 @@ import models_rev from './fxs/models_rev'
 import { configTable } from './example_init_data'
 import { standarizedResponse } from './globalFxs'
 
+///new
+import typedb_inStorage from './fxs/db.storage.inStorage'
+import typedb_inMemory from './fxs/db.storage.inMemory'
 
 const fs = require('fs-extra')
 
-const evolComposeReturnNews = (...branchs) => (initialParents = {}) =>
+const evolComposeReturnAll = (...branchs) => (initialParents = {}) =>
+  evolCompose(...branchs)(a => a)(initialParents)
+
+const evolComposeReturnChildren = (...branchs) => (initialParents = {}) =>
   evolCompose(...branchs)(
     allObjects => omit(keys(initialParents), allObjects)
   )(initialParents)
@@ -37,7 +43,7 @@ const evolComposeReturnTop = (...branchs) => (initialParents = {}) => {
     allObjects => allObjects[nameTop]
   )(initialParents)
 }
-const curryTop = (top, ...otherFxs) => (initData) => {
+const curryTopWithFxs = (top, ...otherFxs) => (initData) => {
   const curryTop = curry(top)
   const wrapOthers = map(
     fx => {
@@ -51,14 +57,37 @@ const curryTop = (top, ...otherFxs) => (initData) => {
   )(initData)
 }
 
-// console.log(
-//   'curryTop:',
-//   curryTop(
-//     (init, a, b) => init+a()+b(),
-//     a => 'a',
-//     b => 'b'
-//   )('hola')
-// )
+console.log(
+  'curryTopWithFxs:',
+  curryTopWithFxs(
+    (init, a, b) => init + a() + b(),
+    a => 'a->',
+    b => 'b->'
+  )('init->')
+)
+
+const curryTopWithObject = (top, objOfFxs) => (initData) => {
+  return top(initData, objOfFxs)
+}
+
+console.log(
+  'CurryTopWithObject:',
+  curryTopWithObject(
+    (init, { a, b }) => init + a() + b(),
+    {
+      a: () => 'a',
+      b: () => 'b'
+    }
+  )('init->')
+)
+
+
+//build CurryTopWithObject(
+//fxToCurry,
+//obj({
+//nameFx1,nameFx2...etc
+//})
+//)
 
 // const evolCurryWithTop = pipe(
 //   ()=>(a,b)=>b+a,
@@ -70,9 +99,9 @@ const curryTop = (top, ...otherFxs) => (initData) => {
 
 // const testEvolComposeReturnTop = evolComposeReturnTop(
 //   ['1', () => 'dataOne'],
-//   ['2', evolComposeReturnNews(
+//   ['2', evolComposeReturnChildren(
 //     ['2.1', () => 'data2.1'],
-//     [2.2, evolComposeReturnNews(
+//     [2.2, evolComposeReturnChildren(
 //       ['2.2.1', () => 'data2.2.1']
 //     )
 //     ]
@@ -83,11 +112,11 @@ const curryTop = (top, ...otherFxs) => (initData) => {
 // })
 // console.log('testEvolComposeReturnTop::', testEvolComposeReturnTop)
 
-// const testComposeReturnNews = evolComposeReturnNews(
+// const testComposeReturnNews = evolComposeReturnChildren(
 //   ['1', () => 'dataOne'],
-//   ['2', evolComposeReturnNews(
+//   ['2', evolComposeReturnChildren(
 //     ['2.1', () => 'data2.1'],
-//     [2.2, evolComposeReturnNews(
+//     [2.2, evolComposeReturnChildren(
 //       ['2.2.1', () => 'data2.2.1']
 //     )
 //     ]
@@ -100,7 +129,7 @@ const curryTop = (top, ...otherFxs) => (initData) => {
 // console.log('testComposeReturnNews::', testComposeReturnNews)
 
 
-const tableFinal = evolComposeReturnNews(
+const tableFinal = evolComposeReturnChildren(
   ['table', () => ({
     //One
     insertOne: '',
@@ -109,44 +138,70 @@ const tableFinal = evolComposeReturnNews(
     findOne: ''
     //Many
   })],
-  ['models', evolComposeReturnNews(
+  ['models', evolComposeReturnChildren(
     ['docs', () => 'data2.1'],
     ['seq', () => 'data2.1'],
-    ['rev', () => 'data2.1'],
-    ['tools', evolComposeReturnNews(
-      ['2.2.1', () => 'data2.2.1']
+    ['rev', ({ tools, db }) => {
+      var myCustomEncoder = {}
+      var encoder = tools.encoder(myCustomEncoder)
+      return {
+        insertOne: {
+
+        }
+      }
+    }],
+    ['tools', evolComposeReturnChildren(
+      ['querySream', () => ({ db, defEncoder }) =>
+        (options) =>
+          evolComposeReturnTop(
+            ['finalFx', ({ }) => 'processData'],
+            ['defaultOptions', () => {
+              ///transforme schema
+              // {
+              //   query = {},
+              //   withEncoder = true,
+              //   onData = () => { },
+              //   onError = () => { },
+              //   onClose = () => { },
+              //   onEnd = () => { }
+              // }
+              //query Merge options
+              //withEncoder->table'true-true'->functionEncoder
+            }]
+          )],
+      ['encoder', () => (myCustomEncoder) => 'encoderScript']
     )
     ]
   )
   ],
   ['db',
     evolComposeReturnTop(
-      ['db_levelup', () => 'levelUP'],
+      ['db_levelup', ({ db }) => db],
       //in memory
       //in leveldown
       //in browser
-      ['db', evolComposeReturnTop(
-        ['tables', ({ assoc_cond, config, }) =>
-          reduce(
-            assoc_cond,
-            {},
-            toPairs(config.tables)
-          )
-        ],
-        ['assoc_cond', ({ cond_typeDB }) =>
-          (acc, [tableName, tableConfig]) =>
-            assoc
-        ],
-
-      )]
+      ['db',
+        ({ config }) => compose(
+          reduce(__, {}, toPairs(config.tables)),
+          condition => (acc, [tableName, tableConfig]) => assoc(
+            tableName,
+            condition({ tableName, tableConfig }),
+            acc
+          ),
+          cond
+        )([
+          typedb_inStorage,
+          typedb_inMemory
+        ])
+      ]
     )
-  ]
+  ],
 )({
   config: configTable,
   standarizedResponse
 })
 
-console.log('tableFinal::', tableFinal)
+console.log('tableFinal.models::', tableFinal.models)
 /*::
 type TableInput = {
   fxs: any,

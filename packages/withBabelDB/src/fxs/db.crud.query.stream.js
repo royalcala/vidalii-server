@@ -88,7 +88,7 @@ const ifWithEncoder = () => ({ encoder, onData, withEncoder, finalQuery }) => {
             onData(valueEncoding.decode(value))
         }
     ]
-
+    //change to table 'true-true':()=>fxs
     return ifElse(
         equals(false),
         () => onData,
