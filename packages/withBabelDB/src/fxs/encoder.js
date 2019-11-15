@@ -1,5 +1,8 @@
 import { mergeDeepRight, evolve } from 'ramda'
 const codecs = {
+    utf8:{
+
+    },
     json: {
         //BOTH CASES WORKS
         //CASE1
@@ -10,24 +13,30 @@ const codecs = {
         decode: JSON.parse
     }
 }
-const addTryAndCatch = fxEncoding => dataToEncoding => {
+const addTryAndCatch = (typeEncoding, typeCode) => fxEncoding => dataToEncoding => {
     try {
         var result = fxEncoding(dataToEncoding)
         return result
     } catch (e) {
-        console.log('Error encoding:')
-        return dataToEncoding
+        var msg = `Error ${typeEncoding}Encoding.${typeCode}, not match the structure defined.`
+        // console.log(msg)
+        return {
+            data: dataToEncoding,
+            error: {
+                msg
+            }
+        }
     }
 }
 
 const transformations = {
     keyEncoding: {
-        encode: addTryAndCatch,
-        decode: addTryAndCatch
+        encode: addTryAndCatch('key', 'encode'),
+        decode: addTryAndCatch('key', 'decode')
     },
     valueEncoding: {
-        encode: addTryAndCatch,
-        decode: addTryAndCatch
+        encode: addTryAndCatch('value', 'encode'),
+        decode: addTryAndCatch('value', 'decode')
     }
 }
 

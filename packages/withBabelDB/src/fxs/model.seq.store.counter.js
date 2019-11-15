@@ -1,6 +1,6 @@
 export default async ({ db, config }) => {
     var _seq = 0
-    var lastSeq = await db.seq.query.stream({
+    var lastSeq = await table.db.seq.query.stream({
         query: {
             keys: true,
             values: false,
@@ -9,7 +9,12 @@ export default async ({ db, config }) => {
             limit: 1,
             reverse: true
         },
-        onData: (key) => { _seq = key._seq }
+        decoderOuts: {
+            key: true
+        },
+        onData: key => {
+            _seq = key._seq
+        }
     })
     console.log('acual_seq:', _seq)
     return {

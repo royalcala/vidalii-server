@@ -1,8 +1,10 @@
 const put = ({ db, standarizedResponse }) => async (key, value, options = {}) => {
-    var { withEncoder = true } = options
+    var { encoder = true } = options
     var error = null
     var data = null
-    var toInsertData = withEncoder === true ?
+    // console.log('db.encoder::',db)
+    const { keyEncoding, valueEncoding } = db.encoder
+    var toInsertData = encoder === true ?
         {
             key: keyEncoding.encode(key),
             value: valueEncoding.encode(value)
@@ -31,9 +33,10 @@ const put = ({ db, standarizedResponse }) => async (key, value, options = {}) =>
 const get = ({ db, standarizedResponse }) => async (key, options = {}) => {
     var error = null
     var data = null
-    var { withEncoder = true } = options
+    var { encoder = true, decoder = true } = options
+    const { keyEncoding, valueEncoding } = db.encoder
 
-    var toGetData = withEncoder === true ?
+    var toGetData = encoder === true ?
         {
             key: keyEncoding.encode(key)
         } : {
@@ -44,7 +47,7 @@ const get = ({ db, standarizedResponse }) => async (key, options = {}) => {
         var response = await db.get(toGetData.key)
         data = {
             key,
-            value: withEncoder === true ?
+            value: decoder === true ?
                 valueEncoding.decode(response) : response
         }
     } catch (e) {
@@ -63,9 +66,9 @@ const get = ({ db, standarizedResponse }) => async (key, options = {}) => {
 const del = ({ db, standarizedResponse }) => async (key, options = {}) => {
     var error = null
     var data = null
-    var { withEncoder = true } = options
-
-    var toDeleteData = withEncoder === true ?
+    var { encoder = true } = options
+    const { keyEncoding, valueEncoding } = db.encoder
+    var toDeleteData = encoder === true ?
         {
             key: keyEncoding.encode(key)
         } : {

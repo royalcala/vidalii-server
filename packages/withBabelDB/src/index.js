@@ -8,12 +8,12 @@ import { standarizedResponse } from './globalFxs'
 import fxEncoder from './fxs/encoder'
 import db from './fxs/db'
 import levelup from './fxs/db._u.levelup'
-import tac from './fxs/db[n]._i.tac'
-import encoderRev from './fxs/db.rev._i.encoder'
-import encoderSeq from './fxs/db.seq._i.encoder'
-import encoderDocs from './fxs/db.docs._i.encoder'
-import tace from './fxs/db[n]._i.tace'
-import queryStream from './fxs/db[n]._i.query.stream'
+import tac from './fxs/db[n].tac'
+import encoderRev from './fxs/db.rev.encoder'
+import encoderSeq from './fxs/db.seq.encoder'
+import encoderDocs from './fxs/db.docs.encoder'
+// import tace from './fxs/TRASH_db[n]._i.tace'
+import queryStream from './fxs/db[n].query.stream'
 import modelRevInsertOne from './fxs/model.rev.insertOne'
 
 import modelSeqStoreCounter from './fxs/model.seq.store.counter'
@@ -89,18 +89,20 @@ const table = evolSimple(
 
   insertOne('db.docs.query.stream', queryStream('docs')),
   insertOne('db.seq.query.stream', queryStream('seq')),
-  // insertOne('db.rev.query.stream', queryStream('rev')),
+  insertOne('db.rev.query.stream', queryStream('rev')),
 
-  //define encoder defaults
-  insertOne('db.docs.encoder', encoderDocs),
-  insertOne('db.seq.encoder', encoderSeq),
-  insertOne('db.rev.encoder', encoderRev),
+
 
 
   //try and catch tac.put, get, del
   insertOne('db.docs.tac', tac('docs')),
   insertOne('db.seq.tac', tac('seq')),
   insertOne('db.rev.tac', tac('rev')),
+
+  //define encoder defaults
+  insertOne('db.docs.encoder', encoderDocs),
+  insertOne('db.seq.encoder', encoderSeq),
+  insertOne('db.rev.encoder', encoderRev),
 
   updateOne('db.docs', levelup('docs')),
   updateOne('db.seq', levelup('seq')),
@@ -112,93 +114,45 @@ const table = evolSimple(
 
   insertOne('encoder', fxEncoder)
 )
-  ({
-    config,
-    fxs: { standarizedResponse }
-  })
+// ({
+//   config,
+//   fxs: { standarizedResponse }
+// })
 
 // console.log(
 //   'table:',
 //   table.db.seq.query.stream
 // )
 
-var test = (async () => {
-  var _seq = 0
-  var lastSeq = await table.db.seq.query.stream({
-    query: {
-      keys: true,
-      values: false,
-      gt: config.uuid,
-      lt: config.uuid + '\xff',
-      // limit: 1,
-      reverse: true
-    },
-    onData: (key) => {
-      console.log(key)
-    }
-  })
+// var test = (async () => {
+//   var _seq = 0
+//   var lastSeq = await table.db.seq.query.stream({
+//     query: {
+//       keys: true,
+//       values: true,
+//       gt: config.uuid,
+//       lt: config.uuid + '\xff',
+//       limit: 1,
+//       reverse: true
+//     },
+//     decoderOuts: {
+//       key: true,
+//       value: true
+//     },
+//     onData: (key) => {
+//       console.log(key)
+//     }
+//   })
 
-})()
-
-
-
-// const tableComposing = evolSimple(
-//   () => {
-//     //table.ao.js add object table
-//   },
-//   () => {
-//     //models.ao.docs
-//     //each model has different forms of insert data
-//   },
-//   () => {
-//     //models.ao.seq    
-//     //models
-//     //each model has different forms of insert data
-//   },
-//   () => {
-//     //models.ao.rev
-//     //models
-//     //each model has different forms of insert data
-//   },
-//   () => {
-//     //models.ao.js // add object models
-//   },
-//   () => {
-//     //db[name]_i.queryStream
-//     //add queryStream needs encoder in each db
-//   },
-//   () => {
-//     //db.ao.tac
-//   },
-//
-//   () => {
-//     //db._u.levelup
-//     //add level up to each db
-//   },
-//   () => {
-//     //db.js add object db
-//     //add level db to each db
-//     //and select type of db
-//   },
-// () => {
-//     //db.ao.encoder
-//     //add encoder method to each db 
-//   },
-//   init => {
-//     //config.ao.defaults
-//     //add config of encoders default
-//     //to each db in config file
-//   },
-// ()=>{
-// encoder.js
-// }
-// )({
-//   config: configTable,
-//   fxs: { standarizedResponse }
-// })
+// })()
 
 
-export {
-  table,
-  // models
+export default ({ config, fxs }) => {
+  var instanceTable = table({ config, fxs })
+
+  return {
+    table: '',
+    model: '',
+    db: instanceTable.db
+  }
 }

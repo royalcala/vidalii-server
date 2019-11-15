@@ -1,31 +1,66 @@
-import connection from '../connection'
-import tableTests from './table'
-import modelsTests from './models'
+// import connection from '../connection'
 
+// import modelsTests from './models'
+import initTable from '../../src'
+import { configTable as config } from '../../src/example_init_data'
+import * as globalFxs from '../../src/globalFxs'
+import dbTests from './db'
+
+const fs = require('fs-extra')
+const removeDataBase = ({ pathDB, db }) => {
+    const completePath = pathDB + '/' + db
+    fs.removeSync(completePath)
+    var existDir = fs.existsSync(completePath)
+    if (existDir)
+        console.log(`Removed error in ${db}`)
+    else
+        console.log(`The path of ${db} was removed`)
+    // if (fs.existsSync(pathDB)) {
+    //     var removed = fs.removeSync(pathDB)
+
+    //     // test(`database path was removed in ${pathDB}`, () => {
+    //     //     expect(existDir).toEqual(false);
+    //     // })
+    //     // console.log('removeed??', existDir)
+    // }
+    // else
+    //     console.log('not exist')
+
+}
+// removeDataBase({ pathDB: config.tables.docs.path + '/docs' })
 describe('root.index', () => {
-    var table, models
+    var table, models, db
     beforeAll(async () => {
-        // console.log('before1 ')
-        // console.log('beforeAll:', connection)
-        // var connection = connection.table
-        // console.log('connection::', connection)
-        // table = global.table
-        table = await connection.table
-        global.table = connection.table
-        // global.models = await connection.models
+        // console.log('in jest/connection')
 
-        // console.log('models', models)
+        var instanceTable = await initTable({
+            config,
+            fxs: { ...globalFxs }
+        })
+        db = instanceTable.db
+        global.db = db
+        // console.log('instanceTable',instanceTable)
 
     });
     afterAll(async () => {
-        console.log('afterAll:')
-        var close1 = await table.docs.close()
-        var close2 = await table.rev.close()
-        var close3 = await table.seq.close()
+        // console.log('afterAll:')
+        // console.log('db.isOpen():', db.docs.isOpen())
+        // console.log('db.isClosed():', db.docs.isClosed())
+        var close1 = await db.rev.close()
+        var close2 = await db.seq.close()
+        var close3 = await db.docs.close()
         console.log('close-3-3:', close1, close2, close3)
+        // 
 
+        removeDataBase({ pathDB: config.tables.docs.path, db: 'docs' })
+        removeDataBase({ pathDB: config.tables.seq.path, db: 'seq' })
+        removeDataBase({ pathDB: config.tables.rev.path, db: 'rev' })
     });
-    // tableTests()
+    // test('test', () => {
+    //     expect(true).toEqual(true)
+    // })
+
+    dbTests()
     // modelsTests()
 
     // describe('table', () => {
