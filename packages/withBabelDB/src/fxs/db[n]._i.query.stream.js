@@ -1,3 +1,4 @@
+import { mergeDeepRight, ifElse, equals, cond } from 'ramda'
 const ifWithEncoder = ({ encoder, onData, withEncoder, finalQuery }) => {
     const { keyEncoding, valueEncoding } = encoder
     const ifStreamWithKeyAndValue = [
@@ -34,31 +35,32 @@ const ifWithEncoder = ({ encoder, onData, withEncoder, finalQuery }) => {
 }
 
 const queryStream = ({ db }) => ({
-    query: {
-        keys = true,
-        values = true,
-        limit = -1,
-        reverse = false
-    },
+    query = {},
     withEncoder = true,
+    entrieEncoder = true,
+    keyEncoder = true,//returned data
+    valueEncoder = true,//returned data
     onData = () => { },
     onError = () => { },
     onClose = () => { },
     onEnd = () => { }
 }) => new Promise((resolve, reject) => {
-    // var defaultQuery = {
-    //     keys: true,
-    //     values: true,
-    //     limit: -1,
-    //     reverse: false
-    // }
-    // var finalQuery = mergeDeepRight(defaultQuery, query)
+    var defaultQuery = {
+        keys: true,
+        values: true,
+        limit: -1,
+        reverse: false
+    }
+    console.log('query::', query)
+    console.log('dentoooooooooooooooooo++++++++')
+    var finalQuery = mergeDeepRight(defaultQuery, query)
     const fxData = ifWithEncoder({
         encoder: db.encoder,
         onData,
         withEncoder,
-        query
+        finalQuery
     })
+    console.log('finalQuery::', finalQuery)
     db.createReadStream(finalQuery)
         .on('data', fxData)
         .on('error', onError)

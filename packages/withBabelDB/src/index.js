@@ -3,7 +3,7 @@ import {
   is, split, keys, assocPath, over, lensPath
 } from 'ramda'
 import { evol, evolCompose } from '@vidalii/evol'
-import { configTable } from './example_init_data'
+import { configTable as config } from './example_init_data'
 import { standarizedResponse } from './globalFxs'
 import fxEncoder from './fxs/encoder'
 import db from './fxs/db'
@@ -14,6 +14,11 @@ import encoderSeq from './fxs/db.seq._i.encoder'
 import encoderDocs from './fxs/db.docs._i.encoder'
 import tace from './fxs/db[n]._i.tace'
 import queryStream from './fxs/db[n]._i.query.stream'
+import modelRevInsertOne from './fxs/model.rev.insertOne'
+
+import modelSeqStoreCounter from './fxs/model.seq.store.counter'
+import modelSeqInsertOne from './fxs/model.seq.insertOne'
+
 const fs = require('fs-extra')
 
 
@@ -69,20 +74,22 @@ const insertOne = curry((paths, fxs, curriedData) => {
 
 
 const evolSimple = compose
-const tableComposing = evolSimple(
-  //queryStream
-  // insertOne('db.docs.query.stream', queryStream)
-  //models
-  // insertOne('model', model),
+const table = evolSimple(
+  //table
+  //model.seq
+  insertOne('model.seq.insertOne', modelSeqInsertOne),
+  // insertOne('model.seq.store.counter', modelSeqStoreCounter),
+  //model.rev
+  insertOne('model.rev.insertOne', modelRevInsertOne),
 
   //try and catch with encoders
-  insertOne('db.docs.tace', tace('docs')),
-  insertOne('db.seq.tace', tace('seq')),
-  insertOne('db.rev.tace', tace('rev')),
+  // insertOne('db.docs.tace', tace('docs')),
+  // insertOne('db.seq.tace', tace('seq')),
+  // insertOne('db.rev.tace', tace('rev')),
 
   insertOne('db.docs.query.stream', queryStream('docs')),
   insertOne('db.seq.query.stream', queryStream('seq')),
-  insertOne('db.rev.query.stream', queryStream('rev')),
+  // insertOne('db.rev.query.stream', queryStream('rev')),
 
   //define encoder defaults
   insertOne('db.docs.encoder', encoderDocs),
@@ -102,15 +109,37 @@ const tableComposing = evolSimple(
   insertOne('db.docs', db('docs')),
   insertOne('db.seq', db('seq')),
   insertOne('db.rev', db('rev')),
+
   insertOne('encoder', fxEncoder)
-)({
-  config: configTable,
-  fxs: { standarizedResponse }
-})
-console.log(
-  'tableComposing:',
-  tableComposing.db.rev.query.stream
 )
+  ({
+    config,
+    fxs: { standarizedResponse }
+  })
+
+// console.log(
+//   'table:',
+//   table.db.seq.query.stream
+// )
+
+var test = (async () => {
+  var _seq = 0
+  var lastSeq = await table.db.seq.query.stream({
+    query: {
+      keys: true,
+      values: false,
+      gt: config.uuid,
+      lt: config.uuid + '\xff',
+      // limit: 1,
+      reverse: true
+    },
+    onData: (key) => {
+      console.log(key)
+    }
+  })
+
+})()
+
 
 
 // const tableComposing = evolSimple(
@@ -152,16 +181,16 @@ console.log(
 //     //and select type of db
 //   },
 // () => {
-  //     //db.ao.encoder
-  //     //add encoder method to each db 
-  //   },
+//     //db.ao.encoder
+//     //add encoder method to each db 
+//   },
 //   init => {
 //     //config.ao.defaults
 //     //add config of encoders default
 //     //to each db in config file
 //   },
 // ()=>{
-  // encoder.js
+// encoder.js
 // }
 // )({
 //   config: configTable,
@@ -169,7 +198,7 @@ console.log(
 // })
 
 
-// export {
-//   table,
-//   models
-// }
+export {
+  table,
+  // models
+}

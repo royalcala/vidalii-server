@@ -4,19 +4,19 @@ import { table, models } from '../src'
 
 console.log('in jest/connection')
 var initTable = table({
-    fxs: { ...globalFxs },
-    config
+    config,
+    fxs: { ...globalFxs }
 })
-// console.log('initTable1::',initTable)
+console.log('initTable1::',initTable.db.rev)
 
-var initModels = models({
-    table: initTable,
-    fxs: { ...globalFxs },
-    config
-})
+// var initModels = models({
+//     table: initTable,
+//     fxs: { ...globalFxs },
+//     config
+// })
 
 export default {
 
     table: initTable,
-    models: initModels
+    // models: initModels
 }

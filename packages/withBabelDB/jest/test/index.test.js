@@ -12,7 +12,7 @@ describe('root.index', () => {
         // table = global.table
         table = await connection.table
         global.table = connection.table
-        global.models = await connection.models
+        // global.models = await connection.models
 
         // console.log('models', models)
 
