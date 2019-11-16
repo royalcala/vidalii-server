@@ -32,7 +32,7 @@ export default () => {
                         value: true
                     },
                     onData: data => {
-                        console.log(`${tableName}:`, data)
+                        // console.log(`db.${tableName}:`, data)
                         expectResul += 1
                     }
                 })

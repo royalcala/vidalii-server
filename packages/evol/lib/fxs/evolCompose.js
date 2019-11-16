@@ -6,18 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 
 // import { reduceRight } from 'ramda'
-var _default = (...fxs) => fxReturnSelection => initialValues => {
-  // var store = {}
-  // var evolution =
-  //     reduceRight(
-  //         (accStore, [alias, fx]) => {
-  //             return {
-  //                 ...accStore,
-  //                 [alias]: fx(accStore)
-  //             }
-  //         },
-  //         initialValues
-  //     )(fxs)
+var _default = (...fxs) => fxReturnSelection => (initialValues = {}) => {
   var evolution = fxs.reduceRight((acc, [alias, fx]) => {
     return { ...acc,
       [alias]: fx(acc)

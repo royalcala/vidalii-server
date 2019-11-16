@@ -3,13 +3,13 @@ var lexint = require('lexicographic-integer');
 export default ({ encoder, config }) => encoder.set({
     keyEncoding: {
         encode: ({ _seq }) => {
-            var toEncode = config.uuid + '!' + lexint.pack(_seq, 'hex')
+            var toEncode = config._idTable + '!' + lexint.pack(_seq, 'hex')
             return toEncode
         },
-        decode: (key) => {
-            var toDecode = key.split('!')
+        decode: buff => {
+            var toDecode = buff.toString('utf8').split('!')
             return {
-                _idServer: toDecode[0],
+                _idTable: toDecode[0],
                 _seq: lexint.unpack(toDecode[1])
             }
         }

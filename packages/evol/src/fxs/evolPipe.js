@@ -1,9 +1,9 @@
-import { reduce } from 'ramda'
+// import { reduce } from 'ramda'
 
 export default (...fxs) => fxReturnSelection => initialValues => {
     // var store = {}
     var evolution =
-        reduce(
+        fxs.reduce(
             (accStore, [alias, fx]) => {
 
                 return {
@@ -12,7 +12,8 @@ export default (...fxs) => fxReturnSelection => initialValues => {
                 }
             },
             initialValues
-        )(fxs)
+        )
+        // (fxs)
 
     return fxReturnSelection(evolution)
 

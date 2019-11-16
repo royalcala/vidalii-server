@@ -17,7 +17,7 @@ const put = ({ db, standarizedResponse }) => async (key, value, options = {}) =>
             toInsertData.key,
             toInsertData.value
         )
-        data = 'ok'
+        // data = 'ok'
     } catch (e) {
         error = {
             msg: e + `.Error inserting a data on ${nameTable}.put(${key},${value}) `
@@ -45,11 +45,14 @@ const get = ({ db, standarizedResponse }) => async (key, options = {}) => {
 
     try {
         var response = await db.get(toGetData.key)
-        data = {
-            key,
-            value: decoder === true ?
-                valueEncoding.decode(response) : response
-        }
+        data = decoder === true ?
+            valueEncoding.decode(response) : response
+
+        // data = {
+        //     key,
+        //     value: decoder === true ?
+        //         valueEncoding.decode(response) : response
+        // }
     } catch (e) {
         //not found
         error = {

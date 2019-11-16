@@ -3,12 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-Object.defineProperty(exports, "evol", {
-  enumerable: true,
-  get: function () {
-    return _evol.default;
-  }
-});
 Object.defineProperty(exports, "evolPipe", {
   enumerable: true,
   get: function () {
@@ -21,11 +15,18 @@ Object.defineProperty(exports, "evolCompose", {
     return _evolCompose.default;
   }
 });
+exports.evolComposeExtend = void 0;
 
-var _evol = _interopRequireDefault(require("./fxs/evol"));
+var evolComposeExtend = _interopRequireWildcard(require("./fxs/extendEvol"));
+
+exports.evolComposeExtend = evolComposeExtend;
 
 var _evolPipe = _interopRequireDefault(require("./fxs/evolPipe"));
 
 var _evolCompose = _interopRequireDefault(require("./fxs/evolCompose"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; if (obj != null) { var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }

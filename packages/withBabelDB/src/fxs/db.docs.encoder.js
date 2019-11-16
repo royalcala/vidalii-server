@@ -1,19 +1,14 @@
 var lexint = require('lexicographic-integer');
 
-export default ({ encoder }) => encoder.set({   
+export default ({ encoder }) => encoder.set({
     keyEncoding: {
+        // encode: n => n,
         // encode: (key) => {
-        //     // var toEncode = config.uuid + '!' + lexint.pack(_seq, 'hex')
+        //     // var toEncode = config._idTable + '!' + lexint.pack(_seq, 'hex')
 
         //     return key
         // },
-        decode: (key) => {
-            var toDecode = key.split('!')
-            return {
-                _idServer: toDecode[0],
-                _seq: lexint.unpack(toDecode[1])
-            }
-        }
+        decode: encoder.codec.utf8.decode
     },
     valueEncoding: encoder.codec.json
 })

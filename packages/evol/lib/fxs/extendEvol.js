@@ -1,38 +1,42 @@
+"use strict";
 
-const evolComposeReturnAll = (...branchs) => (initialParents = {}) =>
-evolCompose(...branchs)(a => a)(initialParents)
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.curryTopWithObject = exports.curryTopWithFxs = exports.returnValueTop = exports.returnChildren = exports.returnAll = void 0;
 
-const evolComposeReturnChildren = (...branchs) => (initialParents = {}) =>
-evolCompose(...branchs)(
-  allObjects => omit(keys(initialParents), allObjects)
-)(initialParents)
+var _evolCompose = _interopRequireDefault(require("./evolCompose"));
 
-const evolComposeReturnTop = (...branchs) => (initialParents = {}) => {
-var nameTop = branchs[0][0]
-return evolCompose(...branchs)(
-  allObjects => allObjects[nameTop]
-)(initialParents)
-}
-const curryTopWithFxs = (top, ...otherFxs) => (initData) => {
-const curryTop = curry(top)
-const wrapOthers = map(
-  fx => {
-    return fxCurry => fxCurry(fx)
-  }
-)(otherFxs)
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-return pipe(
-  (init) => curryTop(init),
-  ...wrapOthers
-)(initData)
-}
+const returnAll = (...branchs) => (initialParents = {}) => (0, _evolCompose.default)(...branchs)(a => a)(initialParents);
 
-const curryTopWithObject = (top, objOfFxs) => (initData) => {
-    return top(initData, objOfFxs)
-  }
+exports.returnAll = returnAll;
 
+const returnChildren = (...branchs) => (initialParents = {}) => (0, _evolCompose.default)(...branchs)(allObjects => omit(keys(initialParents), allObjects))(initialParents);
 
-  //example
+exports.returnChildren = returnChildren;
+
+const returnValueTop = (...branchs) => (initialParents = {}) => {
+  var nameTop = branchs[0][0];
+  return (0, _evolCompose.default)(...branchs)(allObjects => allObjects[nameTop])(initialParents);
+};
+
+exports.returnValueTop = returnValueTop;
+
+const curryTopWithFxs = (top, ...otherFxs) => initData => {
+  const curryTop = curry(top);
+  const wrapOthers = map(fx => {
+    return fxCurry => fxCurry(fx);
+  })(otherFxs);
+  return pipe(init => curryTop(init), ...wrapOthers)(initData);
+};
+
+exports.curryTopWithFxs = curryTopWithFxs;
+
+const curryTopWithObject = (top, objOfFxs) => initData => {
+  return top(initData, objOfFxs);
+}; //example
 //   const tableFinal = evolComposeReturnChildren(
 //     ['table', () => ({
 //       //One
@@ -50,7 +54,6 @@ const curryTopWithObject = (top, objOfFxs) => (initData) => {
 //         // var encoder = tools.encoder(myCustomEncoder)
 //         return {
 //           insertOne: {
-  
 //           }
 //         }
 //       }],
@@ -104,4 +107,6 @@ const curryTopWithObject = (top, objOfFxs) => (initData) => {
 //     config: configTable,
 //     standarizedResponse
 //   })
-  
+
+
+exports.curryTopWithObject = curryTopWithObject;

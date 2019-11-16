@@ -4,8 +4,8 @@ export default async ({ db, config }) => {
         query: {
             keys: true,
             values: false,
-            gt: config.uuid,
-            lt: config.uuid + '\xff',
+            gt: config._idTable,
+            lt: config._idTable + '\xff',
             limit: 1,
             reverse: true
         },

@@ -1,4 +1,26 @@
 import { equals } from 'ramda'
+const checkFirstValue = async ({ db }) => {
+    var expectResul
+    await db.query.stream({
+        query: {
+            keys: true,
+            values: true,
+            //   gt: config.uuid,
+            //   lt: config.uuid + '\xff',
+            limit: 1,
+            //   reverse: true
+        },
+        decoderOuts: {
+            key: true,
+            value: true
+        },
+        onData: data => {
+            // console.log(`db.${tableName}:`, data)
+            expectResul = data
+        }
+    })
+    return expectResul
+}
 export default () => {
     describe('.tac', () => {
         var db
@@ -18,9 +40,9 @@ export default () => {
         //     // console.log('close-3-3:', close1, close2, close3)
         // });
 
-        test('docs.tac.put&&get', async () => {
+        test('docs.tac.put&&get&&query.stream', async () => {
             var data = {
-                key: 1,
+                key: '1',
                 value: { myValueString: 'string' },
             }
             var response = await db.docs.tac.put(data.key, data.value)
@@ -30,30 +52,39 @@ export default () => {
             var response2 = await db.docs.tac.get(data.key)
             // console.log('response2:', response2)
             expect(response2.error).toEqual(null)
-            expect(response2.data.value).toEqual(data.value)
+            expect(response2.data).toEqual(data.value)
+            var resultStream = await checkFirstValue({ db: db.docs })
+            expect(data).toEqual(resultStream)
         })
-        test('rev.tac.put&&get', async () => {
+        test('rev.tac.put&&get&&query.stream', async () => {
             var data = {
-                key: { _id: 1, _rev: 1 },
+                key: { _id: "1", _rev: 1 },
                 value: { string: 'hola' }
             }
             var response = await db.rev.tac.put(data.key, data.value)
             expect(response.error).toEqual(null)
             var response2 = await db.rev.tac.get(data.key)
             expect(response2.error).toEqual(null)
-            expect(response2.data.value).toEqual(data.value)
+            expect(response2.data).toEqual(data.value)
+            var resultStream = await checkFirstValue({ db: db.rev })
+            expect(data).toEqual(resultStream)
         })
 
-        test('seq.tac.put&&get', async () => {
+        test('seq.tac.put&&get&&query.stream', async () => {
             var data = {
                 key: { _seq: 1 },
                 value: { string: 'hola' }
             }
             var response = await db.seq.tac.put(data.key, data.value)
             expect(response.error).toEqual(null)
+
             var response2 = await db.seq.tac.get(data.key)
             expect(response2.error).toEqual(null)
-            expect(response2.data.value).toEqual(data.value)
+            expect(response2.data).toEqual(data.value)
+
+            var resultStream = await checkFirstValue({ db: db.seq })
+            expect(data.key._seq).toEqual(resultStream.key._seq)
+            expect(data.value).toEqual(resultStream.value)
         })
 
         // test.each([

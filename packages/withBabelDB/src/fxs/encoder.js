@@ -1,7 +1,8 @@
 import { mergeDeepRight, evolve } from 'ramda'
 const codecs = {
-    utf8:{
-
+    utf8: {
+        encode: String,
+        decode: n => n.toString('utf8')
     },
     json: {
         //BOTH CASES WORKS
@@ -42,12 +43,12 @@ const transformations = {
 
 const defaultEncoderBuffer = {
     keyEncoding: {
-        encode: a => a,
-        decode: a => a
+        encode: s => s,//default leveldown changes to string if isnt buffer and save it in buffer
+        decode: buff => buff
     },
     valueEncoding: {
-        encode: a => a,
-        decode: a => a
+        encode: s => s,//default leveldown changes to string if isnt buffer and save it in buffer
+        decode: buff => buff
     }
 }
 export default () => ({

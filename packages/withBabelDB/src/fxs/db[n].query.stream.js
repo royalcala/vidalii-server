@@ -3,11 +3,11 @@ const ifWithEncoder = ({ encoder, onData, decodeKey, decodeValue, query }) => {
     const ifStreamWithKeyAndValue = [
         ({ keys, values }) => keys === true && values === true,
         () => (doc) => {
-            console.log('data::', doc)
-            console.log('dataDecode:', {
-                key: decodeKey(doc.key),
-                value: decodeValue(doc.value)
-            })
+            // console.log('dataWithoutEncoder::', doc)
+            // console.log('dataDecoded:', {
+            //     key: decodeKey(doc.key),
+            //     value: decodeValue(doc.value)
+            // })
             onData({
                 key: decodeKey(doc.key),
                 value: decodeValue(doc.value)

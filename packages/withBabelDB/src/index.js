@@ -8,16 +8,19 @@ import { standarizedResponse } from './globalFxs'
 import fxEncoder from './fxs/encoder'
 import db from './fxs/db'
 import levelup from './fxs/db._u.levelup'
-import tac from './fxs/db[n].tac'
-import encoderRev from './fxs/db.rev.encoder'
-import encoderSeq from './fxs/db.seq.encoder'
-import encoderDocs from './fxs/db.docs.encoder'
+// import tac from './fxs/db[n].tac'
+import tac_put from './fxs/db[n].tac.put'
+import tac_get from './fxs/db[n].tac.get'
+import tac_del from './fxs/db[n].tac.del'
+import encoder_rev from './fxs/db.rev.encoder'
+import encoder_seq from './fxs/db.seq.encoder'
+import encoder_docs from './fxs/db.docs.encoder'
 // import tace from './fxs/TRASH_db[n]._i.tace'
-import queryStream from './fxs/db[n].query.stream'
-import modelRevInsertOne from './fxs/model.rev.insertOne'
+import query_stream from './fxs/db[n].query.stream'
+import model_rev_insert from './fxs/model.rev.insertOne'
 
-import modelSeqStoreCounter from './fxs/model.seq.store.counter'
-import modelSeqInsertOne from './fxs/model.seq.insertOne'
+import model_seq_store_counter from './fxs/model.seq.store.counter'
+import model_seq_intertOne from './fxs/model.seq.insertOne'
 
 const fs = require('fs-extra')
 
@@ -71,38 +74,60 @@ const insertOne = curry((paths, fxs, curriedData) => {
   ])(paths)
 })
 
-
-
 const evolSimple = compose
 const table = evolSimple(
   //table
   //model.seq
-  insertOne('model.seq.insertOne', modelSeqInsertOne),
-  // insertOne('model.seq.store.counter', modelSeqStoreCounter),
+  // insertOne('model.seq.insertOne', model_seq_intertOne),
+  // insertOne('model.seq.store.counter', model_seq_store_counter),
   //model.rev
-  insertOne('model.rev.insertOne', modelRevInsertOne),
+  insertOne('model.rev.insertOne', model_rev_insert),
 
   //try and catch with encoders
   // insertOne('db.docs.tace', tace('docs')),
   // insertOne('db.seq.tace', tace('seq')),
   // insertOne('db.rev.tace', tace('rev')),
 
-  insertOne('db.docs.query.stream', queryStream('docs')),
-  insertOne('db.seq.query.stream', queryStream('seq')),
-  insertOne('db.rev.query.stream', queryStream('rev')),
-
-
-
+  // insertOne('db.docs.query.stream', query_stream('docs')),
+  // insertOne('db.seq.query.stream', query_stream('seq')),
+  // insertOne('db.rev.query.stream', query_stream('rev')),
+  ...['rev', 'seq', 'docs'].map(
+    n => insertOne(`db.${n}.query.stream`, query_stream(n))
+  ),
 
   //try and catch tac.put, get, del
-  insertOne('db.docs.tac', tac('docs')),
-  insertOne('db.seq.tac', tac('seq')),
-  insertOne('db.rev.tac', tac('rev')),
+  ...['rev', 'seq', 'docs'].map(
+    n => insertOne(`db.${n}.tac.del`, tac_del(n))
+  ),
+  ...['rev', 'seq', 'docs'].map(
+    n => insertOne(`db.${n}.tac.get`, tac_get(n))
+  ),
+  ...['rev', 'seq', 'docs'].map(
+    n => insertOne(`db.${n}.tac.put`, tac_put(n))
+  ),
+  // evolSimple(...['docs', 'rev', 'seq'].map(
+  //   n => insertOne(`db.${n}.tac.get`, tac_get(n))
+  // )),
+  // evolSimple(...['docs', 'rev', 'seq'].map(
+  //   n => insertOne(`db.${n}.tac.del`, tac_del(n))
+  // )),
+  // x => {
+  //   console.log(x.db.docs.tac.put)
+  //   return x
+  // },
+  //  ...tacs,
+  // x => {
+  //   console.log(x.db.docs.tac)
+  //   return x
+  // },
+  // ...[insertOne('db.docs.tac', tac('docs')),
+  // insertOne('db.seq.tac', tac('seq')),
+  // insertOne('db.rev.tac', tac('rev')),],
 
   //define encoder defaults
-  insertOne('db.docs.encoder', encoderDocs),
-  insertOne('db.seq.encoder', encoderSeq),
-  insertOne('db.rev.encoder', encoderRev),
+  insertOne('db.docs.encoder', encoder_docs),
+  insertOne('db.seq.encoder', encoder_seq),
+  insertOne('db.rev.encoder', encoder_rev),
 
   updateOne('db.docs', levelup('docs')),
   updateOne('db.seq', levelup('seq')),
