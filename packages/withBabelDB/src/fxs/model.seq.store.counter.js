@@ -1,6 +1,6 @@
 export default async ({ db, config }) => {
     var _seq = 0
-    var lastSeq = await table.db.seq.query.stream({
+    var lastSeq = await db.seq.query.stream({
         query: {
             keys: true,
             values: false,

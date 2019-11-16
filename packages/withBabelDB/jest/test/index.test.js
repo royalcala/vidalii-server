@@ -5,6 +5,7 @@ import initTable from '../../src'
 import { configTable as config } from '../../src/example_init_data'
 import * as globalFxs from '../../src/globalFxs'
 import dbTests from './db'
+import modelTests from './model'
 
 const fs = require('fs-extra')
 const removeDataBase = ({ pathDB, db }) => {
@@ -15,21 +16,10 @@ const removeDataBase = ({ pathDB, db }) => {
         console.log(`Removed error in ${db}`)
     else
         console.log(`The path of ${db} was removed`)
-    // if (fs.existsSync(pathDB)) {
-    //     var removed = fs.removeSync(pathDB)
-
-    //     // test(`database path was removed in ${pathDB}`, () => {
-    //     //     expect(existDir).toEqual(false);
-    //     // })
-    //     // console.log('removeed??', existDir)
-    // }
-    // else
-    //     console.log('not exist')
-
 }
-// removeDataBase({ pathDB: config.tables.docs.path + '/docs' })
+
 describe('root.index', () => {
-    var table, models, db
+    var table, model, db
     beforeAll(async () => {
         // console.log('in jest/connection')
 
@@ -39,6 +29,8 @@ describe('root.index', () => {
         })
         db = instanceTable.db
         global.db = db
+
+        global.model = instanceTable.model
         // console.log('instanceTable',instanceTable)
 
     });
@@ -61,7 +53,7 @@ describe('root.index', () => {
     // })
 
     dbTests()
-    // modelsTests()
+    modelTests()
 
     // describe('table', () => {
     //     test('has:docs,rev,seq?', async () => {

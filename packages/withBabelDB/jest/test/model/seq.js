@@ -1,17 +1,17 @@
 export default () => {
     describe('.seq', () => {
-        var seq
+        var model
         beforeAll(async () => {
-            seq = await global.models.seq
+            model = await global.model
             // tableKeys = Object.keys(table).map(
             //     (tableName) => [tableName]
             // )
             // console.log(tableKeys)
 
         });
-        test('has:insertOne?', async () => {
-            expect(Object.keys(seq)).toEqual(expect.arrayContaining(
-                ['insertOne']
+        test('has:insertOne,store.counter?', async () => {
+            expect(Object.keys(model.seq)).toEqual(expect.arrayContaining(
+                ['insertOne', 'store']
             ));
         })
         // test.each([
@@ -25,7 +25,7 @@ export default () => {
         //     }
         // );
         test('.insertOne', async () => {
-            var response = await seq.insertOne()
+            var response = await model.seq.insertOne()
             expect(response.error).toEqual(null)
         })
 

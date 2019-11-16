@@ -25,7 +25,7 @@ export default (nameDB) => ({ db, fxs:{standarizedResponse} }) => async (key, op
     } catch (e) {
         //not found
         error = {
-            msg: e + `.Error  ${nameTable}.get(${key})`
+            msg: e + `.Error  ${nameDB}.get(${key})`
         }
     }
     return standarizedResponse({

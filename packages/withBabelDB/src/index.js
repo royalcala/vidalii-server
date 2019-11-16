@@ -1,6 +1,7 @@
 import {
   omit, __, cond, pipe, toPairs, map, reduce, compose, curry, assoc,
-  is, split, keys, assocPath, over, lensPath
+  is, split, keys, assocPath, over, lensPath,
+  then
 } from 'ramda'
 import { evol, evolCompose } from '@vidalii/evol'
 import { configTable as config } from './example_init_data'
@@ -79,7 +80,18 @@ const table = evolSimple(
   //table
   //model.seq
   // insertOne('model.seq.insertOne', model_seq_intertOne),
-  // insertOne('model.seq.store.counter', model_seq_store_counter),
+  // o => {
+  //   console.log('o::::::', o)
+  //   return o
+  // },
+  // async o => {
+  //   console.log('listo:', o.model.seq)
+  //   var waiting = await o.model.seq.store.counter
+  //   console.log('listo:', o.model.seq.store.counter)
+  //   return o
+  // },
+  //define insertOneP with promise
+  insertOne('model.seq.store.counter', model_seq_store_counter),
   //model.rev
   insertOne('model.rev.insertOne', model_rev_insert),
 
@@ -177,7 +189,7 @@ export default ({ config, fxs }) => {
 
   return {
     table: '',
-    model: '',
+    model: instanceTable.model,
     db: instanceTable.db
   }
 }
