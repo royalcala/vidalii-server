@@ -29,9 +29,8 @@ describe('root.index', () => {
         })
         db = instanceTable.db
         global.db = db
-
         global.model = instanceTable.model
-        // console.log('instanceTable',instanceTable)
+        global.config = config
 
     });
     afterAll(async () => {

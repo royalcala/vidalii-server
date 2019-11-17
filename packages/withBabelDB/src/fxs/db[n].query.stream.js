@@ -35,10 +35,10 @@ const ifWithEncoder = ({ encoder, onData, decodeKey, decodeValue, query }) => {
 
 }
 const decodeKey = ({ db, decoderOuts }) => key =>
-    decoderOuts.key ? db.encoder.keyEncoding.decode(key) : key
+    decoderOuts.keys ? db.encoder.keyEncoding.decode(key) : key
 
 const decodeValue = ({ db, decoderOuts }) => value =>
-    decoderOuts.value ? db.encoder.valueEncoding.decode(value) : value
+    decoderOuts.values ? db.encoder.valueEncoding.decode(value) : value
 
 const initQueryDefaults = ({ query }) => {
     var defaults = {
@@ -51,8 +51,8 @@ const initQueryDefaults = ({ query }) => {
 }
 const initDefaultsDecoderOuts = ({ decoderOuts }) => {
     var defaults = {
-        key: true,
-        value: true
+        keys: true,
+        values: true
     }
     return mergeDeepRight(defaults, decoderOuts)
 }
@@ -66,7 +66,6 @@ const queryStream = ({ db }) => ({
     onClose = () => { },
     onEnd = () => { }
 }) => new Promise((resolve, reject) => {
-
     //init defaults if its not defined by the user
     query = initQueryDefaults({ query })
     decoderOuts = initDefaultsDecoderOuts({ decoderOuts })

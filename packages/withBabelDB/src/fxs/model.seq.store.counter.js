@@ -4,19 +4,19 @@ export default async ({ db, config }) => {
         query: {
             keys: true,
             values: false,
-            gt: config._idTable,
-            lt: config._idTable + '\xff',
+            gt: config._id_table,
+            lt: config._id_table + '\xff',
             limit: 1,
             reverse: true
         },
         decoderOuts: {
-            key: true
+            keys: true
         },
         onData: key => {
             _seq = key._seq
         }
     })
-    console.log('acual_seq:', _seq)
+    // console.log('acual_seq:', _seq)
     return {
         nextSeq: () => {
             _seq += 1

@@ -72,7 +72,7 @@ export default () => {
 
         test('seq.tac.put&&get&&query.stream', async () => {
             var data = {
-                key: { _seq: 1 },
+                key: { _seq: 99999999 },
                 value: { string: 'hola' }
             }
             var response = await db.seq.tac.put(data.key, data.value)

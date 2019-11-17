@@ -4,7 +4,7 @@ export default ({ encoder }) => encoder.set({
     keyEncoding: {
         // encode: n => n,
         // encode: (key) => {
-        //     // var toEncode = config._idTable + '!' + lexint.pack(_seq, 'hex')
+        //     // var toEncode = config._id_table + '!' + lexint.pack(_seq, 'hex')
 
         //     return key
         // },

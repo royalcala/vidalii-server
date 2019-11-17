@@ -3,7 +3,7 @@ const path = require('path')
 const completePathDB = path.join(__dirname, '../') + 'db_testing'
 export const configTable = {
     // alias: 'test1',
-    _idTable: '591bb671-15a8-4bb8-84ef-5904271745a8',
+    _id_table: '591bb671-15a8-4bb8-84ef-5904271745a8',
     env: {
         type: 'node',//browser||node
         encoding: {

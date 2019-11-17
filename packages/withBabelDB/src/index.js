@@ -21,8 +21,9 @@ import query_stream from './fxs/db[n].query.stream'
 import model_rev_insert from './fxs/model.rev.insertOne'
 
 import model_seq_store_counter from './fxs/model.seq.store.counter'
-import model_seq_intertOne from './fxs/model.seq.insertOne'
+import model_seq_insertOne from './fxs/model.seq.insertOne'
 
+import model_docs_insertOne from './fxs/model.docs.insertOne'
 const fs = require('fs-extra')
 
 
@@ -75,34 +76,44 @@ const insertOne = curry((paths, fxs, curriedData) => {
   ])(paths)
 })
 
+const insertOneP = curry(async (paths, fxs, curriedData) => {
+  var resultFx = await fxs(curriedData)
+  return assocPath(split('.', paths), resultFx, curriedData)
+  // const checkIfIsString = (path) => typeof paths === 'string'
+
+  // const ifPathRootIsString = () => assocPath(split('.', paths), fxs(curriedData), curriedData)
+  // const ifRootPathIsArray = () => paths.reduce(
+  //   (acc, path, index) => {
+  //     if (checkIfIsString(path))
+  //       return assocPath(split('.', path), resultFx, acc)
+  //     else
+  //       return assocPath(path, resultFx, acc)
+  //   },
+  //   curriedData
+  // )
+
+  // return cond([
+  //   [Array.isArray, ifRootPathIsArray],
+  //   [is(String), ifPathRootIsString]
+  // ])(paths)
+})
+
 const evolSimple = compose
 const table = evolSimple(
   //table
   //model.seq
-  // insertOne('model.seq.insertOne', model_seq_intertOne),
-  // o => {
-  //   console.log('o::::::', o)
-  //   return o
-  // },
-  // async o => {
-  //   console.log('listo:', o.model.seq)
-  //   var waiting = await o.model.seq.store.counter
-  //   console.log('listo:', o.model.seq.store.counter)
-  //   return o
-  // },
-  //define insertOneP with promise
-  insertOne('model.seq.store.counter', model_seq_store_counter),
+  then(
+    evolSimple(
+      insertOne('model.docs.insertOne', model_docs_insertOne),
+      ///model.seq.get(by table_id, seq to search)
+      insertOne('model.seq.insertOne', model_seq_insertOne)
+    )
+  ),
+  //-->insertOneP with promise
+  insertOneP('model.seq.store.counter', model_seq_store_counter),
   //model.rev
   insertOne('model.rev.insertOne', model_rev_insert),
 
-  //try and catch with encoders
-  // insertOne('db.docs.tace', tace('docs')),
-  // insertOne('db.seq.tace', tace('seq')),
-  // insertOne('db.rev.tace', tace('rev')),
-
-  // insertOne('db.docs.query.stream', query_stream('docs')),
-  // insertOne('db.seq.query.stream', query_stream('seq')),
-  // insertOne('db.rev.query.stream', query_stream('rev')),
   ...['rev', 'seq', 'docs'].map(
     n => insertOne(`db.${n}.query.stream`, query_stream(n))
   ),
@@ -117,40 +128,57 @@ const table = evolSimple(
   ...['rev', 'seq', 'docs'].map(
     n => insertOne(`db.${n}.tac.put`, tac_put(n))
   ),
-  // evolSimple(...['docs', 'rev', 'seq'].map(
-  //   n => insertOne(`db.${n}.tac.get`, tac_get(n))
-  // )),
-  // evolSimple(...['docs', 'rev', 'seq'].map(
-  //   n => insertOne(`db.${n}.tac.del`, tac_del(n))
-  // )),
-  // x => {
-  //   console.log(x.db.docs.tac.put)
-  //   return x
-  // },
-  //  ...tacs,
-  // x => {
-  //   console.log(x.db.docs.tac)
-  //   return x
-  // },
-  // ...[insertOne('db.docs.tac', tac('docs')),
-  // insertOne('db.seq.tac', tac('seq')),
-  // insertOne('db.rev.tac', tac('rev')),],
 
-  //define encoder defaults
   insertOne('db.docs.encoder', encoder_docs),
   insertOne('db.seq.encoder', encoder_seq),
   insertOne('db.rev.encoder', encoder_rev),
 
-  updateOne('db.docs', levelup('docs')),
-  updateOne('db.seq', levelup('seq')),
-  updateOne('db.rev', levelup('rev')),
+  ...['rev', 'seq', 'docs'].map(
+    n => updateOne(`db.${n}`, levelup(n))
+  ),
 
-  insertOne('db.docs', db('docs')),
-  insertOne('db.seq', db('seq')),
-  insertOne('db.rev', db('rev')),
-
+  ...['rev', 'seq', 'docs'].map(
+    n => insertOne(`db.${n}`, db(n))
+  ),
   insertOne('encoder', fxEncoder)
 )
+
+// const table = evolSimple(
+//   insertOne('encoder', fxEncoder),
+//   ...['rev', 'seq', 'docs'].map(
+//     n => insertOne(`db.${n}`, db(n))
+//   ),
+//   ...['rev', 'seq', 'docs'].map(
+//     n => updateOne(`db.${n}`, levelup(n))
+//   ),
+//   //encoders
+//   insertOne('db.docs.encoder', encoder_docs),
+//   insertOne('db.seq.encoder', encoder_seq),
+//   insertOne('db.rev.encoder', encoder_rev),
+//   //try and catch tac.put, get, del
+//   ...['rev', 'seq', 'docs'].map(
+//     n => insertOne(`db.${n}.tac.del`, tac_del(n))
+//   ),
+//   ...['rev', 'seq', 'docs'].map(
+//     n => insertOne(`db.${n}.tac.get`, tac_get(n))
+//   ),
+//   ...['rev', 'seq', 'docs'].map(
+//     n => insertOne(`db.${n}.tac.put`, tac_put(n))
+//   ),
+//   ...['rev', 'seq', 'docs'].map(
+//     n => insertOne(`db.${n}.query.stream`, query_stream(n))
+//   ),
+//   //model.rev
+//   insertOne('model.rev.insertOne', model_rev_insert),
+//   //-->insertOneP with promise
+//   insertOneP('model.seq.store.counter', model_seq_store_counter),
+//   then(
+//     evolSimple(
+//       ///model.seq.get(by table_id, seq to search)
+//       insertOne('model.seq.insertOne', s)
+//     )
+//   )
+// )
 // ({
 //   config,
 //   fxs: { standarizedResponse }
@@ -184,8 +212,8 @@ const table = evolSimple(
 // })()
 
 
-export default ({ config, fxs }) => {
-  var instanceTable = table({ config, fxs })
+export default async ({ config, fxs }) => {
+  var instanceTable = await table({ config, fxs })
 
   return {
     table: '',
