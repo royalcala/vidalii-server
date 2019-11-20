@@ -63,11 +63,14 @@ export default () => {
             }
             var response = await db.rev.tac.put(data.key, data.value)
             expect(response.error).toEqual(null)
-            var response2 = await db.rev.tac.get(data.key)
+            expect(Object.keys(response.key)).toEqual(expect.arrayContaining(
+                ['_id', '_rev', '_rev_id']
+            ));
+            var response2 = await db.rev.tac.get(response.key)
             expect(response2.error).toEqual(null)
             expect(response2.data).toEqual(data.value)
-            var resultStream = await checkFirstValue({ db: db.rev })
-            expect(data).toEqual(resultStream)
+            var resultStream = await checkFirstValue({ db: db.rev })            
+            expect({ key: response.key, value: data.value }).toEqual(resultStream)
         })
 
         test('seq.tac.put&&get&&query.stream', async () => {

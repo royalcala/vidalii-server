@@ -5,7 +5,8 @@ import {
 } from 'ramda'
 import { evol, evolCompose } from '@vidalii/evol'
 import { configTable as config } from './example_init_data'
-import { standarizedResponse } from './globalFxs'
+// import { standarizedResponse } from './globalFxs'
+import responses_standard from './fxs/responses.standard'
 import fxEncoder from './fxs/encoder'
 import db from './fxs/db'
 import levelup from './fxs/db._u.levelup'
@@ -18,10 +19,11 @@ import encoder_seq from './fxs/db.seq.encoder'
 import encoder_docs from './fxs/db.docs.encoder'
 // import tace from './fxs/TRASH_db[n]._i.tace'
 import query_stream from './fxs/db[n].query.stream'
-import model_rev_insert from './fxs/model.rev.insertOne'
+import model_rev_insertNextDocRev from './fxs/model.rev.insertNextDocRev'
+import model_rev_insertOne from './fxs/model.rev.insertOne'
 
 import model_seq_store_counter from './fxs/model.seq.store.counter'
-import model_seq_insertOne from './fxs/model.seq.insertOne'
+import model_seq_insertNextSeq from './fxs/model.seq.insertNextSeq'
 
 import model_docs_insertOne from './fxs/model.docs.insertOne'
 const fs = require('fs-extra')
@@ -100,20 +102,24 @@ const insertOneP = curry(async (paths, fxs, curriedData) => {
 
 const evolSimple = compose
 const table = evolSimple(
-  //table
-  //model.seq
+
+  //---------model--------
   then(
     evolSimple(
       insertOne('model.docs.insertOne', model_docs_insertOne),
-      ///model.seq.get(by table_id, seq to search)
-      insertOne('model.seq.insertOne', model_seq_insertOne)
+
+      insertOne('model.seq.insertNextSeq', model_seq_insertNextSeq)
     )
   ),
   //-->insertOneP with promise
   insertOneP('model.seq.store.counter', model_seq_store_counter),
   //model.rev
-  insertOne('model.rev.insertOne', model_rev_insert),
+  insertOne('model.rev.insertNextDocRev', model_rev_insertNextDocRev),
+  insertOne('model.rev.insertOne', model_rev_insertOne),
 
+
+
+  //------db--------
   ...['rev', 'seq', 'docs'].map(
     n => insertOne(`db.${n}.query.stream`, query_stream(n))
   ),
@@ -140,7 +146,8 @@ const table = evolSimple(
   ...['rev', 'seq', 'docs'].map(
     n => insertOne(`db.${n}`, db(n))
   ),
-  insertOne('encoder', fxEncoder)
+  insertOne('encoder', fxEncoder),
+  insertOne('responses.standard', responses_standard)
 )
 
 // const table = evolSimple(
@@ -169,7 +176,7 @@ const table = evolSimple(
 //     n => insertOne(`db.${n}.query.stream`, query_stream(n))
 //   ),
 //   //model.rev
-//   insertOne('model.rev.insertOne', model_rev_insert),
+//   insertOne('model.rev.insertOne', model_rev_insertNextDocRev),
 //   //-->insertOneP with promise
 //   insertOneP('model.seq.store.counter', model_seq_store_counter),
 //   then(
@@ -214,7 +221,8 @@ const table = evolSimple(
 
 export default async ({ config, fxs }) => {
   var instanceTable = await table({ config, fxs })
-
+  // console.log(Object.keys(instanceTable.response))
+  // console.log('response.standard::', instanceTable.response.standard)
   return {
     table: '',
     model: instanceTable.model,

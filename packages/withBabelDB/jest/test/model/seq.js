@@ -8,19 +8,19 @@ export default () => {
         });
         test('has:insertOne,store.counter?', async () => {
             expect(Object.keys(model.seq)).toEqual(expect.arrayContaining(
-                ['insertOne', 'store']
+                ['insertNextSeq', 'store']
             ));
         })
-        test('.insertOne&&store.counter', async () => {
+        test('.insertNextSeq&&store.counter', async () => {
             var data = {
                 value: { myData: '****data****' }
             }
-            var response = await model.seq.insertOne(data.value)
+            var response = await model.seq.insertNextSeq(data.value)
             expect(response.error).toEqual(null)
             expect(response._seq).toEqual(1)
             var responseGet = await db.seq.tac.get({ _seq: response._seq })
             expect(responseGet.data).toEqual(data.value)
-            var response2 = await model.seq.insertOne(data.value)
+            var response2 = await model.seq.insertNextSeq(data.value)
             expect(response2.error).toEqual(null)
             expect(response2._seq).toEqual(2)
             // var streamAll = await db.seq.query.stream({

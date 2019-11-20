@@ -1,4 +1,4 @@
-export default (nameDB) => ({ db, fxs:{standarizedResponse} }) => async (key, options = {}) => {
+export default (nameDB) => ({ db, responses }) => async (key, options = {}) => {
     var myDB = db[nameDB]
     var error = null
     var data = null
@@ -27,8 +27,8 @@ export default (nameDB) => ({ db, fxs:{standarizedResponse} }) => async (key, op
         error = {
             msg: e + `.Error  ${nameDB}.get(${key})`
         }
-    }
-    return standarizedResponse({
+    }    
+    return responses.standard({
         error,
         data
     })

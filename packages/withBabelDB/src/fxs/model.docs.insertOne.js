@@ -1,11 +1,14 @@
-export default ({ db, model }) => async (valueToInsert = {}) => {
-    // var _seq = model.seq.store.counter.nextSeq()
-    // var response = await db.docs.tac.put({
-    //     _seq,
-    // }, valueToInsert)
+export default ({ db, model }) => async ({ _id, _rev, ...otherData }) => {
+    var response = await db.docs.tac.put({
+        _id,
+    }, {
+        _rev,
+        ...otherData
+    })
 
-    // return {
-    //     ...response,
-    //     _seq
-    // }
+    return {
+        ...response,
+        _id,
+        _rev
+    }
 }

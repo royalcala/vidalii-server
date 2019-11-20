@@ -1,4 +1,4 @@
-export default (nameDB) => ({ db, fxs:{standarizedResponse} }) => async (key, options = {}) => {
+export default (nameDB) => ({ db, responses }) => async (key, options = {}) => {
     var myDB = db[nameDB]
     var error = null
     var data = null
@@ -18,7 +18,7 @@ export default (nameDB) => ({ db, fxs:{standarizedResponse} }) => async (key, op
             msg: e + `.Error deleting a data on ${nameDB}.del(${key}) or not found `
         }
     }
-    return standarizedResponse({
+    return responses.standard({
         error,
         data
     })

@@ -7,32 +7,25 @@ export default () => {
             model = await global.model
 
         });
-        test('has:insertOne?', async () => {
+        test('has:insertOne,insertNextDocRev?', async () => {
             expect(Object.keys(model.rev)).toEqual(expect.arrayContaining(
-                ['insertOne']
+                ['insertOne', 'insertNextDocRev']
             ));
         })
         test('.insertOne withoutID', async () => {
             var data = { my_data: 'holis' }
             var response = await model.rev.insertOne(data)
             expect(response.error).toEqual(null)
-            var responseGet = await db.rev.tac.get({
-                _id: response._id,
-                _rev: 1
-            })
+            var responseGet = await db.rev.tac.get(response.key)
             expect(responseGet.data).toEqual(data)
-            // console.log(responseGet)
         })
-        test('.insertOne witID', async () => {
-            var data = { _id: 'holis', my_data: 'holis' }
+        test('.insertOne withID', async () => {
+            var myData = { data1: '1', data2: 2 }
+            var data = { _id: 'holis', ...myData }
             var response = await model.rev.insertOne(data)
             expect(response.error).toEqual(null)
-            // var responseGet = await db.rev.tac.get({
-            //     _id: data._id,
-            //     _rev: 1
-            // })
-            // expect(responseGet.data).toEqual(data)
-            // console.log(responseGet)
+            var responseGet = await db.rev.tac.get(response.key)
+            expect(responseGet.data).toEqual(myData)
         })
 
     })

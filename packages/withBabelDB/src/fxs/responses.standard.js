@@ -1,4 +1,4 @@
-export const standarizedResponse = ({ error = null, data = null, ...otherData }) => {
+export default () => ({ error = null, data = null, ...otherData }) => {
     //log errors
     return {
         data,

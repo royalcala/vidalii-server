@@ -1,4 +1,4 @@
-const put = ({ db, standarizedResponse }) => async (key, value, options = {}) => {
+const put = ({ db, responses }) => async (key, value, options = {}) => {
     var { encoder = true } = options
     var error = null
     var data = null
@@ -23,14 +23,14 @@ const put = ({ db, standarizedResponse }) => async (key, value, options = {}) =>
             msg: e + `.Error inserting a data on ${nameTable}.put(${key},${value}) `
         }
     }
-    return standarizedResponse({
+    return responses.standard({
         error,
         data
     })
 
 
 }
-const get = ({ db, standarizedResponse }) => async (key, options = {}) => {
+const get = ({ db, responses }) => async (key, options = {}) => {
     var error = null
     var data = null
     var { encoder = true, decoder = true } = options
@@ -59,14 +59,14 @@ const get = ({ db, standarizedResponse }) => async (key, options = {}) => {
             msg: e + `.Error  ${nameTable}.get(${key})`
         }
     }
-    return standarizedResponse({
+    return responses.standard({
         error,
         data
     })
 
 
 }
-const del = ({ db, standarizedResponse }) => async (key, options = {}) => {
+const del = ({ db, responses }) => async (key, options = {}) => {
     var error = null
     var data = null
     var { encoder = true } = options
@@ -85,18 +85,18 @@ const del = ({ db, standarizedResponse }) => async (key, options = {}) => {
             msg: e + `.Error deleting a data on ${nameTable}.del(${key}) or not found `
         }
     }
-    return standarizedResponse({
+    return responses.standard({
         error,
         data
     })
 
 
 }
-export default (n) => ({ db, fxs: { standarizedResponse } }) => {
+export default (n) => ({ db, fxs: { responses } }) => {
 
     return {
-        put: put({ db: db[n], standarizedResponse }),
-        get: get({ db: db[n], standarizedResponse }),
-        del: del({ db: db[n], standarizedResponse })
+        put: put({ db: db[n], responses }),
+        get: get({ db: db[n], responses }),
+        del: del({ db: db[n], responses })
     }
 }

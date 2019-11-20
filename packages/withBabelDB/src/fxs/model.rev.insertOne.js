@@ -1,10 +1,10 @@
-import { ifElse, equals, compose, over, lens, assoc, then } from 'ramda'
+import { ifElse, equals, compose, then } from 'ramda'
 // import { evolComposeExtended as composeE } from '@vidalii/evol'
 const uuidv4 = require('uuid/v4');
 
 const withID_insertOne = ifElse(
     ({ isDuplicated }) => equals(true, isDuplicated),
-    ({ fxs }) => fxs.standarizedResponse({
+    ({ responses }) => responses.standard({
         error: {
             msg: `Error. The _id:${_id} already exist`
         }
@@ -20,17 +20,6 @@ const withID_insertOne = ifElse(
     }
 )
 
-// const oIsDuplicated = over(
-//     lens(o => o, assoc('isDuplicated')),
-//     async ({ db, _id }) => {
-//         var response = await db.rev.tac.get({ _id, _rev: 1 })
-//         console.log('responseDuplicated::', response)
-//         if (response.data === null)
-//             return false
-//         else
-//             return true
-//     }
-// )
 const o_isDuplicated = async (o) => {
     var isDuplicated
     var response = await db.rev.tac.get({ _id: o._id, _rev: 1 })
@@ -62,8 +51,19 @@ const withoutID = async ({ db, otherData, fxs }) => {
     }
 }
 const hasId = ({ _id }) => equals(null, _id)
+
+/*::
+type Output = {
+    //response
+    data:any,
+    error:any,
+    //endResponse
+  _id: any,
+  _rev: number
+};
+*/
 export default ({ db, fxs }) =>
-    async ({ _id = null, ...otherData }) =>
+    async ({ _id = null, ...otherData }) /*: Output */ =>
         ifElse(
             hasId,
             withoutID,
@@ -74,31 +74,3 @@ export default ({ db, fxs }) =>
             otherData,
             fxs
         })
-
-
-
-// export default ({ db }) => async ({ ...otherData }, options = {}) => {
-
-//     var duplicated = await isDuplicated({ db, _id })
-//     if (duplicated === true) {
-//         return standarizedResponse({
-//             error: {
-//                 msg: `The _id:${_id} is duplicated`
-//             }
-//         })
-//     }
-//     else {
-//         var response = await db.rev.tac.put({ _id, _rev: 1 }, otherData)
-//         return response
-//     }
-//     otherData._id = uuidv4()
-
-
-//     var key = { _id: uuidv4(), _rev: 1 }
-//     var response = await db.rev.tac.put(key, otherData)
-
-//     return {
-//         ...response,
-//         ...key
-//     }
-// }

@@ -19,11 +19,11 @@ const removeDataBase = ({ pathDB, db }) => {
 }
 
 describe('root.index', () => {
-    var table, model, db
+    var db, instanceTable
     beforeAll(async () => {
         // console.log('in jest/connection')
 
-        var instanceTable = await initTable({
+        instanceTable = await initTable({
             config,
             fxs: { ...globalFxs }
         })
@@ -47,9 +47,13 @@ describe('root.index', () => {
         removeDataBase({ pathDB: config.tables.seq.path, db: 'seq' })
         removeDataBase({ pathDB: config.tables.rev.path, db: 'rev' })
     });
-    // test('test', () => {
-    //     expect(true).toEqual(true)
-    // })
+    describe('instanceTable', () => {
+        test('has:table,model,db?', async () => {
+            expect(Object.keys(instanceTable)).toEqual(expect.arrayContaining(
+                ['table', 'model', 'db']
+            ));
+        })
+    })
 
     dbTests()
     modelTests()
