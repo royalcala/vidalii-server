@@ -43,14 +43,15 @@ const transformations = {
 
 const defaultEncoderBuffer = {
     keyEncoding: {
-        encode: s => s,//default leveldown changes to string if isnt buffer and save it in buffer
+        encode: s => s,
         decode: buff => buff
     },
     valueEncoding: {
-        encode: s => s,//default leveldown changes to string if isnt buffer and save it in buffer
+        encode: s => s,
         decode: buff => buff
     }
 }
+
 export default () => ({
     codec: codecs,
     set: (custom = {}) => {

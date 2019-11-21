@@ -6,11 +6,8 @@ const rs = new Readable();
 rs
     .on('data', data => {
         // rs.pause()
-        console.log('data1::', data)
-       
-       
-
-
+        // console.log('data1::', data)
+        // rs.destroy()
     })
     .on('error', data => {
         console.log('error::', data)
@@ -30,17 +27,20 @@ rs
 
 rs.push('one ');
 
-// rs.destroy()
+
 // rs.isPaused() // === false
 // rs.pause()
 // // rs.isPaused() // === true
 // rs.resume()
 // rs.isPaused() // === false
+var millions = n => 1000000 * n
 rs.push('two');
-for (let index = 0; index < 5; index++) {
+console.time('rs.push')
+for (let index = 0; index < millions(1); index++) {
     rs.push(String(index));
 
 }
+console.timeEnd('rs.push')
 // setTimeout(() => {
 //     // rs.push('trhee');
 //     rs.resume()

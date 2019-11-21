@@ -74,71 +74,115 @@ const openDB = path => new Promise((resolve, reject) => {
 
 async function withUp(db) {
 
-    var resPut = await db.put('name1', 'levelup')
-    var resPut = await db.put('name2', 'levelup')
-    var resPut = await db.put('name3', 'levelup')
-
-    // var resGet = await db.get('name1')
+    // await db.put('name1', 'levelup')
+    // await db.put('name2', 'levelup')
+    // await db.put('name4', 'levelup4')
+    var millions = n => 1000000 * n
+    var howMany = millions(1)
+    console.log('howMany::', howMany)
+    async function inserts() {
+        console.time('db.put')
+        //without Await
+        //     howMany:: 1000000
+        // db.put: 11,106.103ms
+        // resGet:: is index:999999
+        //with await
+        //     howMany:: 1000000
+        // db.put: 64,166.599ms
+        // resGet:: is index:999999
+        for (let index = 0; index < howMany; index++) {
+            db.put(index, 'holamundo' + index)
+        }
+        console.timeEnd('db.put')
+    }
+    // var resGet = await db.get(String(howMany - 1), { asBuffer: false })
     // console.log('resGet::', resGet)
 
-    // var stream = await new Promise((resolve, reject) => {
+    async function stream() {
 
-    //     // var streamer = db.createReadStream({ asBuffer: false })
-    //     // console.log('streamer::',streamer)
-    //     // .on('data', function (data) {
+        //with buff.toString() and if()
+        // howMany:: 1000000
+        //         db.createReadStream: 3591.092ms
+        // stream:: yes was found 
+        //without if and buff.toString
+        //         howMany:: 1000000
+        // db.createReadStream: 2987.979ms
+        console.time('db.createReadStream')
+        var count = 0
+        var stream = await new Promise((resolve, reject) => {
 
-    //     //     console.log('stream::',data.key, '=', data.value)
-    //     //     db.createReadStream.destroy();
-    //     // })
-    //     // .on('error', function (err) {
-    //     //     console.log('Oh my!', err)
-    //     // })
-    //     // .on('close', function () {
-    //     //     // console.log('Stream closed')
-    //     //     resolve()
-    //     // })
-    //     // .on('end', function () {
-    //     //     // console.log('Stream ended')
-    //     // })
-    // })
-    var options = { keyAsBuffer: false, valueAsBuffer: false, gt: 'a', limit: 1000 }
+            var streamer = db.createReadStream({
+                keys: false, values: true
+            })
 
-    function callback(error, key, value) {
-        if (error)
-            console.log('error:', error)
+                .on('data', function (buff) {
+                    count++
+                    // console.log('buff.toString() ::', buff.toString())
+                    if (buff.toString() === 'holamundo' + String(howMany - 1)) {
+                        resolve('yes was found ')
 
-        return new Promise((resolve, reject) => {
-
+                    }
+                    // console.log('stream::', buff.key, '=', buff.value)
+                    // db.createReadStream.destroy();
+                })
+                .on('error', function (err) {
+                    console.log('Oh my!', err)
+                })
+                .on('close', function () {
+                    // console.log('Stream closed')
+                    resolve('not found')
+                })
+                .on('end', function () {
+                    // console.log('Stream ended')
+                })
         })
-        console.log(key)
+        console.timeEnd('db.createReadStream')
+        console.log('stream::', stream)
+        console.log('count::', count)
     }
-    // var it = db.iterator(options).next((error, key, value) => {
-    //     if (error)
-    //         console.log('error:', error)
-    //     console.log(key)
-    //     it.next(callback)
-    // })
-
-    function* g5() {
-        var r = db.iterator(options)
-        // yield r.next(callback)
-
-        for (var i = 0; i < 2; i++) {
-            r.next(callback)
+    async function iterator() {
+        // https://github.com/Level/leveldown/pull/185
+        // https://github.com/Level/abstract-leveldown/blob/master/abstract-leveldown.js
+        var options = {
+            keyAsBuffer: false,
+            valueAsBuffer: false,
+            //  gt: 'a', 
+            //  limit: 1000 
         }
+        function initIterator(callback, options = {}) {
+            var r = db.iterator(options)
+            return {
+                next: () => new Promise((resolve, reject) => {
+                    r.next((error, key, value) => {
+                        resolve({ key, value })
+                    })
+                })
+            }
+        }
+
+        var ite = initIterator(options)
+        // console.log('ite::', ite)
+        console.time('iterator')
+        // converting a buff.toString()
+        // iterator: 5174.784m
+        for (var i = 0; i < howMany; i++) {
+            var result = await ite.next()
+            // console.log('result::', result)
+            if (result.value.toString() === 'holamundo'
+                // + String(howMany - 1)
+                +300000
+            ) {
+                console.log('yes was found ')
+                break;
+            }
+        }
+        console.timeEnd('iterator')
     }
 
-
-    // iterator.next()
-    // setTimeout(() => {
-    //     // rs.push('trhee');
-    //     iterator.next()
-    // }, 1000);
-    // console.log('iterator.next()::',iterator.next())
+    // inserts()
+    // stream()
+    iterator()
 
 
 
-
-    // https://github.com/Level/leveldown/pull/185
-    // https://github.com/Level/abstract-leveldown/blob/master/abstract-leveldown.js
 }
