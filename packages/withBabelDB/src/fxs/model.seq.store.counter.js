@@ -4,8 +4,8 @@ export default async ({ db, config }) => {
         query: {
             keys: true,
             values: false,
-            gt: config._id_table,
-            lt: config._id_table + '\xff',
+            // gt: config._id_table,
+            lte: config._id_table + '\xff',
             limit: 1,
             reverse: true
         },

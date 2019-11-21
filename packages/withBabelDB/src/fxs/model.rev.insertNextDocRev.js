@@ -1,91 +1,35 @@
-export default () => (data, { forceNextRev = false }) => {
-    return ''
+import { ifElse, equals } from 'ramda'
+
+const insertNewOne = async ({ responses, model, newDoc, prevDoc }) => {
+    var response = await model.rev.insertOne({
+        _id: prevDoc._id,
+        _rev: Number(prevDoc._rev) + 1,
+        ...newDoc
+    })
 }
 
-// import { ifElse, equals, compose, over, lens, assoc, then } from 'ramda'
-// // import { evolComposeExtended as composeE } from '@vidalii/evol'
-// const uuidv4 = require('uuid/v4');
+const responseErrorOneRev = ({ responses }) => responses.standard({
+    error: {
+        msg: `Error. You dont have the last revision of the document`
+    }
+})
+const hasTheLastRev = ({ prevDoc, newDoc }) => equals(prevDoc._rev_id, newDoc._rev_id)
 
-// const withID_insertOne = ifElse(
-//     ({ isDuplicated }) => equals(true, isDuplicated),
-//     ({ responses }) => responses.standard({
-//         error: {
-//             msg: `Error. The _id:${_id} already exist`
-//         }
-//     }),
-//     async ({ db, _id, otherData }) => {
-//         var key = { _id, _rev: 1 }
-//         var response = await db.rev.tac.put(key, otherData)
+export default ({ model, responses }) => async ({ _id, _rev_id, ...otherData }) => {
+    // check if is the last revision
+    var getLastDoc = await model.rev.lastDocRev({ _id })
+    return ifElse(
+        hasTheLastRev,
+        () => { },
+        responseErrorOneRev
+    )({
+        prevDoc: { ...getLastDoc },
+        newDoc: { _id, _rev, otherData },
+        responses,
+        model
+    })
+    return lastDocRev
+    // return responses.standard({
 
-//         return {
-//             ...response,
-//             ...key
-//         }
-//     }
-// )
-
-// // const oIsDuplicated = over(
-// //     lens(o => o, assoc('isDuplicated')),
-// //     async ({ db, _id }) => {
-// //         var response = await db.rev.tac.get({ _id, _rev: 1 })
-// //         console.log('responseDuplicated::', response)
-// //         if (response.data === null)
-// //             return false
-// //         else
-// //             return true
-// //     }
-// // )
-// const o_isDuplicated = async (o) => {
-//     var isDuplicated
-//     var response = await db.rev.tac.get({ _id: o._id, _rev: 1 })
-//     if (response.data === null)
-//         isDuplicated = false
-//     else
-//         isDuplicated = true
-
-//     return {
-//         ...o,
-//         isDuplicated
-//     }
-// }
-
-// const withID = compose(
-//     then(withID_insertOne),
-//     o_isDuplicated
-// )
-
-
-
-// const withoutID = async ({ db, otherData, fxs }) => {
-//     var key = { _id: uuidv4(), _rev: 1 }
-//     var response = await db.rev.tac.put(key, otherData)
-
-//     return {
-//         ...response,
-//         ...key
-//     }
-// }
-// const hasId = ({ _id }) => equals(null, _id)
-
-// /*::
-// type Output = {
-//     //response
-//     data:any,
-//     error:any,
-//     //endResponse
-//   _id: any,
-//   _rev: number
-// };
-// */
-// export default ({ db, fxs }) =>
-//     async ({ _id = null, ...otherData }) /*: Output */ =>
-//         ifElse(
-//             hasId,
-//             withoutID,
-//             withID
-//         )({
-//             db,
-//             _id,
-//             otherData,
-//             fxs
-//         })
+    // })
+}

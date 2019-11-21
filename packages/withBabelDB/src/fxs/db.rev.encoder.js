@@ -1,8 +1,8 @@
 var lexint = require('lexicographic-integer');
-const uuid = require('uuid/v4')
+// const uuid = require('uuid/v4')
 export default ({ encoder }) => encoder.set({
     keyEncoding: {
-        encode: ({ _id, _rev, _rev_id = uuid() }) => {
+        encode: ({ _id, _rev, _rev_id }) => {
             //_rev_id if is null is beacause you need a new inserted revision,
             //_rev_id has his own uuid its because you need to get that document
 

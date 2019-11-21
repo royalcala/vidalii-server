@@ -1,4 +1,5 @@
 import { equals } from 'ramda'
+var uuid = require('uuid/v4')
 const checkFirstValue = async ({ db }) => {
     var expectResul
     await db.query.stream({
@@ -23,9 +24,10 @@ const checkFirstValue = async ({ db }) => {
 }
 export default () => {
     describe('.tac', () => {
-        var db
+        var db, config
         beforeAll(() => {
             db = global.db
+            config = global.config
             // tableKeys = Object.keys(db).map(
             //     (tableName) => [tableName]
             // )
@@ -58,7 +60,7 @@ export default () => {
         })
         test('rev.tac.put&&get&&query.stream', async () => {
             var data = {
-                key: { _id: "1", _rev: 1 },
+                key: { _id: "1", _rev: 1, _rev_id: uuid() },
                 value: { string: 'hola' }
             }
             var response = await db.rev.tac.put(data.key, data.value)
@@ -69,16 +71,20 @@ export default () => {
             var response2 = await db.rev.tac.get(response.key)
             expect(response2.error).toEqual(null)
             expect(response2.data).toEqual(data.value)
-            var resultStream = await checkFirstValue({ db: db.rev })            
+            var resultStream = await checkFirstValue({ db: db.rev })
             expect({ key: response.key, value: data.value }).toEqual(resultStream)
         })
 
         test('seq.tac.put&&get&&query.stream', async () => {
             var data = {
-                key: { _seq: 99999999 },
+                key: {
+                    _id_table: config._id_table,
+                    _seq: 99999999
+                },
                 value: { string: 'hola' }
             }
             var response = await db.seq.tac.put(data.key, data.value)
+            console.log('response::',response)
             expect(response.error).toEqual(null)
 
             var response2 = await db.seq.tac.get(data.key)

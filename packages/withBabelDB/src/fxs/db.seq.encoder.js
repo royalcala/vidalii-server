@@ -1,9 +1,9 @@
 var lexint = require('lexicographic-integer');
 
-export default ({ encoder, config }) => encoder.set({
+export default ({ encoder }) => encoder.set({
     keyEncoding: {
-        encode: ({ _seq }) => {
-            var toEncode = config._id_table + '!' + lexint.pack(_seq, 'hex')            
+        encode: ({ _id_table, _seq }) => {
+            var toEncode = _id_table + '!' + lexint.pack(_seq, 'hex')
             return toEncode
         },
         decode: buff => {

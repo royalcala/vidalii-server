@@ -19,8 +19,12 @@ import encoder_seq from './fxs/db.seq.encoder'
 import encoder_docs from './fxs/db.docs.encoder'
 // import tace from './fxs/TRASH_db[n]._i.tace'
 import query_stream from './fxs/db[n].query.stream'
+
+///revision
 import model_rev_insertNextDocRev from './fxs/model.rev.insertNextDocRev'
 import model_rev_insertOne from './fxs/model.rev.insertOne'
+import model_rev_lastDocRev from './fxs/model.rev.lastDocRev'
+
 
 import model_seq_store_counter from './fxs/model.seq.store.counter'
 import model_seq_insertNextSeq from './fxs/model.seq.insertNextSeq'
@@ -116,6 +120,7 @@ const table = evolSimple(
   //model.rev
   insertOne('model.rev.insertNextDocRev', model_rev_insertNextDocRev),
   insertOne('model.rev.insertOne', model_rev_insertOne),
+  insertOne('model.rev.lastDocRev', model_rev_lastDocRev),
 
 
 
