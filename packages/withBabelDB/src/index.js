@@ -17,7 +17,7 @@ import tac_del from './fxs/db[n].tac.del'
 import encoder_rev from './fxs/db.rev.encoder'
 import encoder_seq from './fxs/db.seq.encoder'
 import encoder_docs from './fxs/db.docs.encoder'
-// import tace from './fxs/TRASH_db[n]._i.tace'
+import query_iterator from './fxs/db[n].query.iterator'
 import query_stream from './fxs/db[n].query.stream'
 
 ///revision
@@ -129,6 +129,9 @@ const table = evolSimple(
     n => insertOne(`db.${n}.query.stream`, query_stream(n))
   ),
 
+  ...['rev', 'seq', 'docs'].map(
+    n => insertOne(`db.${n}.query.iterator`, query_iterator(n))
+  ),
   //try and catch tac.put, get, del
   ...['rev', 'seq', 'docs'].map(
     n => insertOne(`db.${n}.tac.del`, tac_del(n))

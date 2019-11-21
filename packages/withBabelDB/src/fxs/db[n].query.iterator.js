@@ -22,29 +22,36 @@ const initDefaultOptions = ({ options }) => {
 // ]
 const initIterator = ({ db, options = {} }) => {
     var iterator = db.iterator(options)
+    var end = () => iterator.end(e => {
+        if (e)
+            console.log('Error ending iterator::', e)
+    })
     if (options.keys === true && options.values === true) {
         return {
             next: () => new Promise((resolve, reject) => {
-                r.next((error, key, value) => {
+                iterator.next((error, key, value) => {
                     resolve({ key, value })
                 })
-            })
+            }),
+            end
         }
     } else if (options.keys === true && options.values === false) {
         return {
             next: () => new Promise((resolve, reject) => {
-                r.next((error, key) => {
+                iterator.next((error, key) => {
                     resolve(key)
                 })
-            })
+            }),
+            end
         }
     } else if (options.keys === false && options.values === true) {
         return {
             next: () => new Promise((resolve, reject) => {
-                r.next((error, key, value) => {
+                iterator.next((error, key, value) => {
                     resolve(value)
                 })
-            })
+            }),
+            end
         }
     }
 
@@ -61,7 +68,7 @@ var howMany = millions(10)
 //         return true
 //     }
 // }
-export default (nameDB) => ({ db }) => async ({ onData = () => { }, options = {} }) => {
+export default (nameDB) => ({ db }) => async ({ onData = () => { } }, options = {}) => {
     var defaultOptions = initDefaultOptions({ options })
     var iterator = initIterator({
         db: db[nameDB],
@@ -72,16 +79,16 @@ export default (nameDB) => ({ db }) => async ({ onData = () => { }, options = {}
     if (defaultOptions.keys === true && defaultOptions.values === true) {
         for (var i = 0; i < howMany; i++) {
             var result = await iterator.next()
-            // console.log('result::',result)
             if (result.key === undefined || onData(result)) {
+                iterator.end()
                 break
             }
         }
     } else {
         for (var i = 0; i < howMany; i++) {
             var result = await iterator.next()
-            // console.log('result::',result)
             if (result === undefined || onData(result)) {
+                iterator.end()
                 break
             }
         }
