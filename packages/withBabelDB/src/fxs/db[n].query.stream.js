@@ -90,6 +90,6 @@ const queryStream = ({ db }) => ({
 })
 
 
-export default (n) => ({ db }) => queryStream({
-    db: db[n]
+export default (nameDB) => ({ db }) => queryStream({
+    db: db[nameDB]
 })

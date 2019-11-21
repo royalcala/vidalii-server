@@ -7,45 +7,87 @@ var levelup = require('levelup')
 var dbDown = leveldown('./mydb')
 
 var dbUp = levelup(dbDown)
+var millions = n => 1000000 * n
+var howMany = millions(1)
+console.log('howMany::', howMany)
 
 // withDown(dbDown)
 withUp(dbUp)
 function withDown(db) {
-    db.open(() => {
-        db.put('name', 'levelup', function (err) {
-            if (err) return console.log('Ooops!', err)
-            db.put('name2', 'levelup', function (err) {
-                if (err) return console.log('Ooops!', err)
-                db.put('name3', 'levelup', function (err) {
-                    if (err) return console.log('Ooops!', err)
-
-                    var options = { keyAsBuffer: false, valueAsBuffer: false, gt: 'a', limit: 1000 }
-
-                    var callback = (error, key, value) => {
-                        if (error)
-                            console.log('error:', error)
-                        console.log(key, value)
-                        // console.log('Buffer.toString(key)::', key.toString())
-                    }
-                    var it = db.iterator(options)
-                    // console.log('it::', it)
-                    // it.seek('0')
-                    it.next((error, key, value) => {
-                        if (error)
-                            console.log('error:', error)
-                        console.log(key, value)
-                        it.next(callback)
+    async function iterator() {
+        // https://github.com/Level/leveldown/pull/185
+        // https://github.com/Level/abstract-leveldown/blob/master/abstract-leveldown.js
+        var options = {
+            keyAsBuffer: false,
+            valueAsBuffer: false,
+            //  gt: 'a', 
+            //  limit: 1000 
+        }
+        function initIterator(callback, options = {}) {
+            var r = db.iterator(options)
+            return {
+                next: () => new Promise((resolve, reject) => {
+                    r.next((error, key, value) => {
+                        resolve({ key, value })
                     })
-
-
-                    // it.next(callback)
-                    // it.seek('0')
-                    // console.log('it::', it)
-
                 })
-            })
+            }
+        }
 
-        })
+        var ite = initIterator(options)
+        // console.log('ite::', ite)
+        console.time('iterator')
+        // converting a buff.toString()
+        // iterator: 4770.077ms
+        for (var i = 0; i < howMany; i++) {
+            var result = await ite.next()
+            // console.log('result::', result)
+            if (result.value.toString() === 'holamundo'
+                + String(howMany - 1)
+                // + 300000
+            ) {
+                console.log('yes was found ')
+                break;
+            }
+        }
+        console.timeEnd('iterator')
+    }
+    db.open(() => {
+        iterator()
+        // db.put('name', 'levelup', function (err) {
+        //     if (err) return console.log('Ooops!', err)
+        //     db.put('name2', 'levelup', function (err) {
+        //         if (err) return console.log('Ooops!', err)
+        //         db.put('name3', 'levelup', function (err) {
+        //             if (err) return console.log('Ooops!', err)
+
+        //             var options = { keyAsBuffer: false, valueAsBuffer: false, gt: 'a', limit: 1000 }
+
+        //             var callback = (error, key, value) => {
+        //                 if (error)
+        //                     console.log('error:', error)
+        //                 console.log(key, value)
+        //                 // console.log('Buffer.toString(key)::', key.toString())
+        //             }
+        //             var it = db.iterator(options)
+        //             // console.log('it::', it)
+        //             // it.seek('0')
+        //             it.next((error, key, value) => {
+        //                 if (error)
+        //                     console.log('error:', error)
+        //                 console.log(key, value)
+        //                 it.next(callback)
+        //             })
+
+
+        //             // it.next(callback)
+        //             // it.seek('0')
+        //             // console.log('it::', it)
+
+        //         })
+        //     })
+
+        // })
 
     }
     )
@@ -77,9 +119,7 @@ async function withUp(db) {
     // await db.put('name1', 'levelup')
     // await db.put('name2', 'levelup')
     // await db.put('name4', 'levelup4')
-    var millions = n => 1000000 * n
-    var howMany = millions(1)
-    console.log('howMany::', howMany)
+
     async function inserts() {
         console.time('db.put')
         //without Await
@@ -99,7 +139,8 @@ async function withUp(db) {
     // console.log('resGet::', resGet)
 
     async function stream() {
-
+        //with keys and values true
+        // db.createReadStream: 4447.520ms
         //with buff.toString() and if()
         // howMany:: 1000000
         //         db.createReadStream: 3591.092ms
@@ -112,13 +153,13 @@ async function withUp(db) {
         var stream = await new Promise((resolve, reject) => {
 
             var streamer = db.createReadStream({
-                keys: false, values: true
+                keys: true, values: true
             })
 
                 .on('data', function (buff) {
                     count++
                     // console.log('buff.toString() ::', buff.toString())
-                    if (buff.toString() === 'holamundo' + String(howMany - 1)) {
+                    if (buff.value.toString() === 'holamundo' + String(howMany - 1)) {
                         resolve('yes was found ')
 
                     }
@@ -147,33 +188,45 @@ async function withUp(db) {
             keyAsBuffer: false,
             valueAsBuffer: false,
             //  gt: 'a', 
-            //  limit: 1000 
+            limit: 5,
+            // fillCache:true,
+            keys: false,
+            values: true
         }
-        function initIterator(callback, options = {}) {
+        function initIterator({ options = {} }) {
             var r = db.iterator(options)
             return {
                 next: () => new Promise((resolve, reject) => {
                     r.next((error, key, value) => {
-                        resolve({ key, value })
+                        resolve(value)
                     })
                 })
             }
         }
 
-        var ite = initIterator(options)
+        var ite = initIterator({ options })
         // console.log('ite::', ite)
         console.time('iterator')
-        // converting a buff.toString()
-        // iterator: 5174.784m
-        for (var i = 0; i < howMany; i++) {
-            var result = await ite.next()
-            // console.log('result::', result)
-            if (result.value.toString() === 'holamundo'
+        //valueAsBuffer: false, keys:true
+        //iterator: 11482.277ms
+        //valueAsBuffer: false, keys:false
+        //iterator: 3532.756ms
+        var hola = []
+        const fxIf = result => {
+            if (result === 'holamundo'
                 // + String(howMany - 1)
-                +300000
+                + '10000'
             ) {
                 console.log('yes was found ')
-                break;
+                // break;
+                return true
+            }
+        }
+        for (var i = 0; i < howMany; i++) {
+            var result = await ite.next()
+            // console.log('result::',result)
+            if (fxIf(result) || result === undefined) {
+                break
             }
         }
         console.timeEnd('iterator')
