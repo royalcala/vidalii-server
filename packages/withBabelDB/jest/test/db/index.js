@@ -17,16 +17,6 @@ export default () => {
                 ['docs', 'rev', 'seq']
             ));
         })
-        // test('has:docs.tac,[etc]...?', async () => {
-        //     for (var namedb in db) {
-        // expect(
-        //     Object.keys(db[namedb])
-        // ).toEqual(expect.arrayContaining(
-        //     ['tac', 'query']
-        // ));
-        //     }
-
-        // })
         test.each([
             ['docs'], ['rev'], ['seq']
         ])(

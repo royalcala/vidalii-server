@@ -2,7 +2,15 @@ import { mergeDeepRight, evolve } from 'ramda'
 const codecs = {
     utf8: {
         encode: String,
-        decode: buff => buff.toString('utf8')
+        decode: (data, options = {}) => {
+            const { isBuffer = true } = options
+
+            var toDecode = isBuffer ?
+                data.toString('utf8') :
+                data
+            // data.toString('utf8')
+            return toDecode
+        }
     },
     json: {
         //BOTH CASES WORKS

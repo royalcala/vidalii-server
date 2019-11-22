@@ -104,9 +104,9 @@ const insertOneP = curry(async (paths, fxs, curriedData) => {
   // ])(paths)
 })
 
+
 const evolSimple = compose
 const table = evolSimple(
-
   //---------model--------
   then(
     evolSimple(

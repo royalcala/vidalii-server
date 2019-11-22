@@ -6,7 +6,7 @@ export default () => {
             model = await global.model
             config = global.config
         });
-        test('has:insertOne,store.counter?', async () => {
+        test('has:insertNextSeq,store?', async () => {
             expect(Object.keys(model.seq)).toEqual(expect.arrayContaining(
                 ['insertNextSeq', 'store']
             ));

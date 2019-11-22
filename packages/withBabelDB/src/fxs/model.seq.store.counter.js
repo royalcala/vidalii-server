@@ -16,6 +16,22 @@ export default async ({ db, config }) => {
             _seq = key._seq
         }
     })
+    // var lastSeq = await db.seq.query.iterator({
+    //     query: {
+    //         keys: true,
+    //         values: false,
+    //         // gt: config._id_table,
+    //         lte: config._id_table + '\xff',
+    //         limit: 1,
+    //         reverse: true
+    //     },
+    //     decoderOuts: {
+    //         keys: true
+    //     },
+    //     onData: key => {
+    //         _seq = key._seq
+    //     }
+    // })
     // console.log('acual_seq:', _seq)
     return {
         nextSeq: () => {
