@@ -31,6 +31,7 @@ describe('root.index', () => {
         global.db = db
         global.model = instanceTable.model
         global.config = config
+        console.log('db.isOpen():', db.docs.isOpen())
 
     });
     afterAll(async () => {

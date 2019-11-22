@@ -18,13 +18,12 @@ export default () => {
                     }
                 }, {
                     limit: 1,
-                    keyAsBuffer: false,
-                    valueAsBuffer: false
+                    // keyAsBuffer: false,
+                    // valueAsBuffer: false
                 })
                 expect(arrayData.length).toEqual(1)
             }
-        );
-        var i = 1
+        );        
         test.each([
             ['docs'], ['rev'], ['seq']
         ])(
