@@ -1,17 +1,18 @@
 import { mergeDeepRight } from 'ramda'
-// const defaultOptions = ({ options }) => {
-//     var defaults = {
-//         //from leveldown
-//         fillCache: true,
-//         asBuffer: true,
-//         //from vidalii
-//         encoder: true,
-//         decoder: true
-//     }
-//     return mergeDeepRight(defaults, options)
-// }
+const initDefaultOptions = ({ options }) => {
+    var defaults = {
+        //from leveldown
+        // fillCache: true,
+        // asBuffer: true,
+        //from vidalii
+        encodeIn: true,
+        decodeOut: true
+    }
+    return mergeDeepRight(defaults, options)
+}
 export default (nameDB) => ({ db, responses }) => async (key, options = {}) => {
     var myDB = db[nameDB]
+    var defaultOptions = initDefaultOptions({ options })
     const { keyEncoding, valueEncoding } = myDB.encoder
     var error = null
     var data = null
@@ -29,8 +30,9 @@ export default (nameDB) => ({ db, responses }) => async (key, options = {}) => {
     //     }
 
     try {
-        var response = await myDB.get(keyEncoding.encode(key), options)
-        data = valueEncoding.decode(response)
+        key = defaultOptions.encodeIn ? keyEncoding.encode(key) : key
+        var response = await myDB.get(key, defaultOptions)
+        data = defaultOptions.decodeOut ? valueEncoding.decode(response) : response
     } catch (e) {
         //not found
         error = {

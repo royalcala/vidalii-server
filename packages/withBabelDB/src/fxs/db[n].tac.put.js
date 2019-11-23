@@ -18,22 +18,29 @@
 //         } : {
 //             key, value
 //         }
-// }
-// const initDefaultOptions = ({ options }) => {
-//     var defaults = {
-//         encoder: true
-//     }
-//     return mergeDeepRight(defaults, options)
-// }
+import { mergeDeepRight } from 'ramda'
+const initDefaultOptions = ({ options }) => {
+    var defaults = {
+        encodeIn: {
+            key: true,
+            value: true
+        }
+    }
+    return mergeDeepRight(defaults, options)
+}
+
 export default (nameDB) => ({ db, responses }) => async (key, value, options = {}) => {
     var myDB = db[nameDB]
+    var defaultOptions = initDefaultOptions({ options })
     const { keyEncoding, valueEncoding } = myDB.encoder
     var error = null
     var data = null
     try {
+        key = defaultOptions.encodeIn.key ? keyEncoding.encode(key) : key
+        value = defaultOptions.encodeIn.value ? valueEncoding.encode(value) : value
         var response = await myDB.put(
-            keyEncoding.encode(key),
-            valueEncoding.encode(value),
+            key,
+            value,
             options
         )
 

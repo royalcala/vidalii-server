@@ -1,7 +1,7 @@
 import {
   omit, __, cond, pipe, toPairs, map, reduce, compose, curry, assoc,
   is, split, keys, assocPath, over, lensPath,
-  then
+  then, evolve
 } from 'ramda'
 import { evol, evolCompose } from '@vidalii/evol'
 import { configTable as config } from './example_init_data'
@@ -14,10 +14,16 @@ import tac_put from './fxs/db[n].tac.put'
 import tac_get from './fxs/db[n].tac.get'
 import tac_del from './fxs/db[n].tac.del'
 import query_iterator from './fxs/db[n].query.iterator'
+import query_stream from './fxs/db[n].query.stream'
 import encoder_rev from './fxs/db.rev.encoder'
 import encoder_seq from './fxs/db.seq.encoder'
 import encoder_docs from './fxs/db.docs.encoder'
-// import query_stream from './fxs/db[n].query.stream'
+
+
+import model_seq_store_counter from './fxs/model.seq.store.counter'
+import LevelDown from 'leveldown'
+// import model_seq_insertNextSeq from './fxs/model.seq.insertNextSeq'
+
 
 // ///revision
 // import model_rev_insertNextDocRev from './fxs/model.rev.insertNextDocRev'
@@ -25,8 +31,6 @@ import encoder_docs from './fxs/db.docs.encoder'
 // import model_rev_lastDocRev from './fxs/model.rev.lastDocRev'
 
 
-// import model_seq_store_counter from './fxs/model.seq.store.counter'
-// import model_seq_insertNextSeq from './fxs/model.seq.insertNextSeq'
 
 // import model_docs_insertOne from './fxs/model.docs.insertOne'
 const fs = require('fs-extra')
@@ -103,6 +107,36 @@ const insertOneP = curry(async (paths, fxs, curriedData) => {
   // ])(paths)
 })
 
+//evol
+// const dataInit = {
+//   dbs: {
+//     docs: {
+//       path: '',
+//       type: 'levelDown, memDown, browser'
+//     },
+//     rev: {
+//       path: ''
+//     }
+//   }
+// }
+// const transformations1 = {
+//   dbs: {
+//     docs: () => 'make DB with leveldown / memdown'
+//   }
+// }
+
+
+// const transformations2 = {
+//   dbs:{
+//     docs:'toLevelup(db)'
+//   }
+// }
+
+// const t3={
+//   dbs:{
+//     docs:'to tac'
+//   }
+// }
 
 
 const evolSimple = pipe
@@ -127,10 +161,13 @@ const table = evolSimple(
   ...['rev', 'seq', 'docs'].map(
     n => insertOne(`db.${n}.tac.del`, tac_del(n))
   ),
-
   ...['rev', 'seq', 'docs'].map(
     n => insertOne(`db.${n}.query.iterator`, query_iterator(n))
   ),
+  ...['rev', 'seq', 'docs'].map(
+    n => insertOne(`db.${n}.query.stream`, query_stream(n))
+  ),
+  insertOneP('model.seq.store.counter', model_seq_store_counter),
 )
 
 // const evolSimple = compose

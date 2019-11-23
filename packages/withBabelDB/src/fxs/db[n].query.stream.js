@@ -58,7 +58,7 @@ const initDefaultsDecoderOuts = ({ decoderOuts }) => {
 }
 
 const queryStream = ({ db }) => ({
-    query = {},//options from external lib
+    query = {},
     encoderEntrie = false,// not implemented yet onlye false...check the values to search like gt lt etc...
     decoderOuts = {},
     onData = () => { },

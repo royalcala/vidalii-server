@@ -17,14 +17,8 @@ export default () => {
                         // console.log(tableName, '.query.iterator::', data)
                         arrayData.push(data)
                     },
-                },
-                    {
-
-                        limit: 1,
-                        // keyAsBuffer: false,
-                        // valueAsBuffer: false
-                    }
-                )
+                    limit: 1,
+                })
                 expect(arrayData.length).toEqual(1)
             }
         );
