@@ -13,7 +13,7 @@ export default () => {
                 ['rev', 'seq']
             ));
         })
-        rev()
-        seq()
+        // rev()
+        // seq()
     })
 }

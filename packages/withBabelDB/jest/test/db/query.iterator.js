@@ -12,23 +12,28 @@ export default () => {
             async (tableName) => {
                 var arrayData = []
                 var response = await db[tableName].query.iterator({
+                    // decoderOut: true,
                     onData: (data) => {
                         // console.log(tableName, '.query.iterator::', data)
                         arrayData.push(data)
+                    },
+                },
+                    {
+
+                        limit: 1,
+                        // keyAsBuffer: false,
+                        // valueAsBuffer: false
                     }
-                }, {
-                    limit: 1,
-                    // keyAsBuffer: false,
-                    // valueAsBuffer: false
-                })
+                )
                 expect(arrayData.length).toEqual(1)
             }
-        );        
+        );
+        var i
         test.each([
             ['docs'], ['rev'], ['seq']
         ])(
             "%p.query.iterator stop iterator",
-            async (tableName) => {                
+            async (tableName) => {
                 // await db[tableName].tac.put(i++,i++)
                 // await db[tableName].tac.put(i++,i++)
                 // await db[tableName].tac.put(i++,i++)
@@ -37,14 +42,9 @@ export default () => {
                     onData: (data) => {
                         // console.log(tableName, '.query.iterator::', data)
                         arrayData.push(data)
-                         return true
+                        return true
                     }
-                }, {
-                    // limit: 1,
-                    keyAsBuffer: false,
-                    valueAsBuffer: false
                 })
-                // console.log('arrayData.length::',arrayData.length)
                 expect(arrayData.length).toEqual(1)
             }
         );

@@ -2,9 +2,13 @@ import { mergeDeepRight, evolve } from 'ramda'
 const codecs = {
     utf8: {
         encode: String,
-        decode: buff => {
+        decode: (data, options = {}) => {
+            const { isBuffer = true } = options
 
-            var toDecode = buff.toString('utf8')
+            var toDecode = isBuffer ?
+                data.toString('utf8') :
+                data
+            // data.toString('utf8')
             return toDecode
         }
     },
@@ -18,38 +22,15 @@ const codecs = {
         decode: JSON.parse
     }
 }
-
-// const addValidationBuffer = tryAndCatchFx => ({ asBuffer = true }) => {
-//     if (asBuffer) {
-
-//         return buff => {
-
-//             return tryAndCatchFx(buff.toString('utf8'))
-//         }
-//     } else {
-//         return str => tryAndCatchFx(str)
-//     }
-
-// }
-
-// const transformations_addValidationBuffer = {
-//     keyEncoding: {
-//         decode: addValidationBuffer
-//     },
-//     valueEncoding: {
-//         decode: addValidationBuffer
-//     }
-// }
-
-const addTryAndCatch = (typeEncoding, typeCode) => fxEncoding => dataToProcess => {
+const addTryAndCatch = (typeEncoding, typeCode) => fxEncoding => dataToEncoding => {
     try {
-        var result = fxEncoding(dataToProcess)
+        var result = fxEncoding(dataToEncoding)
         return result
     } catch (e) {
-        var msg = `Error in codecs:${typeEncoding}.${typeCode}, not match the structure defined.`
+        var msg = `Error in Codecs ${typeEncoding}.${typeCode}, not match the structure defined.`
         // console.log(msg)
         return {
-            data: dataToProcess,
+            data: dataToEncoding,
             error: {
                 msg
             }
@@ -57,7 +38,7 @@ const addTryAndCatch = (typeEncoding, typeCode) => fxEncoding => dataToProcess =
     }
 }
 
-const transformations_addTryAndCatch = {
+const transformations = {
     keyEncoding: {
         encode: addTryAndCatch('key', 'encode'),
         decode: addTryAndCatch('key', 'decode')
@@ -83,9 +64,7 @@ export default () => ({
     codec: codecs,
     set: (custom = {}) => {
         let schemaWithDefaults = mergeDeepRight(defaultEncoderBuffer, custom)
-        let schemaWithTryAndCatch = evolve(transformations_addTryAndCatch, schemaWithDefaults)
-        return schemaWithTryAndCatch
-        // let withBufferFx = evolve(transformations_addValidationBuffer, schemaWithTryAndCatch)
-        // return withBufferFx
+        return evolve(transformations, schemaWithDefaults)
+
     }
 })

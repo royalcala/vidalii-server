@@ -12,25 +12,25 @@ import { mergeDeepRight } from 'ramda'
 // }
 export default (nameDB) => ({ db, responses }) => async (key, options = {}) => {
     var myDB = db[nameDB]
-    const { keyEncoding, valueEncoding } = myDB.encoder
     var error = null
     var data = null
-    // var {
-    //     encoderEntrie = true,//encoder entrie
-    //     decoderOut = true//decoder output
-    // } = options
-    // const { keyEncoding, valueEncoding } = myDB.encoder
+    var {
+        encoderEntrie = true,//encoder entrie
+        decoderOut = true//decoder output
+    } = options
+    const { keyEncoding, valueEncoding } = myDB.encoder
 
-    // var toGetData = encoderEntrie === true ?
-    //     {
-    //         key: keyEncoding.encode(key)
-    //     } : {
-    //         key
-    //     }
+    var toGetData = encoderEntrie === true ?
+        {
+            key: keyEncoding.encode(key)
+        } : {
+            key
+        }
 
     try {
-        var response = await myDB.get(keyEncoding.encode(key), options)
-        data = valueEncoding.decode(response)
+        var response = await myDB.get(toGetData.key)
+        data = decoderOut === true ?
+            valueEncoding.decode(response) : response
     } catch (e) {
         //not found
         error = {

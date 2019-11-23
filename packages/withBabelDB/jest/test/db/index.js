@@ -25,17 +25,19 @@ export default () => {
                 expect(
                     Object.keys(db[dbName])
                 ).toEqual(expect.arrayContaining(
-                    ['tac', 'query', 'encoder']
+                    // ['tac', 'query', 'encoder']
+                    ['tac', 'query']
                 ));
                 expect(
                     Object.keys(db[dbName].query)
                 ).toEqual(expect.arrayContaining(
-                    ['stream', 'iterator']
+                    // ['stream', 'iterator']
+                    ['iterator']
                 ));
             }
         );
         tac()
         query_iterator()
-        query_stream()
+        // query_stream()
     })
 }

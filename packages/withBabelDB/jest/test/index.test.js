@@ -3,7 +3,7 @@
 // import modelsTests from './models'
 import initTable from '../../src'
 import { configTable as config } from '../../src/example_init_data'
-import * as globalFxs from '../../src/globalFxs'
+// import * as globalFxs from '../../src/globalFxs'
 import dbTests from './db'
 import modelTests from './model'
 
@@ -25,7 +25,7 @@ describe('root.index', () => {
 
         instanceTable = await initTable({
             config,
-            fxs: { ...globalFxs }
+            // fxs: { ...globalFxs }
         })
         db = instanceTable.db
         global.db = db
@@ -59,42 +59,5 @@ describe('root.index', () => {
     dbTests()
     modelTests()
 
-    // describe('table', () => {
-    //     test('has:docs,rev,seq?', async () => {
-    //         expect(Object.keys(table)).toEqual(expect.arrayContaining(
-    //             ['docs', 'rev', 'seq']
-    //         ));
-    //     })
-    //     test('has:docs.tac,[etc].tac?', async () => {
-    //         for (var nameTable in table) {
-    //             expect(
-    //                 Object.keys(table[nameTable])
-    //             ).toEqual(expect.arrayContaining(
-    //                 ['tac']
-    //             ));
-    //         }
-
-    //     })
-    //     tableTests()
-    // })
-
-    // describe('models', () => {
-    //     test('has:docs,rev,seq?', async () => {
-    //         expect(Object.keys(table)).toEqual(expect.arrayContaining(
-    //             ['docs', 'rev', 'seq']
-    //         ));
-    //     })
-    //     test('has:docs.tac,[etc].tac?', async () => {
-    //         for (var nameTable in table) {
-    //             expect(
-    //                 Object.keys(table[nameTable])
-    //             ).toEqual(expect.arrayContaining(
-    //                 ['tac']
-    //             ));
-    //         }
-
-    //     })
-    //     tac()
-    // })
 })
 
