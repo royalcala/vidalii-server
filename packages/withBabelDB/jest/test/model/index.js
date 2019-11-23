@@ -8,13 +8,13 @@ export default () => {
             model = await global.model
             // console.log('model::',model)
         });
-        test('has:seq?', async () => {
+        test('has:seq,rev?', async () => {
             expect(Object.keys(model)).toEqual(expect.arrayContaining(
-                [ 'seq']
+                ['seq', 'rev']
             ));
         })
         seq()
-        // rev()
-        
+        rev()
+
     })
 }

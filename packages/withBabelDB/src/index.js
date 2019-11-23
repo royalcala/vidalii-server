@@ -19,16 +19,14 @@ import encoder_rev from './fxs/db.rev.encoder'
 import encoder_seq from './fxs/db.seq.encoder'
 import encoder_docs from './fxs/db.docs.encoder'
 
-
 import model_seq_store_counter from './fxs/model.seq.store.counter'
-import LevelDown from 'leveldown'
-// import model_seq_insertNextSeq from './fxs/model.seq.insertNextSeq'
+import model_seq_insertNextSeq from './fxs/model.seq.insertNextSeq'
 
+import model_rev_insertNewDoc from './fxs/model.rev.insertNewDoc'
+import model_rev_getLastDocRev from './fxs/model.rev.getLastDocRev'
 
 // ///revision
 // import model_rev_insertNextDocRev from './fxs/model.rev.insertNextDocRev'
-// import model_rev_insertOne from './fxs/model.rev.insertOne'
-// import model_rev_lastDocRev from './fxs/model.rev.lastDocRev'
 
 
 
@@ -168,6 +166,16 @@ const table = evolSimple(
     n => insertOne(`db.${n}.query.stream`, query_stream(n))
   ),
   insertOneP('model.seq.store.counter', model_seq_store_counter),
+  then(
+    evolSimple(
+      insertOne('model.seq.insertNextSeq', model_seq_insertNextSeq),
+      insertOne('model.rev.getLastDocRev', model_rev_getLastDocRev),
+      insertOne('model.rev.insertNewDoc', model_rev_insertNewDoc),
+      //update rev
+     
+      //table is docs
+    )
+  ),
 )
 
 // const evolSimple = compose

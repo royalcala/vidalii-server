@@ -15,46 +15,49 @@ export default () => {
             model = await global.model
 
         });
-        test('has:insertOne,insertNextDocRev?', async () => {
+        test('has:insertNewDoc,getLastDocRev?', async () => {
             expect(Object.keys(model.rev)).toEqual(expect.arrayContaining(
-                ['insertOne', 'insertNextDocRev']
+                ['insertNewDoc', 'getLastDocRev']
             ));
         })
-        test('.insertOne withoutID', async () => {
+        test('.existDoc:false', async () => {
+            var response = await model.rev.getLastDocRev('no_existe')
+            expect(response.error).toEqual(null)
+            expect(response.data).toEqual(null)
+        })
+        test('.insertNewDoc withoutID', async () => {
             var data = { my_data: 'holis' }
-            var response = await model.rev.insertOne(data)
+            var response = await model.rev.insertNewDoc(data)
             expect(response.error).toEqual(null)
             var responseGet = await db.rev.tac.get(response.key)
             expect(responseGet.data).toEqual(data)
         })
-        test('.insertOne withID', async () => {
-            var response = await model.rev.insertOne({
+        test('.insertNewDoc withID', async () => {
+            var response = await model.rev.insertNewDoc({
                 ...firstDoc.key,
                 ...firstDoc.value
             })
+            // console.log('responsewithID::', response)
             firstDocWithRev = response.key
             expect(response.error).toEqual(null)
             var responseGet = await db.rev.tac.get(response.key)
             expect(responseGet.data).toEqual(firstDoc.value)
         })
 
-        test('.lastDocRev', async () => {
-            var response = await model.rev.lastDocRev(firstDoc.key)
+        test('.getLastDocRev', async () => {
+            var response = await model.rev.getLastDocRev(firstDoc.key._id)
+            // console.log('response_getLastDocRev::', response)
             expect(response.error).toEqual(null)
-            expect(response.data._id).toEqual(firstDoc.key._id)
+            expect(response.data.key._id).toEqual(firstDoc.key._id)
         })
-        test('.existDoc', async () => {
-            var response = await model.rev.lastDocRev({_id:'no_existe'})            
-            expect(response.error).toEqual(null)
-            expect(response.data).toEqual(null)
-        })
-        test('.insertNextDocRev', async () => {
-            var response = await model.rev.insertNextDocRev({
-                _id: firstDoc.key._id
-            })
-            // console.log('response::', response)
-            // expect(response.error).toEqual(null)
-        })
+
+        // test('.insertNextDocRev', async () => {
+        //     var response = await model.rev.insertNextDocRev({
+        //         _id: firstDoc.key._id
+        //     })
+        //     // console.log('response::', response)
+        //     // expect(response.error).toEqual(null)
+        // })
 
     })
 }

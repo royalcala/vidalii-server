@@ -18,12 +18,10 @@ const getLastSeq = async ({ db, config }) => {
 const getLastSeq2 = async ({ db, config }) => {
     let _seq = 0
     let response = await db.seq.query.stream({
-        query: {
-            lte: config._id_table + '\xff',
-            limit: 1,
-            reverse: true,
-            values: false
-        },
+        lte: config._id_table + '\xff',
+        limit: 1,
+        reverse: true,
+        values: false,
         onData: key => {
             _seq = key._seq
         }
