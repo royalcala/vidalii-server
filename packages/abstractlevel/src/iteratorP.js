@@ -1,6 +1,6 @@
 import { mergeDeepRight, cond, allPass, propEq, all, equals } from 'ramda'
-const millions = n => 1000000 * n
-var howMany = millions(5)
+// const millions = n => 1000000 * n
+// var howMany = millions(5)
 
 
 const condBoth = [({ options }) => allPass([propEq('keys', true), propEq('values', true)])(options),
@@ -27,7 +27,8 @@ async ({ iterator, onData, endCallback, decodeOut, encoder }) => {
             }
         })
     })
-    for (var i = 0; i < howMany; i++) {
+    // for (var i = 0; i < howMany; i++) {
+    while (true) {
         try {
             var result = await next(iterator)
             if (result.key === undefined || onData(result)) {
@@ -53,15 +54,16 @@ async ({ iterator, onData, endCallback, decodeOut, encoder }) => {
                 reject(error)
             }
             else {
-            //     if (key === undefined || decodeOut === false) {
-            resolve(key)
-            // } else {
-            //     resolve(encoder.keyEncoding.decode(key))
-            // }
+                //     if (key === undefined || decodeOut === false) {
+                resolve(key)
+                // } else {
+                //     resolve(encoder.keyEncoding.decode(key))
+                // }
             }
         })
     })
-    for (var i = 0; i < howMany; i++) {
+    // for (var i = 0; i < howMany; i++) {
+    while (true) {
         var key = await next(iterator)
         if (key === undefined || onData(key)) {
             iterator.end(endCallback)
@@ -88,7 +90,8 @@ async ({ iterator, onData, endCallback, decodeOut, encoder }) => {
             }
         })
     })
-    for (var i = 0; i < howMany; i++) {
+    // for (var i = 0; i < howMany; i++) {
+    while (true) {
         var value = await next(iterator)
         if (value === undefined || onData(value)) {
             iterator.end(endCallback)

@@ -8,15 +8,15 @@ const main = db => {
         put: (key, value, options = {}) => new Promise((resolve, reject) => {
             db.put(key, value, options, error => {
                 if (error)
-                    reject({ error })
+                    reject({ error, data: null })
                 else
-                    resolve({ error: null })
+                    resolve({ error: null, data: null })
             })
         }),
         get: (key, options = {}) => new Promise((resolve, reject) => {
             db.get(key, options, (error, data) => {
                 if (error)
-                    reject({ error })
+                    reject({ error, data: null })
                 else
                     resolve({ error: null, data })
             })
@@ -24,9 +24,9 @@ const main = db => {
         del: (key, options = {}) => new Promise((resolve, reject) => {
             db.del(key, options, (error) => {
                 if (error)
-                    reject({ error })
+                    reject({ error, data: null })
                 else
-                    resolve({ error: null })
+                    resolve({ error: null, data: null })
             })
         }),
         createReadStreamP: ({ onData = () => { }, ...options }) => new Promise(
@@ -35,14 +35,12 @@ const main = db => {
                     .on('data', onData)
                     .on('error', function (err) {
                         reject(err)
-                        console.log('Oh my!', err)
                     })
                     .on('close', function () {
-                        resolve()
-                        console.log('Stream closed')
+                        resolve('Stream closed')
                     })
                     .on('end', function () {
-                        console.log('Stream ended')
+                        resolve('Stream ended')
                     })
             }),
         iteratorP: (options = {}) => iteratorP(db, options)

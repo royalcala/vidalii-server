@@ -1,4 +1,4 @@
-import { curry, evolve, anyPass, has, pipe, ifElse, equals } from 'ramda'
+import { evolve, anyPass, has, pipe, ifElse, equals } from 'ramda'
 
 const defaultOptionsQuery = ({ options, prefixConcat }) => pipe(
     ifElse(
@@ -22,7 +22,7 @@ const defaultOptionsQuery = ({ options, prefixConcat }) => pipe(
     })
 )(options)
 
-const main = curry(({ prefix, separator = '!!' }, db) => {
+const main = ({ prefix, separator = '!!' }) => db => {
     const prefixConcat = key => prefix.concat(separator, key)
 
     return {
@@ -46,6 +46,6 @@ const main = curry(({ prefix, separator = '!!' }, db) => {
             defaultOptionsQuery({ options, prefixConcat })
         )
     }
-})
+}
 
 export default main

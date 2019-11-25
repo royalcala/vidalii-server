@@ -15,9 +15,6 @@ var _allPass2 = _interopRequireDefault(require("ramda/src/allPass"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const millions = n => 1000000 * n;
-
-var howMany = millions(5);
 const condBoth = [({
   options
 }) => (0, _allPass2.default)([(0, _propEq2.default)('keys', true), (0, _propEq2.default)('values', true)])(options), async ({
@@ -45,9 +42,10 @@ const condBoth = [({
         // }
       }
     });
-  });
+  }); // for (var i = 0; i < howMany; i++) {
 
-  for (var i = 0; i < howMany; i++) {
+
+  while (true) {
     try {
       var result = await next(iterator);
 
@@ -83,9 +81,10 @@ const condOnlyKeys = [({
         // }
       }
     });
-  });
+  }); // for (var i = 0; i < howMany; i++) {
 
-  for (var i = 0; i < howMany; i++) {
+
+  while (true) {
     var key = await next(iterator);
 
     if (key === undefined || onData(key)) {
@@ -115,9 +114,10 @@ const condOnlyValues = [({
         // }
       }
     });
-  });
+  }); // for (var i = 0; i < howMany; i++) {
 
-  for (var i = 0; i < howMany; i++) {
+
+  while (true) {
     var value = await next(iterator);
 
     if (value === undefined || onData(value)) {

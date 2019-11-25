@@ -16,4 +16,15 @@ async function test() {
 
     let getResponse = await dbabs.get('key one', { asBuffer: false })
     console.log('getResponse::', getResponse)
+
+
+    let streamResponse = await dbabs.createReadStreamP({
+        onData: console.log,
+    })
+
+    let iteratorResponse = await dbabs.iteratorP({
+        onData: console.log,
+        keyAsBuffer: false,
+        valueAsBuffer: false
+    })
 }

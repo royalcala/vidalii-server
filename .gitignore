@@ -76,7 +76,7 @@ LOG
 LOG.old
 MANIFEST*
 
-packages/abstractlevel/dbtest
+packages/abstractlevel/dbtest/
 packages/vidaliiServer/log.txt
 packages/vidaliiServer/_replicator/CURRENT
 packages/vidaliiServer/_replicator/LOG.old
