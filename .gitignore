@@ -68,10 +68,15 @@ typings/
 # next.js build output
 .next
 
+# leveldb databases
+*.ldb
+CURRENT
+lOCK
+LOG
+LOG.old
+MANIFEST*
 
-
-
-
+packages/abstractlevel/dbtest
 packages/vidaliiServer/log.txt
 packages/vidaliiServer/_replicator/CURRENT
 packages/vidaliiServer/_replicator/LOG.old
@@ -81,3 +86,4 @@ packages/vidaliiServer/_replicator/LOG
 packages/vidaliiServer/_users/LOG.old
 packages/vidaliiServer/_replicator/CURRENT
 packages/vidaliiServer/pouch__all_dbs__/LOG.old
+packages/sublevel/testDB
