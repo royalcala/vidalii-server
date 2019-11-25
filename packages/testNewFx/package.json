@@ -9,6 +9,7 @@
     "apollo-server": "^2.9.7",
     "functional-red-black-tree": "^1.0.1",
     "ramda": "^0.26.1",
+    "subleveldown": "^4.1.4",
     "uuid": "^3.3.3"
   },
   "scripts": {
