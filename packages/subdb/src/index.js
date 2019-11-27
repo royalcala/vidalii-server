@@ -7,7 +7,7 @@ const defaultOptionsQuery = ({ options, prefixConcat }) => pipe(
             has('gte')
         ]),
         opt => opt,
-        opt => ({ //defautl if doesnt have, for get only his own fragment
+        opt => ({ //defautl if doesnt have, for get only his own fragment of docs
             ...opt,
             gte: '',//with the evolve(transformations) will add the prefix
         })

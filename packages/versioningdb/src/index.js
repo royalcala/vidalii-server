@@ -1,22 +1,25 @@
 import { pipe, ifElse, propEq } from 'ramda'
-import abstractdb from '@vidalii/abstractdb'
 import subdb from '@vidalii/subdb'
 import encodingdb from '@vidalii/encodingdb'
-const addAbstractdb = db => ifElse(
-    propEq('abstractdb', true),
-    x => x,
-    x => abstractdb(db)
-)(db)
+import { json as jsoncodecs } from '@vidalii/encodingdb/lib/codecs'
+// const addEncapsulatedb = db => ifElse(
+//     propEq('encapsulatedb', true),
+//     x => x,
+//     x => encapsulatedb(db)
+// )(db)
+
 const createFragments = ({ db }) => {
     const rev = pipe(
         subdb({ prefix: 'rev' }),
-        encodingdb
+        encodingdb({ valueEncoding: jsoncodecs.valueEncoding })
     )(db)
     const seq = pipe(
-        subdb({ prefix: 'seq' })
+        subdb({ prefix: 'seq' }),
+        encodingdb({ valueEncoding: jsoncodecs.valueEncoding })
     )(db)
     const doc = pipe(
-        subdb({ prefix: 'doc' })
+        subdb({ prefix: 'doc' }),
+        encodingdb({ valueEncoding: jsoncodecs.valueEncoding })
     )(db)
     return {
         rev,
@@ -25,9 +28,7 @@ const createFragments = ({ db }) => {
     }
 }
 const main = ({ maxVersions = 5 }) => db => {
-    db = addAbstractdb(db)//this can be checked on abstractdb directly
-    const { rev, seq, doc } = createFragments({ db })
-
+    // const { rev, seq, doc } = createFragments({ db })
 
     //get sublevels here
     return {
@@ -43,49 +44,6 @@ const main = ({ maxVersions = 5 }) => db => {
 
         }
     }
-    // const { keyEncoding, valueEncoding } = getDefaultsCodecs(codec)
-    // return {
-    //     ...db,
-    //     put: (key, value, options = {}) => db.put(
-    //         keyEncoding.encode(key),
-    //         valueEncoding.encode(value),
-    //         options),
-    //     get: async (key, options = {}) => {
-    //         const { encode = true } = options
-    //         if (encode) {
-    //             let response = await db.get(
-    //                 keyEncoding.encode(key),
-    //                 options
-    //             )
-    //             return {
-    //                 ...response,
-    //                 data: valueEncoding.decode(response.data)
-    //             }
-    //         }
-    //         else {
-    //             return db.get(
-    //                 keyEncoding.encode(key),
-    //                 options
-    //             )
-    //         }
-    //     },
-    //     del: (key, options = {}) => db.del(
-    //         keyEncoding.encode(key),
-    //         options
-    //     ),
-    //     createReadStreamP: (options = {}) => conditionalQuery({
-    //         dbWithReaderP: db.createReadStreamP,
-    //         options,
-    //         keyEncoding,
-    //         valueEncoding
-    //     }),
-    //     iteratorP: (options = {}) => conditionalQuery({
-    //         dbWithReaderP: db.iteratorP,
-    //         options,
-    //         keyEncoding,
-    //         valueEncoding
-    //     })
-    // }
 }
 
 export default main

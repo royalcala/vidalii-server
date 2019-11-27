@@ -1,5 +1,5 @@
 {
-  "name": "levelversioning",
+  "name": "@vidalii/versioningdb",
   "version": "1.0.0",
   "main": "lib",
   "author": "Roy Alcala Ortiz",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "ramda": "^0.26.1",
-    "@vidalii/abstractdb": "^1.0.0",
+    "@vidalii/encapsulatedb": "^1.0.0",
     "@vidalii/subdb": "^1.0.0",
     "@vidalii/encodingdb": "^1.0.0"
   }

@@ -1,7 +1,7 @@
 {
-  "name": "@vidalii/encodingdb",
+  "name": "allhere",
   "version": "1.0.0",
-  "main": "lib",
+  "main": "index.js",
   "author": "Roy Alcala Ortiz",
   "license": "MIT",
   "scripts": {
@@ -11,7 +11,6 @@
     "babel:out:file": "npx babel src --out-file script-compiled.js"
   },
   "devDependencies": {
-    "@vidalii/encapsulatedb": "^1.0.0",
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.4",
     "@babel/node": "^7.6.3",
@@ -20,6 +19,11 @@
     "babel-plugin-ramda": "^2.0.0"
   },
   "dependencies": {
-    "ramda": "^0.26.1"
+    "ramda": "^0.26.1",
+    "@vidalii/encapsulatedb": "^1.0.0",
+    "@vidalii/encapsulatedbextend": "^1.0.0",
+    "@vidalii/subdb": "^1.0.0",
+    "@vidalii/encodingdb": "^1.0.0",
+    "@vidalii/versioningdb": "^1.0.0"
   }
 }
