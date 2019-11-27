@@ -1,5 +1,6 @@
 import { pipe } from 'ramda'
-import abstract from '@vidalii/abstractlevel'
+import abstract from '@vidalii/abstractdb'
+import encoding from '@vidalii/encodingdb'
 import encoding from '../src'
 import { json, utf8 } from '../src/codecs'
 const leveldown = require('leveldown')

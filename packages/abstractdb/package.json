@@ -1,5 +1,5 @@
 {
-  "name": "@vidalii/encodinglevel",
+  "name": "@vidalii/abstractdb",
   "version": "1.0.0",
   "main": "lib",
   "author": "Roy Alcala Ortiz",
@@ -11,8 +11,7 @@
     "babel:out:file": "npx babel src --out-file script-compiled.js"
   },
   "devDependencies": {
-    "@vidalii/abstractlevel": "^1.0.0",
-    "@babel/cli": "^7.6.4",
+    "@babel/cli": "^7.7.4",
     "@babel/core": "^7.6.4",
     "@babel/node": "^7.6.3",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",

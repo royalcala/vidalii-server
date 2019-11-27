@@ -4,14 +4,23 @@ const defaultOptionsQuery = ({ options, prefixConcat }) => pipe(
     ifElse(
         anyPass([
             has('gt'),
-            has('gte'),
+            has('gte')
+        ]),
+        opt => opt,
+        opt => ({ //defautl if doesnt have, for get only his own fragment
+            ...opt,
+            gte: '',//with the evolve(transformations) will add the prefix
+        })
+    ),
+    ifElse(
+        anyPass([
             has('lt'),
             has('lte')
         ]),
         opt => opt,
-        opt => ({
+        opt => ({ //defautl if doesnt have
             ...opt,
-            gte: ''//with the evolve(transformations) will add the prefix
+            lte: '',
         })
     ),
     evolve({

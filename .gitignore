@@ -71,7 +71,7 @@ typings/
 # leveldb databases
 *.ldb
 CURRENT
-lOCK
+LOCK
 LOG
 LOG.old
 MANIFEST*
