@@ -1,5 +1,3 @@
-console.clear()
-console.log('in testNewFx db')
 const close = (db, options = {}) => new Promise((resolve, reject) => {
     db.close((err) => {
         if (err)
@@ -8,31 +6,31 @@ const close = (db, options = {}) => new Promise((resolve, reject) => {
             resolve(true)
     })
 })
+
 const open = (db, options = {}) => new Promise((resolve, reject) => {
     db.open(options, (err) => {
         if (err)
             reject(err)
         else
-            resolve(true)
+            resolve(db)
     })
 })
 
-
-
 const tryOpenDB = async db => {
+    let response
     try {
-        responseOpen = await open(db)
+        response = await open(db)
         return ({
-            db,
+            db: response,
             error: null
         })
     } catch (error) {
         try {
-            responseClose = await close(db)
+            response = await close(db)
             try {
-                responseOpen = await open(db)
+                response = await open(db)
                 return ({
-                    db,
+                    db: response,
                     error: null
                 })
             } catch (error) {
@@ -45,41 +43,19 @@ const tryOpenDB = async db => {
 }
 const timer = ms => new Promise(res => setTimeout(res, ms));
 
-const openingWithLoop = async db => {
-    let opened_db
-    console.log('Trying to open the database.')
+const main = async db => {
+    let opened_db    
     while (true) {
         opened_db = await tryOpenDB(db)
-        if (db.error)
-            await timer(1000)
+        if (opened_db.error !== null) {
+            console.log('Trying to open the database.')
+            await timer(2000)
+        }
         else
             break
     }
     console.log('Database was Opened.')
+    return opened_db.db
 }
 
-const main = (location, options = {}) => async typeDB => {
-    let db = await openingWithLoop(typeDB(location, options))
-    return {
-        close: () => db.close(),
-       
-    }
-}
-
-
-let leveldown = require('leveldown')
-main('./mydb')(leveldown)
-
-// startdb(leveldown)
-// async function startdb(db, ) {
-
-
-
-//     const db = leveldown()
-
-//     console.log('db::', db)
-
-//     let responseClosed = await closeDB(db)
-//     console.log('responseClosed::', responseClosed)
-
-// }
+export default main
