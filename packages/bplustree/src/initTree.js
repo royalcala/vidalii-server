@@ -7,8 +7,8 @@ export const initTree = {
     // first: 0,
     // last: null,
     noneLeafs: {},
-    // noneLeafs: {
-    //     blocks: [],
+    // 0: {
+    //     blocks: [store[i]],
     //     parent: null,
     //     arrayPointers: {
     //         p0: '',
@@ -17,15 +17,15 @@ export const initTree = {
     //     type: 'noneleaf'
     // }
     leafs: {
-        0: {
-            blocks: [],
-            parent: null,
-            next: null,
-            back: null,
-            type: 'leaf'
-        }
+        // 0: {
+        //     blocks: [],
+        //     parent: null,
+        //     next: null,
+        //     back: null,
+        //     type: 'leaf'
+        // }
     },
-    storeRef: {
+    store: {
         // key: {
         // key,
         // value

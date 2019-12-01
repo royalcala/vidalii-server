@@ -8,12 +8,13 @@ let n = 10000000
 
 // const rest = Buffer.from('a')
 // console.log('rest::',rest)
-testRedTree(n)
-// testArrays(n)
+// testRedTree(n)
+testArrays(n)
 
 // testObject(n)
 // testMaps(n)
 // testMaps2()
+
 function testRedTree(number) {
     const mockData = (number) => {
         for (let i = 0; i < number; i++) {
@@ -68,6 +69,7 @@ function testArrays(n) {
     posts.length
     console.timeEnd('posts.length');
 
+
     console.time('spliceInit');
     posts.splice(1, 0, 'insertadoo')
     console.timeEnd('spliceInit');
@@ -78,20 +80,20 @@ function testArrays(n) {
     console.timeEnd('spliceFinal');
 
 
-    console.time('sort1()');
-    posts.sort((a, b) => a - b);
-    console.timeEnd('sort1()');
+    // console.time('sort1()');
+    // posts.sort((a, b) => a - b);
+    // console.timeEnd('sort1()');
 
 
-    console.time('sort2()');
-    posts.sort((a, b) => a - b);
-    console.timeEnd('sort2()');
+    // console.time('sort2()');
+    // posts.sort((a, b) => a - b);
+    // console.timeEnd('sort2()');
 
-    console.time('posts.find');
-    posts.find(function (element) {
-        return element === 1000000;
-    });
-    console.timeEnd('posts.find');
+    // console.time('posts.find');
+    // posts.find(function (element) {
+    //     return element === 1000000;
+    // });
+    // console.timeEnd('posts.find');
 
 
     console.time('indexOf()');
@@ -106,13 +108,35 @@ function testArrays(n) {
     //     // oData[v]
     // }, 0);
     // console.timeEnd('link_oData')
+    console.time('forEach looop');
+    posts.forEach(()=>{});
+    console.timeEnd('forEach looop');
 
-    //win <-----------
-    console.time('for loop');
+    console.time('while looop');
+    var len = posts.length;
+    while (len--) {
+        // blah blah
+    }
+    console.timeEnd('while looop');
+
+    console.time('for loop++');
     for (let i = 0; i < posts.length; i++) {
         // sum += posts[i];
     }
-    console.timeEnd('for loop');
+    console.timeEnd('for loop++');
+
+    console.time('for2 loop--');
+    for (let i = posts.length; i >0; i--) {
+        // sum += posts[i];
+    }
+    console.timeEnd('for2 loop--');
+
+    console.time('for loop--');
+    let  i 
+    for (i = posts.length; i--;) {
+
+    }
+    console.timeEnd('for loop--');
 
 
     console.time('reduce');
