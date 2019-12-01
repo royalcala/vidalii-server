@@ -17,6 +17,17 @@ tree.put(10, 'hola')
 tree.put(1, 'hola')
 tree.put(2, 'hola')
 console.log('tree.getTree::', tree.getTree)
+
+// let hola = {
+//     a: 1
+// }
+// let hola2 = hola = {
+//     b: 2
+// }
+// console.log('hola::',hola)
+// console.log('hola2::',hola2)
+// hola2.b=3
+// console.log('hola::',hola)
 // tree.getTree.leafs.id0.memory[0].value = 'changed in both sides'
 // console.log('tree.getTree.leafs.id0.memory::', tree.getTree.leafs.id0.memory)
 // console.log('tree.getTree::', tree.getTree)

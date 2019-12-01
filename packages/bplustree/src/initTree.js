@@ -1,13 +1,14 @@
 export const initTree = {
     size: 0,
     countIdLeaf: 0,
+    countIdNoneLeaf: 0,
     noneLeafMax: 3,
     leafMax: 3,
     // first: 0,
     // last: null,
-    noneLeafs: null,
+    noneLeafs: {},
     // noneLeafs: {
-    //     memory: [],
+    //     blocks: [],
     //     parent: null,
     //     arrayPointers: {
     //         p0: '',
@@ -17,7 +18,7 @@ export const initTree = {
     // }
     leafs: {
         0: {
-            memory: [],
+            blocks: [],
             parent: null,
             next: null,
             back: null,
