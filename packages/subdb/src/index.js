@@ -20,7 +20,9 @@ const defaultOptionsQuery = ({ options, prefixConcat }) => pipe(
         opt => opt,
         opt => ({ //defautl if doesnt have
             ...opt,
-            lte: '',
+            //         let s = '\xff' // \x hexadecimal ff last number
+            // console.log('s::',s)
+            lte: '\xff',
         })
     ),
     evolve({
@@ -48,6 +50,29 @@ const main = ({ prefix, separator = '!!' }) => db => {
             prefixConcat(key),
             options
         ),
+        batch: (ops, options = {}) => {
+            let opsWithKeyPrefix = ops.map(
+                (key, ...op) => ({
+                    ...op,
+                    key: prefixConcat(key)
+                })
+            )
+            db.batch(opsWithKeyPrefix, options, (error) => {
+                if (error)
+                    reject({ error })
+                else
+                    resolve({ error: null })
+            })
+        },
+        preBatch: (ops) => {
+            let opsWithKeyPrefix = ops.map(
+                (key, ...op) => ({
+                    ...op,
+                    key: prefixConcat(key)
+                })
+            )
+            return opsWithKeyPrefix
+        },
         createReadStreamP: (options = {}) => db.createReadStreamP(
             defaultOptionsQuery({ options, prefixConcat })
         ),

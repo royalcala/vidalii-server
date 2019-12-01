@@ -1,32 +1,91 @@
 const R = require('ramda')
+var createTree = require("functional-red-black-tree")
+var t1 = createTree()
 let n = 10000000
-testArrays(n)
+
+// const is = Buffer.from('aa') > Buffer.from('b')
+// console.log('is::',is)
+
+// const rest = Buffer.from('a')
+// console.log('rest::',rest)
+testRedTree(n)
+// testArrays(n)
+
 // testObject(n)
 // testMaps(n)
 // testMaps2()
+function testRedTree(number) {
+    const mockData = (number) => {
+        for (let i = 0; i < number; i++) {
+            t1 = t1.insert(i, i)
+        }
+    }
+
+    console.time('mockDataTreeBlack');
+    mockData(n)
+    console.timeEnd('mockDataTreeBlack');
+
+    console.time('foreach');
+    t1.forEach(
+        (key, value) => {
+            // console.log('key:', key, ',value:', value)
+        }
+    )
+    console.timeEnd('foreach');
+
+    console.time('find');
+    t1.find(10000000)
+    console.timeEnd('find');
+
+    console.time('insertOne')
+    t1 = t1.insert(99999999999, 'hhhhh')
+    console.timeEnd('insertOne')
+
+    console.time('insertOne')
+    t1 = t1.insert(444554, 'hhhhh')
+    console.timeEnd('insertOne')
+}
 function testArrays(n) {
     var posts = []
     // var oData = {}
+
     const mockData = (number) => {
 
         for (let i = 0; i < number; i++) {
-            posts.push(i)
+            posts.push([i, i])
             // oData[i] = data[i]
         }
         // return data
     }
 
 
+
     console.time('mockDataArray');
     mockData(n)
     console.timeEnd('mockDataArray');
+
     console.time('posts.length');
     posts.length
     console.timeEnd('posts.length');
 
-    console.time('sort()');
-    posts.sort((a,b)=>a-b);
-    console.timeEnd('sort()');
+    console.time('spliceInit');
+    posts.splice(1, 0, 'insertadoo')
+    console.timeEnd('spliceInit');
+
+
+    console.time('spliceFinal');
+    posts.splice(10000000 - 1, 0, 'insertadoo')
+    console.timeEnd('spliceFinal');
+
+
+    console.time('sort1()');
+    posts.sort((a, b) => a - b);
+    console.timeEnd('sort1()');
+
+
+    console.time('sort2()');
+    posts.sort((a, b) => a - b);
+    console.timeEnd('sort2()');
 
     console.time('posts.find');
     posts.find(function (element) {
@@ -110,6 +169,8 @@ function testObject() {
     console.time('mockDataObject');
     mockData(n)
     console.timeEnd('mockDataObject');
+
+
 
     console.time('symbol.iterator')
     posts[Symbol.iterator] = function () {
@@ -227,15 +288,15 @@ function testMaps(n) {
 
     //mapIter.next().value
 
-    // console.time('mapIterator.next()');
-    // for(let i of mapIter){
-    //     
-    // }
-    // console.timeEnd('mapIterator.next()');
+    console.time('mapIterator.next()');
+    for (let i of mapIter) {
+
+    }
+    console.timeEnd('mapIterator.next()');
 
     // console.time('mapIterator');
     // for(let i of mapIter){
-    //     // mapIter.next().value
+    //     mapIter.next().value
     // }
     // console.timeEnd('mapIterator');
 

@@ -9,7 +9,6 @@ const conditionalValue = actions => cond([
     [isIt('String'), actions.valueIsString],
 ])
 
-
 const updateJson = async ({ key, db, prevDoc, newDoc, actions }) => {
     let newObject = await mergeDeepWithKey(conditionalValue(actions), prevDoc, newDoc)
     let response = db.put(kye, newObject)

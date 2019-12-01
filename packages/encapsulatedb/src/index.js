@@ -38,13 +38,28 @@ const main = async ({ location, options = {}, store }) => {
                     resolve({ error: null })
             })
         }),
+        batch: (ops, options = {}) => new Promise((resolve, reject) => {
+            // var ops = [
+            //     { type: 'del', key: 'father' },
+            //     { type: 'put', key: 'name', value: 'Yuri Irsenovich Kim' },
+            //     { type: 'put', key: 'dob', value: '16 February 1941' },
+            //     { type: 'put', key: 'spouse', value: 'Kim Young-sook' },
+            //     { type: 'put', key: 'occupation', value: 'Clown' }
+            // ]
+            db.batch(ops, options, (error) => {
+                if (error)
+                    reject({ error })
+                else
+                    resolve({ error: null })
+            })
+        }),
         createReadStreamP: ({ onData = () => { }, ...options }) => new Promise(
             (resolve, reject) => {
                 // const stream = new Readable({
                 //     objectMode: true,
                 //     read() {}
                 //   })
-                
+
                 // db.createReadStream(options)
                 //     .on('data', onData)
                 //     .on('error', function (err) {
