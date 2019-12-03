@@ -13,9 +13,12 @@ export const put = tree => (key, value) => ifElse(
     },
     ({ tree, key, value }) => { //insert   
         return cond([
-            [({ tree }) => tree.size >= tree.leafMax, pipe(moveToLeaf({ startInNoneLeaf: 0 }))],
-            [pathEq(['tree', 'size'], 0), pipe(saveKeyValueInStore, createLeaf, selectLeaf({ byId: 0 }), saveDataWithSelectLeaf, incrementSizeTree)],
+            [({ tree }) => tree.size >= tree.leafMax, pipe(
+                moveToLeaf({ nextNode: tree.firstNoneLeaf }),
+                state => saveLeaf({ ByRefNode: state.selectLeaf })(state)
+            )],
             [({ tree }) => tree.size > 0, saveLeaf({ byId: 0 })],
+            [pathEq(['tree', 'size'], 0), pipe(saveKeyValueInStore, createLeaf, selectLeaf({ byId: 0 }), saveDataWithSelectLeaf, incrementSizeTree)],
         ])({ tree, key, value })
     }
 )({ tree, key, value })

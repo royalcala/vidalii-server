@@ -16,7 +16,10 @@ let tree2 = tree
 tree.put(10, 'hola')
 tree.put(1, 'hola')
 tree.put(2, 'hola')
+tree.put(3, 'hola')
+tree.put(4, 'hola')
 console.log('tree.getTree::', tree.getTree)
+// console.log('tree.getTree.noneLeafs[0]::',tree.getTree.noneLeafs[0].blocksPointers[0])
 
 // let hola = {
 //     a: 1

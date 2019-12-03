@@ -1,3 +1,14 @@
+export const defaultComparatorFx = (a, b) => {
+    if (a.key > b.key) {
+        return 1;
+    }
+    if (a.key < b.key) {
+        return -1;
+    }
+    // a must be equal to b
+    return 0;
+}
+
 export const incrementSizeTree = state => {
     const { tree } = state
     tree.size++
@@ -13,28 +24,32 @@ export const saveKeyValueInStore = state => {
     return state
 }
 
-export const moveToLeaf = ({ startInNoneLeaf = null, nextNode = null }) => state => {
+export const moveToLeaf = ({ nextNode }) => state => {
     const { key, tree } = state
-    let node = nextNode === null ? tree.noneLeafs[startInNoneLeaf] : nextNode
+    // let node = nextNode === null ? tree.noneLeafs[startInNoneLeaf] : nextNode
 
-    let nextNode
-    let idBlockPointer
+    let i
     //CASE 1
-    // for (idBlockPointer = posts.length; i > -1; i--) { //all    
-    for (idBlockPointer = posts.length; i > 0; i--) { //only last not     
-        if (key > node.blocks[i].key) {
-            nextNode = node.blocksPointers[i]
+    for (i = nextNode.blocks.length - 1; i > -1; i--) {
+        if (key > nextNode.blocks[i].key) {
+            nextNode = nextNode.blocksPointers[i + 1]
             if (nextNode.type === 'noneleaf')
                 return moveToLeaf({ nextNode })(state)
-            else
-                return saveLeaf({ ByRefNode: nextNode })
+            else {
+                state.selectLeaf = nextNode
+                return state
+            }
+
         }
     }
+    // }
     //CASE 2
     //is less than all
-    nextNode = node.blocksPointers[0]
-    if (nextNode.type === 'noneleaf')
+    nextNode = nextNode.blocksPointers[0]
+    if (nextNode.type === 'noneleaf')//and key < node.blocks[0].key esto es inferido
         return moveToLeaf({ nextNode })(state)
-    else
-        return saveLeaf({ ByRefNode: nextNode })
+    else {
+        state.selectLeaf = nextNode
+        return state
+    }
 }

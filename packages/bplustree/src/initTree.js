@@ -1,4 +1,6 @@
 export const initTree = {
+    firstNoneLeaf: null,
+    comparatorSortFx: null,
     size: 0,
     countIdLeaf: 0,
     countIdNoneLeaf: 0,
@@ -18,7 +20,7 @@ export const initTree = {
     // }
     leafs: {
         // 0: {
-        //     blocks: [],
+        //     blocks: [store[i]],
         //     parent: null,
         //     next: null,
         //     back: null,

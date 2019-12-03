@@ -11,11 +11,15 @@ const divideLeaf = (Lleaf, tree) => {
 
     Lleaf.next = Rleaf
     Rleaf.back = Lleaf
-    let distribution = tree.leafMax / 2
-    Rleaf.blocks = Lleaf.blocks.slice(-Math.ceil(
+    let distribution = Lleaf.blocks.length / 2
+    Rleaf.blocks = Lleaf.blocks.splice(-Math.ceil(
         distribution
     ))
-    Lleaf.blocks.splice(-Math.ceil(-Math.floor(distribution)))
+    // let distribution = tree.leafMax / 2
+    // Rleaf.blocks = Lleaf.blocks.slice(-Math.ceil(
+    //     distribution
+    // ))
+    // Lleaf.blocks.splice(-Math.ceil(-Math.floor(distribution)))
     return Rleaf
 }
 
