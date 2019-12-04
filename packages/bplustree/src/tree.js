@@ -9,6 +9,7 @@ export const defaultComparatorFx = (a, b) => {
     return 0;
 }
 
+
 export const incrementSizeTree = state => {
     const { tree } = state
     tree.size++
@@ -52,4 +53,5 @@ export const moveToLeaf = ({ nextNode }) => state => {
         state.selectLeaf = nextNode
         return state
     }
+    
 }

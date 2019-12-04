@@ -1,5 +1,5 @@
-import noneLeaf from './noneLeaf'
-import leaf from './leaf'
+// import noneLeaf from './noneLeaf'
+// import leaf from './leaf'
 // import { initTree } from './initTree'
 import { defaultComparatorFx } from './tree'
 import { put } from './put'

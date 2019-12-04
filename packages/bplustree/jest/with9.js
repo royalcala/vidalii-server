@@ -12,6 +12,7 @@ export default () => {
         tree.put(12, 'hola')
         tree.put(13, 'hola')
         tree.put(14, 'hola')
+
         test('while->firstNoneLeaf->right===lastLeaf', () => {
             let node = tree.getTree.firstNoneLeaf
             while (node.type === 'noneleaf') {

@@ -13,11 +13,28 @@ export const createLeaf = state => {
     tree.countIdLeaf++
     return state
 }
+// const insertOrderedKey = (blocks, store) => {
+//     let inserted = false
+//     for (let i = blocks.length - 1; i > -1; i--) {
+//         if (store.key > blocks[i]) {
+//             // console.log('inserted on index:', i);
+//             blocks.splice(i + 1, 0, store);
+//             inserted = true
+//             break;
+//         }
+//     }
+//     if (inserted === false)
+//         blocks.splice(0, 0, store);
+// };
 
 export const saveDataWithSelectLeaf = state => {
-    const { selectLeaf, tree, key } = state
+    const { selectLeaf, tree, key, value } = state
     selectLeaf.blocks.push(tree.store[key])
     selectLeaf.blocks.sort(tree.comparatorSortFx)
+    // insertOrderedKey(selectLeaf.blocks,tree.store[key])
+    // for (i =  selectLeaf.blocks.length - 1; i > 0; i--) {
+
+    // }
     return state
 }
 

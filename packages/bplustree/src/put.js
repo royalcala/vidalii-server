@@ -14,7 +14,15 @@ export const put = tree => (key, value) => ifElse(
     ({ tree, key, value }) => { //insert  
         let insert = cond([
             [({ tree }) => tree.size >= tree.leafMax, pipe(
+                // x => {
+                //     console.time('moveToLeaf')
+                //     return x
+                // },
                 moveToLeaf({ nextNode: tree.firstNoneLeaf }),
+                // x => {
+                //     console.timeEnd('moveToLeaf')
+                //     return x
+                // },
                 state => saveLeaf({ ByRefNode: state.selectLeaf })(state)
             )],
             [({ tree }) => tree.size > 0, saveLeaf({ byId: 0 })],

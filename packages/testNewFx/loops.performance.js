@@ -1,50 +1,86 @@
 const R = require('ramda')
 var createTree = require("functional-red-black-tree")
+var bplusTree = require('../bplustree/lib').default
+// console.log('bplusTree::', bplusTree)
 var t1 = createTree()
-let n = 10000000
+let howManyMillions = n => n * 1000000
+// let n = howManyMillions(1)
+let n =100000
 
 // const is = Buffer.from('aa') > Buffer.from('b')
 // console.log('is::',is)
 
 // const rest = Buffer.from('a')
 // console.log('rest::',rest)
-// testRedTree(n)
-testArrays(n)
+// testBPlusTree(n)
+testRedTree(n)
+// testArrays(n)
 
 // testObject(n)
 // testMaps(n)
 // testMaps2()
+function testBPlusTree(number) {
+    const tree = bplusTree({})
+    const mockData = (number) => {
+        for (let i = 0; i < number; i++) {
+            tree.put(i, i)
+        }
+    }
 
+    console.time('mockDataBplus');
+    mockData(n)
+    console.timeEnd('mockDataBplus');
+
+    // console.time('foreach');
+    // t1.forEach(
+    //     (key, value) => {
+    //         // console.log('key:', key, ',value:', value)
+    //     }
+    // )
+    // console.timeEnd('foreach');
+
+    // console.time('find');
+    // t1.find(10000000)
+    // console.timeEnd('find');
+
+    // console.time('insertOne')
+    // t1 = t1.insert(99999999999, 'hhhhh')
+    // console.timeEnd('insertOne')
+
+    // console.time('insertOne')
+    // t1 = t1.insert(444554, 'hhhhh')
+    // console.timeEnd('insertOne')
+}
 function testRedTree(number) {
     const mockData = (number) => {
         for (let i = 0; i < number; i++) {
             t1 = t1.insert(i, i)
         }
     }
-
+    // mockDataTreeBlack: 19556.269ms
     console.time('mockDataTreeBlack');
     mockData(n)
     console.timeEnd('mockDataTreeBlack');
 
-    console.time('foreach');
-    t1.forEach(
-        (key, value) => {
-            // console.log('key:', key, ',value:', value)
-        }
-    )
-    console.timeEnd('foreach');
+    // console.time('foreach');
+    // t1.forEach(
+    //     (key, value) => {
+    //         // console.log('key:', key, ',value:', value)
+    //     }
+    // )
+    // console.timeEnd('foreach');
 
-    console.time('find');
-    t1.find(10000000)
-    console.timeEnd('find');
+    // console.time('find');
+    // t1.find(10000000)
+    // console.timeEnd('find');
 
-    console.time('insertOne')
-    t1 = t1.insert(99999999999, 'hhhhh')
-    console.timeEnd('insertOne')
+    // console.time('insertOne')
+    // t1 = t1.insert(99999999999, 'hhhhh')
+    // console.timeEnd('insertOne')
 
-    console.time('insertOne')
-    t1 = t1.insert(444554, 'hhhhh')
-    console.timeEnd('insertOne')
+    // console.time('insertOne')
+    // t1 = t1.insert(444554, 'hhhhh')
+    // console.timeEnd('insertOne')
 }
 function testArrays(n) {
     var posts = []
@@ -109,7 +145,7 @@ function testArrays(n) {
     // }, 0);
     // console.timeEnd('link_oData')
     console.time('forEach looop');
-    posts.forEach(()=>{});
+    posts.forEach(() => { });
     console.timeEnd('forEach looop');
 
     console.time('while looop');
@@ -126,13 +162,13 @@ function testArrays(n) {
     console.timeEnd('for loop++');
 
     console.time('for2 loop--');
-    for (let i = posts.length; i >0; i--) {
+    for (let i = posts.length; i > 0; i--) {
         // sum += posts[i];
     }
     console.timeEnd('for2 loop--');
 
     console.time('for loop--');
-    let  i 
+    let i
     for (i = posts.length; i--;) {
 
     }
