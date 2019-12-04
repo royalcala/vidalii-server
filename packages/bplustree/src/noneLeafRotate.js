@@ -1,14 +1,14 @@
 import { ifElse, pipe } from 'ramda'
 import { setNoneLeaf } from './types'
-import { checkRotateTop } from './noneLeafRotateTop'
-
+import { connectWithNoneLeaf } from './noneLeaf'
 
 const setBlocksPointers = state => {
     const { nodeL, nodeR } = state
     let distribution = nodeL.blocksPointers.length / 2
-    nodeR.blocksPointers = nodeL.blocksPointers.splice(-Math.ceil(
+    nodeR.blocksPointers = nodeL.blocksPointers.splice(-Math.floor(
         distribution
     ))
+
     return state
 }
 
@@ -22,7 +22,6 @@ const setBlocks = state => {
 }
 const reSelectNodes = state => {
     const { selectNoneLeaf, tree, nodeL: beforeL, nodeR: beforeR } = state
-    //the befor R and L 
     state.nodeL = selectNoneLeaf
     state.nodeR = setNoneLeaf(tree)
     beforeL.parent = state.nodeR
@@ -35,7 +34,8 @@ const rotateNoneLeaf = pipe(
     reSelectNodes,
     setBlocks,
     setBlocksPointers,
-    checkRotateTop
+    ({ nodeL, nodeR, tree }) => connectWithNoneLeaf(nodeL, nodeR, tree)
+
 )
 
 
