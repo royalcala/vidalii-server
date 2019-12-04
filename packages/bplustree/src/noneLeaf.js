@@ -4,14 +4,24 @@ import { setNoneLeaf } from './types'
 import { checkRotateWithSelectNoneLeaf } from './noneLeafRotate'
 
 const saveDataInUpNode = state => {
+
     const { nodeL, nodeR, tree, } = state
     state.selectNoneLeaf = nodeL.parent
     nodeR.parent = state.selectNoneLeaf
+    //nodeR is leaf or is noneleaf
+    if(nodeR.type==='leaf')
     state.selectNoneLeaf.blocks.push(nodeR.blocks[0])
-    state.selectNoneLeaf.blocks.sort(tree.comparatorSortFx)
+    else
+    state.selectNoneLeaf.blocks.push(nodeR.blocks.shift())
+
     state.selectNoneLeaf.blocksPointers.push(nodeR)
     return state
 }
+
+export const saveUpAndCheckRotate = pipe(
+    saveDataInUpNode,
+    checkRotateWithSelectNoneLeaf
+)
 
 const createFirstNoneLeaf = state => {
     const { nodeL, nodeR, tree, } = state
@@ -22,17 +32,15 @@ const createFirstNoneLeaf = state => {
     nodeR.parent = newNoneLeaf
     nodeL.parent = newNoneLeaf
     tree.firstNoneLeaf = newNoneLeaf
-    // tree.countIdNoneLeaf++
     return state
 }
+
+
 
 const upNode = ifElse(
     pathEq(['nodeL', 'parent'], null),
     createFirstNoneLeaf,
-    pipe(
-        saveDataInUpNode,
-        checkRotateWithSelectNoneLeaf
-    )
+    saveUpAndCheckRotate
 )
 
 

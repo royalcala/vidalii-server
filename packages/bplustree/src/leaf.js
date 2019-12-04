@@ -14,15 +14,15 @@ export const createLeaf = state => {
     return state
 }
 
-export const selectLeaf = ({ byId = null, ByRefNode = null }) => state => {
-    const { tree } = state
-    state.selectLeaf = byId === null ? ByRefNode : tree.leafs[byId]
-    return state
-}
-
 export const saveDataWithSelectLeaf = state => {
     const { selectLeaf, tree, key } = state
     selectLeaf.blocks.push(tree.store[key])
     selectLeaf.blocks.sort(tree.comparatorSortFx)
+    return state
+}
+
+export const selectLeaf = ({ byId = null, ByRefNode = null }) => state => {
+    const { tree } = state
+    state.selectLeaf = byId === null ? ByRefNode : tree.leafs[byId]
     return state
 }

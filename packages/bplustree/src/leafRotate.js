@@ -9,8 +9,12 @@ const divideLeaf = (Lleaf, tree) => {
         }
     )({ tree })
 
-    Lleaf.next = Rleaf
+    Rleaf.next = Lleaf.next
     Rleaf.back = Lleaf
+    Lleaf.next = Rleaf
+    if (Rleaf.next === null)
+        tree.lastLeaf = Rleaf
+
     let distribution = Lleaf.blocks.length / 2
     Rleaf.blocks = Lleaf.blocks.splice(-Math.ceil(
         distribution

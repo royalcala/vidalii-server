@@ -12,13 +12,19 @@ import btree from '../src'
 // tableRef2['key1'].value = 'the value change'
 // console.log('array2::', array2)
 const tree = btree({})
-let tree2 = tree
 tree.put(10, 'hola')
 tree.put(1, 'hola')
-tree.put(2, 'hola')
-tree.put(3, 'hola')
-tree.put(4, 'hola')
-console.log('tree.getTree::', tree.getTree)
+tree.put(2, 'hola')//top.left
+tree.put(3, 'hola')//on top
+tree.put(4, 'hola')//top right
+tree.put(5, 'hola')//top right
+console.log('tree.noneLeafs::', tree.getTree.noneLeafs[2].blocks)
+console.log('tree.leafs::', tree.getTree.leafs[1].blocks)
+
+console.log('all leafs:::')
+Object.entries(tree.getTree.leafs).forEach(e => {
+    console.log(e[1].blocks)
+});
 // console.log('tree.getTree.noneLeafs[0]::',tree.getTree.noneLeafs[0].blocksPointers[0])
 
 // let hola = {
