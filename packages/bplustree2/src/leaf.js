@@ -1,5 +1,6 @@
 import { ifElse, pathEq } from 'ramda'
 import { LEAF, LEAFBLOCK } from './types'
+import { comparatorFx } from './tree'
 
 export const createLeafBlock = state => {
     const block = {
@@ -36,14 +37,14 @@ export const insertRefStoreInBlock = state => {
     return state
 }
 
-const comparatorFx = (newKey, prevKey) => {
-    //if true, if is less than the prevKey
-    //this is a requirement that return newKey<prevKey:true
-    if (newKey < prevKey)
-        return true
-    else
-        return false
-}
+// const comparatorFx = (newKey, prevKey) => {
+//     //if true, if is less than the prevKey
+//     //this is a requirement that return newKey<prevKey:true
+//     if (newKey < prevKey)
+//         return true
+//     else
+//         return false
+// }
 
 export const insertBlockInLeaf = ifElse(
     pathEq(['selectLeaf', 'toBlocks'], null),

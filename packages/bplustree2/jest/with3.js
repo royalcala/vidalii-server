@@ -35,7 +35,7 @@ export default () => {
         test('Rleaf.sizeBlocks ', () => {
             expect(
                 t.leafs.nextLeaf.sizeBlocks
-            ).toBe(1)
+            ).toBe(2)
         })
 
         test('Rleaf.key ', () => {
@@ -58,13 +58,19 @@ export default () => {
 
         test('noneLeaf.toBlocks.storeRef.key ', () => {
             expect(
-                t.noneLeafs.toBlocks.storeRef
+                t.noneLeafs.toBlocks.storeRef.key
             ).toBe(10)
         })
         test('t.noneLeafs.toBlocks.nextBlock ', () => {
             expect(
                 t.noneLeafs.toBlocks.nextBlock
             ).toBe(null)
+        })
+
+        test('t.noneLeafs.toBlocks.noneleaf ', () => {
+            expect(
+                t.noneLeafs.toBlocks.noneLeaf
+            ).toBe(t.noneLeafs)
         })
 
         // test('total first noneleaf blocks first block', () => {

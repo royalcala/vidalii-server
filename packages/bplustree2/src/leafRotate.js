@@ -26,8 +26,7 @@ const divideLeaf = state => {
     selectLeaf.lastBlock = pointMiddleAllBlocks
 
     state.Lleaf = selectLeaf
-    state.Rleaf = Rleaf
-    console.log('state.Lleaf ::',state.Lleaf )
+    state.Rleaf = Rleaf    
 
     return state
 }

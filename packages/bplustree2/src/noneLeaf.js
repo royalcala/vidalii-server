@@ -1,13 +1,6 @@
 import { pipe, pathEq, ifElse } from 'ramda'
 import { NONELEAF, NONELEAFBLOCK } from './types'
-import { checkRotate } from './noneLeafRotate'
-
-
-// const selectParentNoneLeafBlock = state => {
-//     const { Lleaf } = state
-//     state.selectNoneLeaf = Lleaf.parentNoneLeafBlock
-//     return state
-// }
+// import { checkRotate } from './noneLeafRotate'
 
 const selectParentNoneLeaf = state => {
     const { Lleaf } = state
@@ -21,70 +14,40 @@ const insertNoneLeafInTree = state => {
     return state
 }
 
-
-const comparatorFx = (newKey, prevKey) => {
-    //if true, if is less than the prevKey
-    //this is a requirement that return newKey<prevKey:true
-    if (newKey < prevKey)
-        return true
-    else
-        return false
-}
-
-
 const insertBlockInNoneLeaf = ifElse(
     pathEq(['selectNoneLeaf', 'toBlocks'], null),
     state => {//if doesnt has blocks
         const { selectNoneLeaf: snl, selectNoneLeafBlock: snlb, Lleaf, Rleaf } = state
         Lleaf.parentNoneLeafBlock = snlb
-        // Rleaf.parentNoneLeafBlock = snlb
-        // console.log('Rleaf.toBlocks::', Rleaf)
+        Rleaf.parentNoneLeafBlock = snlb
 
+        //noneleaf-block
         snlb.noneLeaf = snl
         snlb.LChild = Lleaf
         snlb.RChild = Rleaf
-        snlb.storeRef = Rleaf.toBlocks
+        snlb.storeRef = Rleaf.toBlocks.storeRef
+
+        //noneleaf
         snl.toBlocks = snlb
         snl.lastBlock = snlb
-
         snl.sizeBlocks++
         return state
     },
     state => {
         const { selectNoneLeaf: snl, selectNoneLeafBlock: snlb, Lleaf, Rleaf } = state
-        let prev = Rleaf.toBlocks.parentNoneLeafBlock
-        let prevPivotNext = prev.nextBlock
-        let RleafFirstBlock = Rleaf.toBlocks
-        let RleafPivotNext = Rleaf.toBlocks.nextBlock
-        //
-        //move the first of Rleaf to NoneLeaf
-        snlb.noneLeaf = snl
-        // snlb.LChild = Lleaf
-        snlb.RChild = Rleaf
+        let prev = Lleaf.parentNoneLeafBlock
+        let prevNextPivot = prev.nextBlock
+        prev.nextBlock = snlb
 
-        prev.nextBlock = RleafFirstBlock
-        prev.nextBlock.nextBlock = prevPivotNext
-        Rleaf.toBlocks = RleafPivotNext
-        //
-        // Lleaf.parentNoneLeafBlock = snlb
-        // Rleaf.parentNoneLeafBlock = snlb
-        // while (prevBlock.nextBlock !== null) {
-        //     if (comparatorFx(newBlock.storeRef.key, prevBlock.storeRef.key))
-        //         break
-        //     else
-        //         prevBlock = prevBlock.nextBlock
-        // }
-        // if (comparatorFx(newBlock.storeRef.key, prevBlock.storeRef.key)) {
-        //     //new<prev:: new->prev->null,
-        //     newBlock.nextBlock = prevBlock
-        //     prevBlock.backBlock = newBlock
-        // } else {
-        //     //new>prev:: prev->new->null      
-        //     prevBlock.nextBlock = newBlock
-        //     newBlock.backBlock = prevBlock
-        //     selectNoneLeaf.lastBlock = newBlock
-        // }
-        // selectNoneLeaf.sizeBlocks++
+        //noneleaf-block
+        snlb.noneLeaf = snl
+        snlb.RChild = Rleaf
+        snlb.storeRef = Rleaf.toBlocks.storeRef//gett the first of the block
+        snlb.nextBlock = prevNextPivot
+        snlb.backBlock = prev
+
+        Rleaf.parentNoneLeafBlock = snlb
+        snl.sizeBlocks++
         return state
     }
 )
@@ -106,6 +69,8 @@ const createNoneLeafBlock = state => {
         noneLeaf: null,
         LChild: null,
         RChild: null,
+        nextBlock: null,
+        backBlock: null,
         storeRef: null,
         type: NONELEAFBLOCK,
     }
