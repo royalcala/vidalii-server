@@ -4,8 +4,8 @@ var bplusTree = require('../bplustree/lib').default
 // console.log('bplusTree::', bplusTree)
 var t1 = createTree()
 let howManyMillions = n => n * 1000000
-// let n = howManyMillions(1)
-let n =100000
+// let n = howManyMillions(10)
+let n = 100000
 
 // const is = Buffer.from('aa') > Buffer.from('b')
 // console.log('is::',is)
@@ -13,12 +13,69 @@ let n =100000
 // const rest = Buffer.from('a')
 // console.log('rest::',rest)
 // testBPlusTree(n)
-testRedTree(n)
+// testRedTree(n)
 // testArrays(n)
-
 // testObject(n)
 // testMaps(n)
 // testMaps2()
+ArraysVsObjects()
+function ArraysVsObjects() {
+    var posts = []
+    const mockData = (number) => {
+        for (let i = 0; i < number; i++) {
+            posts.push(i)
+        }
+    }
+    console.time('mockDataArray');
+    mockData(n)
+    console.timeEnd('mockDataArray');
+    console.time('while looop');
+    var len = posts.length;
+    while (len--) {
+        posts[len]++
+    }
+    console.timeEnd('while looop');
+
+    console.time('reduce array');
+    var len = 0
+    var tam = posts.length
+    while (len <= tam) {
+        posts.shift()
+        len++
+    }
+    console.timeEnd('reduce array');
+
+
+
+    var count = 0
+    var objArray = {}
+    const mockDataObj = (number) => {
+        for (let i = 0; i < number; i++) {
+            objArray[count] = i
+            count++
+
+        }
+    }
+    console.time('mockDataObject');
+    mockDataObj(n)
+    console.timeEnd('mockDataObject');
+
+    console.time('while Object');
+    var len = count;
+    while (len--) {
+        objArray[len]++
+    }
+    console.timeEnd('while Object');
+
+    console.time('reduce object');
+    var len = 0
+    var tam = count
+    while (len <= tam) {
+      delete objArray[len]
+      len++
+    }
+    console.timeEnd('reduce object');
+}
 function testBPlusTree(number) {
     const tree = bplusTree({})
     const mockData = (number) => {
