@@ -13,10 +13,8 @@ export const createLeafBlock = state => {
 }
 
 export const createLeaf = state => {
-    const { tree } = state
-    // let nameNewLeaf = tree.countIdLeaf
     const leaf = {
-        parent: null,
+        parentNoneLeafBlock: null,
         nextLeaf: null,
         backLeaf: null,
         sizeBlocks: 0,
@@ -24,8 +22,6 @@ export const createLeaf = state => {
         lastBlock: null,
         type: LEAF
     }
-
-    // tree.firstleaf = leaf
     state.selectLeaf = leaf
     return state
 }
@@ -40,8 +36,16 @@ export const insertRefStoreInBlock = state => {
     return state
 }
 
+const comparatorFx = (newKey, prevKey) => {
+    //if true, if is less than the prevKey
+    //this is a requirement that return newKey<prevKey:true
+    if (newKey < prevKey)
+        return true
+    else
+        return false
+}
 
-const insertWithoutBlocks = [// doesnt has blocks
+export const insertBlockInLeaf = ifElse(
     pathEq(['selectLeaf', 'toBlocks'], null),
     state => {//if doesnt has blocks
         const { selectLeaf, selectLeafBlock, } = state
@@ -52,89 +56,51 @@ const insertWithoutBlocks = [// doesnt has blocks
         selectLeaf.sizeBlocks++
         return state
     },
-]
-
-const comparatorFx = (newKey, key) => {
-    //if true, newKey is bigger than nextKey, check with the next
-    if (newKey > key)
-        return true
-    else
-        return false
-}
-
-const insertHasOnlyOneBlock = [//has only one block
-    pathEq(['selectLeaf', 'toBlocks', 'nextBlock'], null),
     state => {
         const { selectLeaf, selectLeafBlock, } = state
-        if (comparatorFx(selectLeafBlock.storeRef.key, selectLeaf.toBlocks.storeRef.key)) {
-            //first block
-            selectLeaf.toBlocks = selectLeafBlock
-            //last block
-            selectLeaf.lastBlock = selectLeafBlock
-            selectLeaf.sizeBlocks++
-        } else {
-
+        let prevBlock = selectLeaf.toBlocks
+        // console.log('selectLeaf.toBlocks::', selectLeaf.toBlocks)
+        let newBlock = selectLeafBlock
+        while (prevBlock.nextBlock !== null) {
+            if (comparatorFx(newBlock.storeRef.key, prevBlock.storeRef.key))
+                break
+            else
+                prevBlock = prevBlock.nextBlock
         }
-        // if (selectLeaf.toBlocks.storeRef.key > selectLeafBlock.storeRef.key) {
-
-        // }
-
-        return state
-    }
-]
-export const insertBlockInLeaf =
-    cond([
-        insertWithoutBlocks,
-        insertHasOnlyOneBlock,
-        [//has many blocks
-            () => true,
-            () => {
+        if (prevBlock === selectLeaf.toBlocks) {
+            // console.log('yes is equal')
+            if (comparatorFx(newBlock.storeRef.key, selectLeaf.toBlocks.storeRef.key)) {
+                //new<prev:: new->prev->null,
+                selectLeaf.toBlocks = newBlock
+                newBlock.nextBlock = prevBlock
+                prevBlock.backBlock = newBlock
+            } else {
+                //new>prev:: prev->new->null      
+                prevBlock.nextBlock = newBlock
+                newBlock.backBlock = prevBlock
+                selectLeaf.lastBlock = newBlock
 
             }
+        } else {
+            // console.log('Not  equal')
+            if (comparatorFx(newBlock.storeRef.key, prevBlock.storeRef.key)) {
+                //new<prev:: new->prev->null,
+                newBlock.nextBlock = prevBlock
+                prevBlock.backBlock = newBlock
+            } else {
+                //new>prev:: prev->new->null      
+                prevBlock.nextBlock = newBlock
+                newBlock.backBlock = prevBlock
+                selectLeaf.lastBlock = newBlock
 
-        ]
-    ])
-// ifElse(
-//     pathEq(['selectLeaf', 'toBlocks'], null),
-//     state => {//if doesnt has blocks
-//         const { selectLeaf, selectLeafBlock, } = state
-//         //first block
-//         selectLeaf.toBlocks = selectLeafBlock
-//         //last block
-//         selectLeaf.lastBlock = selectLeafBlock
-//         selectLeaf.sizeBlocks++
-//         return state
-//     },
-//     ifElse(
-//         pathEq(['selectLeaf', 'toBlocks', 'nextBlock'], null),
-//         state => {//if only has one block
-//             const { selectLeaf, selectLeafBlock, } = state
-//             if (selectLeafBlock.storeRef)
-//                 selectLeaf.lastBlock.nextBlock = selectLeafBlock
-//             selectLeaf.lastBlock = selectLeafBlock
-//             selectLeaf.sizeBlocks++
-//             return state
-//         }
-//     )
-// {
-//     const { selectLeaf, selectLeafBlock, } = state
-//     let start = selectLeaf.toBlocks
-//     let newKey = selectLeafBlock.storeRef.key
+            }
+        }
 
+        selectLeaf.sizeBlocks++
+        return state
+    }
+)
 
-//     selectLeaf.lastBlock.nextBlock = selectLeafBlock
-//     selectLeaf.lastBlock = selectLeafBlock
-//     selectLeaf.sizeBlocks++
-//     return state
-// }
-
-// export const insertBlockInLeaf = state => {
-//     const { selectLeaf, selectLeafBlock, } = state
-//     selectLeaf.toBlocks = selectLeafBlock
-//     selectLeaf.sizeBlocks++
-//     return state
-
-// }
 export const insertLeafInTree = state => {
     const { selectLeaf, tree } = state
     tree.leafs = selectLeaf

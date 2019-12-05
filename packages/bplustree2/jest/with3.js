@@ -1,16 +1,70 @@
 import btree from '../src'
 
 export default () => {
-    describe('test with 3 inputs', () => {
+    describe('test with 3 put', () => {
         const tree = btree({})
         tree.put(10, 'hola')
         tree.put(1, 'hola')
-        // tree.put(2, 'hola')
+        tree.put(30, 'hola')
+        // tree.put(20, 'hola')
         // console.log(' tree.getTree::', tree.getTree)
-        test('total noneLeafs', () => {
+        const t = tree.getTree
+        test('total', () => {
             expect(
-                tree.getTree.size
-            ).toBe(2)
+                t.size
+            ).toBe(3)
+        })
+
+        test('leaf.key ', () => {
+            expect(
+                t.leafs.toBlocks.storeRef.key
+            ).toBe(1)
+        })
+
+        test('leaf.nextBlock.key ', () => {
+            expect(
+                t.leafs.toBlocks.nextBlock
+            ).toBe(null)
+        })
+        test('leaf.sizeBlocks ', () => {
+            expect(
+                t.leafs.sizeBlocks
+            ).toBe(1)
+        })
+
+        test('Rleaf.sizeBlocks ', () => {
+            expect(
+                t.leafs.nextLeaf.sizeBlocks
+            ).toBe(1)
+        })
+
+        test('Rleaf.key ', () => {
+            expect(
+                t.leafs.nextLeaf.toBlocks.storeRef.key
+            ).toBe(10)
+        })
+
+        test('Rleaf.nextBlock.key ', () => {
+            expect(
+                t.leafs.nextLeaf.toBlocks.nextBlock.storeRef.key
+            ).toBe(30)
+        })
+
+        test('noneLeaf.sizeBlocks ', () => {
+            expect(
+                t.noneLeafs.sizeBlocks
+            ).toBe(1)
+        })
+
+        test('noneLeaf.toBlocks.storeRef.key ', () => {
+            expect(
+                t.noneLeafs.toBlocks.storeRef
+            ).toBe(10)
+        })
+        test('t.noneLeafs.toBlocks.nextBlock ', () => {
+            expect(
+                t.noneLeafs.toBlocks.nextBlock
+            ).toBe(null)
         })
 
         // test('total first noneleaf blocks first block', () => {

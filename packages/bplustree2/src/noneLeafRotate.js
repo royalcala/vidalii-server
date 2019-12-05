@@ -1,46 +1,39 @@
 import { ifElse, pipe } from 'ramda'
-import { setNoneLeaf } from './types'
-import { connectWithNoneLeaf } from './noneLeaf'
+import { createNoneLeaf } from './noneLeaf'
+// import { connectWithNoneLeaf } from './noneLeaf'
 
-const setBlocksPointers = state => {
-    const { nodeL, nodeR } = state
-    let distribution = nodeL.blocksPointers.length / 2
-    nodeR.blocksPointers = nodeL.blocksPointers.splice(-Math.floor(
-        distribution
-    ))
+const divideNoneLeaf = state => {
+    const { selectNoneLeaf, tree } = state
+    let allBlocks = selectNoneLeaf.toBlocks
+    let manyNextsToRight = Math.floor(selectNoneLeaf.sizeBlocks / 2)
+    let pointMiddleAllBlocks = allBlocks
+    let inNext = 1
+    while (inNext < manyNextsToRight) {
+        pointMiddleAllBlocks = allBlocks.next
+        inNext++
+    }
+    //Rleaf
+    let Rleaf = createLeaf(state).selectNoneLeaf
+    Rleaf.backLeaf = selectNoneLeaf
+    Rleaf.sizeBlocks = Math.ceil(selectNoneLeaf.sizeBlocks / 2)
+    Rleaf.toBlocks = pointMiddleAllBlocks.next
+    Rleaf.lastBlock = selectNoneLeaf.lastBlock
 
+    //Lleaf
+    pointMiddleAllBlocks.next = null
+    selectNoneLeaf.nextLeaf = Rleaf
+    selectNoneLeaf.sizeBlocks = manyNextsToRight
+    selectNoneLeaf.lastBlock = pointMiddleAllBlocks
+
+    state.Lleaf = selectNoneLeaf
+    state.Rleaf = Rleaf
     return state
 }
 
-const setBlocks = state => {
-    const { nodeL, nodeR } = state
-    let distribution = nodeL.blocks.length / 2
-    nodeR.blocks = nodeL.blocks.splice(-Math.ceil(
-        distribution
-    ))
-    return state
-}
-const reSelectNodes = state => {
-    const { selectNoneLeaf, tree, nodeL: beforeL, nodeR: beforeR } = state
-    state.nodeL = selectNoneLeaf
-    state.nodeR = setNoneLeaf(tree)
-    beforeL.parent = state.nodeR
-    beforeR.parent = state.nodeR
+const connectWithNoneLeaf = s => s
 
-    return state
-}
-
-const rotateNoneLeaf = pipe(
-    reSelectNodes,
-    setBlocks,
-    setBlocksPointers,
-    ({ nodeL, nodeR, tree }) => connectWithNoneLeaf(nodeL, nodeR, tree)
-
-)
-
-
-export const checkRotateWithSelectNoneLeaf = ifElse(
-    ({ selectNoneLeaf, tree }) => selectNoneLeaf.blocks.length === tree.noneLeafMax,
-    rotateNoneLeaf,
+export const checkRotate = ifElse(
+    ({ selectNoneLeaf, tree }) => selectNoneLeaf.sizeBlocks === tree.noneLeafMax,
+    pipe(divideNoneLeaf, connectWithNoneLeaf),
     state => state
 )

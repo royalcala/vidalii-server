@@ -1,98 +1,119 @@
 import { pipe, pathEq, ifElse } from 'ramda'
 import { NONELEAF, NONELEAFBLOCK } from './types'
-import { checkRotateWithSelectNoneLeaf } from './noneLeafRotate'
+import { checkRotate } from './noneLeafRotate'
 
-const saveDataInUpNode = state => {
-    const { nodeL, nodeR, tree, } = state
-    state.selectNoneLeaf = nodeL.parent
-    nodeR.parent = state.selectNoneLeaf
-    if (nodeR.type === 'leaf')
-        state.selectNoneLeaf.blocks.push(nodeR.blocks[0])
-    else
-        state.selectNoneLeaf.blocks.push(nodeR.blocks.shift())
 
-    state.selectNoneLeaf.blocksPointers.push(nodeR)
+// const selectParentNoneLeafBlock = state => {
+//     const { Lleaf } = state
+//     state.selectNoneLeaf = Lleaf.parentNoneLeafBlock
+//     return state
+// }
+
+const selectParentNoneLeaf = state => {
+    const { Lleaf } = state
+    state.selectNoneLeaf = Lleaf.parentNoneLeafBlock.noneLeaf
     return state
 }
 
-export const saveUpAndCheckRotate = pipe(
-    saveDataInUpNode,
-    checkRotateWithSelectNoneLeaf
+const insertNoneLeafInTree = state => {
+    const { selectNoneLeaf, tree } = state
+    tree.noneLeafs = selectNoneLeaf
+    return state
+}
+
+
+const comparatorFx = (newKey, prevKey) => {
+    //if true, if is less than the prevKey
+    //this is a requirement that return newKey<prevKey:true
+    if (newKey < prevKey)
+        return true
+    else
+        return false
+}
+
+
+const insertBlockInNoneLeaf = ifElse(
+    pathEq(['selectNoneLeaf', 'toBlocks'], null),
+    state => {//if doesnt has blocks
+        const { selectNoneLeaf: snl, selectNoneLeafBlock: snlb, Lleaf, Rleaf } = state
+        Lleaf.parentNoneLeafBlock = snlb
+        // Rleaf.parentNoneLeafBlock = snlb
+        // console.log('Rleaf.toBlocks::', Rleaf)
+
+        snlb.noneLeaf = snl
+        snlb.LChild = Lleaf
+        snlb.RChild = Rleaf
+        snlb.storeRef = Rleaf.toBlocks
+        snl.toBlocks = snlb
+        snl.lastBlock = snlb
+
+        snl.sizeBlocks++
+        return state
+    },
+    state => {
+        const { selectNoneLeaf: snl, selectNoneLeafBlock: snlb, Lleaf, Rleaf } = state
+        let prev = Rleaf.toBlocks.parentNoneLeafBlock
+        let prevPivotNext = prev.nextBlock
+        let RleafFirstBlock = Rleaf.toBlocks
+        let RleafPivotNext = Rleaf.toBlocks.nextBlock
+        //
+        //move the first of Rleaf to NoneLeaf
+        snlb.noneLeaf = snl
+        // snlb.LChild = Lleaf
+        snlb.RChild = Rleaf
+
+        prev.nextBlock = RleafFirstBlock
+        prev.nextBlock.nextBlock = prevPivotNext
+        Rleaf.toBlocks = RleafPivotNext
+        //
+        // Lleaf.parentNoneLeafBlock = snlb
+        // Rleaf.parentNoneLeafBlock = snlb
+        // while (prevBlock.nextBlock !== null) {
+        //     if (comparatorFx(newBlock.storeRef.key, prevBlock.storeRef.key))
+        //         break
+        //     else
+        //         prevBlock = prevBlock.nextBlock
+        // }
+        // if (comparatorFx(newBlock.storeRef.key, prevBlock.storeRef.key)) {
+        //     //new<prev:: new->prev->null,
+        //     newBlock.nextBlock = prevBlock
+        //     prevBlock.backBlock = newBlock
+        // } else {
+        //     //new>prev:: prev->new->null      
+        //     prevBlock.nextBlock = newBlock
+        //     newBlock.backBlock = prevBlock
+        //     selectNoneLeaf.lastBlock = newBlock
+        // }
+        // selectNoneLeaf.sizeBlocks++
+        return state
+    }
 )
 
-const createFirstNoneLeaf = state => {
-    const { Lleaf, Rleaf, tree, } = state
-
-    // let newNoneLeaf = setNoneLeaf(tree)
-    // if (Lleaf.type === LEAF)
-    //     newNoneLeaf.blocks = [nodeR.blocks[0]]
-    // else
-    //     newNoneLeaf.blocks = [nodeR.blocks.shift()]
-
-    // newNoneLeaf.blocksPointers = [nodeL, nodeR]
-
-    // nodeR.parent = newNoneLeaf
-    // nodeL.parent = newNoneLeaf
-    // tree.firstNoneLeaf = newNoneLeaf
+export const createNoneLeaf = state => {
+    const noneLeaf = {
+        parent: null,
+        sizeBlocks: 0,
+        toBlocks: null,
+        lastBlock: null,
+        type: NONELEAF
+    }
+    state.selectNoneLeaf = noneLeaf
     return state
 }
 
 const createNoneLeafBlock = state => {
     const block = {
-        nextBlock: null,
-        backBlock: null,
+        noneLeaf: null,
+        LChild: null,
+        RChild: null,
         storeRef: null,
         type: NONELEAFBLOCK,
     }
     state.selectNoneLeafBlock = block
     return state
 }
-
-const createNoneLeaf = state => {
-    const { tree } = state
-    // let nameNewLeaf = tree.countIdLeaf
-    const noneLeaf = {
-        parent: null,
-        // nextLeaf: null,
-        // backLeaf: null,
-        sizeBlocks: 0,
-        toBlocks: null,
-        lastBlock: null,
-        type: NONELEAF
-    }
-    // tree.firstleaf = leaf
-    state.selectNoneLeaf = noneLeaf
-    return state
-}
-
-const insertBlockInNoneLeaf = ifElse(
-    pathEq(['selectNoneLeaf', 'toBlocks'], null),
-    state => {
-        const { selectNoneLeaf, selectNoneLeafBlock, } = state
-        //first block
-        selectNoneLeaf.toBlocks = selectNoneLeafBlock
-        //last block
-        selectNoneLeaf.lastBlock = selectNoneLeafBlock
-        selectNoneLeaf.sizeBlocks++
-        return state
-    },
-    state => {
-        // const { selectNoneLeaf, selectNoneLeafBlock, } = state
-        // selectNoneLeaf.lastBlock.nextBlock = selectNoneLeafBlock
-        // selectNoneLeaf.lastBlock = selectNoneLeafBlock
-        // selectNoneLeaf.sizeBlocks++
-        // return state
-    }
-)
-
-const insertNoneLeafInTree = state => {
-    const { selectNoneLeaf, tree } = state
-    tree.noneLeaf = selectNoneLeaf
-    return state
-}
-
 export const connectWithNoneLeaf = ifElse(
-    pathEq(['Lleaf', 'parent'], null),
+    pathEq(['Lleaf', 'parentNoneLeafBlock'], null),
     pipe(createNoneLeafBlock, createNoneLeaf, insertBlockInNoneLeaf, insertNoneLeafInTree),
-    saveUpAndCheckRotate
+    pipe(createNoneLeafBlock, selectParentNoneLeaf, insertBlockInNoneLeaf)
 )
