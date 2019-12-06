@@ -1,6 +1,7 @@
-import { ifElse, pipe } from 'ramda'
+import { ifElse, pipe, pathEq } from 'ramda'
 import { createLeaf } from './leaf'
-import { connectWithNoneLeaf } from './noneLeaf'
+import { connectWithNoneLeaf, createNoneLeaf } from './noneLeaf'
+import { LEAF } from './types'
 
 const divideLeaf = state => {
     const { selectLeaf, tree, key } = state
@@ -16,10 +17,17 @@ const divideLeaf = state => {
         pointMiddleAllBlocks = allBlocks.nextBlock
         inNext++
     }
-    //Rleaf
-    let Rleaf = createLeaf(state).selectLeaf
-    Rleaf.backLeaf = selectLeaf
-    Rleaf.nextLeaf = selectLeaf.nextLeaf
+    let Rleaf
+    if (selectLeaf.type === LEAF) {
+        Rleaf = createLeaf(state).selectLeaf
+        Rleaf.backLeaf = selectLeaf
+        Rleaf.nextLeaf = selectLeaf.nextLeaf
+    } else {
+        Rleaf = createNoneLeaf(state).selectNoneLeaf
+    }
+
+
+
     Rleaf.sizeBlocks = Math.ceil(selectLeaf.sizeBlocks / 2)
     Rleaf.toBlocks = pointMiddleAllBlocks.nextBlock
     Rleaf.toBlocks.backBlock = null
@@ -37,10 +45,18 @@ const divideLeaf = state => {
     return state
 }
 
-
-
-export const checkRotate = ifElse(
+const isLeaf = ifElse(
     ({ selectLeaf, tree }) => selectLeaf.sizeBlocks === tree.leafMax,
     pipe(divideLeaf, connectWithNoneLeaf),
     state => state
+)
+const isNoneLeaf = ifElse(
+    ({ selectLeaf, tree }) => selectLeaf.sizeBlocks === tree.noneLeafMax,
+    pipe(divideLeaf),
+    state => state
+)
+export const checkRotate = ifElse(
+    pathEq(['selectLeaf', 'type'], LEAF),
+    isLeaf,
+    isNoneLeaf
 )

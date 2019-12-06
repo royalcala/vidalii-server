@@ -58,9 +58,10 @@ export const insertBlockInLeaf = ifElse(
         return state
     },
     state => {
-        const { selectLeaf, selectLeafBlock, } = state
+        const { selectLeaf, selectLeafBlock, key } = state
+        console.log('---------------------------insertBlock:key:' + key)
         let prevBlock = selectLeaf.toBlocks
-        // console.log('selectLeaf.toBlocks::', selectLeaf.toBlocks)
+        console.log('selectLeaf.toBlocks::', selectLeaf.toBlocks)
         let newBlock = selectLeafBlock
         while (prevBlock.nextBlock !== null) {
             if (comparatorFx(newBlock.storeRef.key, prevBlock.storeRef.key))
@@ -68,31 +69,49 @@ export const insertBlockInLeaf = ifElse(
             else
                 prevBlock = prevBlock.nextBlock
         }
+        console.log('prevBlock::', prevBlock)
+        console.log('prevBlock.backBlock::', prevBlock.backBlock)
         if (prevBlock === selectLeaf.toBlocks) {
-            // console.log('yes is equal')
+            console.log('yes is equal')
             if (comparatorFx(newBlock.storeRef.key, selectLeaf.toBlocks.storeRef.key)) {
-                //new<prev:: new->prev->null,
+                //new<prev::
                 selectLeaf.toBlocks = newBlock
                 newBlock.nextBlock = prevBlock
                 prevBlock.backBlock = newBlock
+
             } else {
-                //new>prev:: prev->new->null      
+                //prev>new::     
+                // prevBlock.nextBlock = newBlock
+                // newBlock.backBlock = prevBlock
+                // selectLeaf.lastBlock = newBlock
+
+                let prevChild = prevBlock.nextBlock
                 prevBlock.nextBlock = newBlock
                 newBlock.backBlock = prevBlock
-                selectLeaf.lastBlock = newBlock
-
+                newBlock.nextBlock = prevChild
+                if (newBlock.nextBlock === null)
+                    selectLeaf.lastBlock = newBlock
             }
         } else {
-            // console.log('Not  equal')
+            console.log('Not  equal')
             if (comparatorFx(newBlock.storeRef.key, prevBlock.storeRef.key)) {
-                //new<prev:: new->prev->null,
+                console.log('is<')
+                //new<prev::
+                let parentPrev = prevBlock.backBlock
+                parentPrev.nextBlock = newBlock
+                newBlock.backBlock = parentPrev
                 newBlock.nextBlock = prevBlock
                 prevBlock.backBlock = newBlock
+
             } else {
-                //new>prev:: prev->new->null      
+                console.log('is>')
+                //prev>new::   
+                let prevChild = prevBlock.nextBlock
                 prevBlock.nextBlock = newBlock
                 newBlock.backBlock = prevBlock
-                selectLeaf.lastBlock = newBlock
+                newBlock.nextBlock = prevChild
+                if (newBlock.nextBlock === null)
+                    selectLeaf.lastBlock = newBlock
 
             }
         }

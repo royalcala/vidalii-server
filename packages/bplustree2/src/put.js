@@ -16,7 +16,11 @@ export const put = tree => (key, value) => ifElse(
         let insert = cond([
             [({ tree }) => tree.size >= tree.leafMax, pipe(
                 moveToLeaf({ node: tree.noneLeafs }),
-                // state => saveLeaf({ ByRefNode: state.selectLeaf })(state)
+                // state => {
+                //     console.log('state.selectLeaf::', state.selectLeaf.toBlocks)
+                //     return state
+                // },
+                pipe(saveKeyValueInStore,leaf.createLeafBlock,leaf.insertRefStoreInBlock,leaf.insertBlockInLeaf,checkRotate)
             )],
             [({ tree }) => tree.size > 0, pipe(saveKeyValueInStore, leaf.createLeafBlock, leaf.insertRefStoreInBlock, leaf.selectFirstLeaf, leaf.insertBlockInLeaf, checkRotate)],
             [pathEq(['tree', 'size'], 0), pipe(saveKeyValueInStore, leaf.createLeafBlock, leaf.insertRefStoreInBlock, leaf.createLeaf, leaf.insertBlockInLeaf, leaf.insertLeafInTree)],

@@ -1,186 +1,122 @@
 import btree from '../src'
 
 export default () => {
-    describe('test with 5 inputs', () => {
+    describe('test with 5 put', () => {
         const tree = btree({})
         tree.put(10, 'hola')
         tree.put(1, 'hola')
-        tree.put(2, 'hola')
-        tree.put(4, 'hola')
-        tree.put(5, 'hola')
-        test('total noneLeafs', () => {
+        tree.put(30, 'hola')
+        tree.put(20, 'hola')
+        tree.put(40, 'hola')
+        // console.log(' tree.getTree::', tree.getTree)
+        const t = tree.getTree
+        test('total', () => {
             expect(
-                Object.entries(tree.getTree.noneLeafs).length
-            ).toBe(3)
-        })
-
-        test('total first noneleaf blocks', () => {
-            expect(
-                tree.getTree.noneLeafs[0].blocks.length
-            ).toBe(1)
-        })
-
-        test('key of first none leaf first block', () => {
-            expect(
-                tree.getTree.noneLeafs[0].blocks[0].key
-            ).toBe(2)
-        })
-
-        test('firstNoneLeaf.blocksPointers.length', () => {
-            expect(
-                tree.getTree.firstNoneLeaf.blocksPointers.length
-            ).toBe(
-                2
-            )
-        })
-        test('firstNoneLeaf', () => {
-            expect(
-                tree.getTree.firstNoneLeaf.blocks[0].key
-            ).toBe(4)
-        })
-
-        test('firstNoneLeaf->left.blocksPointers.length', () => {
-            expect(
-                tree.getTree.firstNoneLeaf.blocksPointers[0].blocksPointers.length
-            ).toBe(
-                2
-            )
-        })
-        test('firstNoneLeaf->right.blocksPointers.length', () => {
-            expect(
-                tree.getTree.firstNoneLeaf.blocksPointers[1].blocksPointers.length
-            ).toBe(
-                2
-            )
-        })
-
-        test('firstNoneLeaf->left.key', () => {
-            expect(
-                tree.getTree.firstNoneLeaf.blocksPointers[0].blocks[0].key
-            ).toBe(
-                2
-            )
-        })
-
-        test('firstNoneLeaf->right.key', () => {
-            expect(
-                tree.getTree.firstNoneLeaf.blocksPointers[1].blocks[0].key
-            ).toBe(
-                5
-            )
-        })
-        test('firstNoneLeaf->right->right.key', () => {
-            expect(
-                tree.getTree.firstNoneLeaf.blocksPointers[1].blocksPointers[1].blocks[0].key
-            ).toBe(
-                5
-            )
-        })
-        test('while->firstNoneLeaf->right===lastLeaf', () => {
-            let node = tree.getTree.firstNoneLeaf
-            while (node.type === 'noneleaf') {
-                let size = node.blocksPointers.length
-                node = node.blocksPointers[size-1] 
-            }
-            expect(
-                node
-            ).toBe(
-                tree.getTree.lastLeaf
-            )
-        })
-
-        test('manual->firstNoneLeaf->right->right===lastLeaf', () => {
-            expect(
-                tree.getTree.firstNoneLeaf.blocksPointers[1].blocksPointers[1]
-            ).toBe(
-                tree.getTree.lastLeaf
-            )
-        })
-        test('while->firstNoneLeaf->left===firstLeaf', () => {
-            let node = tree.getTree.firstNoneLeaf
-            while (node.type === 'noneleaf') {
-                node = node.blocksPointers[0] 
-            }
-            expect(
-                node
-            ).toBe(
-                tree.getTree.leafs[0]
-            )
-        })
-
-        test('manual->firstNoneLeaf->left->left===firstLeaf', () => {
-            expect(
-                tree.getTree.firstNoneLeaf.blocksPointers[0].blocksPointers[0]
-            ).toBe(
-                tree.getTree.leafs[0]
-            )
-        })
-
-        tree.getTree.firstNoneLeaf.blocks[0].value = 'holaChanged'
-        test('store check reference', () => {
-            expect(
-                tree.getTree.store[4].value
-            ).toBe('holaChanged')
-        })
-
-        test('total of leafs', () => {
-            expect(
-                Object.entries(tree.getTree.leafs).length
-            ).toBe(4)
-        })
-        test('tree.size', () => {
-            expect(
-                tree.getTree.size
+                t.size
             ).toBe(5)
         })
 
-        test('check order min to max of Leafs.blocks', () => {
-            const iterate = (leaf = 0, block = 0) => {
-                // console.log('holis')
-                let leafBlocks = tree.getTree.leafs[leaf].blocks
-                // console.log('leafBlocks::', leafBlocks)
-                let i
-                let prevKey
-                let nextKey
-                for (i = block; i < leafBlocks.length; i++) {
-                    nextKey = leafBlocks[i].key
-                    if (prevKey)
-                        expect(
-                            prevKey
-                        ).toBeLessThan(nextKey)
-                    console.log(`leaf[${leaf}].blocks[${i}]:`, leafBlocks[i]);
-
-                    prevKey = nextKey
-                }
-                if (tree.getTree.leafs[leaf].next !== null)
-                    iterate(leaf + 1)
-            }
-            iterate()
+        test('noneleaf.key', () => {
+            expect(
+                t.noneLeafs.toBlocks.storeRef.key
+            ).toBe(10)
+        })
+        test('noneleaf.nextBlock.key', () => {
+            expect(
+                t.noneLeafs.toBlocks.nextBlock.storeRef.key
+            ).toBe(20)
         })
 
-        test('check order2 min to max of Leafs.blocks', () => {
-            const iterate = (leaf, block = 0) => {
-                // console.log('holis')
-                leaf.blocks
-                // console.log('leafBlocks::', leafBlocks)
-                let i
-                let prevKey
-                let nextKey
-                for (i = block; i < leaf.blocks.length; i++) {
-                    nextKey = leaf.blocks[i].key
-                    if (prevKey)
-                        expect(
-                            prevKey
-                        ).toBeLessThan(nextKey)
-                    // console.log(`leaf[x].blocks[${i}]:`, leaf.blocks[i]);
-
-                    prevKey = nextKey
-                }
-                if (leaf.next !== null)
-                    iterate(leaf.next)
-            }
-            iterate(tree.getTree.leafs[0])
+        test('noneLeafs.toBlocks.nextBlock.RChild.toBlocks.storeRef.key', () => {
+            expect(
+                t.noneLeafs.toBlocks.nextBlock.RChild.toBlocks.storeRef.key
+            ).toBe(20)
         })
+
+        test('noneLeafs.toBlocks.nextBlock.RChild.toBlocks.nextBlock', () => {
+            expect(
+                t.noneLeafs.toBlocks.nextBlock.RChild.toBlocks.nextBlock
+            ).toBe(null)
+        })
+
+        test('noneleaf.nextBlock.key', () => {
+            expect(
+                t.noneLeafs.toBlocks.nextBlock.nextBlock.storeRef.key
+            ).toBe(30)
+        })
+
+        test('noneleaf.nextBlock.RChild', () => {
+            expect(
+                t.noneLeafs.toBlocks.nextBlock.nextBlock.RChild.toBlocks.storeRef.key
+            ).toBe(30)
+        })
+
+        test('noneleaf.nextBlock.RChild.next', () => {
+            expect(
+                t.noneLeafs.toBlocks.nextBlock.nextBlock.RChild.toBlocks.nextBlock.storeRef.key
+            ).toBe(40)
+        })
+
+        // test('leaf.key ', () => {
+        //     expect(
+        //         t.leafs.toBlocks.storeRef.key
+        //     ).toBe(1)
+        // })
+
+        // test('leaf.nextLeaf.key ', () => {
+        //     expect(
+        //         t.leafs.nextLeaf.toBlocks.storeRef.key
+        //     ).toBe(10)
+        // })
+
+        // test('leaf.nextLeaf.nextLeaf.key ', () => {
+        //     expect(
+        //         t.leafs.nextLeaf.nextLeaf.toBlocks.storeRef.key
+        //     ).toBe(20)
+        // })
+
+        // test('leaf.nextLeaf.nextLeaf.nextBlock.key ', () => {
+        //     expect(
+        //         t.leafs.nextLeaf.nextLeaf.toBlocks.nextBlock.storeRef.key
+        //     ).toBe(30)
+        // })
+
+        // test('size leafs', async () => {
+        //     let sizeLeafs = 0
+        //     const iterate = leaf => {
+        //         sizeLeafs++
+        //         if (leaf.nextLeaf !== null)
+        //             iterate(leaf.nextLeaf)
+        //     }
+        //     iterate(t.leafs)
+        //     expect(
+        //         sizeLeafs
+        //     ).toBe(3)
+
+        // })
+
+        // test('check order min to max of Leafs.blocks', async () => {
+        //     let ite = 0
+        //     const iterate = leaf => {
+        //         ite++
+
+        //         let node = leaf.toBlocks
+        //         // console.log('node::', node.storeRef.key)
+        //         while (node.nextBlock !== null) {
+        //             expect(
+        //                 node.storeRef.key
+        //             ).toBeLessThan(node.nextBlock.storeRef.key)
+        //             node = node.nextBlock
+        //         }
+        //         if (leaf.nextLeaf !== null)
+        //             iterate(leaf.nextLeaf)
+
+        //     }
+
+        //     iterate(t.leafs)
+        //     // console.log('ite::', ite)
+        // })
+
 
 
 

@@ -22,7 +22,7 @@ export const saveKeyValueInStore = state => {
 export const moveToLeaf = ({ node }) => state => {
     const { key } = state
     let block
-    while (node.type !== LEAF) {        
+    while (node.type !== LEAF) {
         block = node.toBlocks
         while (block.nextBlock !== null) {
             if (comparatorFx(key, block.storeRef.key))
@@ -38,11 +38,13 @@ export const moveToLeaf = ({ node }) => state => {
             node = block.RChild
         }
     }
-
+    // console.log('node.toBlocks::', node.toBlocks.storeRef)
+    // console.log('node.toBlocks::', node.toBlocks.nextBlock.storeRef)
     state.selectLeaf = node
     return state
 
 }
+
 // export const moveToLeaf = ({ node }) => state => {
 //     const { key, tree } = state
 //     // let node = node === null ? tree.noneLeafs[startInNoneLeaf] : node
