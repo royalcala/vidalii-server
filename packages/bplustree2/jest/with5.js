@@ -15,47 +15,67 @@ export default () => {
                 t.size
             ).toBe(5)
         })
-
+        let firstNL = t.noneLeafs.toBlocks
         test('noneleaf.key', () => {
             expect(
-                t.noneLeafs.toBlocks.storeRef.key
-            ).toBe(10)
+                firstNL.storeRef.key
+            ).toBe(20)
         })
         test('noneleaf.nextBlock.key', () => {
             expect(
-                t.noneLeafs.toBlocks.nextBlock.storeRef.key
-            ).toBe(20)
-        })
-
-        test('noneLeafs.toBlocks.nextBlock.RChild.toBlocks.storeRef.key', () => {
-            expect(
-                t.noneLeafs.toBlocks.nextBlock.RChild.toBlocks.storeRef.key
-            ).toBe(20)
-        })
-
-        test('noneLeafs.toBlocks.nextBlock.RChild.toBlocks.nextBlock', () => {
-            expect(
-                t.noneLeafs.toBlocks.nextBlock.RChild.toBlocks.nextBlock
+                t.noneLeafs.toBlocks.nextBlock
             ).toBe(null)
         })
-
-        test('noneleaf.nextBlock.key', () => {
+        let firstNL_LChild = firstNL.LChild.toBlocks
+        test('firstNL_LChild.storeRef.key', () => {
             expect(
-                t.noneLeafs.toBlocks.nextBlock.nextBlock.storeRef.key
+                firstNL_LChild.storeRef.key
+            ).toBe(10)
+        })
+        let firstNL_LChild_LChild = firstNL_LChild.LChild.toBlocks
+        test('firstNL_LChild_LChild.storeRef.key', () => {
+            expect(
+                firstNL_LChild_LChild.storeRef.key
+            ).toBe(1)
+        })
+
+        let firstNL_LChild_RChild = firstNL_LChild.RChild.toBlocks
+        test('firstNL_LChild_RChild.storeRef.key', () => {
+            expect(
+                firstNL_LChild_RChild.storeRef.key
+            ).toBe(10)
+        })
+
+
+        let firstNL_RChild = firstNL.RChild.toBlocks
+        test('firstNL_RChild.storeRef.key', () => {
+            expect(
+                firstNL_RChild.storeRef.key
             ).toBe(30)
         })
 
-        test('noneleaf.nextBlock.RChild', () => {
+
+        let firstNL_RChild_RChild = firstNL_RChild.RChild.toBlocks
+        test('firstNL_RChild_RChild.storeRef.key', () => {
             expect(
-                t.noneLeafs.toBlocks.nextBlock.nextBlock.RChild.toBlocks.storeRef.key
+                firstNL_RChild_RChild.storeRef.key
             ).toBe(30)
         })
 
-        test('noneleaf.nextBlock.RChild.next', () => {
+        let firstNL_RChild_RChild_nextBlock = firstNL_RChild.RChild.toBlocks.nextBlock
+        test('firstNL_RChild_RChild.nextBlock.storeRef.key', () => {
             expect(
-                t.noneLeafs.toBlocks.nextBlock.nextBlock.RChild.toBlocks.nextBlock.storeRef.key
+                firstNL_RChild_RChild_nextBlock.storeRef.key
             ).toBe(40)
         })
+
+        let firstNL_RChild_LChild = firstNL_RChild.LChild.toBlocks
+        test('firstNL_RChild_LChild.storeRef.key', () => {
+            expect(
+                firstNL_RChild_LChild.storeRef.key
+            ).toBe(20)
+        })
+
 
         // test('leaf.key ', () => {
         //     expect(

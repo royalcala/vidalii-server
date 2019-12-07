@@ -1,40 +1,23 @@
-// import evol from './fxs/evol'
-// // import readInstalled from './readAllFxs'
-// // import {a} from './readAllFxs'
-// // var dir = readInstalled(__dirname + '/fxs')
+// import * as evolComposeExtended from "./fxs/extendEvol"
+
+// export { default as evolPipe } from "./fxs/evolPipe"
+// export { default as evolCompose } from "./fxs/evolCompose"
+// export { evolComposeExtended }
+import { ifElse, pipe, pathEq } from 'ramda'
+import { index2 } from './index2'
 
 
-// // console.log('in @vidalii/evol:', dir)
-// // console.log('in @vidalii/evol:', a)
-
-// export default {
-//     evol
-// }
-//https://javascript.info/modules-dynamic-imports
-//this page will load on client, 
-//and after that, each export until if its required
-// export { default as evol } from "./fxs/evol"
-import * as evolComposeExtended from "./fxs/extendEvol"
-
-export { default as evolPipe } from "./fxs/evolPipe"
-export { default as evolCompose } from "./fxs/evolCompose"
-export { evolComposeExtended }
+const obj1 = {
+    one: {
+        two: true
+    }
+}
 
 
-// console.log('in @vidalii/evol')
-// const cond_typedb = async () => {
-//     // https://v8.dev/features/dynamic-import
-//     // toLower(tableConfig.typeDb)
-//     // const moduleSpecifier = './utils.mjs';
-//     // const moduleSpecifier = toLower('./' + tableConfig.typeDb + '.js')
-//     // console.log('moduleSpecifier::', moduleSpecifier)
-//     const module = await import('./fxs/evol')
-//     console.log('module::', module.default)
+export const index1 = ifElse(
+    pathEq(['one', 'two'], true),
+    pipe(index2),
+    pipe(index2)
+)
 
-//     // module.default();
-//     // → logs 'Hi from the default export!'
-//     // module.doStuff();
-//     // → logs 'Doing stuff…'
-
-// }
-// cond_typedb()
+console.log('index2(obj1)::', index1(obj1))

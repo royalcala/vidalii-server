@@ -1,4 +1,4 @@
-import { ifElse, pathEq } from 'ramda'
+import { ifElse, pathEq} from 'ramda'
 import { LEAF, LEAFBLOCK } from './types'
 import { comparatorFx } from './tree'
 

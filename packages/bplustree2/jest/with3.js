@@ -73,23 +73,6 @@ export default () => {
             ).toBe(t.noneLeafs)
         })
 
-        // test('total first noneleaf blocks first block', () => {
-        //     expect(
-        //         tree.getTree.noneLeafs[0].blocks.length
-        //     ).toBe(1)
-        // })
-
-        // test('key of first none leaf', () => {
-        //     expect(
-        //         tree.getTree.noneLeafs[0].blocks[0].key
-        //     ).toBe(2)
-        // })
-
-        // test('total of leafs', () => {
-        //     expect(
-        //         Object.entries(tree.getTree.leafs).length
-        //     ).toBe(2)
-        // })
 
 
     })

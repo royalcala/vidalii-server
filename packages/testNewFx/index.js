@@ -1,3 +1,4 @@
+import { index2 } from './index2'
 console.clear()
 console.log('in testNewFx db')
 // let s = '\xff'
@@ -28,31 +29,31 @@ console.log('in testNewFx db')
 // }
 // console.log('obj1.a.b::', obj1.a[0].b)
 
-var createTree = require("functional-red-black-tree")
+// var createTree = require("functional-red-black-tree")
 
-let table = {
-    'key1': { data1: 1, data2: 2 },
-    'key2': { data1: 21, data2: 22 }
-}
-//Create a tree
-var t1 = createTree()
+// let table = {
+//     'key1': { data1: 1, data2: 2 },
+//     'key2': { data1: 21, data2: 22 }
+// }
+// //Create a tree
+// var t1 = createTree()
 
-//Insert some items into the tree
-var t2 = t1.insert('key1', table['key1'])
-var t3 = t2.insert('key2', table['key2'])
+// //Insert some items into the tree
+// var t2 = t1.insert('key1', table['key1'])
+// var t3 = t2.insert('key2', table['key2'])
 
-t3.forEach(
-    (key, value) => {
-        console.log('key:', key, ',value:', value)
-    }
-)
-table['key1'] = 'change'
+// t3.forEach(
+//     (key, value) => {
+//         console.log('key:', key, ',value:', value)
+//     }
+// )
+// table['key1'] = 'change'
 
-t3.forEach(
-    (key, value) => {
-        console.log('key:', key, ',value:', value)
-    }
-)
+// t3.forEach(
+//     (key, value) => {
+//         console.log('key:', key, ',value:', value)
+//     }
+// )
 
 
 
