@@ -1,31 +1,29 @@
 import btree from '../src'
 
-// const checkLeafs = (startNode, listComparator) => {
 
-//     listComparator.forEach(blocks => {
-//         let nodeBlock = startNode.toBlocks
-//         blocks.forEach(key => {
-//             expect(key).toBe(nodeBlock.storeRef.key)
-//             nodeBlock = nodeBlock.nextBlock
-//         })
-//     })
-// }
+const checkParentLeafs = listComparator => startNode => {
+    let nodeLeaf = startNode
+    let leafNum = 0
+    listComparator.forEach(expectedKey => {
+        let parentKey = nodeLeaf.parentNoneLeafBlock ? nodeLeaf.parentNoneLeafBlock.storeRef.key : null
+        test(`leaf${leafNum}->parentNoneLeafBlock.key:${parentKey}`, () => {
+            expect(expectedKey).toBe(parentKey)
+        })
+        leafNum++
+        nodeLeaf = nodeLeaf.nextLeaf
+    })
 
-const checkLeafs = listComparator => startNode => {
+}
+
+const checkLeafsBlocks = listComparator => startNode => {
     let nodeLeaf = startNode
     let nodeBlock = startNode.toBlocks
     let blocksTotal = 0
-    // test.each([
-    //     [1, 1, 2],
-    //     [1, 2, 3],
-    //     [2, 1, 3],
-    //   ])('.add(%i, %i)', (a, b, expected) => {
-    //     expect(a + b).toBe(expected);
-    //   });
+
     listComparator.forEach(blocks => {
         let backBlock = nodeBlock.backBlock
-        console.log('nodeBlock::', nodeBlock)
-        console.log('backBlock::', backBlock)
+        // console.log('nodeBlock::', nodeBlock)
+        // console.log('backBlock::', backBlock)
         test(`first block.backBlock of leaf equals null?`, () => {
             expect(backBlock).toBe(null)
         })
@@ -47,14 +45,14 @@ const checkLeafs = listComparator => startNode => {
     })
     return blocksTotal
 }
-const insertData = (size, listComparator, checkLeaf) => {
+const insertData = (size, listComparatorLeafsBlocks, checkLeafsBlocks, listComparatorParentsLeafs, checkParentLeafs) => {
     const tree = btree({})
     const t = tree.getTree
     for (let i = 0; i < size; i++) {
         tree.put(i, i)
     }
     let inputs = 0
-    listComparator.forEach(blocks => {
+    listComparatorLeafsBlocks.forEach(blocks => {
         blocks.forEach(b => {
             inputs++
         })
@@ -75,10 +73,8 @@ const insertData = (size, listComparator, checkLeaf) => {
             size
         )
     })
-    checkLeaf(listComparator)(t.leafs)
-
-
-
+    checkLeafsBlocks(listComparatorLeafsBlocks)(t.leafs)
+    checkParentLeafs(listComparatorParentsLeafs)(t.leafs)
 }
 
 const dinamicArray = size => {
@@ -91,6 +87,8 @@ const dinamicArray = size => {
     return array
 
 }
+
+
 export default () => {
     describe('test with 2 put', () => {
 
@@ -98,76 +96,109 @@ export default () => {
         // describe('size1', () => {
         //     insertData(1,
         //         [[0]],
-        //         checkLeafs
+        //         checkLeafsBlocks
         //     )
         // })
 
         // describe('size2', () => {
         //     insertData(2,
         //         [[0,1]],
-        //         checkLeafs
+        //         checkLeafsBlocks
         //     )
         // })
 
         // describe('size3', () => {
         //     insertData(3,
         //         [[0], [1, 2]],
-        //         checkLeafs
+        //         checkLeafsBlocks
         //     )
         // })
 
         // describe('size4', () => {
         //     insertData(4,
         //         [[0], [1], [2, 3]],
-        //         checkLeafs
+        //         checkLeafsBlocks
         //     )
         // })
 
-        //doesnt work on doble rotation on noneleaf
+
+        // describe('sizeN', () => {
+        //     let data = 3
+        //    console.log(' dinamicArray(data)::', dinamicArray(data))
+        //     insertData(data,
+        //         dinamicArray(data),
+        //         checkLeafsBlocks,
+        //         [1],
+        //         checkParentLeafs,
+
+        //     )
+        // })
+        // describe('sizeN', () => {
+        //     let data = 4
+        //    console.log(' dinamicArray(data)::', dinamicArray(data))
+        //     insertData(data,
+        //         dinamicArray(data),
+        //         checkLeafsBlocks,
+        //         [1,1,2],
+        //         checkParentLeafs,
+
+        //     )
+        // })
+        // describe('sizeN', () => {
+        //     let data = 5
+        // //    console.log(' dinamicArray(data)::', dinamicArray(data))
+        //     insertData(data,
+        //         dinamicArray(data),
+        //         checkLeafsBlocks,
+        //         [1, 1, 3, 3],
+        //         checkParentLeafs,
+
+        //     )
+        // })
+
+        // describe('sizeN', () => {
+        //     let data = 6
+        //     //    console.log(' dinamicArray(data)::', dinamicArray(data))
+        //     insertData(data,
+        //         dinamicArray(data),
+        //         checkLeafsBlocks,
+        //         [1, 1, 3, 3, 4],
+        //         checkParentLeafs,
+
+        //     )
+        // })
+
+
         describe('sizeN', () => {
             let data = 7
+            //    console.log(' dinamicArray(data)::', dinamicArray(data))
             insertData(data,
                 dinamicArray(data),
-                checkLeafs
+                checkLeafsBlocks,
+                [1, 1, 3, 3, 5, 5],
+                checkParentLeafs,
+
             )
         })
 
+        // describe('sizeN', () => {
+        //     let data = 5
+        //    console.log(' dinamicArray(data)::', dinamicArray(data))
+        //     insertData(data,
+        //         dinamicArray(data),
+        //         checkLeafsBlocks,
+        //         [1, 1, 3, 3],
+        //         checkParentLeafs,
+
+        //     )
+        // })
+        //dynamic check parents leaf
+        //1-2
+        //[[null]]
+        //3
+        //[[2],[2]]
 
 
-        // test('leaf.key ', () => {
-        //     expect(
-        //         t.leafs.toBlocks.storeRef.key
-        //     ).toBe(1)
-        // })
-
-        // test('leaf.next.key ', () => {
-        //     expect(
-        //         t.leafs.toBlocks.nextBlock.storeRef.key
-        //     ).toBe(10)
-        // })
-
-        // test('leaf.parentNoneLeafBlock ', () => {
-        //     expect(
-        //         t.leafs.parentNoneLeafBlock
-        //     ).toBe(null)
-        // })
-        // test('total first noneleaf blocks first block', () => {
-        //     expect(
-        //         tree.getTree.noneLeafs[0].blocks.length
-        //     ).toBe(1)
-        // })
-
-        // test('key of first none leaf', () => {
-        //     expect(
-        //         tree.getTree.noneLeafs[0].blocks[0].key
-        //     ).toBe(2)
-        // })
-
-        // test('total of leafs', () => {
-        //     expect(
-        //         Object.entries(tree.getTree.leafs).length
-        //     ).toBe(2)
-        // })
 
 
     })

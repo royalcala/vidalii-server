@@ -1,4 +1,4 @@
-import { ifElse, pipe, pathEq } from 'ramda'
+import { ifElse, pipe, pathEq, has } from 'ramda'
 import { createLeaf } from './leaf'
 import { connectWithNoneLeaf, createNoneLeaf } from './noneLeaf'
 import { LEAF } from './types'
@@ -7,6 +7,7 @@ const pointLast_Lleaf_block = state => {
     const { selectLeaf, key } = state
     // console.log('---------------------------inDivide:pointLast_Lleaf_block:key:' + key)
     let pointLast_Lleaf_block = selectLeaf.toBlocks
+    // console.log('pointLast_Lleaf_block1::', pointLast_Lleaf_block.type)
     // console.log('allBlocks1::', pointLast_Lleaf_block.storeRef)
     // console.log('allBlocks2::', pointLast_Lleaf_block.nextBlock.storeRef)
     // console.log('allBlocks3::', pointLast_Lleaf_block.nextBlock.nextBlock.storeRef)
@@ -17,7 +18,6 @@ const pointLast_Lleaf_block = state => {
         inNext++
     }
     state.pointLast_Lleaf_block = pointLast_Lleaf_block
-    // console.log('pointLast_Lleaf_block::', pointLast_Lleaf_block.storeRef)
     return state
 }
 const Rleaf = state => {
@@ -42,16 +42,22 @@ const NoneRleaf = state => {
     // console.log('Rleaf::',Rleaf)
     Rleaf.sizeBlocks = Math.ceil(selectLeaf.sizeBlocks / 2)
     // console.log('pointLast_Lleaf_block::', pointLast_Lleaf_block.storeRef)
-    Rleaf.toBlocks = pointLast_Lleaf_block.nextBlock
-    // console.log('Rleaf.type::', Rleaf.type)
+    Rleaf.toBlocks = pointLast_Lleaf_block.nextBlock //2->3
+    // let RSecondBlock =RFirstBlock.nextBlock //3
+    // Rleaf.toBlocks = pointLast_Lleaf_block.nextBlock
+    // RFirstBlock.RChild.parentNoneLeafBlock = RSecondBlock
+    // RSecondBlock.LChild = RFirstBlock.RChild
+    console.log('Rleaf.type::', Rleaf.type)
+    console.log('pointLast_Lleaf_block.type::', pointLast_Lleaf_block.type)
     // console.log('Rleaf.toBlocks::',Rleaf.toBlocks)
-    Rleaf.toBlocks.backBlock = null
-
+    // Rleaf.toBlocks.backBlock = null
+    console.log('pass')
     Rleaf.lastBlock = selectLeaf.lastBlock
 
     state.Rleaf = Rleaf
     return state
 }
+
 
 const Lleaf = state => {
     const { pointLast_Lleaf_block, selectLeaf, Rleaf, tree } = state

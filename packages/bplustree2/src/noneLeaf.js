@@ -31,7 +31,6 @@ const createNoneLeafBlock = state => {
 const selectParentNoneLeaf = state => {
     const { Lleaf } = state
     state.selectNoneLeaf = Lleaf.parentNoneLeafBlock.noneLeaf
-    // console.log('state.selectNoneLeaf::', state.selectNoneLeaf.toBlocks.storeRef)
     return state
 }
 
@@ -48,9 +47,12 @@ const snlbStoreRefCopy = state => {
 }
 const snlbStoreRefCopyAndRemove = state => {
     const { selectNoneLeafBlock: snlb, Rleaf } = state
-    snlb.storeRef = Rleaf.toBlocks.storeRef
-    Rleaf.toBlocks.nextBlock.LChild = Rleaf.toBlocks.RChild
-    Rleaf.toBlocks = Rleaf.toBlocks.nextBlock
+    let RFirstBlock = Rleaf.toBlocks
+    let RSecondBlock = RFirstBlock.nextBlock
+    snlb.storeRef = RFirstBlock.storeRef
+    RSecondBlock.LChild = RFirstBlock.RChild
+    RFirstBlock.RChild.parentNoneLeafBlock = RSecondBlock
+    Rleaf.toBlocks = RSecondBlock
     Rleaf.toBlocks.backBlock = null
     if (Rleaf.toBlocks.nexblock === null)
         Rleaf.lastBlock = Rleaf.toBlocks
@@ -81,7 +83,6 @@ const insertBlockInNoneLeaf = ifElse(
     state => {
         const { selectNoneLeaf: snl, selectNoneLeafBlock: snlb, Lleaf, Rleaf, key } = state
         let prev = Lleaf.parentNoneLeafBlock
-        // console.log('prev::', prev.storeRef)
         // console.log('Lleaf::', Lleaf.toBlocks)
         // console.log('Rleaf::', Rleaf.toBlocks)
         let prevNextPivot = prev.nextBlock
@@ -95,6 +96,7 @@ const insertBlockInNoneLeaf = ifElse(
         // snlb.storeRef = Rleaf.toBlocks.storeRef
 
         Rleaf.parentNoneLeafBlock = snlb
+        // console.log('Rleaf.parentNoneLeafBlock.storeRef.key::',Rleaf.parentNoneLeafBlock.storeRef) 
         snl.sizeBlocks++
         // console.log('snl.toBlocks1::', snl.toBlocks.storeRef)
         // console.log('snl.toBlocks2::', snl.toBlocks.nextBlock.storeRef)
@@ -123,11 +125,12 @@ const castSelectForRotate = state => {
 //         )
 //     )(state)
 // }
+
 const insertWithSelectedParent = pipe(createNoneLeafBlock, selectParentNoneLeaf, insertBlockInNoneLeaf)
 const insertWithNewParent = pipe(createNoneLeafBlock, createNoneLeaf, insertBlockInNoneLeaf)
-const hasParent = pathEq(['Lleaf', 'parentNoneLeafBlock'], null)
+const withoutParent = pathEq(['Lleaf', 'parentNoneLeafBlock'], null)
 const fromLleaf = ifElse(
-    hasParent,
+    withoutParent,
     x => {
         // console.log('from Leaf')
         // console.log('in connectWithNoneLeaf')
@@ -138,11 +141,13 @@ const fromLleaf = ifElse(
         // console.log('from Leaf')
         // console.log('in connectWithNoneLeaf')
         // console.log('parentNoneLeafBlock===null was false')
-        return pipe(insertWithSelectedParent, snlbStoreRefCopy, castSelectForRotate, checkRotate)(x)
+        return pipe(insertWithSelectedParent, snlbStoreRefCopy,
+            castSelectForRotate,
+            checkRotate)(x)
     }
 )
 const fromNoneLeaf = ifElse(
-    hasParent,
+    withoutParent,
     x => {
         // console.log('from NoneLeaf')
         // console.log('in connectWithNoneLeaf')
