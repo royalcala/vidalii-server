@@ -19,7 +19,7 @@ export const put = tree => (key, value) => ifElse(
             [({ tree }) => tree.size >= tree.leafMax, pipe(
                 moveToLeaf({ node: tree.noneLeafs }),
                 state => {
-                    console.log('moveToLeaf-->state.selectLeaf::', state.selectLeaf.toBlocks)
+                    // console.log('moveToLeaf-->state.selectLeaf::', state.selectLeaf.toBlocks)
                     return state
                 },
                 pipe(saveKeyValueInStore, leaf.createLeafBlock, leaf.insertRefStoreInBlock, leaf.insertBlockInLeaf, checkRotate)

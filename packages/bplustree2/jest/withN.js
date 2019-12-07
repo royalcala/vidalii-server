@@ -13,7 +13,7 @@ export default () => {
             // insert (3808ms) with 100000
             // insert (2283ms)
             // mockDataTreeBlack: 145.555ms
-            let number = 100000
+            let number = 7
             for (let i = 0; i < number; i++) {
                 // console.time(`put${i}`)
                 tree.put(i, i)
@@ -26,74 +26,74 @@ export default () => {
             )
         })
 
-        test('while->firstNoneLeaf->right===lastLeaf', () => {
-            let node = tree.getTree.firstNoneLeaf
-            while (node.type === 'noneleaf') {
-                // console.log('node.blocks::', node.blocks)
-                // console.log('node.blocksPointers.length::', node.blocksPointers.length)
-                let size = node.blocksPointers.length
-                node = node.blocksPointers[size - 1]
-            }
-            console.log('last.blocks::', node.blocks)
-            expect(
-                node
-            ).toBe(
-                tree.getTree.lastLeaf
-            )
-        })
+        // test('while->firstNoneLeaf->right===lastLeaf', () => {
+        //     let node = tree.getTree.firstNoneLeaf
+        //     while (node.type === 'noneleaf') {
+        //         // console.log('node.blocks::', node.blocks)
+        //         // console.log('node.blocksPointers.length::', node.blocksPointers.length)
+        //         let size = node.blocksPointers.length
+        //         node = node.blocksPointers[size - 1]
+        //     }
+        //     console.log('last.blocks::', node.blocks)
+        //     expect(
+        //         node
+        //     ).toBe(
+        //         tree.getTree.lastLeaf
+        //     )
+        // })
 
-        test('while->firstNoneLeaf->left===firstLeaf', () => {
-            let node = tree.getTree.firstNoneLeaf
-            while (node.type === 'noneleaf') {
-                // console.log('node.blocks::', node.blocks)
-                node = node.blocksPointers[0]
-            }
-            console.log('first.blocks::', node.blocks)
-            expect(
-                node
-            ).toBe(
-                tree.getTree.leafs[0]
-            )
-        })
+        // test('while->firstNoneLeaf->left===firstLeaf', () => {
+        //     let node = tree.getTree.firstNoneLeaf
+        //     while (node.type === 'noneleaf') {
+        //         // console.log('node.blocks::', node.blocks)
+        //         node = node.blocksPointers[0]
+        //     }
+        //     console.log('first.blocks::', node.blocks)
+        //     expect(
+        //         node
+        //     ).toBe(
+        //         tree.getTree.leafs[0]
+        //     )
+        // })
 
 
-        test('check order min to max of Leafs.blocks', async () => {
-            let loops = 0
-            const iterate = (leaf = 0, block = 0) => new Promise((resolve, reject) => {
-                // console.log('holis')
-                let leafBlocks = tree.getTree.leafs[leaf].blocks
-                // console.log('leafBlocks::', leafBlocks)
-                let i
-                let prevKey
-                let nextKey
-                for (i = block; i < leafBlocks.length; i++) {
-                    loops++
-                    nextKey = leafBlocks[i].key
-                    if (prevKey)
-                        expect(
-                            prevKey
-                        ).toBeLessThan(nextKey)
+        // test('check order min to max of Leafs.blocks', async () => {
+        //     let loops = 0
+        //     const iterate = (leaf = 0, block = 0) => new Promise((resolve, reject) => {
+        //         // console.log('holis')
+        //         let leafBlocks = tree.getTree.leafs[leaf].blocks
+        //         // console.log('leafBlocks::', leafBlocks)
+        //         let i
+        //         let prevKey
+        //         let nextKey
+        //         for (i = block; i < leafBlocks.length; i++) {
+        //             loops++
+        //             nextKey = leafBlocks[i].key
+        //             if (prevKey)
+        //                 expect(
+        //                     prevKey
+        //                 ).toBeLessThan(nextKey)
 
-                    // console.log('hola')
-                    // console.log(`leaf[${leaf}].blocks[${i}]:`, leafBlocks[i]);
+        //             // console.log('hola')
+        //             // console.log(`leaf[${leaf}].blocks[${i}]:`, leafBlocks[i]);
 
-                    prevKey = nextKey
-                }
-                // console.log('iteratorN:', leaf)
-                resolve(tree.getTree.leafs[leaf].next)
-                // if (tree.getTree.leafs[leaf].next !== null) {
-                //     iterate(leaf + 1)
-                // }
+        //             prevKey = nextKey
+        //         }
+        //         // console.log('iteratorN:', leaf)
+        //         resolve(tree.getTree.leafs[leaf].next)
+        //         // if (tree.getTree.leafs[leaf].next !== null) {
+        //         //     iterate(leaf + 1)
+        //         // }
 
-            }).then(x => {
-                // console.log(x.next !== null)
-                if (x.next !== null) {
-                    return iterate(leaf + 1)
-                }
-            })
-            await iterate()
-            console.log('loops::', loops)
-        })
+        //     }).then(x => {
+        //         // console.log(x.next !== null)
+        //         if (x.next !== null) {
+        //             return iterate(leaf + 1)
+        //         }
+        //     })
+        //     await iterate()
+        //     console.log('loops::', loops)
+        // })
         // test('check order min to max of Leafs.blocks', async () => {
         //     const iterate = (leaf = 0, block = 0) => {
         //         // console.log('holis')

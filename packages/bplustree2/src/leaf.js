@@ -2,17 +2,6 @@ import { ifElse, pathEq} from 'ramda'
 import { LEAF, LEAFBLOCK } from './types'
 import { comparatorFx } from './tree'
 
-export const createLeafBlock = state => {
-    const block = {
-        nextBlock: null,
-        backBlock: null,
-        storeRef: null,
-        type: LEAFBLOCK,
-    }
-    state.selectLeafBlock = block
-    return state
-}
-
 export const createLeaf = state => {
     const leaf = {
         parentNoneLeafBlock: null,
@@ -26,6 +15,18 @@ export const createLeaf = state => {
     state.selectLeaf = leaf
     return state
 }
+
+export const createLeafBlock = state => {
+    const block = {
+        nextBlock: null,
+        backBlock: null,
+        storeRef: null,
+        type: LEAFBLOCK,
+    }
+    state.selectLeafBlock = block
+    return state
+}
+
 export const selectFirstLeaf = state => {
     const { tree } = state
     state.selectLeaf = tree.leafs
@@ -59,9 +60,9 @@ export const insertBlockInLeaf = ifElse(
     },
     state => {
         const { selectLeaf, selectLeafBlock, key } = state
-        console.log('---------------------------insertBlock:key:' + key)
+        // console.log('---------------------------insertBlock:key:' + key)
         let prevBlock = selectLeaf.toBlocks
-        console.log('selectLeaf.toBlocks::', selectLeaf.toBlocks)
+        // console.log('selectLeaf.toBlocks::', selectLeaf.toBlocks)
         let newBlock = selectLeafBlock
         while (prevBlock.nextBlock !== null) {
             if (comparatorFx(newBlock.storeRef.key, prevBlock.storeRef.key))
@@ -69,10 +70,10 @@ export const insertBlockInLeaf = ifElse(
             else
                 prevBlock = prevBlock.nextBlock
         }
-        console.log('prevBlock::', prevBlock)
-        console.log('prevBlock.backBlock::', prevBlock.backBlock)
+        // console.log('prevBlock::', prevBlock)
+        // console.log('prevBlock.backBlock::', prevBlock.backBlock)
         if (prevBlock === selectLeaf.toBlocks) {
-            console.log('yes is equal')
+            // console.log('yes is equal')
             if (comparatorFx(newBlock.storeRef.key, selectLeaf.toBlocks.storeRef.key)) {
                 //new<prev::
                 selectLeaf.toBlocks = newBlock
@@ -93,9 +94,9 @@ export const insertBlockInLeaf = ifElse(
                     selectLeaf.lastBlock = newBlock
             }
         } else {
-            console.log('Not  equal')
+            // console.log('Not  equal')
             if (comparatorFx(newBlock.storeRef.key, prevBlock.storeRef.key)) {
-                console.log('is<')
+                // console.log('is<')
                 //new<prev::
                 let parentPrev = prevBlock.backBlock
                 parentPrev.nextBlock = newBlock
@@ -104,7 +105,7 @@ export const insertBlockInLeaf = ifElse(
                 prevBlock.backBlock = newBlock
 
             } else {
-                console.log('is>')
+                // console.log('is>')
                 //prev>new::   
                 let prevChild = prevBlock.nextBlock
                 prevBlock.nextBlock = newBlock

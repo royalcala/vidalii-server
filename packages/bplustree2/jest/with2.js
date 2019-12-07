@@ -27,6 +27,11 @@ export default () => {
             ).toBe(10)
         })
 
+        test('leaf.parentNoneLeafBlock ', () => {
+            expect(
+                t.leafs.parentNoneLeafBlock
+            ).toBe(null)
+        })
         // test('total first noneleaf blocks first block', () => {
         //     expect(
         //         tree.getTree.noneLeafs[0].blocks.length

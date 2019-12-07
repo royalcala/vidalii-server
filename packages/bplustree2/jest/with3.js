@@ -14,6 +14,7 @@ export default () => {
                 t.size
             ).toBe(3)
         })
+        
 
         test('leaf.key ', () => {
             expect(
@@ -21,6 +22,11 @@ export default () => {
             ).toBe(1)
         })
 
+        test('leaf.parentNoneLeafBlock ', () => {
+            expect(
+                t.leafs.parentNoneLeafBlock.storeRef.key
+            ).toBe(10)
+        })
         test('leaf.nextBlock.key ', () => {
             expect(
                 t.leafs.toBlocks.nextBlock
@@ -49,6 +55,16 @@ export default () => {
                 t.leafs.nextLeaf.toBlocks.nextBlock.storeRef.key
             ).toBe(30)
         })
+
+
+        test(' t.leafs.nextLeaf.parentNoneLeafBlock.storeRef.key', () => {
+            expect(
+                t.leafs.nextLeaf.parentNoneLeafBlock.storeRef.key
+            ).toBe(10)
+        })
+
+
+
 
         test('noneLeaf.sizeBlocks ', () => {
             expect(

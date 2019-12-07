@@ -20,6 +20,7 @@ export default () => {
                 t.noneLeafs.toBlocks.storeRef.key
             ).toBe(10)
         })
+
         test('noneleaf.nextBlock.key', () => {
             expect(
                 t.noneLeafs.toBlocks.nextBlock.storeRef.key
@@ -32,15 +33,34 @@ export default () => {
             ).toBe(1)
         })
 
+        test('t.leafs.parentNoneLeafBlock.storeRef.key', () => {
+            expect(
+                t.leafs.parentNoneLeafBlock.storeRef.key
+            ).toBe(10)
+        })
+
+
         test('leaf.nextLeaf.key ', () => {
             expect(
                 t.leafs.nextLeaf.toBlocks.storeRef.key
             ).toBe(10)
         })
 
+        test(' t.leafs.nextLeaf.parentNoneLeafBlock.storeRef.key ', () => {
+            expect(
+                t.leafs.nextLeaf.parentNoneLeafBlock.storeRef.key
+            ).toBe(10)
+        })
+
         test('leaf.nextLeaf.nextLeaf.key ', () => {
             expect(
                 t.leafs.nextLeaf.nextLeaf.toBlocks.storeRef.key
+            ).toBe(20)
+        })
+
+        test(' t.leafs.nextLeaf.nextLeaf.parentNoneLeafBlock.storeRef.key', () => {
+            expect(
+                t.leafs.nextLeaf.nextLeaf.parentNoneLeafBlock.storeRef.key
             ).toBe(20)
         })
 
@@ -95,7 +115,7 @@ export default () => {
             // console.log('ite::', ite)
         })
 
-      
+
 
 
 
