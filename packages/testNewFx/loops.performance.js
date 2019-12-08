@@ -13,12 +13,12 @@ let n = 100000
 // const rest = Buffer.from('a')
 // console.log('rest::',rest)
 // testBPlusTree(n)
-// testRedTree(n)
+testRedTree(n)
 // testArrays(n)
 // testObject(n)
 // testMaps(n)
 // testMaps2()
-ArraysVsObjects()
+// ArraysVsObjects()
 function ArraysVsObjects() {
     var posts = []
     const mockData = (number) => {
@@ -71,8 +71,8 @@ function ArraysVsObjects() {
     var len = 0
     var tam = count
     while (len <= tam) {
-      delete objArray[len]
-      len++
+        delete objArray[len]
+        len++
     }
     console.timeEnd('reduce object');
 }

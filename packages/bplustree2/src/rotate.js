@@ -26,7 +26,6 @@ const pointLast_Lleaf_block = state => {
     return state
 }
 const Rleaf = state => {
-    console.log('access Rleaf')
     const { pointLast_Lleaf_block, selectLeaf } = state
     let Rleaf
     Rleaf = createLeaf({}).selectLeaf
@@ -42,7 +41,6 @@ const Rleaf = state => {
     return state
 }
 const NoneRleaf = state => {
-    console.log('noneRleaf*****', state.key)
     const { pointLast_Lleaf_block, selectLeaf } = state
     let Rleaf
     Rleaf = createNoneLeaf({}).selectNoneLeaf
@@ -87,21 +85,22 @@ const isLeaf = ifElse(
             // console.log('before to connect noneleaf')            
             return x
         },
-        state => {
-            console.log('before result:input:', state.key)
-            console.log('LallBlocks1::', state.Lleaf.toBlocks.storeRef)
-            console.log('LallBlocks2::', state.Lleaf.toBlocks.nextBlock)
-            console.log('RallBlocks1::', state.Rleaf.toBlocks.storeRef)
-            console.log('RallBlocks2::', state.Rleaf.toBlocks.nextBlock.storeRef)
-            let result = connectWithNoneLeaf(state)
+        connectWithNoneLeaf
+        // state => {
+        //     console.log('before result:input:', state.key)
+        //     console.log('LallBlocks1::', state.Lleaf.toBlocks.storeRef)
+        //     console.log('LallBlocks2::', state.Lleaf.toBlocks.nextBlock)
+        //     console.log('RallBlocks1::', state.Rleaf.toBlocks.storeRef)
+        //     console.log('RallBlocks2::', state.Rleaf.toBlocks.nextBlock.storeRef)
+        //     let result = connectWithNoneLeaf(state)
 
-            return result
-        },
-        x => {
-            console.log('after connect')
-            // console.log('x::',x)
-            return x
-        }
+        //     return result
+        // },
+        // x => {
+        //     console.log('after connect')
+        //     // console.log('x::',x)
+        //     return x
+        // }
     ),
     state => state
 )
@@ -112,14 +111,6 @@ const isNoneLeaf = ifElse(
 )
 export const checkRotate = ifElse(
     pathEq(['selectLeaf', 'type'], LEAF),
-    // state => {
-    //     console.log('in checkRotate')
-    //     console.log('state.selectLeaf.type::', state.selectLeaf.type)
-    //     return pathEq(['selectLeaf', 'type'], LEAF)(state)
-    // },
     isLeaf,
-    x => {
-        console.log('stop isNoneLeaf and check if require rotate-->')
-        return isNoneLeaf(x)
-    }
+    isNoneLeaf
 )

@@ -3,8 +3,6 @@ import btree from '../src'
 export default () => {
     describe('test with N inputs', () => {
         const tree = btree({})
-
-
         test('insert', () => {
             let howManyMillions = n => n * 1000000
             // let number = howManyMillions(1)

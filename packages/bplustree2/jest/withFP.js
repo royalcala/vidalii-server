@@ -73,33 +73,38 @@ const insertData = (size,
     listComparatorDownTree, checkDownTree) => {
     const tree = btree({})
     const t = tree.getTree
-    for (let i = 0; i < size; i++) {
-        tree.put(i, i)
-    }
-    let inputs = 0
-    listComparatorLeafsBlocks.forEach(blocks => {
-        blocks.forEach(b => {
-            inputs++
-        })
-    })
-    test('correct inputs by user', () => {
-        expect(
-            t.size
-        ).toBe(
-            inputs
-        )
-    })
+    // for (let i = 0; i < size; i++) {
+    //     tree.put(i, i)
+    // }
+    // let inputs = 0
+    // listComparatorLeafsBlocks.forEach(blocks => {
+    //     blocks.forEach(b => {
+    //         inputs++
+    //     })
+    // })
+    // test('correct inputs by user', () => {
+    //     expect(
+    //         t.size
+    //     ).toBe(
+    //         inputs
+    //     )
+    // })
 
 
-    test('total size', () => {
+    test(`Insert And Total Size ${t.size}`, () => {
+        for (let i = 0; i < size; i++) {
+            tree.put(i, i)
+        }
         expect(
             t.size
         ).toBe(
             size
         )
     })
-    checkLeafsBlocks(listComparatorLeafsBlocks)(t.leafs)
-    checkParentLeafs(listComparatorParentsLeafs)(t.leafs)
+    if (checkLeafsBlocks)
+        checkLeafsBlocks(listComparatorLeafsBlocks)(t.leafs)
+    if (checkParentLeafs)
+        checkParentLeafs(listComparatorParentsLeafs)(t.leafs)
     if (checkDownTree)
         checkDownTree(listComparatorDownTree)((t.noneLeafs))
 }
@@ -184,54 +189,56 @@ export default () => {
         //     )
         // })
 
-        describe('sizeN', () => {
-            let data = 6
-            //    console.log(' dinamicArray(data)::', dinamicArray(data))
-            insertData(data,
-                dinamicArray(data),
-                checkLeafsBlocks,
-                [1, 1, 3, 3, 4],
-                checkParentLeafs,
-                [
-                    [['L', 1], ['L', 0]],
-                    [['L', 1], ['R', 1]],
-                    [['R', 3], ['L', 2]],
-                    [['R', 3], ['R', 3]],
-                    [['R', 3], ['RR', 4]],
-                ],
-                checkDownTree
-            )
-        })
+        // describe('sizeN', () => {
+        //     let data = 6
+        //     //    console.log(' dinamicArray(data)::', dinamicArray(data))
+        //     insertData(data,
+        //         dinamicArray(data),
+        //         checkLeafsBlocks,
+        //         [1, 1, 3, 3, 4],
+        //         checkParentLeafs,
+        //         [
+        //             [['L', 1], ['L', 0]],
+        //             [['L', 1], ['R', 1]],
+        //             [['R', 3], ['L', 2]],
+        //             [['R', 3], ['R', 3]],
+        //             [['R', 3], ['RR', 4]],
+        //         ],
+        //         checkDownTree
+        //     )
+        // })
 
 
         // describe('sizeN', () => {
-        //     let data = 7
+        //     let data = 1000
         //     //    console.log(' dinamicArray(data)::', dinamicArray(data))
         //     insertData(data,
         //         dinamicArray(data),
         //         checkLeafsBlocks,
         //         [1, 1, 3, 3, 5, 5],
         //         checkParentLeafs,
-
+        //         [
+        //             [['L', 1], ['L', 0]],
+        //             [['L', 1], ['R', 1]],
+        //             [['R', 3], ['L', 2]],
+        //             [['R', 3], ['R', 3]],
+        //             [['RR', 5], ['L', 4]],
+        //             [['RR', 5], ['R', 5]],
+        //         ],
+        //         checkDownTree
         //     )
         // })
+
+
 
         // describe('sizeN', () => {
-        //     let data = 5
-        //    console.log(' dinamicArray(data)::', dinamicArray(data))
+        //     let data = 100
+        //     //    console.log(' dinamicArray(data)::', dinamicArray(data))
         //     insertData(data,
-        //         dinamicArray(data),
-        //         checkLeafsBlocks,
-        //         [1, 1, 3, 3],
-        //         checkParentLeafs,
-
         //     )
         // })
-        //dynamic check parents leaf
-        //1-2
-        //[[null]]
-        //3
-        //[[2],[2]]
+
+
 
 
 
