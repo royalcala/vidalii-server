@@ -8,6 +8,11 @@ const pointLast_Lleaf_block = state => {
     // console.log('---------------------------inDivide:pointLast_Lleaf_block:key:' + key)
     let pointLast_Lleaf_block = selectLeaf.toBlocks
     // console.log('pointLast_Lleaf_block1::', pointLast_Lleaf_block.type)
+    // if (selectLeaf.parentNoneLeafBlock) {
+    //     console.log('pointLast_Lleaf_block.storeRef::',
+    //         Object.keys(selectLeaf.parentNoneLeafBlock))
+    //     console.log('selectLeaf.parentNoneLeafBlock.storeRef::', selectLeaf.parentNoneLeafBlock.storeRef)
+    // }
     // console.log('allBlocks1::', pointLast_Lleaf_block.storeRef)
     // console.log('allBlocks2::', pointLast_Lleaf_block.nextBlock.storeRef)
     // console.log('allBlocks3::', pointLast_Lleaf_block.nextBlock.nextBlock.storeRef)
@@ -21,6 +26,7 @@ const pointLast_Lleaf_block = state => {
     return state
 }
 const Rleaf = state => {
+    console.log('access Rleaf')
     const { pointLast_Lleaf_block, selectLeaf } = state
     let Rleaf
     Rleaf = createLeaf({}).selectLeaf
@@ -36,6 +42,7 @@ const Rleaf = state => {
     return state
 }
 const NoneRleaf = state => {
+    console.log('noneRleaf*****', state.key)
     const { pointLast_Lleaf_block, selectLeaf } = state
     let Rleaf
     Rleaf = createNoneLeaf({}).selectNoneLeaf
@@ -43,15 +50,13 @@ const NoneRleaf = state => {
     Rleaf.sizeBlocks = Math.ceil(selectLeaf.sizeBlocks / 2)
     // console.log('pointLast_Lleaf_block::', pointLast_Lleaf_block.storeRef)
     Rleaf.toBlocks = pointLast_Lleaf_block.nextBlock //2->3
-    // let RSecondBlock =RFirstBlock.nextBlock //3
-    // Rleaf.toBlocks = pointLast_Lleaf_block.nextBlock
-    // RFirstBlock.RChild.parentNoneLeafBlock = RSecondBlock
-    // RSecondBlock.LChild = RFirstBlock.RChild
-    console.log('Rleaf.type::', Rleaf.type)
-    console.log('pointLast_Lleaf_block.type::', pointLast_Lleaf_block.type)
-    // console.log('Rleaf.toBlocks::',Rleaf.toBlocks)
-    // Rleaf.toBlocks.backBlock = null
-    console.log('pass')
+    let pivot = Rleaf.toBlocks
+    //change all to noneleaf new
+    while (pivot !== null) {
+        pivot.noneLeaf = Rleaf
+        pivot = pivot.nextBlock
+    }
+
     Rleaf.lastBlock = selectLeaf.lastBlock
 
     state.Rleaf = Rleaf
@@ -82,14 +87,18 @@ const isLeaf = ifElse(
             // console.log('before to connect noneleaf')            
             return x
         },
-        x => {
-            // console.log('before result')
-            let result = connectWithNoneLeaf(x)
+        state => {
+            console.log('before result:input:', state.key)
+            console.log('LallBlocks1::', state.Lleaf.toBlocks.storeRef)
+            console.log('LallBlocks2::', state.Lleaf.toBlocks.nextBlock)
+            console.log('RallBlocks1::', state.Rleaf.toBlocks.storeRef)
+            console.log('RallBlocks2::', state.Rleaf.toBlocks.nextBlock.storeRef)
+            let result = connectWithNoneLeaf(state)
 
             return result
         },
         x => {
-            // console.log('after connect')
+            console.log('after connect')
             // console.log('x::',x)
             return x
         }
@@ -110,7 +119,7 @@ export const checkRotate = ifElse(
     // },
     isLeaf,
     x => {
-        // console.log('stop isNoneLeaf and require rotate-->')
+        console.log('stop isNoneLeaf and check if require rotate-->')
         return isNoneLeaf(x)
     }
 )

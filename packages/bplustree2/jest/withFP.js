@@ -1,6 +1,28 @@
 import btree from '../src'
 
+const checkDownTree = listComparator => startNode => {
+    listComparator.forEach(NestedList => {
+        let firstBlock = startNode.toBlocks
+        let leafDown = 0
+        NestedList.forEach(([side, expectedKey]) => {
+            let leaf
+            if (side === 'L')
+                leaf = firstBlock.LChild
+            else if (side === 'R')
+                leaf = firstBlock.RChild
+            else if (side === 'RR') {
+                leaf = firstBlock.nextBlock.RChild
+            }
 
+            let firstKey = leaf.toBlocks.storeRef.key
+            test(`level${leafDown}->downTo->${side}->key:${firstKey}===${expectedKey}`, () => {
+                expect(expectedKey).toBe(firstKey)
+            })
+            firstBlock = leaf.toBlocks
+            leafDown++
+        })
+    })
+}
 const checkParentLeafs = listComparator => startNode => {
     let nodeLeaf = startNode
     let leafNum = 0
@@ -45,7 +67,10 @@ const checkLeafsBlocks = listComparator => startNode => {
     })
     return blocksTotal
 }
-const insertData = (size, listComparatorLeafsBlocks, checkLeafsBlocks, listComparatorParentsLeafs, checkParentLeafs) => {
+const insertData = (size,
+    listComparatorLeafsBlocks, checkLeafsBlocks,
+    listComparatorParentsLeafs, checkParentLeafs,
+    listComparatorDownTree, checkDownTree) => {
     const tree = btree({})
     const t = tree.getTree
     for (let i = 0; i < size; i++) {
@@ -75,6 +100,8 @@ const insertData = (size, listComparatorLeafsBlocks, checkLeafsBlocks, listCompa
     })
     checkLeafsBlocks(listComparatorLeafsBlocks)(t.leafs)
     checkParentLeafs(listComparatorParentsLeafs)(t.leafs)
+    if (checkDownTree)
+        checkDownTree(listComparatorDownTree)((t.noneLeafs))
 }
 
 const dinamicArray = size => {
@@ -133,6 +160,7 @@ export default () => {
 
         //     )
         // })
+
         // describe('sizeN', () => {
         //     let data = 4
         //    console.log(' dinamicArray(data)::', dinamicArray(data))
@@ -156,30 +184,37 @@ export default () => {
         //     )
         // })
 
-        // describe('sizeN', () => {
-        //     let data = 6
-        //     //    console.log(' dinamicArray(data)::', dinamicArray(data))
-        //     insertData(data,
-        //         dinamicArray(data),
-        //         checkLeafsBlocks,
-        //         [1, 1, 3, 3, 4],
-        //         checkParentLeafs,
-
-        //     )
-        // })
-
-
         describe('sizeN', () => {
-            let data = 7
+            let data = 6
             //    console.log(' dinamicArray(data)::', dinamicArray(data))
             insertData(data,
                 dinamicArray(data),
                 checkLeafsBlocks,
-                [1, 1, 3, 3, 5, 5],
+                [1, 1, 3, 3, 4],
                 checkParentLeafs,
-
+                [
+                    [['L', 1], ['L', 0]],
+                    [['L', 1], ['R', 1]],
+                    [['R', 3], ['L', 2]],
+                    [['R', 3], ['R', 3]],
+                    [['R', 3], ['RR', 4]],
+                ],
+                checkDownTree
             )
         })
+
+
+        // describe('sizeN', () => {
+        //     let data = 7
+        //     //    console.log(' dinamicArray(data)::', dinamicArray(data))
+        //     insertData(data,
+        //         dinamicArray(data),
+        //         checkLeafsBlocks,
+        //         [1, 1, 3, 3, 5, 5],
+        //         checkParentLeafs,
+
+        //     )
+        // })
 
         // describe('sizeN', () => {
         //     let data = 5
