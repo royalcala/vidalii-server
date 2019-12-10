@@ -13,7 +13,7 @@ async function test() {
     // const instanceDB = await pipe(
     //     leveldown,
     //     levelup,
-    //     encapsulatedb,
+    //     // encapsulatedb,
     //     // encapsulatedbextend
     //     versioningdb({})
     //     // encoding({
@@ -23,9 +23,12 @@ async function test() {
     // )('./testDB')
     const db = await encapsulatedb({ store: leveldown, location: './testDB' })
     const instanceDB = versioningdb({})(db)
-    console.log('instanceDB::', instanceDB)
+    // console.log('instanceDB::', instanceDB)
     let { _id, _rev } = await instanceDB.put({ hello: 'world' })
-
+    // console.log('_id::', _id)
+    // console.log('_rev::', _rev)
+    console.log('*******GET*********')
+    // let getResponse = await instanceDB.get({ _id, encodedRev: _rev })
     let getResponse = await instanceDB.get(_id)
     console.log('getResponse::', getResponse)
 

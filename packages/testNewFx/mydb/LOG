@@ -1,0 +1,10 @@
+2019/12/09-23:34:29.327540 7f1f1d4f3700 Recovering log #105
+2019/12/09-23:34:29.327701 7f1f1d4f3700 Level-0 table #107: started
+2019/12/09-23:34:29.330314 7f1f1d4f3700 Level-0 table #107: 220 bytes OK
+2019/12/09-23:34:29.336976 7f1f1d4f3700 Delete type=3 #103
+2019/12/09-23:34:29.337052 7f1f1d4f3700 Delete type=0 #105
+2019/12/09-23:34:29.341537 7f1f077fe700 Moved #101 to level-1 220 bytes OK: files[ 7 28 0 0 0 0 0 ]
+2019/12/09-23:34:29.344788 7f1f077fe700 Moved #104 to level-1 220 bytes OK: files[ 6 29 0 0 0 0 0 ]
+2019/12/09-23:34:29.347201 7f1f077fe700 Moved #74 to level-1 220 bytes OK: files[ 5 30 0 0 0 0 0 ]
+2019/12/09-23:34:29.350397 7f1f077fe700 Moved #107 to level-1 220 bytes OK: files[ 4 31 0 0 0 0 0 ]
+2019/12/09-23:34:29.354622 7f1f077fe700 Moved #92 to level-1 220 bytes OK: files[ 3 32 0 0 0 0 0 ]

@@ -42,6 +42,10 @@ const main = ({
 }) => db => {
   const prefixConcat = key => prefix.concat(separator, key);
 
+  const sizePrefix = prefix.concat(separator).length;
+
+  const removePrefix = key => key.slice(sizePrefix);
+
   return { ...db,
     subdb: true,
     put: (key, value, options = {}) => db.put(prefixConcat(key), value, options),
@@ -81,10 +85,31 @@ const main = ({
       options,
       prefixConcat
     })),
-    iteratorP: (options = {}) => db.iteratorP(defaultOptionsQuery({
-      options,
-      prefixConcat
-    }))
+    iteratorP: (options = {}) => {
+      let defaults = defaultOptionsQuery({
+        options: {
+          keys: true,
+          values: true,
+          ...options
+        },
+        prefixConcat
+      });
+
+      if (defaults.hasOwnProperty('onData')) {
+        let prevOnData = defaults.onData;
+        if (defaults.values === true) //only one field::isString
+          defaults.onData = data => {
+            data.key = removePrefix(data.key);
+            prevOnData(data);
+          };else //with both field::isObject
+          defaults.onData = key => {
+            key = removePrefix(key);
+            prevOnData(key);
+          };
+      }
+
+      return db.iteratorP(defaults);
+    }
   };
 };
 

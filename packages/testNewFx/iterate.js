@@ -8,7 +8,8 @@ var dbDown = leveldown('./mydb')
 
 var dbUp = levelup(dbDown)
 var millions = n => 1000000 * n
-var howMany = millions(1)
+var howMany = 1
+var uuid = require('uuid/v4')
 console.log('howMany::', howMany)
 
 // withDown(dbDown)
@@ -131,7 +132,7 @@ async function withUp(db) {
         // db.put: 64,166.599ms
         // resGet:: is index:999999
         for (let index = 0; index < howMany; index++) {
-            db.put(index, 'holamundo' + index)
+            db.put(uuid(), 'holamundo' + index)
         }
         console.timeEnd('db.put')
     }
@@ -232,9 +233,9 @@ async function withUp(db) {
         console.timeEnd('iterator')
     }
 
-    // inserts()
+    inserts()
     // stream()
-    iterator()
+    // iterator()
 
 
 

@@ -1,15 +1,12 @@
 import { ifElse, has, tryCatch, then } from 'ramda'
 import subdbs from "./subdbs"
 import put from './put'
-
+import { toEncodeRev } from './subdbs/revCodecs'
 // const addEncapsulatedb = db => ifElse(
 //     propEq('encapsulatedb', true),
 //     x => x,
 //     x => encapsulatedb(db)
 // )(db)
-
-
-
 
 const main = ({ maxVersions = 5 }) => db => {
     const { rev, seq, doc } = subdbs({ db })
@@ -18,15 +15,28 @@ const main = ({ maxVersions = 5 }) => db => {
         ...db,
         put: put({ rev }),
         get: async _id => {
-            console.log('_id::', _id)
-            try {
-                let existKey = await rev.get(_id)
-                return existKey
-            } catch (error) {
-                return error
+            console.log('on get:_id::', _id)
+            let lastRev = null
+
+            await rev.iteratorP({
+                onData: x => lastRev = x,
+                reverse: true,
+                gte: { _id, encodedRev: '\x00' },
+                lte: { _id, encodedRev: '\xFF' },
+                limit: 1,
+
+            })
+            // return lastRev
+            if (lastRev !== null) {
+                const { _id, _rev_num, _rev_id } = lastRev.key
+                return {
+                    _id,
+                    _rev: toEncodeRev({ _rev_num, _rev_id }),
+                    ...lastRev.value
+                }
             }
-
-
+            else
+                return lastRev
         }
 
         // var revOps = [

@@ -1,29 +1,52 @@
+console.clear()
 import { pipe } from 'ramda'
-import abstract from '@vidalii/abstractlevel'
+import encapsulatedb from '@vidalii/encapsulatedb'
 import sublevel from '../src'
 const leveldown = require('leveldown')
 const levelup = require('levelup')
 test()
 async function test() {
-    const instanceDB = pipe(
-        leveldown,
-        levelup,
-        abstract,
+    // const instanceDB = pipe(
+    //     leveldown,
+    //     levelup,
+    //     abstract,
+    //     sublevel({ prefix: 'rev' })
+    // )('./testDB')
+    const db = await encapsulatedb({ store: leveldown, location: './testDB' })
+    const subRev = pipe(
         sublevel({ prefix: 'rev' })
-    )('./testDB')
-    let putResponse = await instanceDB.put('abc', '0123')
-    console.log('putResponse::', putResponse)
+    )(db)
 
-    let getResponse = await instanceDB.get('abc', { asBuffer: false })
-    console.log('getResponse::', getResponse)
+    const subSeq = pipe(
+        sublevel({ prefix: 'seq' })
+    )(db)
 
-    let streamResponse = await instanceDB.createReadStreamP({
-        onData: console.log,
-    })
+    tests(subRev)
+    tests2(subSeq)
+    async function tests(instanceDB) {
+        let putResponse = await instanceDB.put('abc', '0123')
+        console.log('putResponse::', putResponse)
 
-    let iteratorResponse = await instanceDB.iteratorP({
-        onData: console.log,
-        keyAsBuffer: false,
-        valueAsBuffer: false
-    })
+        let getResponse = await instanceDB.get('abc', { asBuffer: false })
+        console.log('getResponse::', getResponse)
+
+        let iteratorResponse = await instanceDB.iteratorP({
+            onData: console.log,
+            keyAsBuffer: false,
+            valueAsBuffer: false
+        })
+    }
+    async function tests2(instanceDB) {
+        let putResponse = await instanceDB.put('abc2', '0123')
+        console.log('putResponse::', putResponse)
+
+        let getResponse = await instanceDB.get('abc2', { asBuffer: false })
+        console.log('getResponse::', getResponse)
+
+        let iteratorResponse = await instanceDB.iteratorP({
+            onData: console.log,
+            keyAsBuffer: false,
+            valueAsBuffer: false
+        })
+    }
 }

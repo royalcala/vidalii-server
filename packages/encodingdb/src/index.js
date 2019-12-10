@@ -2,6 +2,8 @@
 import getDefaultsCodecs from './defaultCodecs'
 import conditionalQuery from './conditionalQuery'
 
+
+
 const main = (codec = {}) => db => {
     const { keyEncoding, valueEncoding } = getDefaultsCodecs(codec)
     return {

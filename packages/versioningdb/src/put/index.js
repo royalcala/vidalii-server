@@ -15,7 +15,10 @@ export default ({ rev }) => data => ifElse(
         }
     ),
     async data => {
-        console.log('doent has _id')
+        console.log('dosnt has _id')
+        //docs, seq, rev
+        //last rev
+
         let _id = uuid()
         let _rev_num = 1
         let _rev_id = uuid()

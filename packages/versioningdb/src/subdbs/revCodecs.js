@@ -5,19 +5,23 @@ export const toEncodeRev = ({ _rev_num, _rev_id }) => {
     return lexint.pack(_rev_num, 'hex') + '!!' + _rev_id
 }
 
-
 const revCodec = {
     keyEncoding: {
         encode: ({ _id = null, _rev_num = null, _rev_id = null, encodedRev = null }) => {
-            let id = _id + '!!'
+            // console.log('access1*-*-*-*-*', _id)
+            let ID = _id + '!!'
             if (encodedRev !== null) {
-                return id + encodedRev
+                // console.log('access2',ID.concat(encodedRev))
+                return ID.concat(encodedRev)
             } else {
-                return id + toEncodeKey({ _rev_num, _rev_id })
+                // console.log('access3')
+                // console.log('toEncodeRev({ _rev_num, _rev_id })::', ID.concat(toEncodeRev({ _rev_num, _rev_id })))            
+                return ID.concat(toEncodeRev({ _rev_num, _rev_id }))
             }
         },
         decode: buff => {
-            var toDecode = buff.toString('utf8').split('!!')
+            // return buff.toString('utf8')
+            let toDecode = buff.toString('utf8').split('!!')
             return {
                 _id: toDecode[0],
                 _rev_num: lexint.unpack(toDecode[1]),
