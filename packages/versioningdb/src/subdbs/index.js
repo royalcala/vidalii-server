@@ -1,3 +1,4 @@
+import { pipe } from 'ramda'
 import encapsulatedbextend from '@vidalii/encapsulatedbextend'
 import encodingdb from '@vidalii/encodingdb'
 import subdb from '@vidalii/subdb'
@@ -9,17 +10,17 @@ const main = ({ db }) => {
     const rev = pipe(
         subdb({ prefix: 'rev' }),
         encodingdb(revCodecs),
-        encapsulatedbextend
+        // encapsulatedbextend
     )(db)
     const seq = pipe(
         subdb({ prefix: 'seq' }),
         encodingdb(seqCodecs),
-        encapsulatedbextend
+        // encapsulatedbextend
     )(db)
     const doc = pipe(
         subdb({ prefix: 'doc' }),
         encodingdb(docCodecs),
-        encapsulatedbextend
+        // encapsulatedbextend
     )(db)
     return {
         rev,

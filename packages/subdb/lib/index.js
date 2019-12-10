@@ -26,7 +26,9 @@ const defaultOptionsQuery = ({
 
 })), (0, _ifElse2.default)((0, _anyPass2.default)([(0, _has2.default)('lt'), (0, _has2.default)('lte')]), opt => opt, opt => ({ //defautl if doesnt have
   ...opt,
-  lte: ''
+  //         let s = '\xff' // \x hexadecimal ff last number
+  // console.log('s::',s)
+  lte: '\xff'
 })), (0, _evolve2.default)({
   gt: prefixConcat,
   gte: prefixConcat,
@@ -41,9 +43,40 @@ const main = ({
   const prefixConcat = key => prefix.concat(separator, key);
 
   return { ...db,
+    subdb: true,
     put: (key, value, options = {}) => db.put(prefixConcat(key), value, options),
     get: (key, options = {}) => db.get(prefixConcat(key), options),
     del: (key, options = {}) => db.del(prefixConcat(key), options),
+    batch: (ops, options = {}) => {
+      let opsWithKeyPrefix = ops.map(({
+        type,
+        key,
+        value
+      }) => ({
+        type,
+        key: prefixConcat(key),
+        value
+      }));
+      db.batch(opsWithKeyPrefix, options, error => {
+        if (error) reject({
+          error
+        });else resolve({
+          error: null
+        });
+      });
+    },
+    subPreBatch: ops => {
+      let opsWithKeyPrefix = ops.map(({
+        type,
+        key,
+        value
+      }) => ({
+        type,
+        key: prefixConcat(key),
+        value
+      }));
+      return opsWithKeyPrefix;
+    },
     createReadStreamP: (options = {}) => db.createReadStreamP(defaultOptionsQuery({
       options,
       prefixConcat

@@ -6,7 +6,8 @@ const main = (codec = {}) => db => {
     const { keyEncoding, valueEncoding } = getDefaultsCodecs(codec)
     return {
         ...db,
-        put: (key, value, options = {}) => db.put(
+        encodingdb: true,
+        put: async (key, value, options = {}) => db.put(
             keyEncoding.encode(key),
             valueEncoding.encode(value),
             options),

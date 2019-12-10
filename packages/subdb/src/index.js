@@ -38,6 +38,7 @@ const main = ({ prefix, separator = '!!' }) => db => {
 
     return {
         ...db,
+        subdb: true,
         put: (key, value, options = {}) => db.put(
             prefixConcat(key),
             value,
@@ -52,9 +53,10 @@ const main = ({ prefix, separator = '!!' }) => db => {
         ),
         batch: (ops, options = {}) => {
             let opsWithKeyPrefix = ops.map(
-                (key, ...op) => ({
-                    ...op,
-                    key: prefixConcat(key)
+                ({ type, key, value }) => ({
+                    type,
+                    key: prefixConcat(key),
+                    value
                 })
             )
             db.batch(opsWithKeyPrefix, options, (error) => {
@@ -64,11 +66,12 @@ const main = ({ prefix, separator = '!!' }) => db => {
                     resolve({ error: null })
             })
         },
-        preBatch: (ops) => {
+        subPreBatch: ops => {
             let opsWithKeyPrefix = ops.map(
-                (key, ...op) => ({
-                    ...op,
-                    key: prefixConcat(key)
+                ({ type, key, value }) => ({
+                    type,
+                    key: prefixConcat(key),
+                    value
                 })
             )
             return opsWithKeyPrefix

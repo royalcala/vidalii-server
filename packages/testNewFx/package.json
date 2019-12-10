@@ -5,16 +5,18 @@
   "author": "Roy Alcala Ortiz",
   "license": "MIT",
   "dependencies": {
-    "@vidalii/evol": "^1.0.0",
     "@vidalii/bplustree": "^1.0.0",
+    "@vidalii/evol": "^1.0.0",
     "apollo-server": "^2.9.7",
     "functional-red-black-tree": "^1.0.1",
+    "level-mem": "^5.0.1",
     "ramda": "^0.26.1",
     "subleveldown": "^4.1.4",
     "uuid": "^3.3.3"
   },
   "scripts": {
+    "blacktree": "nodemon blacktree.js",
     "dev": "nodemon index.js",
-    "loops":"nodemon loops.performance.js"
+    "loops": "nodemon loops.performance.js"
   }
 }
