@@ -7,11 +7,16 @@ const main = async ({ location, options = {}, store }) => {
     // console.log('db::', db)
     return {
         close: () => new Promise((resolve, reject) => {
+            console.log('closing database...')
             db.close((err) => {
-                if (err)
+                if (err) {
+                    console.log('Something happend closing the database:' + err)
                     reject(err)
-                else
+                }
+                else {
+                    console.log('the database was closed')
                     resolve(true)
+                }
             })
         }),
         put: (key, value, options = {}) => new Promise((resolve, reject) => {

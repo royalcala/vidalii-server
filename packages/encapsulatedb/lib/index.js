@@ -22,8 +22,15 @@ const main = async ({
 
   return {
     close: () => new Promise((resolve, reject) => {
+      console.log('closing database...');
       db.close(err => {
-        if (err) reject(err);else resolve(true);
+        if (err) {
+          console.log('Something happend closing the database:' + err);
+          reject(err);
+        } else {
+          console.log('the database was closed');
+          resolve(true);
+        }
       });
     }),
     put: (key, value, options = {}) => new Promise((resolve, reject) => {

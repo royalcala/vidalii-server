@@ -1,44 +1,17 @@
-import { ifElse, has, tryCatch, then } from 'ramda'
 import subdbs from "./subdbs"
 import put from './put'
-import { toEncodeRev } from './subdbs/revCodecs'
-// const addEncapsulatedb = db => ifElse(
-//     propEq('encapsulatedb', true),
-//     x => x,
-//     x => encapsulatedb(db)
-// )(db)
+import get from './get'
+import defaultsConfig from './configs'
+// const main = ({ maxVersions = 5 }) => async db => {
+const main = configs => async db => {
+    const subdb = subdbs({ db })
+    const config = await defaultsConfig({ configs, subdb })
 
-const main = ({ maxVersions = 5 }) => db => {
-    const { rev, seq, doc } = subdbs({ db })
-    // console.log('rev::',rev)
     return {
         ...db,
-        put: put({ rev }),
-        get: async _id => {
-            console.log('on get:_id::', _id)
-            let lastRev = null
-
-            await rev.iteratorP({
-                onData: x => lastRev = x,
-                reverse: true,
-                gte: { _id, encodedRev: '\x00' },
-                lte: { _id, encodedRev: '\xFF' },
-                limit: 1,
-
-            })
-            // return lastRev
-            if (lastRev !== null) {
-                const { _id, _rev_num, _rev_id } = lastRev.key
-                return {
-                    _id,
-                    _rev: toEncodeRev({ _rev_num, _rev_id }),
-                    ...lastRev.value
-                }
-            }
-            else
-                return lastRev
-        }
-
+        put: put({ subdb, get: get(subdb) }),
+        get: get(subdb),
+        getConfig: () => config
         // var revOps = [
         //     { type: 'put', key: 'name', value: 'Yuri Irsenovich Kim' },
         //     { type: 'put', key: 'dob', value: '16 February 1941' },
@@ -51,8 +24,6 @@ const main = ({ maxVersions = 5 }) => db => {
         //     if (err) return console.log('Ooops!', err)
         //     console.log('Great success dear leader!')
         // })
-
-
     }
 }
 

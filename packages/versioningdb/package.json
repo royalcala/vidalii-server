@@ -5,7 +5,9 @@
   "author": "Roy Alcala Ortiz",
   "license": "MIT",
   "scripts": {
-    "test": "nodemon --exec babel-node test",
+    "test": "jest jest",
+    "test:watch": "yarn test -- --watch",
+    "nodemon": "nodemon --exec babel-node test",
     "babel:out:dir": "npx babel src --out-dir lib",
     "babel:out:dir:onefile": "npx babel src --out-file src-onefile.js",
     "babel:out:file": "npx babel src --out-file script-compiled.js"
