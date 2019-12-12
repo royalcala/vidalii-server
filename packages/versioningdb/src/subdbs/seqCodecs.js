@@ -3,15 +3,19 @@ var lexint = require('lexicographic-integer');
 
 const seqCodec = {
     keyEncoding: {
-        encode: ({ _id_table, _seq }) => {
-            var toEncode = _id_table + '!!' + lexint.pack(_seq, 'hex')
+        encode: ({ _id_db, _seq = null, _seqEncoded = null }) => {
+            let toEncode = _id_db + '!!'
+            if (_seq !== null)
+                toEncode = toEncode.concat(lexint.pack(_seq, 'hex'))
+            else
+                toEncode = toEncode.concat(_seqEncoded)
+
             return toEncode
         },
         decode: buff => {
             var toDecode = buff.toString('utf8').split('!!')
-
             return {
-                _id_table: toDecode[0],
+                _id_db: toDecode[0],
                 _seq: lexint.unpack(toDecode[1])
             }
         }

@@ -2,15 +2,15 @@ import { pipe } from 'ramda'
 import encapsulatedbextend from '@vidalii/encapsulatedbextend'
 import encodingdb from '@vidalii/encodingdb'
 import subdb from '@vidalii/subdb'
-import configCodecs from './configCodecs'
+import systemCodecs from './systemCodecs'
 import revCodecs from './revCodecs'
 import seqCodecs from './seqCodecs'
 import docCodecs from './docCodecs'
 
 const main = ({ db }) => {
-    const config = pipe(
-        subdb({ prefix: 'config' }),
-        encodingdb(configCodecs),
+    const system = pipe(
+        subdb({ prefix: 'system' }),
+        encodingdb(systemCodecs),
     )(db)
     const rev = pipe(
         subdb({ prefix: 'rev' }),
@@ -25,7 +25,7 @@ const main = ({ db }) => {
         encodingdb(docCodecs),
     )(db)
     return {
-        config,
+        system,
         rev,
         seq,
         doc

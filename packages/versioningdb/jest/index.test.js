@@ -19,6 +19,32 @@ describe('versioningdb', () => {
     })
     config()
     put()
+    // let million = n => 1000000 * n
+    // let total = million(10)
+    // test("large string", () => {
+    //     const uuid = require('uuid/v4')
+    //     let string = uuid() + uuid() + uuid();
+    //     let string2 = uuid() + uuid() + uuid();
+    //     let n = 0;
+    //     while (n < total) {
+    //         if (string === string2) {
+    //         }
+    //         n++;
+    //     }
+    //     expect(n).toBe(total);
+    // });
+    // test("small string", () => {
+    //     const uuid = require('uuid/v4')
+    //     let string = 'abc';
+    //     let string2 = 'bcd';
+    //     let n = 0;
+    //     while (n < total) {
+    //         if (string === string2) {
+    //         }
+    //         n++;
+    //     }
+    //     expect(n).toBe(total);
+    // });
     // test('insertOneWithAutomaticID', async () => {
     //     let { _id, _rev } = await idb.put(value)
     //     let response = await idb.get(_id)

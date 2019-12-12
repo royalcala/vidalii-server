@@ -51,36 +51,31 @@ const main = ({
     put: (key, value, options = {}) => db.put(prefixConcat(key), value, options),
     get: (key, options = {}) => db.get(prefixConcat(key), options),
     del: (key, options = {}) => db.del(prefixConcat(key), options),
+    subPrefixConcat: prefixConcat,
     batch: (ops, options = {}) => {
+      let prefixBatch = options.customPrefix ? options.customPrefix : prefixConcat;
       let opsWithKeyPrefix = ops.map(({
         type,
         key,
         value
       }) => ({
         type,
-        key: prefixConcat(key),
+        key: prefixBatch(key),
         value
       }));
-      db.batch(opsWithKeyPrefix, options, error => {
-        if (error) reject({
-          error
-        });else resolve({
-          error: null
-        });
-      });
+      console.log('opsWithKeyPrefix::', opsWithKeyPrefix);
+      return db.batch(opsWithKeyPrefix, options);
     },
-    subPreBatch: ops => {
-      let opsWithKeyPrefix = ops.map(({
-        type,
-        key,
-        value
-      }) => ({
-        type,
-        key: prefixConcat(key),
-        value
-      }));
-      return opsWithKeyPrefix;
-    },
+    // subPreBatch: ops => {
+    //     let opsWithKeyPrefix = ops.map(
+    //         ({ type, key, value }) => ({
+    //             type,
+    //             key: prefixConcat(key),
+    //             value
+    //         })
+    //     )
+    //     return opsWithKeyPrefix
+    // },
     createReadStreamP: (options = {}) => db.createReadStreamP(defaultOptionsQuery({
       options,
       prefixConcat

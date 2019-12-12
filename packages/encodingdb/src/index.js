@@ -2,8 +2,6 @@
 import getDefaultsCodecs from './defaultCodecs'
 import conditionalQuery from './conditionalQuery'
 
-
-
 const main = (codec = {}) => db => {
     const { keyEncoding, valueEncoding } = getDefaultsCodecs(codec)
     return {
@@ -31,6 +29,19 @@ const main = (codec = {}) => db => {
                     options
                 )
             }
+        },
+        batch: (ops, options = {}) => {
+            // console.log('hi in encodingdb->batch')
+            let opsWithKeyPrefix = ops.map(
+                ({ type, key, value, ...other }) => ({
+                    type,
+                    key: keyEncoding.encode(key),
+                    value: valueEncoding.encode(value),
+                    ...other
+                })
+            )
+            // console.log('opsWithKeyPrefix::', opsWithKeyPrefix)
+            return db.batch(opsWithKeyPrefix, options)
         },
         del: (key, options = {}) => db.del(
             keyEncoding.encode(key),

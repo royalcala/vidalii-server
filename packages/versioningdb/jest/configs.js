@@ -13,8 +13,11 @@ export default () => {
             expect(config).toEqual(
                 expect.objectContaining({
                     _id_db: expect.any(String),
-                    maxVersions: expect.any(Number)
-                }),
+                    maxVersions: expect.any(Number),
+                    seq: expect.objectContaining({
+                        insertAndInc: expect.any(Function)
+                    })
+                })
             )
         })
     })

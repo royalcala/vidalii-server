@@ -52,31 +52,28 @@ const main = ({ prefix, separator = '!!' }) => db => {
             prefixConcat(key),
             options
         ),
-        batch: (ops, options = {}) => {
+        subPrefixConcat: prefixConcat,
+        batch: (ops, options = {}) => {                        
             let opsWithKeyPrefix = ops.map(
-                ({ type, key, value }) => ({
+                ({ type, key, value, customSubdb = null }) => ({
                     type,
-                    key: prefixConcat(key),
+                    key: customSubdb !== null ? customSubdb(key) : prefixConcat(key),
                     value
                 })
             )
-            db.batch(opsWithKeyPrefix, options, (error) => {
-                if (error)
-                    reject({ error })
-                else
-                    resolve({ error: null })
-            })
+            // console.log('opsWithKeyPrefix::', opsWithKeyPrefix)
+            return db.batch(opsWithKeyPrefix, options)
         },
-        subPreBatch: ops => {
-            let opsWithKeyPrefix = ops.map(
-                ({ type, key, value }) => ({
-                    type,
-                    key: prefixConcat(key),
-                    value
-                })
-            )
-            return opsWithKeyPrefix
-        },
+        // subPreBatch: ops => {
+        //     let opsWithKeyPrefix = ops.map(
+        //         ({ type, key, value }) => ({
+        //             type,
+        //             key: prefixConcat(key),
+        //             value
+        //         })
+        //     )
+        //     return opsWithKeyPrefix
+        // },
         createReadStreamP: (options = {}) => db.createReadStreamP(
             defaultOptionsQuery({ options, prefixConcat })
         ),

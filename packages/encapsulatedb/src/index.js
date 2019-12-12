@@ -2,7 +2,7 @@ import opendb from './opendb'
 import iteratorP from './iteratorP'
 const Readable = require('stream').Readable
 
-const main = async ({ location, options = {}, store }) => {
+const main = async ({ location, options = {}, store }) => {    
     let db = await opendb(store(location, options))
     // console.log('db::', db)
     return {
@@ -44,13 +44,6 @@ const main = async ({ location, options = {}, store }) => {
             })
         }),
         batch: (ops, options = {}) => new Promise((resolve, reject) => {
-            // var ops = [
-            //     { type: 'del', key: 'father' },
-            //     { type: 'put', key: 'name', value: 'Yuri Irsenovich Kim' },
-            //     { type: 'put', key: 'dob', value: '16 February 1941' },
-            //     { type: 'put', key: 'spouse', value: 'Kim Young-sook' },
-            //     { type: 'put', key: 'occupation', value: 'Clown' }
-            // ]
             db.batch(ops, options, (error) => {
                 if (error)
                     reject({ error })

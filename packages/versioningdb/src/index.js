@@ -1,16 +1,17 @@
-import subdbs from "./subdbs"
-import put from './put'
-import get from './get'
-import defaultsConfig from './configs'
+import Subdbs from "./subdbs"
+import Put from './put'
+import getLastRev from './getLastRev'
+import DefaultsConfig from './configs'
 // const main = ({ maxVersions = 5 }) => async db => {
 const main = configs => async db => {
-    const subdb = subdbs({ db })
-    const config = await defaultsConfig({ configs, subdb })
-
+    const subdb = Subdbs({ db })
+    const config = await DefaultsConfig({ configs, subdb })
+    const get = getLastRev(subdb)
+    const put = Put({ config, subdb, get })
     return {
         ...db,
-        put: put({ subdb, get: get(subdb) }),
-        get: get(subdb),
+        put,
+        get,
         getConfig: () => config
         // var revOps = [
         //     { type: 'put', key: 'name', value: 'Yuri Irsenovich Kim' },

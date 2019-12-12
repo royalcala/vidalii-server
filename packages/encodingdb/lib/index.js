@@ -34,6 +34,18 @@ const main = (codec = {}) => db => {
         return db.get(keyEncoding.encode(key), options);
       }
     },
+    batch: (ops, options = {}) => {
+      let opsWithKeyPrefix = ops.map(({
+        type,
+        key,
+        value
+      }) => ({
+        type,
+        key: keyEncoding.encode(key),
+        value: valueEncoding.encode(value)
+      }));
+      return db.batch(opsWithKeyPrefix, options);
+    },
     del: (key, options = {}) => db.del(keyEncoding.encode(key), options),
     createReadStreamP: (options = {}) => (0, _conditionalQuery.default)({
       dbWithReaderP: db.createReadStreamP,

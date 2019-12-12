@@ -1,7 +1,7 @@
 {
   "name": "@vidalii/versioningdb",
   "version": "1.0.0",
-  "main": "lib",
+  "main": "src",
   "author": "Roy Alcala Ortiz",
   "license": "MIT",
   "scripts": {

@@ -4,7 +4,7 @@ let lexint = require('lexicographic-integer');
 export const toEncodeRev = ({ _rev_num, _rev_id }) => {
     return lexint.pack(_rev_num, 'hex') + '!!' + _rev_id
 }
-export const toDecodeRev = revEncoded => {
+export const toDecodeRev = revEncoded => {    
     let [_rev_num, _rev_id] = revEncoded.toString('utf8').split('!!')
     return {
         _rev_num: lexint.unpack(_rev_num),

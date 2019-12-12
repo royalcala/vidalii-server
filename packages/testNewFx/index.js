@@ -1,4 +1,3 @@
-import { index2 } from './index2'
 console.clear()
 console.log('in testNewFx db')
 // let s = '\xff'
