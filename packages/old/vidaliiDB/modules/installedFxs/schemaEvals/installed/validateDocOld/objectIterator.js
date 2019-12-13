@@ -3,7 +3,6 @@ const generateAutoID = require('./generateAutoID')
 // const isArray = require('./typesNodes/isArray')
 // const isObject = require('./typesNodes/isObject')
 // const isFunction = require('./typesNodes/isFunction')
-
 module.exports = objectIterator
 
 function isFunction({ key, transformation, value, prevDoc, newDoc }) {

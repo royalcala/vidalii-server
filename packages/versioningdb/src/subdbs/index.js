@@ -1,5 +1,4 @@
 import { pipe } from 'ramda'
-import encapsulatedbextend from '@vidalii/encapsulatedbextend'
 import encodingdb from '@vidalii/encodingdb'
 import subdb from '@vidalii/subdb'
 import systemCodecs from './systemCodecs'

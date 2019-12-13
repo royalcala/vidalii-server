@@ -2,10 +2,14 @@ import opendb from './opendb'
 import iteratorP from './iteratorP'
 const Readable = require('stream').Readable
 
-const main = async ({ location, options = {}, store }) => {    
+const main = async ({ location, options = {}, store }) => {
     let db = await opendb(store(location, options))
     // console.log('db::', db)
     return {
+        composition: {
+            ...db.composition,
+            encapsulatedb: true
+        },
         close: () => new Promise((resolve, reject) => {
             console.log('closing database...')
             db.close((err) => {
@@ -70,8 +74,7 @@ const main = async ({ location, options = {}, store }) => {
                 //         resolve('Stream ended')
                 //     })
             }),
-        iteratorP: (options = {}) => iteratorP(db, options),
-        encapsulatedb: true
+        iteratorP: (options = {}) => iteratorP(db, options)
     }
 }
 // const main = db => {

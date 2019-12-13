@@ -6,7 +6,10 @@ const main = (codec = {}) => db => {
     const { keyEncoding, valueEncoding } = getDefaultsCodecs(codec)
     return {
         ...db,
-        encodingdb: true,
+        composition: {
+            ...db.composition,
+            encodingdb: true
+        },
         put: async (key, value, options = {}) => db.put(
             keyEncoding.encode(key),
             valueEncoding.encode(value),

@@ -3,14 +3,19 @@ import Put from './put'
 import getLastRev from './getLastRev'
 import DefaultsConfig from './configs'
 // const main = ({ maxVersions = 5 }) => async db => {
-const main = configs => async db => {
+const main = (configs = {}) => async db => {
     const subdb = Subdbs({ db })
     const config = await DefaultsConfig({ configs, subdb })
     const get = getLastRev(subdb)
-    const put = Put({ config, subdb, get })
+    const { insertOne, replaceOne } = Put({ config, subdb, get })
     return {
-        ...db,
-        put,
+        // ...db,
+        composition: {
+            ...db.composition,
+            versioningdb: true
+        },
+        insertOne,
+        replaceOne,
         get,
         getConfig: () => config
         // var revOps = [

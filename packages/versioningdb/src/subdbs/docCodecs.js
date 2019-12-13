@@ -1,4 +1,4 @@
-import { json as jsoncodecs, utf8 } from '@vidalii/encodingdb/lib/codecs'
+import { json as jsoncodecs, utf8 } from '@vidalii/encodingdb/src/codecs'
 var lexint = require('lexicographic-integer');
 const revCodec = {
     keyEncoding: {

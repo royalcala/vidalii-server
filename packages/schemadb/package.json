@@ -1,5 +1,5 @@
 {
-  "name": "@vidalii/versioningdb",
+  "name": "@vidalii/schemadb",
   "version": "1.0.0",
   "main": "src",
   "author": "Roy Alcala Ortiz",
@@ -18,14 +18,11 @@
     "@babel/node": "^7.6.3",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.6.3",
+    "@vidalii/encapsulatedb": "^1.0.0",
     "babel-plugin-ramda": "^2.0.0"
   },
   "dependencies": {
-    "@vidalii/encapsulatedb": "^1.0.0",
-    "@vidalii/encapsulatedbextend": "^1.0.0",
-    "@vidalii/encodingdb": "^1.0.0",
-    "@vidalii/subdb": "^1.0.0",
-    "lexicographic-integer": "^1.1.0",
+    "leveldown": "^5.4.1",
     "ramda": "^0.26.1"
   }
 }

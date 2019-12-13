@@ -1,4 +1,4 @@
-import { json as jsoncodecs } from '@vidalii/encodingdb/lib/codecs'
+import { json as jsoncodecs } from '@vidalii/encodingdb/src/codecs'
 var lexint = require('lexicographic-integer');
 
 const seqCodec = {

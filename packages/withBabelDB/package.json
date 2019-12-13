@@ -21,12 +21,10 @@
     "flow-bin": "^0.111.3",
     "flow-typed": "^2.6.2"
   },
-  "dependencies": {
-    "@vidalii/evol": "^1.0.0",
+  "dependencies": {    
     "babel-plugin-ramda": "^2.0.0",
     "encoding-down": "^6.3.0",
     "fs-extra": "^8.1.0",
-    "leveldown": "^5.4.1",
     "levelup": "^4.3.2",
     "lexicographic-integer": "^1.1.0",
     "memdown": "^5.1.0",

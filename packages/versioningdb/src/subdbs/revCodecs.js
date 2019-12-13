@@ -1,4 +1,4 @@
-import { json as jsoncodecs } from '@vidalii/encodingdb/lib/codecs'
+import { json as jsoncodecs } from '@vidalii/encodingdb/src/codecs'
 let lexint = require('lexicographic-integer');
 
 export const toEncodeRev = ({ _rev_num, _rev_id }) => {

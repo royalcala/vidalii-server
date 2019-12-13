@@ -1,0 +1,10 @@
+{
+  "name": "@vidalii/removeDatabase",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Roy Alcala Ortiz",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^8.1.0"
+  }
+}
