@@ -1,13 +1,20 @@
-export default ({ type }) => (
+import { pipe } from 'ramda'
+export default ({
+    type,
+    validationType
+}) => (
     {
-        insert = x => x,
+        insert = ({ newValue }) => ({ newValue }),
         update = x => x
     } = {}) => {
-    // console.log('insert::',insert,type)    
-    return {
-        vidaliiLeaf: true,
-        type,
-        insert,
-        update
+        // console.log('insert::',insert,type)    
+        return {
+            vidaliiLeaf: true,
+            type,
+            insert: pipe(
+                insert,
+                validationType
+            ),
+            update
+        }
     }
-}

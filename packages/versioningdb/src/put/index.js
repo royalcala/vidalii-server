@@ -1,4 +1,4 @@
-import { ifElse, has, pipe } from 'ramda'
+import { ifElse, has } from 'ramda'
 import insertOneWithAutoID from './insertOneWithAutoID'
 import replaceOne from './replaceOne'
 import insertOneWithManualID from './insertOneWithManualID'
@@ -15,10 +15,10 @@ import insertOneWithManualID from './insertOneWithManualID'
 
 
 export default fxs => ({
-    insertOne: data => ifElse(
+    insertOne: (key, value) => ifElse(
         has('_id'),
         insertOneWithManualID,
         insertOneWithAutoID
-    )(data, fxs),
-    replaceOne: data => replaceOne(data, fxs)
+    )({ ...key, ...value }, fxs),
+    replaceOne: (key, value) => replaceOne({ ...key, ...value }, fxs)
 })

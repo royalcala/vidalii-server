@@ -4,7 +4,7 @@ import versioningdb from '@vidalii/versioningdb'
 import schemadb from '../src'
 import { int, string } from '../src/leafTypes'
 import testSchema from './structureSchema'
-import { test } from 'ramda'
+import insertOne from './insertOne'
 const leveldown = require('leveldown')
 
 
@@ -19,14 +19,13 @@ describe('schemadb', () => {
         idb = await versioningdb({})(db)
         ischemadb = schemadb({
             a: int(),
-            b: string
+            b: int()
         })(idb)
         global.schemadb = ischemadb
     });
     afterAll(async () => {
         await idb.close()
     })
-
-
-    testSchema()
+    // testSchema()
+    insertOne()
 })
