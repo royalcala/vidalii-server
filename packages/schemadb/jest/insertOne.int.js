@@ -1,60 +1,67 @@
+import { int, string } from '../src/leafTypes'
 export default () => {
     describe('insertOne.int', () => {
         let schemadb
         beforeAll(async () => {
-            schemadb = global.schemadb
-            console.log('schemadb::', schemadb.schema())
+            schemadb = global.schemadb({
+                a: int(),
+                b: {
+                    a2: int()
+                },
+            })
         });
         test('43px=3', async () => {
             let response
-            response = await schemadb.insertOne({ _id: 1 }, { testInsertOne: '43px' })
-            expect(response.schemadb.value.testInsertOne).toBe(43)
+            response = await schemadb.insertOne({ _id: 1 }, { a: '43px' })
+            expect(response.schemadb.value.a).toBe(43)
         })
         test('string=0', async () => {
             let response
-            response = await schemadb.insertOne({ _id: 1 }, { testInsertOne: 'holispx' })
-            expect(response.schemadb.value.testInsertOne).toBe(0)
+            response = await schemadb.insertOne({ _id: 1 }, { a: 'holispx' })
+            expect(response.schemadb.value.a).toBe(0)
         })
         test('negative', async () => {
             let response
-            response = await schemadb.insertOne({ _id: 1 }, { testInsertOne: -1 })
-            expect(response.schemadb.value.testInsertOne).toBe(-1)
+            response = await schemadb.insertOne({ _id: 1 }, { a: -1 })
+            expect(response.schemadb.value.a).toBe(-1)
         })
         test('float', async () => {
             let response
-            response = await schemadb.insertOne({ _id: 1 }, { testInsertOne: 2.99 })
-            expect(response.schemadb.value.testInsertOne).toBe(2)
+            response = await schemadb.insertOne({ _id: 1 }, { a: 2.99 })
+            expect(response.schemadb.value.a).toBe(2)
         })
         test('doesnt has properties undefined', async () => {
             let response
-            response = await schemadb.insertOne({ _id: 1 }, { testInsertOne: 2.99, notToSave: 10 })
+            response = await schemadb.insertOne({ _id: 1 }, { a: 2.99, notToSave: 10 })
             expect(response.schemadb.value).toEqual(
                 expect.objectContaining({
-                    testInsertOne: 2
+                    a: 2
                 })
             )
-            // expect(response.schemadb.value.hasOwnProperty('testInsertOne')).toEqual(true)
+            // expect(response.schemadb.value.hasOwnProperty('a')).toEqual(true)
             expect(response.schemadb.value.hasOwnProperty('notToSave')).toEqual(false)
         })
         test('nested', async () => {
             let response
             response = await schemadb.insertOne({ _id: 1 }, {
-                testInsertOne: 2.99,
+                a: 2.99,
                 notToSave: 10,
-                testInsertOneNested: {
-                    a: 2.3
+                b: {
+                    a2: 2.3
                 }
             })
             expect(response.schemadb.value).toEqual(
                 expect.objectContaining({
-                    testInsertOne: 2,
-                    testInsertOneNested: {
-                        a: 2
+                    a: 2,
+                    b: {
+                        a2: 2
                     }
                 })
             )
             expect(response.schemadb.value.hasOwnProperty('notToSave')).toEqual(false)
         })
+
+
     })
 
 }
