@@ -4,9 +4,17 @@ export default () => {
         beforeAll(async () => {
             schemadb = global.schemadb
         });
-        test('first', () => {
-            console.log('schemadb::',schemadb.schema())
-            expect(true).toBe(true)
+        test('has', () => {
+            expect(schemadb.schema()).toEqual(
+                expect.objectContaining({
+                    testStructure: expect.objectContaining({
+                        vidaliiLeaf: true,
+                        type: expect.any(String),
+                        insert: expect.any(Function),
+                        update: expect.any(Function)
+                    })
+                })
+            )
         })
     })
 

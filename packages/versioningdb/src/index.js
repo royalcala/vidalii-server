@@ -16,6 +16,7 @@ const main = (configs = {}) => async db => {
         },
         insertOne,
         replaceOne,
+        updateOne: replaceOne,
         get,
         getConfig: () => config
         // var revOps = [

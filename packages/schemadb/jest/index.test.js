@@ -4,7 +4,7 @@ import versioningdb from '@vidalii/versioningdb'
 import schemadb from '../src'
 import { int, string } from '../src/leafTypes'
 import testSchema from './structureSchema'
-import insertOne from './insertOne'
+import testInsertOneInt from './insertOne.int'
 const leveldown = require('leveldown')
 
 
@@ -18,14 +18,18 @@ describe('schemadb', () => {
         db = await encapsulatedb({ store: leveldown, location: './testDB' })
         idb = await versioningdb({})(db)
         ischemadb = schemadb({
-            a: int(),
-            b: int()
+            testStructure: int(),
+            testInsertOne: int(),
+            testInsertOneNested: {
+                a: int()
+            },
+            testUpdateOne: string()
         })(idb)
         global.schemadb = ischemadb
     });
     afterAll(async () => {
         await idb.close()
     })
-    // testSchema()
-    insertOne()
+    testSchema()
+    testInsertOneInt()
 })

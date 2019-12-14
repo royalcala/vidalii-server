@@ -1,5 +1,5 @@
 import { toEncodeRev } from '../subdbs/revCodecs'
-import {  getAuto_rev_id  } from '../uuids'
+import { getAuto_rev_id } from '../uuids'
 import batch from './batch'
 
 export default async (data, { subdb, config }) => {
@@ -16,8 +16,12 @@ export default async (data, { subdb, config }) => {
     if (response.error === null)
         return {
             ...response,
-            _id,
-            _rev: encodedRev
+            versioningdb: {
+                key: {
+                    _id,
+                    _rev: encodedRev
+                }
+            }
         }
     else
         return response

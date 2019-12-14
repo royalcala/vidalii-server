@@ -1,4 +1,5 @@
 import { pipe } from 'ramda'
+export const vidaliiLeaf = 'vidaliiLeaf'
 export default ({
     type,
     validationType
@@ -6,15 +7,15 @@ export default ({
     {
         insert = ({ newValue }) => ({ newValue }),
         update = x => x
-    } = {}) => {
-        // console.log('insert::',insert,type)    
-        return {
-            vidaliiLeaf: true,
-            type,
-            insert: pipe(
-                insert,
-                validationType
-            ),
-            update
-        }
-    }
+    } = {}) => ({
+        [vidaliiLeaf]: true,
+        type,
+        insert: pipe(
+            insert,
+            validationType
+        ),
+        update: pipe(
+            update,
+            validationType
+        )
+    })

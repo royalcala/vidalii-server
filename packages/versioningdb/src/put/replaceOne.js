@@ -22,8 +22,12 @@ export default async (data, { subdb, get, config }) => {
             if (response.error === null)
                 return {
                     ...response,
-                    _id,
-                    _rev: encodedRev
+                    versioningdb: {
+                        key: {
+                            _id,
+                            _rev: encodedRev
+                        }
+                    }
                 }
             else
                 return response

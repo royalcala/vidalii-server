@@ -1,32 +1,18 @@
-import addSchema from './schema'
-
-
-export default defSchema => db => {
-    const schema = addSchema(defSchema)
-
+// import integrateSchemaValidation from './schema'
+import { castingDB } from "./castingDB";
+import InsertOne from './insertOne'
+// import UpdateOne from './updateOne'
+export default (schema, customPipes = {}) => db => {
+    db = castingDB(db)
+    const insertOne = InsertOne(schema, db, customPipes)
+    // const updateOne = UpdateOne({ schema, db })
     return {
-        // ...db,
         composition: {
             ...db.composition,
             schemadb: true
         },
-        insertOne: async (key, value) => {
-            let validation = await schema.validateInsert(value)
-
-            return validation
-            // if (validation.error)
-            //     return {
-            //         error: {
-            //             msg: validation.error
-            //         }
-            //     }
-            // else
-            //     db.insertOne(key, response)
-
-        },
-        updateOne: (key, value) => {
-
-        },
+        insertOne,
+        // updateOne,
         replaceOne: (key, value) => {
 
         },
@@ -35,6 +21,6 @@ export default defSchema => db => {
 
             return db.put(key, value, options)
         },
-        schema: () => schema.schema
+        schema: () => schema
     }
 }

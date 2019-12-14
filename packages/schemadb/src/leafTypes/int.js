@@ -1,6 +1,6 @@
-import leaf from './leaf'
+import leaf from '../leaf'
 
-export const int = leaf({
+export default leaf({
     type: 'Int',
     validationType: ({ newValue }) => {
         let parse = parseInt(newValue, 10)
@@ -10,4 +10,3 @@ export const int = leaf({
             return parse
     }
 })
-export const string = leaf({ type: 'String' })
