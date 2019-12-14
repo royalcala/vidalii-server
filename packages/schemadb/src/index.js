@@ -12,7 +12,7 @@ export default (schema, customPipes = {}) => db => {
             schemadb: true
         },
         insertOne,
-        // updateOne,
+        updateOne,
         replaceOne: (key, value) => {
 
         },

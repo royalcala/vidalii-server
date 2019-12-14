@@ -1,19 +1,32 @@
 import { pipe } from 'ramda'
 import validateUpdate from './validateUpdate'
+
+
+const getPrevDoc = async (db, key) => {
+    try {
+        let response = db.get(key)
+        return response.data
+    } catch (error) {
+        return response.data = null
+    }
+}
+const defaultFx = ({ prevDoc, newDoc }) => ({ prevDoc, newDoc })
 export default (schema, db,
     {
-        preValidateUpdate = ({ newDoc }) => ({ newDoc }),
-        preSaveUpdate = ({ newDoc }) => ({ newDoc }),
-        afterSaveUpdate = ({ newDoc }) => ({ newDoc }),
+        preValidateUpdate = defaultFx,
+        preSaveUpdate = defaultFx,
+        afterSaveUpdate = defaultFx,
     } = {}
 ) => async (key, value) => {
+    let prevDoc = await getPrevDoc(db, key)
     try {
         let { newDoc } = await pipe(
             preValidateUpdate,
             preSaveUpdate,
-            preValidateUpdate(schema),
+            validateUpdate(schema),
             afterSaveUpdate
-        )({ newDoc: value })
+        )({ prevDoc, newDoc: value })
+
         let response = await db.replaceOne(key, newDoc)
         return ({
             ...response,

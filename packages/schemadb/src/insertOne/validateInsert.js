@@ -1,24 +1,22 @@
 import { VIDALIILEAF } from '../leaf'
 import { ifElse } from 'ramda'
 
-
-
-const writeRecursive = ({ iterateInNewDoc, result, key, pSchema, pNewDoc }) => result[key] = iterateInNewDoc({
-    pSchema: pSchema[key],
-    pNewDoc: pNewDoc[key]
+const writeRecursive = ({ iterateInNewDoc, result, key, schema, newDoc }) => result[key] = iterateInNewDoc({
+    schema: schema[key],
+    newDoc: newDoc[key]
 })
 
-const checkIfpSchemaIsArray = ifElse(
-    ({ pSchema, key }) => Array.isArray(pSchema[key]),
-    ({ key, pSchema, pNewDoc, result, iterateInNewDoc }) => {
+const checkIfSchemaKeyIsArray = ifElse(
+    ({ schema, key }) => Array.isArray(schema[key]),
+    ({ key, schema, newDoc, result, iterateInNewDoc }) => {
         let index = 0
-        let size = pNewDoc[key].length
+        let size = newDoc[key].length
         result[key] = []
         for (index; index < size; index++) {
             result[key].push(
                 iterateInNewDoc({
-                    pSchema: pSchema[key][0],
-                    pNewDoc: pNewDoc[key][index]
+                    schema: schema[key][0],
+                    newDoc: newDoc[key][index]
                 })
             )
         }
@@ -26,35 +24,42 @@ const checkIfpSchemaIsArray = ifElse(
     writeRecursive
 )
 
-
-
-const writeSimple = ({ pSchema, key, pNewDoc, result }) => result[key] = pSchema[key].insert({ newValue: pNewDoc[key] })
-const hasSchemaVidaliiLeaf = ifElse(
-    ({ pSchema, key }) => pSchema[key].hasOwnProperty(VIDALIILEAF),
+const writeSimple = ({ schema, key, newDoc, result }) => result[key] = schema[key].insert(newDoc[key])
+// const writeSimple = ({ schema, key, newDoc, result }) => result[key] = schema[key].insert({ newValue: newDoc[key] })
+const hasSchemaAPropVidaliiLeaf = ifElse(
+    ({ schema, key }) => schema[key].hasOwnProperty(VIDALIILEAF),
     writeSimple,
-    checkIfpSchemaIsArray
+    checkIfSchemaKeyIsArray
 )
 
 const hasSchemaNewDocPropertie = ifElse(
-    ({ key, pSchema }) => pSchema.hasOwnProperty(key),
-    hasSchemaVidaliiLeaf,
-    () => ''
+    ({ key, schema }) => schema.hasOwnProperty(key),
+    hasSchemaAPropVidaliiLeaf,
+    () => null
 )
 
+const iterateInNewDoc = ({ schema, newDoc }) => {
+    let result = {}
+    let key
+    for (key in newDoc) {
+        hasSchemaNewDocPropertie({
+            result,
+            key,
+            newDoc,
+            schema,
+            iterateInNewDoc
+        })
+
+    }
+    return result
+}
 export default schema => ({ newDoc }) => {
     // throw  'this is the error' 
-    const iterateInNewDoc = ({ pSchema, pNewDoc }) => {
-        let result = {}
-        let key
-        for (key in pNewDoc) {
-            hasSchemaNewDocPropertie({
-                result,
-                key,
-                pNewDoc,
-                pSchema,
-                iterateInNewDoc
-            })
-            // if (pSchema.hasOwnProperty(key)) {
+    let result = iterateInNewDoc({ schema, newDoc })
+    return { newDoc: result }
+}
+
+   // if (pSchema.hasOwnProperty(key)) {
             //     if (pSchema[key].hasOwnProperty(VIDALIILEAF)) {
             //         result[key] = pSchema[key].insert({ newValue: pNewDoc[key] })
             //     } else {
@@ -77,9 +82,3 @@ export default schema => ({ newDoc }) => {
             //             })
             //     }
             // }
-        }
-        return result
-    }
-    let result = iterateInNewDoc({ pSchema: schema, pNewDoc: newDoc })
-    return { newDoc: result }
-}

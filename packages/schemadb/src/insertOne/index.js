@@ -1,10 +1,12 @@
 import { pipe } from 'ramda'
 import validateInsert from './validateInsert'
+
+const defaultFx = ({ newDoc }) => ({ newDoc })
 export default (schema, db,
     {
-        preValidateInsert = ({ newDoc }) => ({ newDoc }),
-        preSaveInsert = ({ newDoc }) => ({ newDoc }),
-        afterSaveInsert = ({ newDoc }) => ({ newDoc }),
+        preValidateInsert = defaultFx,
+        preSaveInsert = defaultFx,
+        afterSaveInsert = defaultFx,
     } = {}
 ) => async (key, value) => {
     try {
