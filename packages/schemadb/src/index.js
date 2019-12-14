@@ -1,11 +1,11 @@
 // import integrateSchemaValidation from './schema'
 import { castingDB } from "./castingDB";
 import InsertOne from './insertOne'
-// import UpdateOne from './updateOne'
+import UpdateOne from './updateOne'
 export default (schema, customPipes = {}) => db => {
     db = castingDB(db)
     const insertOne = InsertOne(schema, db, customPipes)
-    // const updateOne = UpdateOne({ schema, db })
+    const updateOne = UpdateOne(schema, db, customPipes)
     return {
         composition: {
             ...db.composition,

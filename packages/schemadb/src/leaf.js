@@ -1,5 +1,5 @@
 import { pipe } from 'ramda'
-export const vidaliiLeaf = 'vidaliiLeaf'
+export const VIDALIILEAF = 'vidaliiLeaf'
 export default ({
     type,
     validationType
@@ -8,7 +8,7 @@ export default ({
         insert = ({ newValue }) => ({ newValue }),
         update = x => x
     } = {}) => ({
-        [vidaliiLeaf]: true,
+        [VIDALIILEAF]: true,
         type,
         insert: pipe(
             insert,
