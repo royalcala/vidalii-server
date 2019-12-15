@@ -1,24 +1,48 @@
 import { int, string } from '../src/leafTypes'
+
+const testArguments = expectedData => otherArgs => {
+    console.log('otherArgs::', otherArgs)
+    // test('prevValue', () => {
+    //     expect(
+    //         true
+    //     ).toBe(true)
+    // })
+}
 export default () => {
     describe('updateOne', () => {
         let schemadb
         beforeAll(async () => {
             schemadb = global.schemadb({
-                a: int(),
-                b: {
-                    a2: int()
-                },
+                a: int({
+                    update: ({ newValue, prevValue, prevDoc }) => {
+                        newValue.data.prevValue = prevValue
+                        newValue.data.prevDoc = prevDoc
+                        return newValue.newValue
+                    }
+                })
             })
         });
-        test('43px=3', async () => {
+        test('test prevValue,prevDoc,newValue', async () => {
             let response
-            response = await schemadb.insertOne({ _id: 'update' }, { a: '43px' })
+            response = await schemadb.insertOne({ _id: 'update' }, { a: '43' })
             // console.log('response::', response)
             expect(response.schemadb.value.a).toBe(43)
+            let data = {}
             response = await schemadb.updateOne(
                 response.versioningdb.key,
-                { a: '44px' })            
+                {
+                    a: {
+                        data,
+                        newValue: 44
+                    }
+                })
             expect(response.schemadb.value.a).toBe(44)
+            expect(data.prevValue).toBe(43)
+            expect(data.prevDoc).toEqual(
+                expect.objectContaining({
+                    a: 43
+                })
+            )
         })
         // test('string=0', async () => {
         //     let response
