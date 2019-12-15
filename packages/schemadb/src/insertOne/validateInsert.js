@@ -24,7 +24,7 @@ const checkIfSchemaKeyIsArray = ifElse(
     writeRecursive
 )
 
-const writeSimple = ({ schema, key, newDoc, result }) => result[key] = schema[key].insert(newDoc[key])
+const writeSimple = ({ schema, key, newDoc, result }) => result[key] = schema[key].insert({ newValue: newDoc[key] })
 // const writeSimple = ({ schema, key, newDoc, result }) => result[key] = schema[key].insert({ newValue: newDoc[key] })
 const hasSchemaAPropVidaliiLeaf = ifElse(
     ({ schema, key }) => schema[key].hasOwnProperty(VIDALIILEAF),
@@ -53,7 +53,7 @@ const iterateInNewDoc = ({ schema, newDoc }) => {
     }
     return result
 }
-export default schema => ({ newDoc }) => {    
+export default schema => ({ newDoc }) => {
     // throw  'this is the error' 
     let resultNewDoc = iterateInNewDoc({ schema, newDoc })
     return resultNewDoc

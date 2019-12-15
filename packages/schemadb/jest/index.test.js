@@ -7,6 +7,7 @@ import testSchema from './structureSchema'
 import testInsertOneInt from './insertOne.int'
 import testInsertOneArray from './insertOne.array'
 import testInsertOneArrayNested from './insertOne.arrayNested'
+import testUpdateOne from './updateOne'
 const leveldown = require('leveldown')
 
 
@@ -48,4 +49,5 @@ describe('schemadb', () => {
     testInsertOneInt()
     testInsertOneArray()
     testInsertOneArrayNested()
+    testUpdateOne()
 })

@@ -1,20 +1,24 @@
 import { VIDALIILEAF } from '../leaf'
 import { ifElse } from 'ramda'
 
-const writeRecursive = ({ iterateInNewDoc, result, key, schema, newDoc }) => result[key] = iterateInNewDoc({
+const writeRecursive = ({ iterateInNewDoc, result, key, schema, prevValue, newDoc }) => result[key] = iterateInNewDoc({
+    prevDoc,
+    prevValue: prevValue[key],
     schema: schema[key],
     newDoc: newDoc[key]
 })
 
 const checkIfSchemaKeyIsArray = ifElse(
     ({ schema, key }) => Array.isArray(schema[key]),
-    ({ key, schema, newDoc, result, iterateInNewDoc }) => {
+    ({ key, schema, prevValue, newDoc, result, iterateInNewDoc }) => {
         let index = 0
         let size = newDoc[key].length
         result[key] = []
         for (index; index < size; index++) {
             result[key].push(
                 iterateInNewDoc({
+                    prevDoc,
+                    prevValue: prevValue[key][index],
                     schema: schema[key][0],
                     newDoc: newDoc[key][index]
                 })
@@ -25,7 +29,17 @@ const checkIfSchemaKeyIsArray = ifElse(
 )
 
 
-const writeSimple = ({ schema, key, newDoc, result }) => result[key] = schema[key].insert({ newValue: newDoc[key] })
+const writeSimple = ({ schema, key, prevValue, prevDoc, newDoc, result }) => {
+    // console.log('prevValue[key]::', prevValue[key])
+    // console.log('key::', key)
+    // console.log('prevValue::', prevValue[key])
+    // console.log('newDoc::', newDoc[key])
+    return result[key] = schema[key].update({
+        prevDoc,
+        prevValue: prevValue[key],
+        newValue: newDoc[key]
+    })
+}
 const hasSchemaAPropVidaliiLeaf = ifElse(
     ({ schema, key }) => schema[key].hasOwnProperty(VIDALIILEAF),
     writeSimple,
@@ -45,6 +59,8 @@ const iterateInNewDoc = ({ schema, prevDoc, newDoc }) => {
         hasSchemaNewDocPropertie({
             result,
             key,
+            prevDoc,
+            prevValue: prevDoc,
             newDoc,
             schema,
             iterateInNewDoc
@@ -54,6 +70,6 @@ const iterateInNewDoc = ({ schema, prevDoc, newDoc }) => {
     return result
 }
 export default schema => ({ prevDoc, newDoc }) => {
-    let result = iterateInNewDoc({ prevDoc, schema, newDoc })
-    return { prevDoc, newDoc: result }
+    let resultNewDoc = iterateInNewDoc({ prevDoc, schema, newDoc })
+    return resultNewDoc
 }

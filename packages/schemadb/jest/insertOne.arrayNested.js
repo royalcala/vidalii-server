@@ -21,7 +21,7 @@ export default () => {
 
         test('array nested', async () => {
             let response
-            response = await schemadb.insertOne({ _id: 1 }, {
+            response = await schemadb.insertOne({ _id: 'insertArrayNested' }, {
                 array1: [
                     {
                         a: 2.5,
@@ -45,7 +45,7 @@ export default () => {
 
         test('arrayDoble', async () => {
             let response
-            response = await schemadb.insertOne({ _id: 1 }, {
+            response = await schemadb.insertOne({ _id: 'insertArrayNested' }, {
                 array1: [
                     { arrayDoble: [{ a21: 10 }] }
                 ]

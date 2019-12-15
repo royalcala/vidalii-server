@@ -1,6 +1,6 @@
 import validateInsert from './validateInsert'
 
-const reduceInsert = (...allPipeFxs) => newDoc => {
+const reduceInsert = (...allPipeFxs) => ({ newDoc }) => {
     let pipeFxs = [].concat(...allPipeFxs)
     let finalDoc = pipeFxs.reduce(
         (acc, fx) => fx({ newDoc: acc }),
@@ -23,7 +23,7 @@ export default (schema, db,
             preSaveInsert,
             validateInsert(schema),
             afterSaveInsert
-        )(value)
+        )({ newDoc: value })
 
         let response = await db.insertOne(key, newDoc)
         return ({

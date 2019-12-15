@@ -12,7 +12,7 @@ export default () => {
         });
         test('array one size', async () => {
             let response
-            response = await schemadb.insertOne({ _id: 1 }, {
+            response = await schemadb.insertOne({ _id: 'insertArray' }, {
                 array1: [
                     { a: 2.5 }
                 ]
@@ -25,7 +25,7 @@ export default () => {
         })
         test('array more than one size', async () => {
             let response
-            response = await schemadb.insertOne({ _id: 1 }, {
+            response = await schemadb.insertOne({ _id: 'insertArray' }, {
                 array1: [
                     { a: 2.5 },
                     { a: 3.5 },

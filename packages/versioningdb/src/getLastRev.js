@@ -1,6 +1,7 @@
 import { toEncodeRev } from './subdbs/revCodecs'
 
 export default ({ rev }) => async _id => {
+    _id = _id.hasOwnProperty('_id') ? _id._id : _id
     let lastRev = null
     await rev.iteratorP({
         onData: x => lastRev = x,
