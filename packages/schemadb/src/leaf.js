@@ -1,8 +1,8 @@
 import { pipe } from 'ramda'
 export const VIDALIILEAF = 'vidaliiLeaf'
 
-const reduceUpdate = (updateFx, ...otherFxs) => value => {
-    let pipeFxs = [].concat(updateFx, otherFxs)
+const reduceUpdate = (...allPipeFxs) => value => {
+    let pipeFxs = [].concat(...allPipeFxs)
     let finalValueOfOneNodeToSave = pipeFxs.reduce(
         (acc, fx) => fx({ newValue: acc }),
         value
@@ -10,8 +10,10 @@ const reduceUpdate = (updateFx, ...otherFxs) => value => {
     return finalValueOfOneNodeToSave
 }
 
-const reduceInsert = (insertFx, ...otherFxs) => value => {
-    let pipeFxs = [].concat(insertFx, otherFxs)
+// const reduceInsert = (insertFx, ...otherFxs) => value => {
+// let pipeFxs = [].concat(insertFx, otherFxs)
+const reduceInsert = (...allPipeFxs) => value => {
+    let pipeFxs = [].concat(...allPipeFxs)
     let finalValueOfOneNodeToSave = pipeFxs.reduce(
         (acc, fx) => fx({ newValue: acc }),
         value
@@ -25,7 +27,7 @@ export default ({
 }) => (
     {
         insert = ({ newValue }) => newValue,
-        update = x => x
+        update = ({ newValue }) => newValue
     } = {}) => {
         return {
             [VIDALIILEAF]: true,

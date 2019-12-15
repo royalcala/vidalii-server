@@ -53,10 +53,10 @@ const iterateInNewDoc = ({ schema, newDoc }) => {
     }
     return result
 }
-export default schema => ({ newDoc }) => {
+export default schema => ({ newDoc }) => {    
     // throw  'this is the error' 
-    let result = iterateInNewDoc({ schema, newDoc })
-    return { newDoc: result }
+    let resultNewDoc = iterateInNewDoc({ schema, newDoc })
+    return resultNewDoc
 }
 
    // if (pSchema.hasOwnProperty(key)) {

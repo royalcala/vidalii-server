@@ -38,7 +38,7 @@ const hasSchemaNewDocPropertie = ifElse(
     () => null
 )
 
-const iterateInNewDoc = ({ schema, newDoc }) => {
+const iterateInNewDoc = ({ schema, prevDoc, newDoc }) => {
     let result = {}
     let key
     for (key in newDoc) {
