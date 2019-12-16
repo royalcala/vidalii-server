@@ -1,5 +1,13 @@
-import reduceInsert from "./reduceInsert"
-import reduceUpdate from './reduceUpdate'
+
+
+const pipeFxs = (...allPipeFxs) => ({ newValue, ...otherData }) => {
+    let pipeFxs = [].concat(...allPipeFxs)
+    let finalValueOfOneNodeToSave = pipeFxs.reduce(
+        (acc, fx) => fx({ newValue: acc, ...otherData }),
+        newValue
+    )
+    return finalValueOfOneNodeToSave
+}
 
 export const VIDALIILEAF = 'vidaliiLeaf'
 
@@ -14,11 +22,11 @@ export default ({
         return {
             [VIDALIILEAF]: true,
             type,
-            insert: reduceInsert(
+            insert: pipeFxs(
                 insert,
                 validationType
             ),
-            update: reduceUpdate(
+            update: pipeFxs(
                 update,
                 validationType
             )

@@ -1,18 +1,10 @@
-import { pipe } from 'ramda'
-import validateUpdate from './validateUpdate'
-
-const reduceUpdate = (...allPipeFxs) => ({ prevDoc, newDoc }) => {
-    let pipeFxs = [].concat(...allPipeFxs)
-    let finalDoc = pipeFxs.reduce(
-        (acc, fx) => fx({ prevDoc, newDoc: acc }),
-        newDoc
-    )
-    return finalDoc
-}
+// import validateUpdate from './validateUpdate'
+import { validateUpdate } from './validateNewDoc'
+import { reducePipeFxs } from './reducePipeFxs'
 
 const getPrevDoc = async (db, key) => {
     // try {    
-    let response = await db.get(key)    
+    let response = await db.get(key)
     return response
     //     return response.data
     // } catch (error) {
@@ -29,10 +21,10 @@ export default (schema, db,
 ) => async (key, value) => {
     let prevDoc = await getPrevDoc(db, key)
     try {
-        let newDoc = reduceUpdate(
+        let newDoc = reducePipeFxs(
             preValidateUpdate,
             preSaveUpdate,
-            validateUpdate(schema),
+            validateUpdate({schema}),
             afterSaveUpdate
         )({ prevDoc, newDoc: value })
         let response = await db.replaceOne(key, newDoc)

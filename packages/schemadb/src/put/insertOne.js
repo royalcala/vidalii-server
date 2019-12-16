@@ -1,13 +1,7 @@
-import validateInsert from './validateInsert'
+// import validateInsert from './validateInsert'
+import { validateInsert } from './validateNewDoc'
+import { reducePipeFxs } from './reducePipeFxs'
 
-const reduceInsert = (...allPipeFxs) => ({ newDoc }) => {
-    let pipeFxs = [].concat(...allPipeFxs)
-    let finalDoc = pipeFxs.reduce(
-        (acc, fx) => fx({ newDoc: acc }),
-        newDoc
-    )
-    return finalDoc
-}
 
 const defaultFx = ({ newDoc }) => newDoc
 export default (schema, db,
@@ -18,10 +12,10 @@ export default (schema, db,
     } = {}
 ) => async (key, value) => {
     try {
-        let newDoc = reduceInsert(
+        let newDoc = reducePipeFxs(
             preValidateInsert,
             preSaveInsert,
-            validateInsert(schema),
+            validateInsert({ schema }),
             afterSaveInsert
         )({ newDoc: value })
 
