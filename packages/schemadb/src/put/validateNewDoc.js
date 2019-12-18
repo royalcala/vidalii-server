@@ -1,31 +1,10 @@
 import { VIDALIILEAF } from '../leaf'
 import { ifElse } from 'ramda'
 
-const writeValueUpdate = ({ schema, key, result, prevValue, prevDoc, newDoc }) => {
-    return result[key] = schema[key].update({
-        prevDoc,
-        prevValue: prevValue.hasOwnProperty(key) ? prevValue[key] : {},
-        newDoc,
-        newValue: newDoc[key]
-    })
-}
-const writeValueInsert = ({ schema, key, newDoc, result }) => {
-    return result[key] = schema[key].insert({ newDoc, newValue: newDoc[key] })
-}
-
-const writeValueRecursive = ({ iterateInNewDoc, result, key, schema, prevDoc, newDoc }) => {
-    result[key] = iterateInNewDoc({
-        prevDoc,
-        schema: schema[key],
-        newDoc: newDoc[key]
-    })
-    return result[key]
-
-}
 const writeValueInArrayRecursive = ({ key, schema, prevValue, prevDoc, newDoc, result, iterateInNewDoc }) => {
     let index = 0
     let size = newDoc[key].length
-    result[key] = []    
+    result[key] = []
     for (index; index < size; index++) {
         result[key].push(
             iterateInNewDoc({
@@ -37,6 +16,26 @@ const writeValueInArrayRecursive = ({ key, schema, prevValue, prevDoc, newDoc, r
         )
     }
 }
+
+const writeValueRecursive = ({ iterateInNewDoc, result, key, schema, prevDoc, newDoc }) => {
+    result[key] = iterateInNewDoc({
+        prevDoc,
+        schema: schema[key],
+        newDoc: newDoc[key]
+    })
+    return result[key]
+
+}
+const writeValue = typeLeaf => ({ schema, key, result, prevValue, prevDoc, newDoc }) => {
+    return result[key] = schema[key][typeLeaf]({
+        prevDoc,
+        prevValue: prevValue.hasOwnProperty(key) ? prevValue[key] : {},
+        newDoc,
+        newValue: newDoc[key]
+    })
+}
+
+
 const iterateInNewDoc = hasSchemaNewDocPropertie => ({ schema, prevDoc, newDoc }) => {
     let result = {}
     let key
@@ -55,41 +54,70 @@ const iterateInNewDoc = hasSchemaNewDocPropertie => ({ schema, prevDoc, newDoc }
     return result
 }
 
+const composition = ({ typeLeaf, schema, prevDoc, newDoc }) => iterateInNewDoc(
+    ifElse(
+        ({ key, schema }) => schema.hasOwnProperty(key),
+        ifElse(
+            ({ schema, key }) => schema[key].hasOwnProperty(VIDALIILEAF),
+            writeValue(typeLeaf),
+            ifElse(
+                ({ schema, key }) => Array.isArray(schema[key]),
+                writeValueInArrayRecursive,
+                writeValueRecursive
+            )
+        ),
+        () => null//omit the key of the newDoc
+    )
+)({ schema, prevDoc, newDoc })
+
 
 export const validateUpdate = ({ schema }) => ({ prevDoc = {}, newDoc }) => {
+    return composition({
+        typeLeaf: 'update',
+        schema,
+        prevDoc,
+        newDoc
+    })
 
-    return iterateInNewDoc(
-        ifElse(
-            ({ key, schema }) => schema.hasOwnProperty(key),
-            ifElse(
-                ({ schema, key }) => schema[key].hasOwnProperty(VIDALIILEAF),
-                writeValueUpdate,
-                ifElse(
-                    ({ schema, key }) => Array.isArray(schema[key]),
-                    writeValueInArrayRecursive,
-                    writeValueRecursive
-                )
-            ),
-            () => null//omit the key of the newDoc
-        )
-    )({ schema, prevDoc, newDoc })
 }
 
 export const validateInsert = ({ schema }) => ({ prevDoc = {}, newDoc }) => {
-
-    return iterateInNewDoc(
-        ifElse(
-            ({ key, schema }) => schema.hasOwnProperty(key),
-            ifElse(
-                ({ schema, key }) => schema[key].hasOwnProperty(VIDALIILEAF),
-                writeValueInsert,
-                ifElse(
-                    ({ schema, key }) => Array.isArray(schema[key]),
-                    writeValueInArrayRecursive,
-                    writeValueRecursive
-                )
-            ),
-            () => null//omit the key of the newDoc
-        )
-    )({ schema, prevDoc, newDoc })
+    return composition({
+        typeLeaf: 'insert',
+        schema,
+        prevDoc,
+        newDoc
+    })
 }
+
+    // return iterateInNewDoc(
+    //     ifElse(
+    //         ({ key, schema }) => schema.hasOwnProperty(key),
+    //         ifElse(
+    //             ({ schema, key }) => schema[key].hasOwnProperty(VIDALIILEAF),
+    //             writeValue('update'),
+    //             ifElse(
+    //                 ({ schema, key }) => Array.isArray(schema[key]),
+    //                 writeValueInArrayRecursive,
+    //                 writeValueRecursive
+    //             )
+    //         ),
+    //         () => null//omit the key of the newDoc
+    //     )
+    // )({ schema, prevDoc, newDoc })
+
+    // return iterateInNewDoc(
+    //     ifElse(
+    //         ({ key, schema }) => schema.hasOwnProperty(key),
+    //         ifElse(
+    //             ({ schema, key }) => schema[key].hasOwnProperty(VIDALIILEAF),
+    //             writeValue('insert'),
+    //             ifElse(
+    //                 ({ schema, key }) => Array.isArray(schema[key]),
+    //                 writeValueInArrayRecursive,
+    //                 writeValueRecursive
+    //             )
+    //         ),
+    //         () => null//omit the key of the newDoc
+    //     )
+    // )({ schema, prevDoc, newDoc })

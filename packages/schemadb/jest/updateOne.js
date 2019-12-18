@@ -26,8 +26,7 @@ export default () => {
                         data,
                         newValue: 44
                     }
-                })
-            console.log('response::', response)
+                })            
             expect(response.schemadb.value.a).toBe(44)
             expect(data.prevValue).toBe(43)
             expect(data.prevDoc).toEqual(
