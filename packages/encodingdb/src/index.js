@@ -46,6 +46,18 @@ const main = (codec = {}) => db => {
             // console.log('opsWithKeyPrefix::', opsWithKeyPrefix)
             return db.batch(opsWithKeyPrefix, options)
         },
+        preBatch: (ops, options = {}) => {
+            let opsWithKeyPrefix = ops.map(
+                ({ type, key, value, ...other }) => ({
+                    type,
+                    key: keyEncoding.encode(key),
+                    value: valueEncoding.encode(value),
+                    ...other
+                })
+            )
+            return db.hasOwnProperty('preBatch') ?
+                db.preBatch(opsWithKeyPrefix) : opsWithKeyPrefix
+        },
         del: (key, options = {}) => db.del(
             keyEncoding.encode(key),
             options

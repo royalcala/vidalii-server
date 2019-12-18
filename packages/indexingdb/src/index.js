@@ -1,51 +1,36 @@
 import encodingdb from '@vidalii/encodingdb'
 import { json as jsoncodecs, utf8 } from '@vidalii/encodingdb/src/codecs'
 import subdb from '@vidalii/subdb'
-import { pipe, split, hasPath, path } from 'ramda'
+import { pipe } from 'ramda'
 
-const defaultIndexing = listFields => {
-
-    return {
-        put: ({ doc }) => {
-            let preBatch = []
-            for (let index = 0; index < listFields.length; index++) {
-                let pathIndex = split('.', listFields[index])
-                if (hasPath(pathIndex, doc))
-                    preBatch.push({
-                        type,
-                        key: listFields[index].concat('!!', path(pathIndex, doc)),
-                        value
-                    })
-            }
-
-            return preBatch
-        },
-        del: ({ doc }) => {
-
-        },
-        get: ({ doc }) => {
-
-        }
-    }
-}
-
-
-const indexes = [
-    {
-        nameIndex: 'default',
-        fx: defaultIndexing([
-            ['folio'],
-            ['spec.size']
-            ['spec.color']
-        ])
-    }
-]
+// const indexes = [
+//     {
+//         nameIndex: 'default',
+//         fx: defaultIndexing([
+//             ['folio'],
+//             ['spec.size']
+//             ['spec.color']
+//         ])
+//     }
+// ]
 
 //AND
 //OR
 //Merge IDs
 
-const indexesFxsPipes = () => {
+const PutIndexes = ({ subdbIndexes, indexes }) => ({ key, value }) => {
+    let size = indexes.length
+    let preBatchs = []
+    for (let i = 0; i < size; i++) {
+        // preBatchs.push()
+        // let result = indexes.put({
+        //     key,
+        //     value,
+        //     preBatch: subdbIndexes[indexes.nameIndex].preBatch
+        // })
+        console.log('indexes[i].nameIndex::', indexes[i].nameIndex)
+        console.log('subdbIndexes::', subdbIndexes)
+    }
 
 }
 const indexCodecs = {
@@ -55,12 +40,23 @@ const indexCodecs = {
     },
     valueEncoding: jsoncodecs.valueEncoding
 }
-export default ({ listIndexes, prefix }) => db => {
-    const indexDB = pipe(
-        subdb({ prefix }),
-        encodingdb(indexCodecs),
-    )(db)
+//db->dbEncodedJson
+export default ({ indexes = [], prefix = 'indexes' }) => db => {
+    const mainIndex = subdb({ prefix })(db)
+    const subdbIndexes = indexes.reduce(
+        (acc, index) => {
+            return {
+                ...acc,
+                [index.nameIndex]: subdb({ prefix: index.nameIndex })(mainIndex)
+            }
+        },
+        {}
+    )
+    console.log('subdbIndexes::', subdbIndexes)
+    const putIndexes = PutIndexes({ subdbIndexes, indexes })
+
     return {
+        ...db,
         composition: {
             ...db.composition,
             indexdb: true
@@ -71,8 +67,10 @@ export default ({ listIndexes, prefix }) => db => {
         delPreBatch: (key, value) => {
 
         },
-        put: () => {
-
+        put: async (key, value, options = {}) => {
+            let response = await putIndexes({ key, value })
+            console.log('response putIndexes::', response)
+            return db.put(key, value, options)
         },
         find: ({ query, index }) => {
 

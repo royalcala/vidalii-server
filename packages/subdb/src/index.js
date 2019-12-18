@@ -39,7 +39,10 @@ const main = ({ prefix, separator = '!!' }) => db => {
     const removePrefix = key => key.slice(sizePrefix)
     return {
         ...db,
-        subdb: true,
+        composition: {
+            ...db.composition,
+            subdb: true
+        },
         put: (key, value, options = {}) => db.put(
             prefixConcat(key),
             value,
@@ -53,7 +56,7 @@ const main = ({ prefix, separator = '!!' }) => db => {
             options
         ),
         subPrefixConcat: prefixConcat,
-        batch: (ops, options = {}) => {                        
+        batch: (ops, options = {}) => {
             let opsWithKeyPrefix = ops.map(
                 ({ type, key, value, customSubdb = null }) => ({
                     type,
@@ -64,16 +67,18 @@ const main = ({ prefix, separator = '!!' }) => db => {
             // console.log('opsWithKeyPrefix::', opsWithKeyPrefix)
             return db.batch(opsWithKeyPrefix, options)
         },
-        // subPreBatch: ops => {
-        //     let opsWithKeyPrefix = ops.map(
-        //         ({ type, key, value }) => ({
-        //             type,
-        //             key: prefixConcat(key),
-        //             value
-        //         })
-        //     )
-        //     return opsWithKeyPrefix
-        // },
+        preBatch: ops => {
+            let opsWithKeyPrefix = ops.map(
+                ({ type, key, value, customSubdb = null, ...other }) => ({
+                    type,
+                    key: customSubdb !== null ? customSubdb(key) : prefixConcat(key),
+                    value,
+                    ...other
+                })
+            )
+            return db.hasOwnProperty('preBatch') ?
+                db.preBatch(opsWithKeyPrefix) : opsWithKeyPrefix
+        },
         createReadStreamP: (options = {}) => db.createReadStreamP(
             defaultOptionsQuery({ options, prefixConcat })
         ),

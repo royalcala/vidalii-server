@@ -15,15 +15,15 @@ export default () => {
         });
 
         test('insertOneWithAutomaticID', async () => {
-            let { _id, _rev } = await idb.insertOne(value)
-            let response = await idb.get(_id)
+            let { versioningdb: { key } } = await idb.insertOne(value)
+            let response = await idb.get(key)
             expect(response.data).toBe(value.data)
             let { _rev_num } = toDecodeRev(response._rev)
             expect(_rev_num).toBe(1)
             expect(config.seq.actualSeq()).toBe(1)
         })
         test('insertOneWithManualID', async () => {
-            let { _id, _rev } = await idb.insertOne({ _id: manualID, ...value })
+            let { versioningdb: { key: { _id, _rev } } } = await idb.insertOne({ _id: manualID, ...value })
             let response = await idb.get(_id)
             expect(response.data).toBe(value.data)
             let { _rev_num } = toDecodeRev(response._rev)
@@ -32,7 +32,7 @@ export default () => {
             expect(config.seq.actualSeq()).toBe(2)
         })
         test('replaceOne', async () => {
-            let { _id, _rev } = await idb.replaceOne({ _id: manualID, _rev: latestRev })
+            let { versioningdb: { key: { _id, _rev } } } = await idb.replaceOne({ _id: manualID, _rev: latestRev })
             let response = await idb.get(_id)
             expect(response.data).toBe(value.data)
             let { _rev_num } = toDecodeRev(response._rev)
