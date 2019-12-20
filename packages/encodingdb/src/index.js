@@ -52,6 +52,7 @@ const main = (codec = {}) => db => {
                     type,
                     key: keyEncoding.encode(key),
                     value: valueEncoding.encode(value),
+                    encodingdb: true,
                     ...other
                 })
             )

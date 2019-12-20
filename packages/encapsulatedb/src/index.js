@@ -32,7 +32,9 @@ const main = async ({ location, options = {}, store }) => {
             })
         }),
         get: (key, options = {}) => new Promise((resolve, reject) => {
+            console.log('key::',key)
             db.get(key, options, (error, data) => {
+                console.log('error::',error)
                 if (error)
                     reject({ error })
                 else
@@ -49,6 +51,14 @@ const main = async ({ location, options = {}, store }) => {
         }),
         batch: (ops, options = {}) => new Promise((resolve, reject) => {
             db.batch(ops, options, (error) => {
+                if (error)
+                    reject({ error })
+                else
+                    resolve({ error: null })
+            })
+        }),
+        preBatchExec: (ops, options = {}) => new Promise((resolve, reject) => {            
+            db.batch(ops, options, (error) => {                
                 if (error)
                     reject({ error })
                 else

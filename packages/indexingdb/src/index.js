@@ -1,5 +1,4 @@
 import encodingdb from '@vidalii/encodingdb'
-import { json as jsoncodecs, utf8 } from '@vidalii/encodingdb/src/codecs'
 import subdb from '@vidalii/subdb'
 import { pipe } from 'ramda'
 
@@ -18,42 +17,53 @@ import { pipe } from 'ramda'
 //OR
 //Merge IDs
 
-const PutIndexes = ({ subdbIndexes, indexes }) => ({ key, value }) => {
-    let size = indexes.length
+const PutIndexes = ({ dbs, indexes }) => ({ key, value }) => {
     let preBatchs = []
-    for (let i = 0; i < size; i++) {
-        // preBatchs.push()
-        // let result = indexes.put({
-        //     key,
-        //     value,
-        //     preBatch: subdbIndexes[indexes.nameIndex].preBatch
-        // })
-        console.log('indexes[i].nameIndex::', indexes[i].nameIndex)
-        console.log('subdbIndexes::', subdbIndexes)
+    for (let i = 0; i < indexes.length; i++) {
+        // let result = 
+        preBatchs.push(
+            ...indexes[i].fx.put({
+                key,
+                value,
+                preBatch: dbs.index[indexes[i].nameIndex].preBatch
+            })
+        )
+        // console.log('put of index:',indexes[i].nameIndex,':', result)
     }
-
+    return preBatchs
 }
-const indexCodecs = {
-    keyEncoding: {
-        // encode use default string/buff
-        decode: utf8.keyEncoding.decode
-    },
-    valueEncoding: jsoncodecs.valueEncoding
-}
-//db->dbEncodedJson
-export default ({ indexes = [], prefix = 'indexes' }) => db => {
-    const mainIndex = subdb({ prefix })(db)
-    const subdbIndexes = indexes.reduce(
+// const indexCodecs = {
+//     keyEncoding: {
+//         // encode use default string/buff
+//         decode: utf8.keyEncoding.decode
+//     },
+//     valueEncoding: jsoncodecs.valueEncoding
+// }
+const initDBS = ({ indexes, prefix, db }) => {
+    const dbRoot = db
+    const dbRootIndexes = subdb({ prefix })(dbRoot)
+    const dbRootIndexesName = indexes.reduce(
         (acc, index) => {
+            let { nameIndex, fx } = index
+            let { codecs } = fx
             return {
                 ...acc,
-                [index.nameIndex]: subdb({ prefix: index.nameIndex })(mainIndex)
+                [nameIndex]: pipe(
+                    encodingdb(codecs),
+                    subdb({ prefix: nameIndex })
+                )(dbRootIndexes)
             }
         },
         {}
     )
-    console.log('subdbIndexes::', subdbIndexes)
-    const putIndexes = PutIndexes({ subdbIndexes, indexes })
+    return {
+        // root: dbRoot,
+        index: dbRootIndexesName
+    }
+}
+export default ({ indexes = [], prefix = 'indexes' }) => db => {
+    const dbs = initDBS({ indexes, prefix, db })
+    const putIndexes = PutIndexes({ dbs, indexes })
 
     return {
         ...db,
@@ -61,21 +71,19 @@ export default ({ indexes = [], prefix = 'indexes' }) => db => {
             ...db.composition,
             indexdb: true
         },
-        putPreBatch: (key, value) => {
+        forTestingIndex: {
+            dbs
+        },
+        preBatchIndexes: (ops, options = {}) => {
+            let batchsIndexes = []
+            for (let index = 0; index < ops.length; index++) {
+                const { type, key, value } = ops[index]
+                batchsIndexes.push(...putIndexes({ key, value }))
 
+            }
+            return batchsIndexes
         },
-        delPreBatch: (key, value) => {
-
-        },
-        put: async (key, value, options = {}) => {
-            let response = await putIndexes({ key, value })
-            console.log('response putIndexes::', response)
-            return db.put(key, value, options)
-        },
-        find: ({ query, index }) => {
-
-        },
-        del: () => {
+        find: () => {
 
         }
     }

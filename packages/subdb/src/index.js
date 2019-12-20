@@ -73,6 +73,7 @@ const main = ({ prefix, separator = '!!' }) => db => {
                     type,
                     key: customSubdb !== null ? customSubdb(key) : prefixConcat(key),
                     value,
+                    subdb: true,
                     ...other
                 })
             )
