@@ -4,8 +4,8 @@ import { pipe } from 'ramda'
 
 // const indexes = [
 //     {
-//         nameIndex: 'default',
-//         fx: defaultIndexing([
+//         name: 'default',
+//         fx: singleIndexing([
 //             ['folio'],
 //             ['spec.size']
 //             ['spec.color']
@@ -13,60 +13,49 @@ import { pipe } from 'ramda'
 //     }
 // ]
 
-//AND
-//OR
-//Merge IDs
-
-const PutIndexes = ({ dbs, indexes }) => ({ key, value }) => {
+const indexFxPut = ({ dbs, indexes }) => ({ key, value }) => {
     let preBatchs = []
     for (let i = 0; i < indexes.length; i++) {
-        // let result = 
         preBatchs.push(
             ...indexes[i].fx.put({
                 key,
                 value,
-                preBatch: dbs.index[indexes[i].nameIndex].preBatch
+                preBatch: dbs.index[indexes[i].name].preBatch
             })
         )
-        // console.log('put of index:',indexes[i].nameIndex,':', result)
     }
     return preBatchs
 }
-// const indexCodecs = {
-//     keyEncoding: {
-//         // encode use default string/buff
-//         decode: utf8.keyEncoding.decode
-//     },
-//     valueEncoding: jsoncodecs.valueEncoding
-// }
 const initDBS = ({ indexes, prefix, db }) => {
-    const dbRoot = db
-    const dbRootIndexes = subdb({ prefix })(dbRoot)
-    const dbRootIndexesName = indexes.reduce(
+    const dbIndexes = subdb({ prefix })(db)
+    const dbIndexesFxName = indexes.reduce(
         (acc, index) => {
-            let { nameIndex, fx } = index
+            let { name, fx } = index
             let { codecs } = fx
             return {
                 ...acc,
-                [nameIndex]: pipe(
+                [name]: pipe(
+                    subdb({ prefix: name }),
                     encodingdb(codecs),
-                    subdb({ prefix: nameIndex })
-                )(dbRootIndexes)
+                )(dbIndexes)
             }
         },
         {}
     )
     return {
-        // root: dbRoot,
-        index: dbRootIndexesName
+        index: dbIndexesFxName
     }
 }
 export default ({ indexes = [], prefix = 'indexes' }) => db => {
     const dbs = initDBS({ indexes, prefix, db })
-    const putIndexes = PutIndexes({ dbs, indexes })
+    const indexPreBatch = {
+        put: indexFxPut({ dbs, indexes }),
+        get: '',
+        del: ''
+    }
 
     return {
-        ...db,
+        // ...db,
         composition: {
             ...db.composition,
             indexdb: true
@@ -74,16 +63,16 @@ export default ({ indexes = [], prefix = 'indexes' }) => db => {
         forTestingIndex: {
             dbs
         },
+        index: { ...dbs.index },
         preBatchIndexes: (ops, options = {}) => {
             let batchsIndexes = []
             for (let index = 0; index < ops.length; index++) {
                 const { type, key, value } = ops[index]
-                batchsIndexes.push(...putIndexes({ key, value }))
-
+                batchsIndexes.push(...indexPreBatch.put({ key, value }))
             }
             return batchsIndexes
         },
-        find: () => {
+        find: ({ select = null, where = null, sortby = null, ...othersWheres }) => {
 
         }
     }

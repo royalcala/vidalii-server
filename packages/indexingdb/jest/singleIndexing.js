@@ -9,7 +9,7 @@ export default () => {
             data_db = global.data_db
             const indexes = [
                 {
-                    nameIndex: 'singleIndexing',
+                    name: 'singleIndexing',
                     fx: singleIndexing([
                         'folio',
                         'spec.size',
@@ -32,7 +32,7 @@ export default () => {
             let firstDoc = {
                 type: 'put',
                 key: 'firstDoc',
-                value: { folio: 'folioOne', spec: { size: 'sizeOne', color: 'colorBlue' } }
+                value: { folio: 'folioOne', spec: { size: 1.5, color: 'colorBlue' } }
             }
             let indexesPreBatch = index_db.preBatchIndexes([firstDoc])
             let dataPreBatch = data_db.preBatch([firstDoc])
@@ -52,7 +52,9 @@ export default () => {
                 onData: console.log
             })
 
-            await index_db.iteratorP({
+            // console.log('index_db.index::', index_db.index)
+
+            await index_db.index.singleIndexing.iteratorP({
                 onData: console.log
             })
 

@@ -31,10 +31,8 @@ const main = async ({ location, options = {}, store }) => {
                     resolve({ error: null })
             })
         }),
-        get: (key, options = {}) => new Promise((resolve, reject) => {
-            console.log('key::',key)
-            db.get(key, options, (error, data) => {
-                console.log('error::',error)
+        get: (key, options = {}) => new Promise((resolve, reject) => {            
+            db.get(key, options, (error, data) => {                
                 if (error)
                     reject({ error })
                 else
