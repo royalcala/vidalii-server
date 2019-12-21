@@ -15,7 +15,6 @@ const preBatchPut = listFields => ({ key, value, preBatch }) => {
                         valueField: valueOfIndex,
                         idDoc: key
                     },
-                    // key: listFields[index].concat('!!', valueOfIndex, '!!', key),
                     value: {}
                 }])[0]
             )
@@ -31,8 +30,31 @@ export default listFields => {
     return {
         codecs,
         put: preBatchPut(listFields),
-        get: ({ indexName }) => (key, value) => {
+        get: async ({ docsdb, indexdb }) => {
+            let indexDataFound = []
+            await indexdb.iteratorP({
+                onData: row => indexDataFound.push(row),
+                values: false,
+                // onData: console.log
+            })
+            let docsFound = []
+            for (let i = 0; i < indexDataFound.length; i++) {
+                try {
+                    let response = await docsdb.get(indexDataFound[i].idDoc)
+                    docsFound.push(response.data)
+                } catch (error) {                    
+                }               
+            }
+            console.log('docsFound::',docsFound)
+            // await indexdb.iteratorP({
+            //     onData: console.log,                
+            // reverse: true,
+            // gte: { _id, encodedRev: '\x00' },
+            // lte: { _id, encodedRev: '\xFF' },
+            // limit: 1,
 
+            // })            
+            return indexDataFound
         },
         del: (key, value) => {
 

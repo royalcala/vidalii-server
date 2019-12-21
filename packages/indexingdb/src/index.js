@@ -13,43 +13,45 @@ import { pipe } from 'ramda'
 //     }
 // ]
 
-const indexFxPut = ({ dbs, indexes }) => ({ key, value }) => {
+const indexFxPut = ({ index, indexes }) => ({ key, value }) => {
     let preBatchs = []
     for (let i = 0; i < indexes.length; i++) {
         preBatchs.push(
             ...indexes[i].fx.put({
                 key,
                 value,
-                preBatch: dbs.index[indexes[i].name].preBatch
+                preBatch: index[indexes[i].name].db.preBatch
             })
         )
     }
     return preBatchs
 }
-const initDBS = ({ indexes, prefix, db }) => {
-    const dbIndexes = subdb({ prefix })(db)
+const initDBS = ({ indexes, prefix, dbWhereSaveIndexes }) => {
+    const dbIndexes = subdb({ prefix })(dbWhereSaveIndexes)
     const dbIndexesFxName = indexes.reduce(
         (acc, index) => {
             let { name, fx } = index
             let { codecs } = fx
             return {
                 ...acc,
-                [name]: pipe(
-                    subdb({ prefix: name }),
-                    encodingdb(codecs),
-                )(dbIndexes)
+                [name]: {
+                    db: pipe(
+                        subdb({ prefix: name }),
+                        encodingdb(codecs),
+                    )(dbIndexes),
+                    fx
+
+                }
             }
         },
         {}
     )
-    return {
-        index: dbIndexesFxName
-    }
+    return dbIndexesFxName
 }
-export default ({ indexes = [], prefix = 'indexes' }) => db => {
-    const dbs = initDBS({ indexes, prefix, db })
+export default ({ docsdb, indexes = [], prefix = 'indexes' }) => dbWhereSaveIndexes => {
+    const index = initDBS({ indexes, prefix, dbWhereSaveIndexes })
     const indexPreBatch = {
-        put: indexFxPut({ dbs, indexes }),
+        put: indexFxPut({ index, indexes }),
         get: '',
         del: ''
     }
@@ -60,10 +62,7 @@ export default ({ indexes = [], prefix = 'indexes' }) => db => {
             ...db.composition,
             indexdb: true
         },
-        forTestingIndex: {
-            dbs
-        },
-        index: { ...dbs.index },
+        index,
         preBatchIndexes: (ops, options = {}) => {
             let batchsIndexes = []
             for (let index = 0; index < ops.length; index++) {
@@ -72,8 +71,19 @@ export default ({ indexes = [], prefix = 'indexes' }) => db => {
             }
             return batchsIndexes
         },
-        find: ({ select = null, where = null, sortby = null, ...othersWheres }) => {
+        // find: ({ select = null, where = null, sortby = null, ...othersWheres }) => {
 
+        // }
+        query: async (pipes) => {
+            for (let i = 0; i < pipes.length; i++) {
+                const { useIndex, get, pipe = null } = pipes[i]
+                let data = await index[useIndex].fx.get({
+                    docsdb,
+                    indexdb: index[useIndex].db
+                })
+                console.log('data::', data)
+
+            }
         }
     }
 

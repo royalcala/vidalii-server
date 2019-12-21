@@ -18,10 +18,10 @@ export default () => {
                     ])
                 }
             ]
-            index_db = indexingdb({ indexes, prefix: 'indexes' })(db)
+            index_db = indexingdb({ docsdb: data_db, indexes, prefix: 'indexes' })(db)
         });
         test('structure index_db', () => {
-            expect(index_db.forTestingIndex.dbs.index).toEqual(
+            expect(index_db.index).toEqual(
                 expect.objectContaining({
                     singleIndexing: expect.any(Object)
                 })
@@ -32,7 +32,7 @@ export default () => {
             let firstDoc = {
                 type: 'put',
                 key: 'firstDoc',
-                value: { folio: 'folioOne', spec: { size: 1.5, color: 'colorBlue' } }
+                value: { folio: 1, spec: { size: 12.5, color: 'colorBlue' } }
             }
             let indexesPreBatch = index_db.preBatchIndexes([firstDoc])
             let dataPreBatch = data_db.preBatch([firstDoc])
@@ -48,19 +48,27 @@ export default () => {
             expect(getResponse.error).toEqual(null)
             expect(getResponse.data).toEqual(firstDoc.value)
 
-            await data_db.iteratorP({
-                onData: console.log
-            })
+            // await data_db.iteratorP({
+            //     onData: console.log
+            // })
 
-            // console.log('index_db.index::', index_db.index)
+            // await index_db.index.singleIndexing.db.iteratorP({
+            //     onData: console.log
+            // })
 
-            await index_db.index.singleIndexing.iteratorP({
-                onData: console.log
-            })
-
-
-
-            //data on index_db
+            await index_db.query([
+                {
+                    useIndex: 'singleIndexing',
+                    get: {
+                        field: 'folio',
+                        where: {
+                            gte: 1,
+                            lte: 10,
+                        }
+                    },
+                    pipe: ''
+                }
+            ])
 
 
         })
