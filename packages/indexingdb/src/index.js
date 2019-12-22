@@ -75,15 +75,17 @@ export default ({ docsdb, indexes = [], prefix = 'indexes' }) => dbWhereSaveInde
 
         // }
         query: async (pipes) => {
+            let dataFromIndex = {}
             for (let i = 0; i < pipes.length; i++) {
-                const { useIndex, get, pipe = null } = pipes[i]
-                let data = await index[useIndex].fx.get({
+                const { useIndex, get = {}, pipe = [] } = pipes[i]
+                dataFromIndex[useIndex] = await index[useIndex].fx.get({
                     docsdb,
-                    indexdb: index[useIndex].db
+                    indexdb: index[useIndex].db,
+                    get
                 })
-                console.log('data::', data)
 
             }
+            return dataFromIndex
         }
     }
 

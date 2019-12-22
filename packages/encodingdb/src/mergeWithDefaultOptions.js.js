@@ -10,7 +10,9 @@ export default ({ options, keyEncoding }) => pipe(
     evolve({
         gt: keyEncoding.encode,
         gte: keyEncoding.encode,
+        start: keyEncoding.encode,
         lt: keyEncoding.encode,
         lte: keyEncoding.encode,
+        end: keyEncoding.encode,
     })
 )(options)

@@ -114,7 +114,7 @@ const initDefaultoptions = ({ options }) => {
     return mergeDeepRight(defaults, options)
 }
 export default (db, options = {}) => {
-    var defaultoptions = initDefaultoptions({ options })
+    var defaultoptions = initDefaultoptions({ options })    
     return cond([
         condBoth,
         condOnlyKeys,

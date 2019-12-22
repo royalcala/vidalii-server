@@ -27,26 +27,31 @@ const encodingFloat = ({ valueField }) => {
 
 export default {
     keyEncoding: {
-        encode: ({ nameField, valueField, idDoc }) => {
-            if (typeof valueField === 'string') // is string
-                return keyEncodingConcat({
-                    nameField,
-                    valueField: valueField + '.str',
-                    idDoc
-                })
-            else if (Number.isInteger(valueField)) // is int
-                return keyEncodingConcat({
-                    nameField,
-                    valueField: lexint.pack(valueField, 'hex') + '.int',
-                    idDoc
-                })
-            else if (valueField % 1 !== 0) //is float
-                return keyEncodingConcat({
-                    nameField,
-                    valueField: encodingFloat({ valueField }) + '.flo',
-                    idDoc
-                })
-            //is text full search
+        encode: args => {
+            try {
+                const { nameField, valueField, idDoc } = args
+                if (typeof valueField === 'string') // is string
+                    return keyEncodingConcat({
+                        nameField,
+                        valueField: valueField + '.str',
+                        idDoc
+                    })
+                else if (Number.isInteger(valueField)) // is int
+                    return keyEncodingConcat({
+                        nameField,
+                        valueField: lexint.pack(valueField, 'hex') + '.int',
+                        idDoc
+                    })
+                else if (valueField % 1 !== 0) //is float
+                    return keyEncodingConcat({
+                        nameField,
+                        valueField: encodingFloat({ valueField }) + '.flo',
+                        idDoc
+                    })
+                //is text full search  
+            } catch (error) {
+                console.log(`Error on singleIndexing.codecs on keyEncoding.encode:args:${args}, msgError:${error}`)
+            }
         },
         decode: buff => {
             let [nameField, valueField, idDoc] = buff.toString('utf8').split('!!')
