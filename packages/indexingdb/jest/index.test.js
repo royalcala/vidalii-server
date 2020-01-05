@@ -9,6 +9,9 @@ import { pipe } from 'ramda'
 
 import test_singleIndexing from './singleIndexing'
 import test_sqlite from './sqlite'
+import test_pouchdb from './pouchdb'
+import test_nanosql from './nanosql'
+
 const leveldown = require('leveldown')
 const codecs = {
     keyEncoding: {
@@ -17,7 +20,7 @@ const codecs = {
     },
     valueEncoding: jsoncodecs.valueEncoding
 }
-jest.setTimeout(30000);
+jest.setTimeout(10000);
 describe('indexingdb', () => {
     let db, data_db
     let location = './testDB'
@@ -26,6 +29,8 @@ describe('indexingdb', () => {
         removeDataBase({ location })
         //sqlite
         removeDataBase({ location: './mydb.sqlite' })
+        //pouchdb
+        removeDataBase({ location: './pouchdb' })
         db = await encapsulatedb({ store: leveldown, location: './testDB' })
 
 
@@ -37,20 +42,24 @@ describe('indexingdb', () => {
 
         global.db = db
         global.data_db = data_db
+        global.sampleSize = 300000
         var sqlite3 = require('sqlite3').verbose();
 
         let sqlitedb = new sqlite3.Database("./mydb.sqlite")
         // let sqlitedb = new sqlite3.Database(':memory:');
         global.sqlitedb = sqlitedb
-        global.sampleSize = 1000000
-
+        const PouchDB = require('pouchdb');
+        PouchDB.plugin(require('pouchdb-find'));
+        global.pouchdb = new PouchDB('./pouchdb');
     });
     afterAll(async () => {
         await db.close()
     })
     //12810
-    test_singleIndexing()
+    // test_singleIndexing()
     test_sqlite()
+    // test_pouchdb()
+    // test_nanosql()
 
 
 })

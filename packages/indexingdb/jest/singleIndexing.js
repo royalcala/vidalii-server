@@ -32,6 +32,34 @@ export default () => {
                 })
             )
         })
+        test('insert each single', async () => {
+            let howMany = sampleSize
+            let sample = []
+            let response
+            for (let index = 0; index < howMany; index++) {
+                // sample.push({
+                //     type: 'put',
+                //     key: index,
+                //     value: { folio: index, spec: { size: 12.5, color: 'colorBlue' } }                    
+                // })
+                  data_db.put(index, { folio: index, spec: { size: 12.5, color: 'colorBlue' } })
+            }
+            // let response = await data_db.batch(sample)
+            expect(null).toEqual(null)
+        })
+        it('LEVELDB read all', async () => {
+            let data = []
+            let response = await data_db.iteratorP({
+                onData: ({ key, value }) => {
+                    // console.log('doc::', value)
+                    // if (value.folio >= 0 && value.folio <= 10)
+                    data.push(value)
+                }
+            })
+
+            expect(sampleSize).toEqual(data.length)
+
+        })
         test('insert many LEVELDB', async () => {
             // manyTest (5347ms) with fx callpromise
             //manyTest (6522ms) without
@@ -51,62 +79,45 @@ export default () => {
             let response = await data_db.batch(sample)
             expect(response.error).toEqual(null)
         })
-        it('LEVELDB read all', async () => {
-            let data = []
-            let response = await data_db.iteratorP({
-                onData: ({ key, value }) => {
-                    // console.log('doc::', value)
-                    // if (value.folio >= 0 && value.folio <= 10)
-                    data.push(value)
-                }
-            })
+        // it('LEVELDB read all', async () => {
+        //     let data = []
+        //     let response = await data_db.iteratorP({
+        //         onData: ({ key, value }) => {
+        //             // console.log('doc::', value)
+        //             // if (value.folio >= 0 && value.folio <= 10)
+        //             data.push(value)
+        //         }
+        //     })
 
-            expect(sampleSize).toEqual(data.length)
+        //     expect(sampleSize).toEqual(data.length)
 
-        })
-        test('writeManySamples with One index', async () => {
-            // manyTest (5347ms) with fx callpromise
-            //manyTest (6522ms) without
+        // })
+        // test('writeManySamples with One index', async () => {
+        //     // manyTest (5347ms) with fx callpromise
+        //     //manyTest (6522ms) without
 
-            // let millions = n => Number('1000' + '000') * n
-            // let howMany = millions(1)
-            let howMany = sampleSize
-            let sample = []
-            for (let index = 0; index < howMany; index++) {
-                sample.push({
-                    type: 'put',
-                    key: index,
-                    value: { folio: index, spec: { size: 12.5, color: 'colorBlue' } }
-                    // value: { folio: index }
-                })
-            }
+        //     // let millions = n => Number('1000' + '000') * n
+        //     // let howMany = millions(1)
+        //     let howMany = sampleSize
+        //     let sample = []
+        //     for (let index = 0; index < howMany; index++) {
+        //         sample.push({
+        //             type: 'put',
+        //             key: index,
+        //             value: { folio: index, spec: { size: 12.5, color: 'colorBlue' } }
+        //             // value: { folio: index }
+        //         })
+        //     }
 
-            let indexesPreBatch = index_db.preBatchIndexes(sample)
-            let dataPreBatch = data_db.preBatch(sample)
-            let concated = indexesPreBatch.concat(dataPreBatch)
-            // console.log('concated::',concated)
-            let response = await data_db.preBatchExec(
-                concated
-            )
-            expect(response.error).toEqual(null)
-
-            //data on data_db
-            // let getResponse = await data_db.get(firstDoc.key)
-            // expect(getResponse.error).toEqual(null)
-            // expect(getResponse.data).toEqual(firstDoc.value)
-
-            // await data_db.iteratorP({
-            //     onData: console.log
-            // })
-
-            // await index_db.index.singleIndexing.db.iteratorP({
-            //     onData: console.log
-            // })
-
-
-
-            // console.log('dataFromIndex::', dataFromIndex)
-        })
+        //     let indexesPreBatch = index_db.preBatchIndexes(sample)
+        //     let dataPreBatch = data_db.preBatch(sample)
+        //     let concated = indexesPreBatch.concat(dataPreBatch)
+        //     // console.log('concated::',concated)
+        //     let response = await data_db.preBatchExec(
+        //         concated
+        //     )
+        //     expect(response.error).toEqual(null)
+        // })
 
         // it('check size batch', async () => {
         //     let data = 0

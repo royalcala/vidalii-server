@@ -22,9 +22,12 @@
     "babel-plugin-ramda": "^2.0.0"
   },
   "dependencies": {
+    "@nano-sql/core": "^2.3.7",
     "better-sqlite3": "^5.4.3",
     "knex": "^0.20.4",
     "leveldown": "^5.4.1",
+    "pouchdb": "^7.1.1",
+    "pouchdb-find": "^7.1.1",
     "ramda": "^0.26.1",
     "sqlite3": "^4.1.1"
   }

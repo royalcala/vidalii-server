@@ -1,0 +1,24 @@
+  with indexes 100500
+  ✓ create Table (38ms)
+      ✓ insert many works only with <500  (24ms)
+      ✓ insert many works only with >500  (1077ms)
+      ✓ read ALL (272ms)
+without indexes
+      ✓ create Table (22ms)
+      ✓ insert many works only with <500  (29ms)
+      ✓ insert many works only with >500  (876ms)
+      ✓ read ALL (287ms)
+
+500,000 no index
+         knex
+      ✓ create Table (23ms)
+      ✓ insert many works only with <500  (30ms)
+      ✓ insert many works only with >500  (4939ms)
+      ✓ read ALL (1666ms)
+
+      500,000 with index
+        knex
+      ✓ create Table (37ms)
+      ✓ insert many works only with <500  (22ms)
+      ✓ insert many works only with >500  (5965ms)
+      ✓ read ALL (1523ms)

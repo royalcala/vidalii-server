@@ -1,7 +1,4 @@
-import { singleIndexing } from '../src/fxs'
-import indexingdb from '../src'
-import { resolvePlugin } from '@babel/core'
-import { reject, insert } from 'ramda'
+
 
 export default () => {
     describe('sqlite', () => {
@@ -37,70 +34,68 @@ export default () => {
             let response = await createPostTable()
             console.log('response::', response)
         })
-        // it('create Index1', async () => {
-        //     let db = sqlitedb
-        //     const createIndex = () => {
-        //         console.log("in create index")
-        //         return new Promise((resolve, reject) => {
-        //             //raw SQLite to insert a new post in post table
-        //             db.run(`
-        //             CREATE UNIQUE INDEX idx_title 
-        //             ON posts (title)`, (err) => {
-        //                 if (err) {
-        //                     reject(null);
-        //                 }
-        //                 resolve('index created')
-        //             });
-        //         });
-        //     }
-        //     let response = await createIndex()
-        //     console.log('response::', response)
-        // })
-        // it('create Index2', async () => {
-        //     let db = sqlitedb
-        //     const createIndex = () => {
-        //         console.log("in create index")
-        //         return new Promise((resolve, reject) => {
-        //             //raw SQLite to insert a new post in post table
-        //             db.run(`
-        //             CREATE UNIQUE INDEX idx_description 
-        //             ON posts (description)`, (err) => {
-        //                 if (err) {
-        //                     reject(null);
-        //                 }
-        //                 resolve('index created2')
-        //             });
-        //         });
-        //     }
-        //     let response = await createIndex()
-        //     console.log('response::', response)
-        // })
-        // it('create Index3', async () => {
-        //     let db = sqlitedb
-        //     const createIndex = () => {
-        //         console.log("in create index")
-        //         return new Promise((resolve, reject) => {
-        //             //raw SQLite to insert a new post in post table
-        //             db.run(`
-        //             CREATE UNIQUE INDEX idx_author 
-        //             ON posts (author)`, (err) => {
-        //                 if (err) {
-        //                     reject(null);
-        //                 }
-        //                 resolve('index created3')
-        //             });
-        //         });
-        //     }
-        //     let response = await createIndex()
-        //     console.log('response::', response)
-        // })
+        it('create Index1', async () => {
+            let db = sqlitedb
+            const createIndex = () => {
+                console.log("in create index")
+                return new Promise((resolve, reject) => {
+                    //raw SQLite to insert a new post in post table
+                    db.run(`
+                    CREATE UNIQUE INDEX idx_title 
+                    ON posts (title)`, (err) => {
+                        if (err) {
+                            reject(null);
+                        }
+                        resolve('index created')
+                    });
+                });
+            }
+            let response = await createIndex()
+            console.log('response::', response)
+        })
+        it('create Index2', async () => {
+            let db = sqlitedb
+            const createIndex = () => {
+                console.log("in create index")
+                return new Promise((resolve, reject) => {
+                    //raw SQLite to insert a new post in post table
+                    db.run(`
+                    CREATE UNIQUE INDEX idx_description 
+                    ON posts (description)`, (err) => {
+                        if (err) {
+                            reject(null);
+                        }
+                        resolve('index created2')
+                    });
+                });
+            }
+            let response = await createIndex()
+            console.log('response::', response)
+        })
+        it('create Index3', async () => {
+            let db = sqlitedb
+            const createIndex = () => {
+                console.log("in create index")
+                return new Promise((resolve, reject) => {
+                    //raw SQLite to insert a new post in post table
+                    db.run(`
+                    CREATE UNIQUE INDEX idx_author 
+                    ON posts (author)`, (err) => {
+                        if (err) {
+                            reject(null);
+                        }
+                        resolve('index created3')
+                    });
+                });
+            }
+            let response = await createIndex()
+            console.log('response::', response)
+        })
 
         it('insert many', async () => {
             // var sqlite3 = require('sqlite3').verbose();
 
             let db = sqlitedb
-
-
             const insertData = () => {
                 console.log("Insert data")
                 return new Promise((resolve, reject) => {

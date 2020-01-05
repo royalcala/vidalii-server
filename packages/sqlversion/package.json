@@ -1,0 +1,27 @@
+{
+  "name": "@vidalii/sqlversion",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Roy Alcala Ortiz",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest jest",
+    "test:watch": "yarn test -- --watch",
+    "nodemon": "nodemon --exec babel-node test",
+    "babel:out:dir": "npx babel src --out-dir lib",
+    "babel:out:dir:onefile": "npx babel src --out-file src-onefile.js",
+    "babel:out:file": "npx babel src --out-file script-compiled.js"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",    
+    "@babel/preset-env": "^7.6.3",
+    "babel-plugin-ramda": "^2.0.0"
+  },
+  "dependencies": {
+    "knex": "^0.20.4",
+    "ramda": "^0.26.1",
+    "sqlite3": "^4.1.1"
+  }
+}
