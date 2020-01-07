@@ -2,16 +2,17 @@ export default () => {
     describe('sqlite3', () => {
         let sqlitedb
         let sampleSize
+        let bettersql
         beforeAll(async () => {
             sampleSize = global.sampleSize
             sqlitedb = global.sqlitedb
-
+            bettersql = global.bettersql
 
         });
 
         it('create Table', async () => {
             let db = sqlitedb
-            const createPostTable = () => {                
+            const createPostTable = () => {
                 return new Promise((resolve, reject) => {
                     //raw SQLite to insert a new post in post table
                     db.run(`
@@ -31,8 +32,24 @@ export default () => {
                     });
                 });
             }
-            let response = await createPostTable()            
+            let response = await createPostTable()
         })
+        it('create function deterministic', async () => {
+             bettersql.function('json_value', { deterministic: true, varargs: true }, (json_text, key) => json_text ? JSON.parse(json_text)[key] : null);
+            const createIndex = bettersql.prepare(`
+            CREATE INDEX idx_datajson
+            ON posts(json_value(datajson,'name') COLLATE NOCASE) 
+`)
+            createIndex.run()
+
+        })
+        // it('create index function', async () => {
+        //     const createIndex = bettersql.prepare(`
+        //             CREATE INDEX idx_datajson
+        //             ON posts(json_value(datajson,'name') COLLATE NOCASE) 
+        // `)
+        //     createIndex.run()
+        // })
         // it('create Index1', async () => {
         //     let db = sqlitedb
         //     const createIndex = () => {                
@@ -89,8 +106,26 @@ export default () => {
         //     let response = await createIndex()
         //     console.log('response::', response)
         // })
+        // it('create Index4 json', async () => {
+        //     let db = sqlitedb
+        //     const createIndex = () => {
+        //         console.log("in create index4")
+        //         return new Promise((resolve, reject) => {
+        //             db.run(`
+        //             CREATE INDEX idx_datajson
+        //             ON posts (json_value(datajson, 'index') )`, (err) => {
+        //                 if (err) {
+        //                     reject(null);
+        //                 }
+        //                 resolve('index created4')
+        //             });
+        //         });
+        //     }
+        //     let response = await createIndex()
+        //     console.log('response::', response)
+        // })
         // insert into `table1` (`folio`, `spec`) select 0 as `folio`, 'car number 0' as `spec` union all select 1 as `folio`, 'car number 1' as `spec` union all select 2 as `folio`, 'car number 2' as `spec`
-        
+
         // it('insert type2', async () => {
         //     // var sqlite3 = require('sqlite3').verbose();
         //     let db = sqlitedb
@@ -175,7 +210,7 @@ export default () => {
                         let promises = []
                         for (var i = 0; i < sampleSize; i++) {
                             stmt.run("title" + i, 'author' + i,
-                                JSON.stringify({ index: i,hola:{hola2:1} }),
+                                JSON.stringify({ index: i, hola: { hola2: 1 } }),
                                 JSON.stringify([i, i + 1])
                             )
                         }
@@ -306,7 +341,7 @@ export default () => {
         //     expect(true).toEqual(true)
         //     // console.log('response.length::', response.length)
         // })
-       
+
 
     })
 

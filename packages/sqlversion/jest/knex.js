@@ -10,7 +10,6 @@ export default () => {
         });
 
         it('create Table', async () => {
-
             const table = table => {
                 table.increments('the_id')
                 table.integer('folio')
@@ -29,6 +28,8 @@ export default () => {
             ).toString()
             console.log('str::', str)
         })
+
+      
 
         it('insert many works only with <500 ', async () => {
             let rows = []

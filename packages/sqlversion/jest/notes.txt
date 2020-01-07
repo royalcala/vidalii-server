@@ -1,14 +1,3 @@
-  with indexes 100500
-  ✓ create Table (38ms)
-      ✓ insert many works only with <500  (24ms)
-      ✓ insert many works only with >500  (1077ms)
-      ✓ read ALL (272ms)
-without indexes
-      ✓ create Table (22ms)
-      ✓ insert many works only with <500  (29ms)
-      ✓ insert many works only with >500  (876ms)
-      ✓ read ALL (287ms)
-
 500,000 no index
          knex
       ✓ create Table (23ms)
@@ -22,3 +11,26 @@ without indexes
       ✓ insert many works only with <500  (22ms)
       ✓ insert many works only with >500  (5965ms)
       ✓ read ALL (1523ms)
+
+  bettersql
+      ✓ create Table (11ms)
+      ✓ create function deterministic (4ms)
+      ✓ insert one (10ms)
+      ✓ insert many transaction (2814ms)
+
+      bettersql
+      ✓ create Table (9ms)
+      ✓ create function deterministic (4ms)
+      ✓ create index function (9ms)
+      ✓ insert one (6ms)
+      ✓ insert many transaction (5467ms)
+
+
+      stmt:: {
+      id: 3,
+      parent: 0,
+      notused: 0,
+      detail: 'SEARCH TABLE posts USING INDEX idx_datajson (<expr>>? AND <expr><?)'
+    }
+
+  stmt:: { id: 2, parent: 0, notused: 0, detail: 'SCAN TABLE posts' }
