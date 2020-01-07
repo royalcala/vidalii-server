@@ -1,6 +1,10 @@
 import leaf from '../leaf'
 
 export default leaf({
-    type: 'String',
-    validationType: ({ newValue }) => String(newValue)
+    // type: 'String',
+    types: {
+        graphql: 'String',
+        knex: 'string'
+    },
+    validationType: ({ newValue }) => newValue
 })

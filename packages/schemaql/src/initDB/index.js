@@ -5,23 +5,23 @@
 //         }, 2000);
 //     });
 // }
-const initColumn = async ({ db, tableName, column }) => {
-    let existsColumn = await db.schema.hasColumn(tableName, column)
+const initColumn = async ({ db, tableName, vidaliiLeaf, columnName }) => {
+    let existsColumn = await db.schema.hasColumn(tableName, columnName)
     if (!existsColumn) {
-        knex.schema.table('users', function (table) {
-            table.dropColumn('name');
-            table.string('first_name');
-            table.string('last_name');
-          })
-    } else {
-
+        await db.schema.table(tableName, table => {
+            let pivot
+            if (vidaliiLeaf.props !== null)
+                pivot = Array.isArray(vidaliiLeaf.props) ?
+                    table[vidaliiLeaf.types.knex](columnName, ...vidaliiLeaf.props) :
+                    table[vidaliiLeaf.types.knex](columnName, vidaliiLeaf.props)
+            else
+                pivot = table[vidaliiLeaf.types.knex](columnName)
+        })
+        console.log(`Column "${columnName}" created in table "${tableName}"`)
     }
-
 }
 
-
-
-const initTable = async ({ db, tableName, schema, type }) => {
+const createTable = async ({ db, tableName, type }) => {
     let existTable = await db.schema.hasTable(tableName)
     if (!existTable) {
         let response
@@ -32,36 +32,45 @@ const initTable = async ({ db, tableName, schema, type }) => {
                     table.uuid('_id').primary()
                 }
             )
+            console.log(`Table "${tableName}" created.`)
         } else if (type === 'extended') {
             response = await db.schema.createTable(
                 tableName,
                 table => {
-                    table.increments()
-                    table.uuid('ext_id').index()
+                    table.uuid('_id').primary()
+                    table.uuid('parent_id').index()
                 }
             )
-        }
-    } else {
-        let key
-        for (key in schema) {
-            console.log(`schema.${key} = ${schema[key]}`)
-            if (schema[key].hasOwnProperty('vidaliiLeaf')) {
-                await initColumn({ db, tableName, column: schema[key] })
-            } else if (typeof schema[key] === 'object') {
-                await initTable({
-                    db,
-                    tableName: key,
-                    schema: schema[key],
-                    type: 'extended'
-                })
-            }
+            console.log(`Extended table "${tableName}" created.`)
         }
     }
 }
 
-export default async ({ modelName, schema, db }) => {
+const initTable = async ({ db, tableName, schema, type }) => {
+    await createTable({ db, tableName, type })
+    let key
+    for (key in schema) {
+        if (schema[key].hasOwnProperty('vidaliiLeaf')) {
+            await initColumn({
+                db,
+                tableName,
+                vidaliiLeaf: schema[key],
+                columnName: key
+            })
+        } else if (typeof schema[key] === 'object') {
+            await initTable({
+                db,
+                tableName: key,
+                schema: schema[key],
+                type: 'extended'
+            })
+        }
+    }
 
-    let response = await initTable({ db, modelName, schema, type: 'main' })
+}
+
+export default async ({ modelName, schema, db }) => {
+    let response = await initTable({ db, tableName: modelName, schema, type: 'main' })
     // let exist = await db.schema.hasTable(modelName)
     // if (!exist) {
     //     let response = await db.schema.createTable(

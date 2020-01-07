@@ -1,24 +1,30 @@
 import { int, string } from '../src/leafTypes'
-import { init } from 'ramda';
 export default () => {
     describe('structureSchema', () => {
         let schemaql, db
         beforeAll(async () => {
-
             schemaql = await global.schemaql({
-                modelName: 'table1',
+                modelName: 'root',
                 schema: {
                     a: int(),
-                    b: {
-                        c: init()
-                    }
+                    a2: string(
+                        {
+                            props: 110,
+                            index: true,
+                            unique: true
+                        }),
+                    a3: string(10)
+                    // b: {
+                    //     c: int(),
+                    //     d: {
+                    //         e: int()
+                    //     }
+                    // }
                 },
                 db: global.db
             })
             db = global.db
-
-
-        });
+        })
         it('has', () => {
             console.log('schemaql.schema()::', schemaql.schema())
             expect(schemaql.schema()).toEqual(

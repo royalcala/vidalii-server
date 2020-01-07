@@ -1,4 +1,4 @@
-
+import defaults from './defaults'
 
 const pipeFxs = (...allPipeFxs) => ({ newValue, ...otherData }) => {
     let pipeFxs = [].concat(...allPipeFxs)
@@ -12,25 +12,24 @@ const pipeFxs = (...allPipeFxs) => ({ newValue, ...otherData }) => {
 export const VIDALIILEAF = 'vidaliiLeaf'
 
 export default ({
-    types,
-    validationType
-}) => (
-    {
-        index = false,
-        insert = ({ newValue }) => newValue,
-        update = ({ newValue }) => newValue
-    } = {}) => {
-        return {
-            [VIDALIILEAF]: true,
-            types,
-            index,
-            insert: pipeFxs(
-                insert,
-                validationType
-            ),
-            update: pipeFxs(
-                update,
-                validationType
-            )
-        }
+    validationType,
+    types
+}) => (dataFromUserInput = {}) => {
+    const { props, index, unique, insert, update } = defaults(dataFromUserInput)
+
+    return {
+        [VIDALIILEAF]: true,
+        types,
+        props,
+        index,
+        unique,
+        insert: pipeFxs(
+            insert,
+            validationType
+        ),
+        update: pipeFxs(
+            update,
+            validationType
+        )
     }
+}
