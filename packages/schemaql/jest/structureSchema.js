@@ -6,11 +6,13 @@ export default () => {
             schemaql = await global.schemaql({
                 modelName: 'root',
                 schema: {
-                    a: int(),
+                    a: int({
+                        index: []
+                    }),
                     a2: string(
                         {
                             props: 110,
-                            index: true,
+                            index: ['customNameIndex'],
                             unique: true
                         }),
                     a3: string(10)
@@ -42,14 +44,21 @@ export default () => {
             )
         })
         it('testSQL', () => {
-            let response = db.schema.createTable(
-                'table1',
-                table => {
-                    table.increments()
-                    table.uuid('extended_id').index()
-                }
-            ).toSQL()
+            let response
+            // response = db.schema.createTable(
+            //     'table1',
+            //     table => {
+            //         table.increments()
+            //         table.uuid('extended_id').index()
+            //     }
+            // ).toSQL()
+            response = db('table1')
+                .where({_id:1})
+                .del().toSQL()
             console.log('response::', response)
+            // knex('accounts')
+            //     .where('activated', false)
+            //     .del()
         })
     })
 
