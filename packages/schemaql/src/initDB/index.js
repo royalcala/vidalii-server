@@ -4,7 +4,7 @@ const createTable = async ({ db, tableName, type }) => {
     let existTable = await db.schema.hasTable(tableName)
     if (!existTable) {
         let response
-        if (type === 'main') {
+        if (type === 'root') {
             response = await db.schema.createTable(
                 tableName,
                 table => {
@@ -49,6 +49,6 @@ const initTable = async ({ db, tableName, schema, type }) => {
 }
 
 export default async ({ modelName, schema, db }) => {
-    let response = await initTable({ db, tableName: modelName, schema, type: 'main' })
+    let response = await initTable({ db, tableName: 'root', schema, type: 'root' })
     return response
 }

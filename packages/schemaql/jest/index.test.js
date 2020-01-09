@@ -3,6 +3,9 @@ import schemaql from '../src'
 
 import test1 from './test1'
 import test_structure from './structureSchema'
+import test_mutation from './mutation'
+import test_knex from './knex'
+
 describe('schemaql', () => {
     let db
     let location = './db.sqlite'
@@ -20,14 +23,16 @@ describe('schemaql', () => {
             useNullAsDefault: true
         });
         global.db = db
-        global.sampleSize = 10
+        global.sampleSize = 600
         global.schemaql = schemaql
+
     });
     afterAll(async () => {
         await db.close()
     })
 
     // test1()
-    test_structure()
-
+    // test_structure()
+    // test_mutation()
+    test_knex()
 })

@@ -1,19 +1,19 @@
 // import integrateSchemaValidation from './schema'
-import { castingDB } from "./castingDB";
+// import { castingDB } from "./castingDB";
 import initDB from './initDB'
-import mutation from './mutation'
-export default async ({ modelName, schema, customPipes = {}, db }) => {
-    // db = castingDB(db)
-    await initDB({ modelName, schema, db })
-
-    // const { insertOne, updateOne } = put({ schema, db, customPipes })
-    const { mutationOne } = mutation({ schema, db, customPipes })
+import initMutation from './mutation'
+export default async ({ schema, customPipes = {}, db }) => {
+    await initDB({ schema, db })
+    const mutation = initMutation(schema, db, customPipes )
     return {
-        mutation: doc => {
+        mutation: async doc => {
+
             if (Array.isArray(doc)) {
 
-            } else
-                return mutationOne(doc)
+            } else {
+                let response = await mutation(doc)                
+                return response
+            }
         },
         // composition: {
         //     ...db.composition,

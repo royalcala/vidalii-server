@@ -52,13 +52,38 @@ export default () => {
             //         table.uuid('extended_id').index()
             //     }
             // ).toSQL()
-            response = db('table1')
-                .where({_id:1})
-                .del().toSQL()
+            // response = db('table1')
+            //     .where({_id:1})
+            //     .del().toSQL()
+
+            response = db('books')
+                .where('published_date', '<', 2000)
+                .update([
+                    {
+                        status: 'archived'
+                    },
+                    {
+                        status: 'archived2'
+                    }
+                ]).toString()
+
             console.log('response::', response)
-            // knex('accounts')
-            //     .where('activated', false)
-            //     .del()
+            response = db('books')
+                .where('published_date', '<', 2000)
+                .update(
+                    {
+                        status: 'archived2'
+                    }
+                ).toString()
+
+            console.log('response::', response)
+            response = db('books').insert({ name: 'Old Books' }).toString()
+            console.log('response::', response)
+            response = db('books').insert([
+                { name: 'Old Books' },
+                { name: 'Old Books2' }
+            ]).toString()
+            console.log('response::', response)
         })
     })
 
