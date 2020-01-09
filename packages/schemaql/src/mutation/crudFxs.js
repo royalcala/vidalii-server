@@ -24,7 +24,7 @@ export const updateDoc = async ({ db, tableName, _id, dataToMutate }) => {
     try {
         let response = await db(tableName)
             .where({ _id })
-            .update(dataToMutate)        
+            .update(dataToMutate)
         return response === 1 ?
             {
                 error: null,
@@ -41,6 +41,37 @@ export const updateDoc = async ({ db, tableName, _id, dataToMutate }) => {
     }
 
 }
+
+
+
+export const batchInsert = ({ tableName, trx }) => {
+    let store = []
+    // let ids = []
+    return {
+        getStore: () => store,
+        add: ({ _id, data }) => {
+            if (_id === null)
+                data['_id'] = uuid()
+            else
+                data['_id'] = _id
+            store.push(data)
+            // ids.push(data['_id'])
+            return data['_id']
+        },
+        exec: async () => {
+            if (store.length > 0) {
+                let promises = []
+                while (store.length) {
+                    promises.push(trx.insert(store.splice(0, 499)).into(tableName))
+                }
+                await Promise.all(promises)
+            }
+            return ids
+        }
+    }
+}
+
+
 export const insertDoc = async ({ db, tableName, _id, dataToMutate }) => {
     if (_id === null)
         dataToMutate['_id'] = uuid()

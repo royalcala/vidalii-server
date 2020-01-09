@@ -6,6 +6,7 @@ import test_structure from './structureSchema'
 import test_mutation from './mutation'
 import test_knex from './knex'
 
+// jest.setTimeout(1000000);
 describe('schemaql', () => {
     let db
     let location = './db.sqlite'
@@ -23,7 +24,7 @@ describe('schemaql', () => {
             useNullAsDefault: true
         });
         global.db = db
-        global.sampleSize = 600
+        global.sampleSize = 2
         global.schemaql = schemaql
 
     });
@@ -33,6 +34,6 @@ describe('schemaql', () => {
 
     // test1()
     // test_structure()
-    // test_mutation()
-    test_knex()
+    test_mutation()
+    // test_knex()
 })

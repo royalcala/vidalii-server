@@ -12,7 +12,7 @@ export default () => {
             })
             db = global.db
         })
-        it('_insert And _update And _del', async () => {
+        it('insert One', async () => {
             let _id = uuid()
             let response
             response = await schemaql.mutation({
@@ -20,26 +20,36 @@ export default () => {
                 _id,
                 a: 'hellow world!'
             })
-            // console.log('response::', response)
+            console.log('response::', response)
             expect(_id).toBe(response.data[0])
-            response = await schemaql.mutation({
-                _update: true,
-                _id,
-                a: 'hellow world updated!'
-            })
-            // console.log('response::', response)
-            expect(response.error).toBe(null)
-            response = await schemaql.mutation({
-                _del: true,
-                _id,
-            })
-
-            // console.log('response::',response)
-            expect(response.error).toBe(null)
-
-
 
         })
+        // it('_insert And _update And _del', async () => {
+        //     let _id = uuid()
+        //     let response
+        //     response = await schemaql.mutation({
+        //         _insert: true,
+        //         _id,
+        //         a: 'hellow world!'
+        //     })
+        //     // console.log('response::', response)
+        //     expect(_id).toBe(response.data[0])
+        //     response = await schemaql.mutation({
+        //         _update: true,
+        //         _id,
+        //         a: 'hellow world updated!'
+        //     })
+        //     // console.log('response::', response)
+        //     expect(response.error).toBe(null)
+        //     response = await schemaql.mutation({
+        //         _del: true,
+        //         _id,
+        //     })
+
+        //     // console.log('response::',response)
+        //     expect(response.error).toBe(null)
+
+        // })
     })
 
 }

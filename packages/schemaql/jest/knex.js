@@ -48,22 +48,54 @@ export default () => {
             expect(trx.isCompleted()).toBe(true)
         })
 
-        // it('insert many works for more than >500 with transaction ', async () => {
-        //     let rows = []
-        //     for (let index = 0; index < sampleSize; index++) {
-        //         rows.push({
-        //             folio: index,
-        //             spec: 'car number ' + index
-        //         })
-        //     }
-        //     const trx = await knex.transaction();
-        //     while (rows.length) {
-        //         let inserted = await trx.insert(rows.splice(0, 499)).into('tableKnex')
-        //     }
+        it('insert many works for more than >500 with await transaction ', async () => {
+            let rows = []
+            for (let index = 0; index < sampleSize; index++) {
+                rows.push({
+                    folio: index,
+                    spec: 'car number ' + index
+                })
+            }
+            const trx = await knex.transaction();
+            while (rows.length) {
+                let inserted = await trx.insert(rows.splice(0, 499)).into('tableKnex')
+            }
+            expect(trx.isCompleted()).toBe(false)
+
+
+            await trx.commit();
+            expect(trx.isCompleted()).toBe(true)
+        })
+        it('insert many works for more than >500 with promise.All transaction ', async () => {
+            let rows = []
+            for (let index = 0; index < sampleSize; index++) {
+                rows.push({
+                    folio: index,
+                    spec: 'car number ' + index
+                })
+            }
+            const trx = await knex.transaction();
+            let promises = []
+            while (rows.length) {
+                promises.push(trx.insert(rows.splice(0, 499)).into('tableKnex'))
+            }
+            expect(trx.isCompleted()).toBe(false)
+            
+            await Promise.all(promises)
+
+            await trx.commit();
+            expect(trx.isCompleted()).toBe(true)
+        })
+
+        // it('with raw ', async () => {
+        //     const trx = await knex.transaction()
+
         //     expect(trx.isCompleted()).toBe(false)
-
-
+        //     let query = trx.insert({ folio: 1, spec: 'inserted with raw' }).into('tableKnex').toString()            
+        //     let response = await trx.raw(query)            
+        //     // await Promise.all(queries)
         //     await trx.commit();
+
         //     expect(trx.isCompleted()).toBe(true)
         // })
 
@@ -81,22 +113,22 @@ export default () => {
 
         //     expect(trx.isCompleted()).toBe(true)
         // })
-        //dont work for many, insted of this, use, raw sentences
-        it('insert many one by one transaction promise.all ', async () => {
-            const trx = await knex.transaction()
-            const queries = []
-            for (let index = 0; index < sampleSize; index++) {
-                let query = trx.insert({ folio: index, spec: 'car number' + index }).into('tableKnex')
-                queries.push(query)
-            }
+        //slow
+        // it('insert many one by one transaction promise.all ', async () => {
+        //     const trx = await knex.transaction()
+        //     const queries = []
+        //     for (let index = 0; index < sampleSize; index++) {
+        //         let query = trx.insert({ folio: index, spec: 'car number' + index }).into('tableKnex')
+        //         queries.push(query)
+        //     }
 
-            expect(trx.isCompleted()).toBe(false)
+        //     expect(trx.isCompleted()).toBe(false)
 
-            await Promise.all(queries)
-            await trx.commit();
+        //     await Promise.all(queries)
+        //     await trx.commit();
 
-            expect(trx.isCompleted()).toBe(true)
-        })
+        //     expect(trx.isCompleted()).toBe(true)
+        // })
 
         it('read ALL', async () => {
             const trx = await knex.transaction();
