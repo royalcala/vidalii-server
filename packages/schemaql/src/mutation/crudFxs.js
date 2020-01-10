@@ -44,50 +44,61 @@ export const updateDoc = async ({ db, tableName, _id, dataToMutate }) => {
 
 
 
-export const batchInsert = ({ tableName, trx }) => {
-    let store = []
-    // let ids = []
+export const batchInsert = () => {
+    //store[tableName][array of each row]
+    let store = {}
+
     return {
         getStore: () => store,
-        add: ({ _id, data }) => {
-            if (_id === null)
-                data['_id'] = uuid()
-            else
-                data['_id'] = _id
-            store.push(data)
-            // ids.push(data['_id'])
+        add: ({ tableName, _id, parent_id, data }) => {
+            data['_id'] = _id === null ? uuid() : _id
+            if (parent_id !== null) { //if is table.type=extended
+                data['parent_id'] = parent_id
+            }
+            store[tableName] = []
+            store[tableName].push(data)
             return data['_id']
         },
-        exec: async () => {
-            if (store.length > 0) {
-                let promises = []
-                while (store.length) {
-                    promises.push(trx.insert(store.splice(0, 499)).into(tableName))
+        exec: async ({ trx }) => {
+            let promises = []
+            let tableName
+            for (tableName in store) {
+                while (store[tableName].length) {
+                    promises.push(trx.insert(store[tableName].splice(0, 499)).into(tableName))
                 }
-                await Promise.all(promises)
             }
-            return ids
+            try {
+                await Promise.all(promises)
+                return {
+                    error: null
+                }
+            } catch (error) {
+                return {
+                    error
+                }
+            }
+
         }
     }
 }
 
 
-export const insertDoc = async ({ db, tableName, _id, dataToMutate }) => {
-    if (_id === null)
-        dataToMutate['_id'] = uuid()
-    else
-        dataToMutate['_id'] = _id
+// export const insertDoc = async ({ db, tableName, _id, dataToMutate }) => {
+//     if (_id === null)
+//         dataToMutate['_id'] = uuid()
+//     else
+//         dataToMutate['_id'] = _id
 
-    try {
-        await db(tableName).insert(dataToMutate)
-        return {
-            data: [dataToMutate['_id']],
-            error: false
-        }
-    } catch (error) {
-        return {
-            error,
-            data: null
-        }
-    }
-}
+//     try {
+//         await db(tableName).insert(dataToMutate)
+//         return {
+//             data: [dataToMutate['_id']],
+//             error: false
+//         }
+//     } catch (error) {
+//         return {
+//             error,
+//             data: null
+//         }
+//     }
+// }
