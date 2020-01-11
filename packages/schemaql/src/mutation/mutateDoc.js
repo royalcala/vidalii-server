@@ -24,7 +24,7 @@ const filterDataToMutate = ({ dataDoc, schema, crud }) => {
                 newDoc: dataDoc[key],
             })
 
-        }        
+        }
     }
     return {
         dataToMutate,
@@ -38,9 +38,9 @@ const mutationDocumentTable = async ({ crud, schema, tableName, newDoc }) => {
         newDoc = [newDoc]
     }
 
-    // console.log('newDoc::', newDoc)
-    // console.log('newDoc.length::', newDoc.length)
+
     for (let index = 0; index < newDoc.length; index++) {
+
         let {
             _id = null, parent_id = null,
             _action = 'insert',
@@ -48,25 +48,24 @@ const mutationDocumentTable = async ({ crud, schema, tableName, newDoc }) => {
             // _update = null, _del = null,
             ...dataDoc
         } = newDoc[index]
-
         const {
             dataToMutate,
             dataToMutateIsEmpty,
             childrenDocs
         } = filterDataToMutate({ dataDoc, schema, crud })
-        
+
         if (!dataToMutateIsEmpty) {
             switch (_action) {
                 case 'insert':
                     _id = crud.insert.add({ tableName, _id, parent_id, data: dataToMutate })
                     break;
-                case 'update':                    
+                case 'update':
                     crud.update.add({ tableName, _id, data: dataToMutate })
                     break;
-                case 'del':
-                    // crud.update.del({ tableName, _id, parent_id, data: dataToMutate })
-                    break;
             }
+        }
+        if (_action === 'del') {
+            crud.del.add({ tableName, _id })
         }
 
 

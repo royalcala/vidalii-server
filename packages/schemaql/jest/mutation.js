@@ -5,6 +5,8 @@ export default () => {
         let schemaql, db
         beforeAll(async () => {
             db = global.db
+            // console.log('db.del({_id}).into(tableName).where({ _id }).toString()::',
+            // db.del({_id:11}).into('tableName').where({ _id:11 }).toString())
             schemaql = await global.schemaql({
                 schema: {
                     a: string(),
@@ -12,6 +14,16 @@ export default () => {
                 db
             })
 
+        })
+        it('insertOne, automatic id and default action:insert', async () => {
+            let response
+            response = await schemaql.mutation(
+                {
+                    a: 'automatic id and action:insert'
+                }
+            )
+            expect(response.error).toBe(null)
+            expect(response.transactionCompleted).toBe(true)
         })
         it('insertOne, manual ID', async () => {
             let response
@@ -23,6 +35,7 @@ export default () => {
                 }
             )
             expect(response.error).toBe(null)
+            expect(response.transactionCompleted).toBe(true)
         })
         test('insertMany, manual ID', async () => {
             let response
@@ -39,6 +52,7 @@ export default () => {
                 }
             ])
             expect(response.error).toBe(null)
+            expect(response.transactionCompleted).toBe(true)
         })
         test('updateOne', async () => {
             let response
@@ -50,6 +64,7 @@ export default () => {
                 }
             )
             expect(response.error).toBe(null)
+            expect(response.transactionCompleted).toBe(true)
         })
         test('updateMany', async () => {
             let response
@@ -66,6 +81,33 @@ export default () => {
                 }
             ])
             expect(response.error).toBe(null)
+            expect(response.transactionCompleted).toBe(true)
+        })
+        test('delOne', async () => {
+            let response
+            response = await schemaql.mutation(
+                {
+                    _action: 'del',
+                    _id: 1,
+                }
+            )
+            expect(response.error).toBe(null)
+            expect(response.transactionCompleted).toBe(true)
+        })
+        test('delMany', async () => {
+            let response
+            response = await schemaql.mutation([
+                {
+                    _action: 'del',
+                    _id: 0,
+                },
+                {
+                    _action: 'del',
+                    _id: 2,
+                }
+            ])
+            expect(response.error).toBe(null)
+            expect(response.transactionCompleted).toBe(true)
         })
         // it('_insert And _update And _del', async () => {
         //     let _id = uuid()
