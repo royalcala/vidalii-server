@@ -1,6 +1,3 @@
-import { delDoc, insertDoc, updateDoc } from './crudFxs'
-
-
 const mutationChildrenTables = ({ mutationDocumentTable, childrenDocs, parent_id }) => {
     for (let index = 0; index < childrenDocs.length; index++) {
         if (childrenDocs[index].hasOwnProperty('_insert')) {
@@ -27,7 +24,7 @@ const filterDataToMutate = ({ dataDoc, schema, crud }) => {
                 newDoc: dataDoc[key],
             })
 
-        }
+        }        
     }
     return {
         dataToMutate,
@@ -41,28 +38,35 @@ const mutationDocumentTable = async ({ crud, schema, tableName, newDoc }) => {
         newDoc = [newDoc]
     }
 
+    // console.log('newDoc::', newDoc)
+    // console.log('newDoc.length::', newDoc.length)
     for (let index = 0; index < newDoc.length; index++) {
         let {
             _id = null, parent_id = null,
-            _insert = null,
-            _update = null, _del = null,
+            _action = 'insert',
+            // _insert = null,
+            // _update = null, _del = null,
             ...dataDoc
         } = newDoc[index]
+
         const {
             dataToMutate,
             dataToMutateIsEmpty,
             childrenDocs
         } = filterDataToMutate({ dataDoc, schema, crud })
-
-
+        
         if (!dataToMutateIsEmpty) {
-            if (_insert === true) {
-                _id = crud.insert.add({ tableName, _id, parent_id, data: dataToMutate })
+            switch (_action) {
+                case 'insert':
+                    _id = crud.insert.add({ tableName, _id, parent_id, data: dataToMutate })
+                    break;
+                case 'update':                    
+                    crud.update.add({ tableName, _id, data: dataToMutate })
+                    break;
+                case 'del':
+                    // crud.update.del({ tableName, _id, parent_id, data: dataToMutate })
+                    break;
             }
-            else if (_update === true)
-                return 'updateDoc({ db, tableName, _id, dataToMutate })'
-            else if (_del === true)
-                return 'delDoc({ db, tableName, _id, dataToMutate })'
         }
 
 

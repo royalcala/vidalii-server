@@ -13,24 +13,65 @@ export default () => {
             })
 
         })
-        it('insert One', async () => {
-            let _id = uuid()
+        it('insertOne, manual ID', async () => {
             let response
             response = await schemaql.mutation(
                 {
-                    _insert: true,
-                    _id,
+                    _action: 'insert',
+                    _id: 0,
                     a: 'hellow world!'
                 }
             )
-            console.log('response::', response)
+            expect(response.error).toBe(null)
+        })
+        test('insertMany, manual ID', async () => {
+            let response
+            response = await schemaql.mutation([
+                {
+                    _action: 'insert',
+                    _id: 1,
+                    a: 'hellow world in array1!'
+                },
+                {
+                    _action: 'insert',
+                    _id: 2,
+                    a: 'hellow world in array2!'
+                }
+            ])
+            expect(response.error).toBe(null)
+        })
+        test('updateOne', async () => {
+            let response
+            response = await schemaql.mutation(
+                {
+                    _action: 'update',
+                    _id: 0,
+                    a: 'update world in array2!'
+                }
+            )
+            expect(response.error).toBe(null)
+        })
+        test('updateMany', async () => {
+            let response
+            response = await schemaql.mutation([
+                {
+                    _action: 'update',
+                    _id: 1,
+                    a: 'Updated.hellow world in array1!'
+                },
+                {
+                    _action: 'update',
+                    _id: 2,
+                    a: 'Updated.hellow world in array2!'
+                }
+            ])
             expect(response.error).toBe(null)
         })
         // it('_insert And _update And _del', async () => {
         //     let _id = uuid()
         //     let response
         //     response = await schemaql.mutation({
-        //         _insert: true,
+        //         _action:'insert',
         //         _id,
         //         a: 'hellow world!'
         //     })

@@ -4,16 +4,11 @@ import initDB from './initDB'
 import initMutation from './mutation'
 export default async ({ schema, customPipes = {}, db }) => {
     await initDB({ schema, db })
-    const mutation = initMutation(schema, db, customPipes )
+    const mutation = initMutation(schema, db, customPipes)
     return {
         mutation: async doc => {
-
-            if (Array.isArray(doc)) {
-
-            } else {
-                let response = await mutation(doc)                
-                return response
-            }
+            let response = await mutation(doc)
+            return response
         },
         // composition: {
         //     ...db.composition,
