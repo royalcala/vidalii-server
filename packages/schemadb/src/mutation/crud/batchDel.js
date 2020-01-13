@@ -17,7 +17,7 @@ export default () => {
                 store[tableName].forEach((_id) => {
                     // promises.push(trx.del({_id}).into(tableName).where({ _id }))
                     promises.push(
-                        trx(tableName).del({ _id }).where({ _id }).returning()
+                        trx(tableName).del().where({ _id })
                     )
                 })
             }

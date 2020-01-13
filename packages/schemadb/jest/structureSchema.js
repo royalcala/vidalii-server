@@ -28,7 +28,7 @@ export default () => {
             db = global.db
         })
         it('has', () => {
-            console.log('schemaql.schema()::', schemaql.schema())
+            // console.log('schemaql.schema()::', schemaql.schema())
             expect(schemaql.schema()).toEqual(
                 expect.objectContaining({
                     a: expect.objectContaining({
@@ -43,52 +43,23 @@ export default () => {
                 })
             )
         })
-        it('testSQL', async () => {
-            let response
-            // response = db.schema.createTable(
-            //     'table1',
-            //     table => {
-            //         table.increments()
-            //         table.uuid('extended_id').index()
-            //     }
-            // ).toSQL()
-            // response = db('table1')
-            //     .where({_id:1})
-            //     .del().toSQL()
+        // it('testWherever', async () => {
+        //     const trx = await db.transaction();
+        //     await trx.schema.createTable('users', function (table) {
+        //         table.increments();
+        //         table.string('name');
+        //     })
+        //     await trx.insert({ name: 'hellow world' }).into('users')
+        //     let data = await trx('users').select()
+        //     console.log('data::', data)
+        //     let query=  trx('users').del().where({ id: 1 }).toString()
+        //     console.log('query::',query)
+        //     await trx('users').del().where({ id: 1 })
+        //     // trx(tableName).del({ _id }).where({ _id }).returning()
+        //     data = await trx('users').select()
+        //     console.log('data::',data)
+        // })
 
-            response = db('books')
-                .where('published_date', '<', 2000)
-                .update([
-                    {
-                        status: 'archived'
-                    },
-                    {
-                        status: 'archived2'
-                    }
-                ]).toString()
-
-            console.log('response::', response)
-            response = db('books')
-                .where('published_date', '<', 2000)
-                .update(
-                    {
-                        status: 'archived2'
-                    }
-                ).toString()
-
-            console.log('response::', response)
-            response = db('books').insert({ name: 'Old Books' }).toString()
-            console.log('response::', response)
-            response = db('books').insert([
-                { name: 'Old Books' },
-                { name: 'Old Books2' }
-            ]).toString()
-            console.log('response::', response)
-            const trx = await db.transaction();
-            let q1 = trx('books').del().where({id:1}).toString()
-            console.log('q1::',q1)
-
-        })
     })
 
 }

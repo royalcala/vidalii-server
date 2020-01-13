@@ -7,7 +7,7 @@ import initServer from './server'
 export default async ({ schema, customPipes = {}, db }) => {
     await initDB({ schema, db })
     const mutation = initMutation(schema, db, customPipes)
-    const server = initServer()
+    // const server = initServer({ schema })
     return {
         mutation,
         query: '',

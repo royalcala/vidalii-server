@@ -5,6 +5,7 @@
   "author": "Roy Alcala Ortiz",
   "license": "MIT",
   "scripts": {
+    "isolate:test": "nodemon --exec babel-node jest/isolateTest",
     "test": "jest jest",
     "test:watch": "yarn test -- --watch",
     "nodemon": "nodemon --exec babel-node test",
@@ -18,11 +19,12 @@
     "@babel/node": "^7.6.3",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.6.3",
-    "@vidalii/encapsulatedb": "^1.0.0",
     "babel-plugin-ramda": "^2.0.0"
   },
   "dependencies": {
+    "apollo-server-fastify": "^2.9.16",
     "better-sqlite3": "^5.4.3",
+    "fastify": "^2.11.0",
     "knex": "^0.20.6",
     "leveldown": "^5.4.1",
     "ramda": "^0.26.1",

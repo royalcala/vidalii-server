@@ -34,6 +34,6 @@ export default async ({ db, tableName, vidaliiLeaf, columnName }) => {
             col = columnIndex({ col, index })
             col = columnUnique({ col, unique })
         })
-        console.log(`Column "${columnName}" created in table "${tableName}"`)
+        // console.log(`Column "${columnName}" created in table "${tableName}"`)
     }
 }

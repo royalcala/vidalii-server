@@ -11,7 +11,7 @@ const createTable = async ({ db, tableName, type }) => {
                     table.uuid('_id').primary()
                 }
             )
-            console.log(`Table "${tableName}" created.`)
+            // console.log(`Table "${tableName}" created.`)
         } else if (type === 'extended') {
             response = await db.schema.createTable(
                 tableName,
@@ -20,7 +20,7 @@ const createTable = async ({ db, tableName, type }) => {
                     table.uuid('parent_id').index()
                 }
             )
-            console.log(`Extended table "${tableName}" created.`)
+            // console.log(`Extended table "${tableName}" created.`)
         }
     }
 }
