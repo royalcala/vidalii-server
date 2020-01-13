@@ -1,29 +1,25 @@
 // import integrateSchemaValidation from './schema'
-import { castingDB } from "./castingDB";
-// import InsertOne from './insertOne'
-// import Insert
-// import UpdateOne from './updateOne'
-import put from './put'
-export default (schema, customPipes = {}) => db => {
-    db = castingDB(db)
-    // const insertOne = InsertOne(schema, db, customPipes)
-    const { insertOne, updateOne } = put({ schema, db, customPipes })
-    // const updateOne = UpdateOne(schema, db, customPipes)
+// import { castingDB } from "./castingDB";
+import initDB from './initDB'
+import initMutation from './mutation'
+import initServer from './server'
+
+export default async ({ schema, customPipes = {}, db }) => {
+    await initDB({ schema, db })
+    const mutation = initMutation(schema, db, customPipes)
+    const server = initServer()
     return {
-        composition: {
-            ...db.composition,
-            schemadb: true
-        },
-        insertOne,
-        updateOne,
-        replaceOne: (key, value) => {
+        mutation,
+        query: '',
+        // composition: {
+        //     ...db.composition,
+        //     schemadb: true
+        // },
+        // insertOne,
+        // updateOne,
+        // replaceOne: (key, value) => {
 
-        },
-        put: ({ _id = null, _rev = null, ...value }, options = {}) => {
-            //validate
-
-            return db.put(key, value, options)
-        },
+        // },
         schema: () => schema
     }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@vidalii/db",
+  "name": "@vidalii/schemadb",
   "version": "1.0.0",
   "main": "src",
   "author": "Roy Alcala Ortiz",
@@ -22,10 +22,7 @@
     "babel-plugin-ramda": "^2.0.0"
   },
   "dependencies": {
-    "better-sqlite3": "^5.4.3",
-    "knex": "^0.20.6",
     "leveldown": "^5.4.1",
-    "ramda": "^0.26.1",
-    "sqlite3": "^4.1.1"
+    "ramda": "^0.26.1"
   }
 }

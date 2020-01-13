@@ -1,55 +1,39 @@
 import { removeDataBase } from '../../removeDatabase'
-import encapsulatedb from '@vidalii/encapsulatedb'
-import versioningdb from '@vidalii/versioningdb'
-import schemadb from '../src'
+import schemaql from '../src'
 
-import testSchema from './structureSchema'
-import testInsertOneInt from './insertOne.int'
-import testInsertOneArray from './insertOne.array'
-import testInsertOneArrayNested from './insertOne.arrayNested'
-import testInsertOneWithFx from './insertOne.withFx'
-import testUpdateOne from './updateOne'
-const leveldown = require('leveldown')
+import test1 from './test1'
+import test_structure from './structureSchema'
+import test_mutation from './mutation'
+import test_knex from './knex'
 
-
-
-describe('schemadb', () => {
-    let db, idb, ischemadb
-    let location = './testDB'
+// jest.setTimeout(1000000);
+describe('schemaql', () => {
+    let db
+    let location = './db.sqlite'
 
     beforeAll(async () => {
         removeDataBase({ location })
-        db = await encapsulatedb({ store: leveldown, location: './testDB' })
-        idb = await versioningdb({})(db)
-        global.schemadb = schema => schemadb(schema)(idb)
-        // ischemadb = schemadb({
-        //     testStructure: int(),
-        //     testInsertOne: int(),
-        //     testInsertOneNested: {
-        //         a: int()
-        //     },
-        //     testInsertArray: [
-        //         { a: int() }
-        //     ],
-        //     testInsertArrayNested: [
-        //         {
-        //             a: int(),
-        //             b: {
-        //                 a2: int()
-        //             }
-        //         }
-        //     ],
-        //     testUpdateOne: string()
-        // })(idb)
-        // global.schemadb = ischemadb
+        // const Database = require('better-sqlite3');
+        // db = new Database('./better.sqlite', { verbose: console.log });
+        // db = new Database(location)
+        db = require('knex')({
+            client: 'sqlite3',
+            connection: {
+                filename: location
+            },
+            useNullAsDefault: true
+        });
+        global.db = db
+        global.sampleSize = 2
+        global.schemaql = schemaql
+
     });
     afterAll(async () => {
-        await idb.close()
+        await db.close()
     })
-    testSchema()
-    testInsertOneInt()
-    testInsertOneArray()
-    testInsertOneArrayNested()
-    testInsertOneWithFx()
-    testUpdateOne()
+
+    // test1()
+    // test_structure()
+    test_mutation()
+    // test_knex()
 })
