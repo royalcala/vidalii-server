@@ -3,16 +3,16 @@ import createServicesGQL from './createServicesGQL'
 // import createSearchByTypeDef from './createSearchByTypeDef'
 const { ApolloServer, gql } = require('apollo-server-fastify');
 
-const books = [
-    {
-        title: 'Harry Potter and the Chamber of Secrets',
-        author: 'J.K. Rowling',
-    },
-    {
-        title: 'Jurassic Park',
-        author: 'Michael Crichton',
-    },
-]
+// const books = [
+//     {
+//         title: 'Harry Potter and the Chamber of Secrets',
+//         author: 'J.K. Rowling',
+//     },
+//     {
+//         title: 'Jurassic Park',
+//         author: 'Michael Crichton',
+//     },
+// ]
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
 // your data.
@@ -43,8 +43,8 @@ const resolvers = {
 
 
 export default async ({ name, schema, db }) => {
-    const servicesGQL = createServicesGQL({ name, schema })
-    console.log('servicesGQL::',servicesGQL)
+    const servicesGQL = createServicesGQL({ name, schema, db })
+    console.log('servicesGQL::', servicesGQL)
     // const typeDefs = createTypes({ name, schema })
     // console.log('typeDefs::', typeDefs.obj)
     // const queries = createSearchByTypeDef({

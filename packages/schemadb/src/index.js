@@ -5,7 +5,7 @@ import initMutation from './mutation'
 import initServer from './server'
 const webServer = require('fastify')()
 
-export default async ({ name, schema, customPipes = {}, db }) => {    
+export default async ({ name, schema, customPipes = {}, db }) => {
     await initDB({ schema, db })
     const mutation = initMutation(schema, db, customPipes)
 
