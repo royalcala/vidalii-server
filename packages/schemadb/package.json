@@ -5,7 +5,7 @@
   "author": "Roy Alcala Ortiz",
   "license": "MIT",
   "scripts": {
-    "isolate:test": "nodemon --exec babel-node jest/isolateTest",
+    "isolate:test": "nodemon --watch --exec babel-node jest/isolateTest",
     "test": "jest jest",
     "test:watch": "yarn test -- --watch",
     "nodemon": "nodemon --exec babel-node test",
