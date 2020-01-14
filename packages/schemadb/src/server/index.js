@@ -1,5 +1,6 @@
-import createTypes from './createTypes'
-import createSearchByTypeDef from './createSearchByTypeDef'
+import createServicesGQL from './createServicesGQL'
+// import createTypes from './createTypes'
+// import createSearchByTypeDef from './createSearchByTypeDef'
 const { ApolloServer, gql } = require('apollo-server-fastify');
 
 const books = [
@@ -42,21 +43,22 @@ const resolvers = {
 
 
 export default async ({ name, schema, db }) => {
-    //typeDefs.str, typeDefs.obj
-    const typeDefs = createTypes({ name, schema })
-    console.log('typeDefs::', typeDefs.obj)
+    const servicesGQL = createServicesGQL({ name, schema })
+    console.log('servicesGQL::',servicesGQL)
+    // const typeDefs = createTypes({ name, schema })
+    // console.log('typeDefs::', typeDefs.obj)
     // const queries = createSearchByTypeDef({
     //     name,
     //     db,
     //     oTypesDef: typesDefs.obj
     // })
-    return new ApolloServer({
-        typeDefs: gql(`
-        ${typeDefs.string}
-        ${queries}
-        `),
-        resolvers,
-    })
+    // return new ApolloServer({
+    //     typeDefs: gql(`
+    //     ${typeDefs.string}
+    //     ${queries}
+    //     `),
+    //     resolvers,
+    // })
 }
 
 // const app = require('fastify')();

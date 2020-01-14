@@ -1,13 +1,4 @@
 
-const getNameTable = firstTableName => {
-
-    return {
-        get: () => {
-            return ''
-        }
-    }
-}
-
 export default ({ name, db, oTypesDef }) => {
     let queries = []
     let resolvers = []
@@ -17,16 +8,27 @@ export default ({ name, db, oTypesDef }) => {
     for (key in oTypesDef) {
         if (first === true) {
             tableName = 'root'
+            first = false
         } else {
             tableName = key.split("_").pop()
         }
-
+        let nameSet = `select_${key}`
         queries.push({
-            query: `select_${key}:[${key}]`,
-            resolver: ''
+            query: `${nameSet}:[${key}]`,
+            resolver: {
+                name: nameSet,
+                fx: (operators = {}) => {
+                    let query = db
+                    Object.entries(operators).forEach(
+                        ([operator, values]) => {
+                            query = query[operator](...values)
+                        })
+                    query = query.select('*').from(tableName)
+
+                }
+            }
         })
     }
-    db.select('title', 'author', 'year').from('books')
     return {
         str: '',
     }
