@@ -1,28 +1,48 @@
-const mutationChildrenTables = ({ mutationDocumentTable, childrenDocs, parent_id }) => {
+const uuid = require('uuid/v1');
+const SEPARATOR = '_'
+const iterateChildren = ({ iterateManyDocs, childrenDocs, parent_id }) => {
     for (let index = 0; index < childrenDocs.length; index++) {
-        if (childrenDocs[index].hasOwnProperty('_insert')) {
-            childrenDocs[index].parent_id = parent_id
-        }
-        mutationDocumentTable(childrenDocs[index])
+        if (childrenDocs[index].hasOwnProperty('_insert'))
+            if (childrenDocs[index].parent_id === null ||
+                childrenDocs[index].parent_id === undefined
+            ) {
+                childrenDocs[index].parent_id = parent_id
+            }
+
+        iterateManyDocs(childrenDocs[index])
     }
 }
 
-const filterDataToMutate = ({ dataDoc, schema, crud }) => {
+const iterateOneDoc = ({ iterateManyDocs, tableName, dataDoc, schema, crud }) => {
     let dataToMutate = {}
     let key
     let dataToMutateIsEmpty = true
-    let childrenDocs = []
-    for (key in dataDoc) {
+    // let childrenDocs = []
+    const { _id, parent_id = null, ...otherData } = dataDoc
+    for (key in otherData) {
         if (schema[key].hasOwnProperty('vidaliiLeaf')) {
-            dataToMutate[key] = dataDoc[key]
+            dataToMutate[key] = otherData[key]
             dataToMutateIsEmpty = false
         } else if (typeof schema[key] === 'object') {
-            childrenDocs.push({
+            //if is array
+            // let childrenDoc = otherData[key]
+            // if (!childrenDoc.hasOwnProperty('parent_id'))
+            //     childrenDoc.parent_id = otherData._id
+
+            iterateManyDocs({
                 crud,
                 schema: schema[key],
-                tableName: key,
-                newDoc: dataDoc[key],
+                tableName: tableName + SEPARATOR + key,
+                newDoc: otherData[key],
+                // type: 'extended',
+                parent_id: _id
             })
+            // childrenDocs.push({
+            //     crud,
+            //     schema: schema[key],
+            //     tableName: key,
+            //     newDoc: dataDoc[key],
+            // })
 
         }
     }
@@ -33,7 +53,7 @@ const filterDataToMutate = ({ dataDoc, schema, crud }) => {
     }
 }
 
-const mutationDocumentTable = async ({ crud, schema, tableName, newDoc }) => {
+const iterateManyDocs = async ({ crud, schema, tableName, newDoc, parent_id = null }) => {
     if (!Array.isArray(newDoc)) {
         newDoc = [newDoc]
     }
@@ -42,17 +62,17 @@ const mutationDocumentTable = async ({ crud, schema, tableName, newDoc }) => {
     for (let index = 0; index < newDoc.length; index++) {
 
         let {
-            _id = null, parent_id = null,
+            _id = null,
             _action = 'insert',
-            // _insert = null,
-            // _update = null, _del = null,
             ...dataDoc
         } = newDoc[index]
+        if (_id === null && _action === 'insert')
+            dataDoc['_id'] = uuid()
+
         const {
             dataToMutate,
             dataToMutateIsEmpty,
-            childrenDocs
-        } = filterDataToMutate({ dataDoc, schema, crud })
+        } = iterateOneDoc({ iterateManyDocs, tableName, dataDoc, schema, crud })
 
         if (!dataToMutateIsEmpty) {
             switch (_action) {
@@ -69,7 +89,7 @@ const mutationDocumentTable = async ({ crud, schema, tableName, newDoc }) => {
         }
 
 
-        mutationChildrenTables({ mutationDocumentTable, childrenDocs, parent_id: _id })
+        iterateChildren({ iterateManyDocs, childrenDocs, parent_id: _id })
         // return {
         //     error: 'No property crud found, please specified one:_insert,_update,_del',
         //     data: null
@@ -80,4 +100,4 @@ const mutationDocumentTable = async ({ crud, schema, tableName, newDoc }) => {
 }
 
 
-export default mutationDocumentTable
+export default iterateManyDocs

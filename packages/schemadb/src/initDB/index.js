@@ -1,5 +1,5 @@
 import initColumn from './initColumn'
-
+const SEPARATOR = '_'
 const createTable = async ({ db, tableName, type }) => {
     let existTable = await db.schema.hasTable(tableName)
     if (!existTable) {
@@ -25,7 +25,7 @@ const createTable = async ({ db, tableName, type }) => {
     }
 }
 
-const initTable = async ({ db, tableName, schema, type }) => {
+const iterateSchema = async ({ db, tableName, schema, type }) => {
     await createTable({ db, tableName, type })
     let key
     for (key in schema) {
@@ -37,9 +37,9 @@ const initTable = async ({ db, tableName, schema, type }) => {
                 columnName: key
             })
         } else if (typeof schema[key] === 'object') {
-            await initTable({
+            await iterateSchema({
                 db,
-                tableName: key,
+                tableName: tableName + SEPARATOR + key,
                 schema: schema[key],
                 type: 'extended'
             })
@@ -48,7 +48,7 @@ const initTable = async ({ db, tableName, schema, type }) => {
 
 }
 
-export default async ({ modelName, schema, db }) => {
-    let response = await initTable({ db, tableName: 'root', schema, type: 'root' })
+export default async ({ schema, db }) => {
+    let response = await iterateSchema({ db, tableName: 'root', schema, type: 'root' })
     return response
 }

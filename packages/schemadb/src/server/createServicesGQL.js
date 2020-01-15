@@ -5,7 +5,7 @@ const addResolverForSearchInSubtable = ({ oGraphql, nextNameType, db }) => {
         assocPath(nextNameType.split(SEPARATOR),
             async (parent, args = {}, context, info) => {
                 //parent.parent_id
-                let concatQuery = db
+                let concatQuery = db  
                 concatQuery = concatQuery.where({ parent_id: parent._id })
                 Object.entries(args).forEach(
                     ([operator, values]) => {
@@ -23,12 +23,12 @@ const addResolverForSearchInTable = ({ oGraphql, nameType, db }) => {
     })
     oGraphql.resolvers.queries.push({
         [nameType]: async (parent, args = {}, context, info) => {
-            let concatQuery = db
+            let query = db
             Object.entries(args).forEach(
                 ([operator, values]) => {
-                    concatQuery = concatQuery[operator](...values)
+                    query = query[operator](...values)
                 })
-            let results = await concatQuery.select('*').from(tableName)
+            let results = await query.select('*').from(tableName)
             return results
 
         }

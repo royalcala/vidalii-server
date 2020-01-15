@@ -1,17 +1,22 @@
-const uuid = require('uuid/v1');
+// const uuid = require('uuid/v1');
 export default () => {
     const store = {}
     return {
         getStore: () => store,
         add: ({ tableName, _id, parent_id, data }) => {
-            data['_id'] = _id === null ? uuid() : _id
-            if (parent_id !== null) { //if is table.type=extended
+            data['_id'] = _id
+            if (parent_id !== null) {
+                //is type='extended'
                 data['parent_id'] = parent_id
             }
+
+            // if (data.hasOwnProperty('parent_id')) { //if is table.type=extended
+            //     data['parent_id'] = parent_id
+            // }
             if (!store.hasOwnProperty(tableName))
                 store[tableName] = []
             store[tableName].push(data)
-            return data['_id']
+            return _id
         },
         exec: async ({ trx }) => {
             let promises = []

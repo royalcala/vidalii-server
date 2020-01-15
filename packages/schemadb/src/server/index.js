@@ -42,7 +42,7 @@ const resolvers = {
 
 
 
-export default async ({ name, schema, db }) => {
+export default async ({ name, schema, db}) => {
     const servicesGQL = createServicesGQL({ name, schema, db })
     console.log('servicesGQL::', servicesGQL)
     // const typeDefs = createTypes({ name, schema })
