@@ -18,6 +18,12 @@ async function start() {
             salesPerson: string(),
             materials: {
                 nameMaterial: string()
+            },
+            shipping: {
+                to: string(),
+                otherDBNested:{
+                    ha:string()
+                }
             }
         },
         db

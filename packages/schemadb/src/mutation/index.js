@@ -85,7 +85,7 @@ export default (schema, db,
     } catch (err) {
         return ({
             error: {
-                msg: 'Error on schemadb.insertOne:' + err
+                msg: 'Error on mutation:' + err
             }
         })
     }

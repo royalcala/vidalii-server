@@ -1,17 +1,17 @@
 const uuid = require('uuid/v1');
 const SEPARATOR = '_'
-const iterateChildren = ({ iterateManyDocs, childrenDocs, parent_id }) => {
-    for (let index = 0; index < childrenDocs.length; index++) {
-        if (childrenDocs[index].hasOwnProperty('_insert'))
-            if (childrenDocs[index].parent_id === null ||
-                childrenDocs[index].parent_id === undefined
-            ) {
-                childrenDocs[index].parent_id = parent_id
-            }
+// const iterateChildren = ({ iterateManyDocs, childrenDocs, parent_id }) => {
+//     for (let index = 0; index < childrenDocs.length; index++) {
+//         if (childrenDocs[index].hasOwnProperty('_insert'))
+//             if (childrenDocs[index].parent_id === null ||
+//                 childrenDocs[index].parent_id === undefined
+//             ) {
+//                 childrenDocs[index].parent_id = parent_id
+//             }
 
-        iterateManyDocs(childrenDocs[index])
-    }
-}
+//         iterateManyDocs(childrenDocs[index])
+//     }
+// }
 
 const iterateOneDoc = ({ iterateManyDocs, tableName, dataDoc, schema, crud }) => {
     let dataToMutate = {}
@@ -48,8 +48,7 @@ const iterateOneDoc = ({ iterateManyDocs, tableName, dataDoc, schema, crud }) =>
     }
     return {
         dataToMutate,
-        dataToMutateIsEmpty,
-        childrenDocs
+        dataToMutateIsEmpty        
     }
 }
 
@@ -89,7 +88,7 @@ const iterateManyDocs = async ({ crud, schema, tableName, newDoc, parent_id = nu
         }
 
 
-        iterateChildren({ iterateManyDocs, childrenDocs, parent_id: _id })
+        // iterateChildren({ iterateManyDocs, childrenDocs, parent_id: _id })
         // return {
         //     error: 'No property crud found, please specified one:_insert,_update,_del',
         //     data: null

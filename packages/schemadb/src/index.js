@@ -1,8 +1,6 @@
-// import integrateSchemaValidation from './schema'
-// import { castingDB } from "./castingDB";
 import initDB from './initDB'
 import initMutation from './mutation'
-import initServer from './server'
+import initServiceGraphql from './serviceGraphql'
 const webServer = require('fastify')()
 
 export default async ({ name, schema, customPipes = {}, db }) => {
@@ -14,7 +12,7 @@ export default async ({ name, schema, customPipes = {}, db }) => {
         mutation,
         query: '',
         startServer: async ({ port = 3000 } = {}) => {
-            const server = await initServer({ name, schema, db })
+            const server = await initServiceGraphql({ name, schema, db })
 
             try {
                 webServer.register(server.createHandler());

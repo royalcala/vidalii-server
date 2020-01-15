@@ -1,20 +1,34 @@
 import { assocPath } from 'ramda'
 const SEPARATOR = '_'
 const addResolverForSearchInSubtable = ({ oGraphql, nextNameType, db }) => {
-    oGraphql.resolvers.types.push(
-        assocPath(nextNameType.split(SEPARATOR),
-            async (parent, args = {}, context, info) => {
-                //parent.parent_id
-                let concatQuery = db  
-                concatQuery = concatQuery.where({ parent_id: parent._id })
-                Object.entries(args).forEach(
-                    ([operator, values]) => {
-                        concatQuery = concatQuery[operator](...values)
-                    })
-                let results = await concatQuery.select('*').from(tableName)
-                return results
-            }, {})
-    )
+    // oGraphql.resolvers.types.push(
+    //     assocPath(nextNameType.split(SEPARATOR),
+    //         async (parent, args = {}, context, info) => {
+    //             //parent.parent_id
+    //             let concatQuery = db
+    //             concatQuery = concatQuery.where({ parent_id: parent._id })
+    //             Object.entries(args).forEach(
+    //                 ([operator, values]) => {
+    //                     concatQuery = concatQuery[operator](...values)
+    //                 })
+    //             let results = await concatQuery.select('*').from(tableName)
+    //             return results
+    //         }, {})
+    // )
+    oGraphql.resolvers.types.push({
+        path: nextNameType.split(SEPARATOR),
+        fx: async (parent, args = {}, context, info) => {
+            //parent.parent_id
+            let concatQuery = db
+            concatQuery = concatQuery.where({ parent_id: parent._id })
+            Object.entries(args).forEach(
+                ([operator, values]) => {
+                    concatQuery = concatQuery[operator](...values)
+                })
+            let results = await concatQuery.select('*').from(tableName)
+            return results
+        }
+    })
 }
 
 const addResolverForSearchInTable = ({ oGraphql, nameType, db }) => {
@@ -42,7 +56,6 @@ const addFieldToType = ({ oGraphql, nameType, nameField, typeField }) => {
         nameField,
         typeField
     })
-
 }
 
 const iterateSchema = ({ nameType, schema, oGraphql, db }) => {
@@ -60,7 +73,7 @@ const iterateSchema = ({ nameType, schema, oGraphql, db }) => {
             let nextNameType = `${nameType}${SEPARATOR}${key}`
             addFieldToType({
                 oGraphql,
-                nameType: nextNameType,
+                nameType,
                 nameField: key,
                 typeField: `[${nextNameType}]`
             })
@@ -93,8 +106,8 @@ export default ({ name, schema, db }) => {
         }
     }
     iterateSchema({ nameType: name, schema, oGraphql, db })
-    console.log('oGraphql::', oGraphql)
-    console.log('oGraphql.resolvers.types::', oGraphql.resolvers.types)
+    // console.log('oGraphql::', oGraphql)
+    // console.log('oGraphql.resolvers.types::', oGraphql.resolvers.types)
 
     // let test = db.where({parent_id:1}).where({a:1}).toString()
     // console.log('test::',test)
@@ -106,5 +119,5 @@ export default ({ name, schema, db }) => {
     //     obj: resultTypesObject,
     //     string: resultTypesString
     // }
-
+    return oGraphql
 }
