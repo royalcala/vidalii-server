@@ -1,5 +1,6 @@
 import initColumn from './initColumn'
-const SEPARATOR = '_'
+import { SEPARATOR } from '../CONSTANTS'
+
 const createTable = async ({ db, tableName, type }) => {
     let existTable = await db.schema.hasTable(tableName)
     if (!existTable) {

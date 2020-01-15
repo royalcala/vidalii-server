@@ -1,5 +1,5 @@
+import { SEPARATOR } from '../CONSTANTS'
 const uuid = require('uuid/v1');
-const SEPARATOR = '_'
 // const iterateChildren = ({ iterateManyDocs, childrenDocs, parent_id }) => {
 //     for (let index = 0; index < childrenDocs.length; index++) {
 //         if (childrenDocs[index].hasOwnProperty('_insert'))
@@ -48,7 +48,7 @@ const iterateOneDoc = ({ iterateManyDocs, tableName, dataDoc, schema, crud }) =>
     }
     return {
         dataToMutate,
-        dataToMutateIsEmpty        
+        dataToMutateIsEmpty
     }
 }
 

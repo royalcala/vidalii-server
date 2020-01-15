@@ -2,6 +2,7 @@ import initDB from './initDB'
 import initMutation from './mutation'
 import oGqlToSdl from './oGql_to_sdl'
 import init_oGql_db from './oGqls/db'
+import scalars from './gql_scalars'
 const { ApolloServer, gql } = require('apollo-server-fastify');
 const webServer = require('fastify')()
 
@@ -14,12 +15,12 @@ export default async ({ name, schema, customPipes = {}, db }) => {
         mutation,
         query: '',
         startServer: async ({ port = 3000 } = {}) => {
-            // const server = await initServiceGraphql({ name, schema, db })
-            const oGql_db = init_oGql_db({ name, schema, db })
-            // console.log('oGql_db::', oGql_db)
+            const oGql_db = init_oGql_db({ name, schema, db, mutation })
+            //the oGqlToSdl mutate the oGql and modifies some props            
             const { sdl, resolvers } = oGqlToSdl({ oGql: oGql_db })
             // console.log('sdl::', sdl)
             const typeDefs = gql`
+            ${scalars.sdl}
             ${sdl.types}
             type Query{
                 ${sdl.queries}
@@ -28,9 +29,8 @@ export default async ({ name, schema, customPipes = {}, db }) => {
                 ${sdl.mutations}
             }
             `
-            // console.log('typeDefs::', typeDefs)
-            // console.log('resolvers::',resolvers)
             const joinResolvers = {
+                ...scalars.resolvers,
                 ...resolvers.types,
                 Query: {
                     ...resolvers.queries
@@ -39,7 +39,6 @@ export default async ({ name, schema, customPipes = {}, db }) => {
                     ...resolvers.mutations
                 }
             }
-            // console.log('joinResolvers::',joinResolvers)
             const server = new ApolloServer({
                 typeDefs,
                 resolvers: joinResolvers,
