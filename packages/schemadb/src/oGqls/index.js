@@ -1,4 +1,4 @@
-import createServicesGQL from './createServicesGQL'
+import createServicesGQL from './db'
 import { mergeDeepRight } from 'ramda'
 // import createTypes from './createTypes'
 // import createSearchByTypeDef from './createSearchByTypeDef'
@@ -135,7 +135,7 @@ export default async ({ name, schema, db }) => {
     console.log('sdlMutations::', sdlMutations)
     console.log('resolversTypes::', resolversTypes)
     console.log('resolversMutations::', resolversMutations)
-    console.log('resolversQueries::',resolversQueries)
+    console.log('resolversQueries::', resolversQueries)
     // return new ApolloServer({
     //     typeDefs: gql(`
     //     ${typeDefs.string}
