@@ -41,18 +41,46 @@ const { ApolloServer, gql } = require('apollo-server-fastify');
 //     },
 //     Mutation: {}
 // }
+const getResolversQueries = oResolvers => {
+    let resolvers = {}
+    oResolvers.forEach(
+        obj => {
+            resolvers = {
+                ...resolvers,
+                ...obj
+            }
+        }
+    )
+    return resolvers
+}
+const getResolversMutations = oResolvers => {
+    let resolvers = {}
+    oResolvers.forEach(
+        obj => {
+            resolvers = {
+                ...resolvers,
+                ...obj
+            }
+        }
+    )
+    return resolvers
+}
 const getResolversTypes = oResolvers => {
-    let resolver = {}
+    let resolvers = {}
     oResolvers.forEach(
         ({ path, fx }) => {
-            console.log('path::', path)
-            console.log('path.length::', path.length)
-            //pop last element and others are the key obj
+            let propertyName = path.pop()
+            let nameObj = path.join('_')
 
+            resolvers = mergeDeepRight(resolvers, {
+                [nameObj]: {
+                    [propertyName]: fx
+                }
+            })
         }
     )
 
-    return resolver
+    return resolvers
 }
 const getSDL_from_oMutations = oMutations => {
     let sdl = ''
@@ -99,13 +127,15 @@ export default async ({ name, schema, db }) => {
     const sdlQueries = getSDL_from_oQueries(oGql.queries)
     const sdlMutations = getSDL_from_oMutations(oGql.mutations)
     const resolversTypes = getResolversTypes(oGql.resolvers.types)
+    const resolversMutations = getResolversMutations(oGql.resolvers.mutations)
+    const resolversQueries = getResolversQueries(oGql.resolvers.queries)
     console.log('oGql::', oGql)
-    console.log('oGql.resolvers.types::', oGql.resolvers.types)
-    console.log('resolversTypes::', resolversTypes)
     console.log('sdlTypes::', sdlTypes)
     console.log('sdlQueries::', sdlQueries)
     console.log('sdlMutations::', sdlMutations)
-
+    console.log('resolversTypes::', resolversTypes)
+    console.log('resolversMutations::', resolversMutations)
+    console.log('resolversQueries::',resolversQueries)
     // return new ApolloServer({
     //     typeDefs: gql(`
     //     ${typeDefs.string}
