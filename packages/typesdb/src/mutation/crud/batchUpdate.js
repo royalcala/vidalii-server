@@ -1,30 +1,25 @@
-// const uuid = require('uuid/v1');
+
 export default () => {
     const store = {}
     return {
         getStore: () => store,
-        add: ({ tableName, _id, parent_id, data }) => {
-            data['_id'] = _id
-            if (parent_id !== null) {
-                //is type='extended'
-                data['parent_id'] = parent_id
-            }            
+        add: ({ tableName, _id, data }) => {            
             if (!store.hasOwnProperty(tableName))
                 store[tableName] = []
+            data['_id'] = _id
             store[tableName].push(data)
-            return _id
+            return data['_id']
         },
         exec: async ({ trx }) => {
             let promises = []
             let tableName
             for (tableName in store) {
-                while (store[tableName].length) {
-                    promises.push(trx.insert(store[tableName].splice(0, 499)).into(tableName))
-                }
+                store[tableName].forEach(({ _id, ...data }) => {
+                    promises.push(trx.update(data).into(tableName).where({ _id }))
+                })
             }
             try {
-                await Promise.all(promises)
-
+                await Promise.all(promises)                
                 return {
                     error: null
                 }
