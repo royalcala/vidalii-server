@@ -31,9 +31,9 @@ export const ref = type({
     types: types.string,
 })
 
-export const virtual = typeName => type({
-    types: {
-        virtual: true,
-        ...types[typeName]
-    }
-})
+// export const virtual = typeName => type({
+//     types: {
+//         virtual: true,
+//         ...types[typeName]
+//     }
+// })

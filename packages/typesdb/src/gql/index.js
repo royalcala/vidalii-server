@@ -1,5 +1,5 @@
 
-const addPropertyColumn = (pivot, key, value) => {
+const addPropertyToColumn = (pivot, key, value) => {
     if (value !== null) {
         if (value === true)
             return pivot[key]()
@@ -7,6 +7,38 @@ const addPropertyColumn = (pivot, key, value) => {
             return pivot[key](...value)
     } else
         return pivot
+}
+const initPropertyColumn = ({ nameColumn, props, tableKnex, typeColumn }) => {
+    if (props !== null)
+        return Array.isArray(props) ?
+            tableKnex[typeColumn](nameColumn, ...props) :
+            tableKnex[typeColumn](nameColumn, props)
+    else
+        return tableKnex[typeColumn](nameColumn)
+}
+
+const createTable = ({ nameColumn, field, tableKnex }) => {
+    let { props, primary, index, unique, notNullable, types, virtual } = field
+    // table.uuid('_id').primary().unique().notNullable()
+    //remove if is virtual 
+    if (virtual !== null) {
+        let pivot = initPropertyColumn({
+            nameColumn, props, tableKnex,
+            typeColumn: types.knex
+        })
+
+
+        pivot = ([
+            ['primary', primary],
+            ['index', index],
+            ['unique', unique],
+            ['notNullable', notNullable]
+        ]).reduce(
+            (acc, [key, value]) => {
+                return addPropertyToColumn(pivot, key, value)
+            },
+            pivot)
+    }
 }
 const initSqlite = async ({ db, schema }) => {
     // console.log('is sqlite')
@@ -17,43 +49,25 @@ const initSqlite = async ({ db, schema }) => {
     if (!existTable) {
         response = await db.schema.createTable(
             schema.name,
-            table => {
-                let key
+            tableKnex => {
+                let nameColumn
                 let fields = schema.fields
-                for (key in fields) {
-                    let field = fields[key]
-                    if (field.types.virtual === true) {
-                        //add resolver.type
-                    } else {
-                        let { props, primary, index, unique, notNullable, types } = field
-                        let { knex } = types
-                        // table.uuid('_id').primary().unique().notNullable()
-                        let pivot
-                        if (props !== null)
-                            pivot = Array.isArray(props) ?
-                                table[knex](key, ...props) :
-                                table[knex](key, props)
-                        else
-                            pivot = table[knex](key)
-
-                        pivot = ([
-                            ['primary', primary],
-                            ['index', index],
-                            ['unique', unique],
-                            ['notNullable', notNullable]
-                        ]).reduce(
-                            (acc, array) => {
-                                return addPropertyColumn(pivot, ...array)
-                            },
-                            pivot)
-                    }
+                for (nameColumn in fields) {
+                    createTable({
+                        nameColumn,
+                        field: fields[nameColumn],
+                        tableKnex
+                    })
                 }
             }
         )
     }
 
-    //add sdl query
+    //add Query:sdl
     //add resolver Query
+    //can be extended
+    //_deleted:true || false
+    //_id default
 
     return response
 

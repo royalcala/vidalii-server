@@ -22,6 +22,7 @@ export default ({
         notNullable = null,
         onInsert = ({ newValue }) => newValue,
         onUpdate = ({ newValue }) => newValue,
+        virtual = null,//needs onGet, dont save the field
         onGet = null
     } = dataFromUserInput
     if (props !== null)
