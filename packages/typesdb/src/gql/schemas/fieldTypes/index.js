@@ -11,6 +11,10 @@ const types = {
     uuid: {
         graphql: 'ID',
         knex: 'uuid'
+    },
+    ref: {
+        graphql: 'update on schema.get',
+        knex: 'update on schema.get'
     }
 }
 
@@ -27,8 +31,20 @@ export const uuid = type({
     types: types.uuid,
 })
 
+export const ref = ({
+    schema,
+    field,
+    // suscription = null // add to schema suscription when delete search 
+}) => type({
+    types: types.ref,
+    ref: {
+        schema,
+        field
+    }
+
+})
 // export const ref = type({
-//     types: types.string,
+//     types: null,//get from schema 
 // })
 
 // export const virtual = typeName => type({

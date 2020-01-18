@@ -20,10 +20,11 @@ export default ({
         index = null,
         unique = null,
         notNullable = null,
+        virtual = null,//needs onGet, dont save the field on database
+        ref = null,
+        onGet = null, //resolver.type
         onInsert = ({ newValue }) => newValue,
         onUpdate = ({ newValue }) => newValue,
-        virtual = null,//needs onGet, dont save the field
-        onGet = null //resolver.type
     } = dataFromUserInput
     if (props !== null)
         props = Array.isArray(data) ? data : [data] //size, etc props of column
@@ -36,6 +37,9 @@ export default ({
         index,
         unique,
         notNullable,
+        virtual,
+        ref,
+        onGet,
         onInsert: pipeFxs(
             onInsert
         ),
@@ -43,6 +47,5 @@ export default ({
             onUpdate,
             // validationType
         ),
-        onGet
     }
 }

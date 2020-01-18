@@ -24,9 +24,10 @@ export default () => {
         startServer: () => {
             //init storeSchemaGql
             let schemasStore = schemaToStore({ schemas: get() })
+            console.log('schemasStore::',schemasStore)
             //init storeExternalGql
             let otherStore = getGraphqlStore()
-
+            console.log('otherStore::',otherStore)
             //merge stores Gql
             let mergedStores = mergeStores(schemasStore, otherStore)
 

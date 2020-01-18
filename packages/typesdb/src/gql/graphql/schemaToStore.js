@@ -43,7 +43,7 @@ export default ({ schemas }) => {
 
     }
 
-    console.log('store::', store)
+    return store
 
 
 }
