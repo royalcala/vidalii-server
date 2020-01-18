@@ -15,14 +15,24 @@ const initPropertyColumn = ({ nameColumn, props, tableKnex, typeColumn }) => {
     else
         return tableKnex[typeColumn](nameColumn)
 }
-const createTable = ({ nameColumn, field, tableKnex }) => {
-    let { props, primary, index, unique, notNullable, types, virtual } = field
-    // table.uuid('_id').primary().unique().notNullable()
-    if (virtual !== null) {
-        let pivot = initPropertyColumn({
+const initTypeFromRef = ({ ref, schemas, nameColumn, props, tableKnex, types }) => {
+    if (ref !== null) {
+        return initPropertyColumn({
+            nameColumn, props, tableKnex,
+            typeColumn: schemas[ref.schemaName].fields[ref.fieldName].types.knex
+        })
+    } else
+        return initPropertyColumn({
             nameColumn, props, tableKnex,
             typeColumn: types.knex
         })
+}
+const createTable = ({ nameColumn, field, tableKnex, schemas }) => {
+    let { props, primary, index, unique, notNullable, types, virtual, ref } = field
+    // table.uuid('_id').primary().unique().notNullable()
+    if (virtual === null) {
+        let pivot = initTypeFromRef({ ref, schemas, nameColumn, props, tableKnex, types })
+
 
         pivot = ([
             ['primary', primary],
@@ -36,8 +46,8 @@ const createTable = ({ nameColumn, field, tableKnex }) => {
             pivot)
     }
 }
-export default async ({ db, schema }) => {
-    let existTable = await db.schema.hasTable(schema.name)    
+export default async ({ db, schema, schemas }) => {
+    let existTable = await db.schema.hasTable(schema.name)
     let response
     if (!existTable) {
         response = await db.schema.createTable(
@@ -47,6 +57,7 @@ export default async ({ db, schema }) => {
                 let fields = schema.fields
                 for (nameColumn in fields) {
                     createTable({
+                        schemas,
                         nameColumn,
                         field: fields[nameColumn],
                         tableKnex

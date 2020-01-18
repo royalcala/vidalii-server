@@ -15,26 +15,27 @@ const add = schema => {
 //         }
 //     }
 // }
-const extendSchema = () => {
-    if (schema.extend) {
+// const addToStore = ({ store, name, data }) => {
+//     if (!store[name])
+//         store[name] = {}
 
-        if (Array.isArray(schema.extend)) {
+//     store[name] = {
+//         ...store[name],
+//         ...data
+//     }
+//     // if (store[schema.name])
+//     //     throw new Error(`schema name duplicated ${schema.name}`)
+//     // store[schema.name] = schema
+// }
+// const addFieldsExtended = ({ store, extend }) => {
+//     if (Array.isArray(extend)) {
 
-        } else {
-            const createIfNotExist = () => {
-                if (!store[schema.extend.name])
-                    store[schema.extend.name] = {}
-                return store[schema.extend.name]
-            }
+//     } else {
 
-            let schema = createIfNotExist()
-            schema = {
-                ...schema,
 
-            }
-        }
-    }
-}
+
+//     }
+// }
 
 export default () => {
     const store = {}
@@ -49,10 +50,26 @@ export default () => {
         add: schema => {
             try {
                 if (store[schema.name])
-                    throw new Error(`schema name duplicated ${schema.name}`)
+                    throw new Error(`schema name duplicated ${schema.name} was replaced`)
                 store[schema.name] = schema
+                // addToStore({
+                //     store,
+                //     name: schema.name,
+                //     data: schema
+                // })
+
+                // if (schema.extend)
+                //     addFieldsExtended({
+                //         store,
+                //         extend: schema.extend
+                //     })
 
 
+
+                //     extendSchema({
+                //         store,
+                //         schema
+                //     })
                 // let nameSchema = schema.extend ?
                 //     `${schema.extend.name}_${schema.name}` : schema.name
 

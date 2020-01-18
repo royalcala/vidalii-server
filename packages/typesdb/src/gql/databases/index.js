@@ -38,7 +38,8 @@ export default ({ dbs, getSchemas }) => {
                 if (type === 'knex') {
                     promises.push(knex({
                         db: lib,
-                        schema: schemas[nameSchema]
+                        schema: schemas[nameSchema],
+                        schemas
                     }))
                 }
 

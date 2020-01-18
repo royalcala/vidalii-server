@@ -13,9 +13,19 @@ const types = {
         knex: 'uuid'
     },
     ref: {
-        graphql: 'update on schema.get',
-        knex: 'update on schema.get'
-    }
+        graphql: 'update from store when is needed',
+        knex: 'update from store when is needed'
+    },
+    // type: {
+    //     one_to_one: {
+    //         graphql: 'update with a type',
+    //         knex: ''
+    //     },
+    //     one_to_many: {
+    //         graphql: 'update with a type',
+    //         knex: ''
+    //     }
+    // }
 }
 
 
@@ -32,17 +42,19 @@ export const uuid = type({
 })
 
 export const ref = ({
-    schema,
-    field,
+    schemaName,
+    fieldName,
     // suscription = null // add to schema suscription when delete search 
 }) => type({
-    types: types.ref,
+    types: 'ref',
     ref: {
-        schema,
-        field
+        schemaName,
+        fieldName
     }
 
-})
+})()
+
+
 // export const ref = type({
 //     types: null,//get from schema 
 // })

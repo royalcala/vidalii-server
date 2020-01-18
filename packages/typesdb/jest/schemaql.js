@@ -1,5 +1,5 @@
 import init_schemaql from '../src/gql'
-import { int, string, ref, uuid } from '../src/gql'
+import { int, string, ref, uuid, type } from '../src/gql'
 
 export default () => {
     describe('schema', () => {
@@ -46,17 +46,18 @@ export default () => {
                 fields: {
                     _id: uuid(({ primary: true, unique: true, notNullable: true })),
                     _id_material: ref({
-                        schema:'catalogue_materials',
-                        field:'_id'
+                        schemaName: 'catalogue_materials',
+                        fieldName: '_id'
                     }),
                     cant: int()
                 },
-                extend: [{
+                extend: {
                     schema: 'sales',
                     key: '_id',
                     field: 'materials',
+                    relation: 'one_to_one',
                     resolver: 'custom|subtableDefault',
-                }],
+                },
             })
 
             schema.schema.add({
@@ -67,7 +68,7 @@ export default () => {
                     name: string()
                 }
             })
-            console.log('schema.schema.get()::',schema.schema.get())
+            // console.log('schema.schema.get()::', schema.schema.get())
             // expect(schema.schema.get()).toEqual(expect.objectContaining({
             //     sales: expect.any(Object),
             //     sales_materials: expect.any(Object)
@@ -75,11 +76,11 @@ export default () => {
 
         })
         it('init Database', async () => {
-            // let result = await schema.db.init()
+            let result = await schema.db.init()
         })
         it('startServer', async () => {
-            // let result = await schema.startServer()
-            // console.log('result::', result)
+            let result = await schema.startServer()
+            console.log('result::', result)
         })
         it('mutate schema', async () => {
 

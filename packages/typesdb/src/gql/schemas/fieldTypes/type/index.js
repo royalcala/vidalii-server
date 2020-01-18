@@ -12,7 +12,8 @@ const pipeFxs = (...allPipeFxs) => ({ newValue, ...otherData }) => {
 // export const VIDALIILEAF = 'vidaliiLeaf'
 
 export default ({
-    types
+    types,
+    ref = null
 }) => (dataFromUserInput = {}) => {
     const {
         props = null,
@@ -20,8 +21,7 @@ export default ({
         index = null,
         unique = null,
         notNullable = null,
-        virtual = null,//needs onGet, dont save the field on database
-        ref = null,
+        virtual = null,//needs onGet, dont save the field on database        
         onGet = null, //resolver.type
         onInsert = ({ newValue }) => newValue,
         onUpdate = ({ newValue }) => newValue,
