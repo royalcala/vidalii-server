@@ -8,7 +8,7 @@ export default ({ storeTypes }) => ({ nameType, nameField, fx }) => {
 
     storeTypes[nameType][nameField] = {
         nameField,
-        typeField
+        fx
     }
 
 }

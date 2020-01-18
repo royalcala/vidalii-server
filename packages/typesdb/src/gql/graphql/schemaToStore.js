@@ -1,8 +1,6 @@
 import { initStore } from './structureStore'
 // import initAddType from './addType'
-import { sdl, resolvers } from './adds'
-
-
+import { sdl, resolver } from './adds'
 
 export default ({ schemas }) => {
     const store = initStore()
@@ -11,9 +9,12 @@ export default ({ schemas }) => {
             type: sdl.type({ storeTypes: store.types }),
             query: sdl.query({ storeQuery: store.queries }),
             mutation: sdl.mutation({ storeMutation: store.mutations })
+        },
+        resolver: {
+            type: resolver.type({ storeTypes: store.resolvers.types })
         }
     }
-  
+
     let nameType
     for (nameType in schemas) {
         let nameField
@@ -34,6 +35,10 @@ export default ({ schemas }) => {
             nameMutation: nameType,
             args: '(data:JSON)',
             typeReturn: `[${nameType}]`
+        })
+        //if has ref
+        add.resolver.type({
+
         })
 
     }

@@ -30,13 +30,26 @@ export default () => {
                 fields: {
                     _id: uuid({ primary: true, unique: true, notNullable: true }),
                     folio: string(),
-                    materials: ref({
-                        from: '_id',
-                        to: '_id_parent',
-                        toSchema: 'sales_materials'
+                    materials: uuid({
+                        ref: {
+                            from: '_id',
+                            to: '_id_parent',
+                            toSchema: 'sales_materials'
+                        }
                     })
                 }
             })
+            //schema.schema.extend({
+            //     extended:{
+            //         name:'',
+            //         key:'',
+            //     }
+            //     name:'',
+            //     db:'',
+            //     fields:{
+
+            //     }
+            // })
             schema.schema.add({
                 name: 'sales_materials',
                 db: 'nameDB',
@@ -56,9 +69,9 @@ export default () => {
         it('init Database', async () => {
             let result = await schema.db.init()
         })
-        it('startServer',async ()=>{
+        it('startServer', async () => {
             let result = await schema.startServer()
-            console.log('result::',result)
+            console.log('result::', result)
         })
         it('mutate schema', async () => {
 

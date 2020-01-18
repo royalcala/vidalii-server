@@ -4,8 +4,8 @@ export default ({ storeQuery }) => ({ nameQuery, args, typeReturn }) => {
     else
         storeQuery[nameQuery] = {}
 
-
     storeQuery[nameQuery] = {
+        nameQuery,
         args,
         typeReturn
     }

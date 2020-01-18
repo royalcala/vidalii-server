@@ -27,9 +27,9 @@ export const uuid = type({
     types: types.uuid,
 })
 
-export const ref = type({
-    types: types.string,
-})
+// export const ref = type({
+//     types: types.string,
+// })
 
 // export const virtual = typeName => type({
 //     types: {

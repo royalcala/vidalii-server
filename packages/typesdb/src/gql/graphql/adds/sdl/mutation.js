@@ -4,8 +4,8 @@ export default ({ storeMutation }) => ({ nameMutation, args, typeReturn }) => {
     else
         storeMutation[nameMutation] = {}
 
-
     storeMutation[nameMutation] = {
+        nameMutation,
         args,
         typeReturn
     }
