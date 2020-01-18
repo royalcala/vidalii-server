@@ -23,7 +23,7 @@ export default ({
         onInsert = ({ newValue }) => newValue,
         onUpdate = ({ newValue }) => newValue,
         virtual = null,//needs onGet, dont save the field
-        onGet = null
+        onGet = null //resolver.type
     } = dataFromUserInput
     if (props !== null)
         props = Array.isArray(data) ? data : [data] //size, etc props of column

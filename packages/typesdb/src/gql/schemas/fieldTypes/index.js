@@ -1,5 +1,5 @@
 import type from './type'
-export const types = {
+const types = {
     int: {
         graphql: 'Int',
         knex: 'integer'

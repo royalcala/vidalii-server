@@ -1,32 +1,30 @@
 import init_schemaql from '../src/gql'
-import { int, string, ref, uuid } from '../src/gql/fieldTypes'
+import { int, string, ref, uuid } from '../src/gql'
 
 export default () => {
     describe('schema', () => {
-        let db
-        let sampleSize
+        // let db
+        // let sampleSize
         let schema
         beforeAll(async () => {
-            sampleSize = global.sampleSize
-            db = global.db
-            schema = init_schemaql({
-                dbs: {
-                    nameDB: {
-                        type: 'sqlite',
-                        lib: db
-                    }
-                }
+            schema = init_schemaql()
+            schema.db.addClient({
+                name: 'nameDB',
+                client: 'sqlite3',
+                connection: {
+                    filename: global.path
+                },
             })
         })
 
         it('initialized global schemaDefs', () => {
-            expect(schema).toEqual(expect.objectContaining({
-                addSchema: expect.any(Function)
-            }))
+            // expect(schema).toEqual(expect.objectContaining({
+            //     addSchema: expect.any(Function)
+            // }))
         })
 
         it('add schemas', () => {
-            schema.addSchema({
+            schema.schema.add({
                 name: 'sales',
                 db: 'nameDB',
                 fields: {
@@ -39,7 +37,7 @@ export default () => {
                     })
                 }
             })
-            schema.addSchema({
+            schema.schema.add({
                 name: 'sales_materials',
                 db: 'nameDB',
                 fields: {
@@ -49,15 +47,21 @@ export default () => {
                 }
             })
 
-            expect(schema.getSchemas()).toEqual(expect.objectContaining({
+            expect(schema.schema.get()).toEqual(expect.objectContaining({
                 sales: expect.any(Object),
                 sales_materials: expect.any(Object)
             }))
 
         })
         it('init Database', async () => {
-            let result = await schema.initDatabase()
-            console.log('result::', result)
+            let result = await schema.db.init()
+        })
+        it('startServer',async ()=>{
+            let result = await schema.startServer()
+            console.log('result::',result)
+        })
+        it('mutate schema', async () => {
+
         })
 
 
