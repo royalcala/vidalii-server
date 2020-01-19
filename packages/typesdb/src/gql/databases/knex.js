@@ -1,3 +1,5 @@
+import { getRefField } from '../schemas/fieldTypes'
+
 const addPropertyToColumn = (pivot, key, value) => {
     if (value !== null) {
         if (value === true)
@@ -15,11 +17,12 @@ const initPropertyColumn = ({ nameColumn, props, tableKnex, typeColumn }) => {
     else
         return tableKnex[typeColumn](nameColumn)
 }
-const initTypeFromRef = ({ ref, schemas, nameColumn, props, tableKnex, types }) => {
+const initTypeFromRef = ({ ref, schemas, nameColumn, props, tableKnex, types }) => {    
     if (ref !== null) {
         return initPropertyColumn({
             nameColumn, props, tableKnex,
-            typeColumn: schemas[ref.schemaName].fields[ref.fieldName].types.knex
+            typeColumn: getRefField({ schemas, ref }).types.knex
+            // typeColumn: schemas[ref.schemaName].fields[ref.fieldName].types.knex
         })
     } else
         return initPropertyColumn({

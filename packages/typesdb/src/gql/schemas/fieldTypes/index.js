@@ -13,8 +13,8 @@ const types = {
         knex: 'uuid'
     },
     ref: {
-        graphql: 'update from store when is needed',
-        knex: 'update from store when is needed'
+        graphql: 'get from ref to oSchema.get() when is needed',
+        knex: 'get from ref to oSchema.get() when is needed'
     },
     // type: {
     //     one_to_one: {
@@ -27,7 +27,10 @@ const types = {
     //     }
     // }
 }
-
+export const getRefField = ({ schemas, ref }) => {
+    // schemas[ref.schemaName].fields[ref.fieldName].types.knex
+    return schemas[ref.schemaName].fields[ref.fieldName]
+}
 
 export const int = type({
     types: types.int,
@@ -46,7 +49,7 @@ export const ref = ({
     fieldName,
     // suscription = null // add to schema suscription when delete search 
 }) => type({
-    types: 'ref',
+    types: types.ref,
     ref: {
         schemaName,
         fieldName

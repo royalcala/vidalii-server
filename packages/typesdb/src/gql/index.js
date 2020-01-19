@@ -1,35 +1,44 @@
 import init_schemas from './schemas'
-import databases from './databases'
+import init_databases from './databases'
 import init_oGraphql from './graphql'
 
 export * from './schemas/fieldTypes'
 
+
+
+
 export default () => {
-    const { get, add } = init_schemas()
-    const { addClient, init } = databases({ getSchemas: get })
-    const { custom, schemaToStore,
-        get: getGraphqlStore, mergeStores } = init_oGraphql({ getSchemas: get })
+    // const { getSchemas, addSchema } = init_schemas()
+    const oSchemas = init_schemas()
+    const oDatabases = init_databases()
+    // const { addClient, initdbs } = databases()
+
+    // const { custom, schemaToStore,
+    //     get: getGraphqlStore, mergeStores } = init_oGraphql()
+    const oGraphql = init_oGraphql()
     return {
         graphql: {
-            custom
+            addCustom: oGraphql.custom
         },
         db: {
-            addClient,
-            init
+            addClient: oDatabases.addClient,
+            // init: initdbs({ schemas })
         },
         schema: {
-            get,
-            add
+            ...oSchemas
         },
-        startServer: () => {
+        startServer: async () => {
+            //init databases
+            await oDatabases.init({ oSchemas })
+
             //init storeSchemaGql
-            let schemasStore = schemaToStore({ schemas: get() })
-            console.log('schemasStore::',schemasStore)
+            const graphqlSchema = oGraphql.getGraphqlFromSchema({ oSchemas, oDatabases })
+            console.log('graphqlSchema::', graphqlSchema)
             //init storeExternalGql
-            let otherStore = getGraphqlStore()
-            console.log('otherStore::',otherStore)
+            // let otherStore = getGraphqlStore()
+            // console.log('otherStore::', otherStore)
             //merge stores Gql
-            let mergedStores = mergeStores(schemasStore, otherStore)
+            // let mergedStores = mergeStores(schemasStore, otherStore)
 
             //get services
 

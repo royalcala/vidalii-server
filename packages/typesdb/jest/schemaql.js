@@ -16,7 +16,6 @@ export default () => {
                 },
             })
         })
-
         it('initialized global schemaDefs', () => {
             // expect(schema).toEqual(expect.objectContaining({
             //     addSchema: expect.any(Function)
@@ -40,6 +39,7 @@ export default () => {
                     // })
                 }
             })
+
             schema.schema.add({
                 name: 'salesmaterials',
                 db: 'nameDB',
@@ -75,9 +75,9 @@ export default () => {
             // }))
 
         })
-        it('init Database', async () => {
-            let result = await schema.db.init()
-        })
+        // it('init Database', async () => {
+        //     let result = await schema.db.init()
+        // })
         it('startServer', async () => {
             let result = await schema.startServer()
             console.log('result::', result)

@@ -1,10 +1,11 @@
 import knex from './knex'
 
-export default ({ dbs, getSchemas }) => {
+export default () => {
     const store = {
         clients: {}
     }
     return {
+        get: () => store,
         addClient: ({ type = 'knex', name, client, connection, useNullAsDefault = true }) => {
             try {
                 if (store.clients[name])
@@ -28,8 +29,8 @@ export default ({ dbs, getSchemas }) => {
 
 
         },
-        init: async () => {
-            let schemas = getSchemas()
+        init: async ({ oSchemas }) => {
+            let schemas = oSchemas.get()
             let promises = []
             let nameSchema
             for (nameSchema in schemas) {

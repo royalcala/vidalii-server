@@ -1,8 +1,10 @@
 export const initStore = () => ({
-    types: {},
-    queries: {},
-    mutations: {
-        // sdl: `${name}(data:JSON!):${name}`
+    sdl: {
+        types: {},
+        queries: {},
+        mutations: {
+            // sdl: `${name}(data:JSON!):${name}`
+        }
     },
     resolvers: {
         types: {},

@@ -1,24 +1,18 @@
 import scalars from './scalars'
-import { sdl, resolver } from './adds'
-import schemaToStore from "./schemaToStore";
+import { sdl, resolver } from './composition'
+import getGraphqlFromSchema from "./getGraphqlFromSchema";
 import { initStore } from './structureStore'
-const addQuery = () => {
-
-}
-const addMutation = () => {
-
-}
 
 
 
-export default ({ getSchemas }) => {
-    const store = initStore()
+export default () => {
+    const customStore = initStore()
 
-    const custom = {
+    const addCustom = {
         sdl: {
-            type: sdl.type({ storeTypes: store.types }),
-            query: sdl.query({ storeQuery: store.queries }),
-            mutation: sdl.mutation({ storeMutation: store.mutations })
+            type: sdl.type({ storeTypes: customStore.sdl.types }),
+            query: sdl.query({ storeQuery: customStore.sdl.queries }),
+            mutation: sdl.mutation({ storeMutation: customStore.sdl.mutations })
         },
         resolver: {
 
@@ -28,9 +22,9 @@ export default ({ getSchemas }) => {
 
 
     return {
-        custom,
-        get: () => store,
-        schemaToStore,
+        addCustom,
+        get: () => customStore,
+        getGraphqlFromSchema,
         mergeStores: (...stores) => {
 
         },
