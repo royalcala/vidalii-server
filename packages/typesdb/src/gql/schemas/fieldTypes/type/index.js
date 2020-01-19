@@ -16,13 +16,13 @@ export default ({
     ref = null
 }) => (dataFromUserInput = {}) => {
     const {
-        props = null,
-        primary = null,
-        index = null,
-        unique = null,
-        notNullable = null,
-        virtual = null,//needs onGet, dont save the field on database        
-        onGet = null, //resolver.type
+        props = null,//for db.column(name,...props)
+        primary = null,//for db.column
+        index = null,//for db.column
+        unique = null,//for db.column
+        notNullable = null,//for db.column
+        virtual = null,//dont save the field on database        
+        onGet = null, //gql.resolver.type
         onInsert = ({ newValue }) => newValue,
         onUpdate = ({ newValue }) => newValue,
     } = dataFromUserInput

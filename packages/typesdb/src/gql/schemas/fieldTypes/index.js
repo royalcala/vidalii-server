@@ -13,8 +13,8 @@ const types = {
         knex: 'uuid'
     },
     ref: {
-        graphql: 'get from ref to oSchema.get() when is needed',
-        knex: 'get from ref to oSchema.get() when is needed'
+        graphql: 'is a ref get from oSchema.get() when is needed',
+        knex: 'is a ref get from oSchema.get() when is needed'
     },
     // type: {
     //     one_to_one: {
@@ -26,6 +26,10 @@ const types = {
     //         knex: ''
     //     }
     // }
+}
+export const relation = {
+    one_to_one: 'one_to_one',
+    one_to_many: 'one_to_many'
 }
 export const getRefField = ({ schemas, ref }) => {
     // schemas[ref.schemaName].fields[ref.fieldName].types.knex
@@ -47,12 +51,14 @@ export const uuid = type({
 export const ref = ({
     schemaName,
     fieldName,
+    relation = relation.one_to_many,
     // suscription = null // add to schema suscription when delete search 
 }) => type({
     types: types.ref,
     ref: {
         schemaName,
-        fieldName
+        fieldName,
+        relation
     }
 
 })()

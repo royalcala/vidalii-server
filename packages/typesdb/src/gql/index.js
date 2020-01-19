@@ -30,10 +30,10 @@ export default () => {
         startServer: async () => {
             //init databases
             await oDatabases.init({ oSchemas })
-
             //init storeSchemaGql
             const graphqlSchema = oGraphql.getGraphqlFromSchema({ oSchemas, oDatabases })
             console.log('graphqlSchema::', graphqlSchema)
+            console.log(' graphqlSchema.resolvers.types.salesmaterials::', graphqlSchema.resolvers.types.salesmaterials)
             //init storeExternalGql
             // let otherStore = getGraphqlStore()
             // console.log('otherStore::', otherStore)

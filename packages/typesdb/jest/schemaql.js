@@ -1,5 +1,5 @@
 import init_schemaql from '../src/gql'
-import { int, string, ref, uuid, type } from '../src/gql'
+import { int, string, ref, uuid, relation } from '../src/gql'
 
 export default () => {
     describe('schema', () => {
@@ -47,7 +47,8 @@ export default () => {
                     _id: uuid(({ primary: true, unique: true, notNullable: true })),
                     _id_material: ref({
                         schemaName: 'catalogue_materials',
-                        fieldName: '_id'
+                        fieldName: '_id',
+                        relation: relation.one_to_one
                     }),
                     cant: int()
                 },
@@ -55,7 +56,7 @@ export default () => {
                     schema: 'sales',
                     key: '_id',
                     field: 'materials',
-                    relation: 'one_to_one',
+                    relation: relation.one_to_many,
                     resolver: 'custom|subtableDefault',
                 },
             })
