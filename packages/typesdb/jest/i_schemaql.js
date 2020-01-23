@@ -6,7 +6,7 @@ export default () => {
     describe('schema', () => {
         // let db
         // let sampleSize
-        let location = __dirname + 'schemaql.sqlite'
+        let location = __dirname + '/ischemaql.sqlite'
         beforeAll(async () => {
             removeDataBase({ location })
             // {
@@ -100,8 +100,7 @@ export default () => {
 
         })
         it('init Database', async () => {
-            dbs.syncSchemas()
-
+            await dbs.syncSchemas()
         })
         // it('startServer', async () => {
         //     let result = await schema.startServer()

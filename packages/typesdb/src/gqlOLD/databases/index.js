@@ -9,27 +9,35 @@ const main = () => {
     return {
         get: () => store,
         addConnection: ({ orm = C_TYPEORM, type = 'sqlite', name, database }) => {
-            console.log('database::', database)
-            if (store.connections[name])
-                console.log(`The connection:${name} will be remplaced with the new `)
-            if (orm === C_TYPEORM) {
-                store.connections[name] = {
-                    orm,
-                    type,
-                    name,
-                    database,
-                    // synchronize: true
-                    // type,
-                    // lib: require('knex')({
-                    //     client,
-                    //     connection,
-                    //     useNullAsDefault
-                    // })
+            try {
+                if (store.connections[name])
+                    console.log(`The connection:${name} will be remplaced with the new `)
+                if (orm === C_TYPEORM) {
+                    store.connections[name] = {
+                        orm,
+                        type,
+                        name,
+                        database,
+                        synchronize: true
+                        // type,
+                        // lib: require('knex')({
+                        //     client,
+                        //     connection,
+                        //     useNullAsDefault
+                        // })
+                    }
+                }
+            } catch (error) {
+                return {
+                    error
                 }
             }
+
+
+
         },
         syncSchemas: async () => {
-            await typeorm.syncSchemas()
+            typeorm.syncSchemas()
             // let storeSchemas = schemas.get()
             // let nameSchema
             // for (nameSchema in storeSchemas) {

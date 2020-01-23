@@ -3,7 +3,7 @@
 // import init_oGraphql from './graphql'
 export { default as schemas } from './schemas'
 export { default as dbs } from './databases'
-export * from './schemas/types'
+export * from './schemas/fieldTypes'
 
 // export default {
 //     schemas

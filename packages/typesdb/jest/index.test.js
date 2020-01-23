@@ -1,13 +1,13 @@
 import { removeDataBase } from '../../removeDatabase'
-import schemaql from '../src'
+// import schemaql from '../src'
 
-import test1 from './test1'
-import test_structure from './structureSchema'
-import test_mutation from './mutation'
-import test_knex from './knex'
-import test_schemaql from './schemaql'
+// import test1 from './test1'
+// import test_structure from './structureSchema'
+// import test_mutation from './mutation'
+// import test_knex from './knex'
+// import test_schemaql from './schemaql'
 import test_instance_schemaql from './i_schemaql'
-import test_typeorm from './typeorm'
+// import test_typeorm from './typeorm'
 jest.setTimeout(1000000);
 describe('schemaql', () => {
     // let db

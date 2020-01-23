@@ -1,6 +1,6 @@
 import schemas from '../../schemas'
 import dbs from '../../databases'
-import { getRefField } from '../../schemas/types'
+import { getRefField } from '../../schemas/fieldTypes'
 import { EntitySchema } from "typeorm";
 // export const C_TYPEORM = 'typeorm'
 import { C_TYPEORM } from './index'
@@ -46,27 +46,20 @@ const getSchemaEntitie = ({ schema }) => {
 export const getEntities = () => {
     let storeSchemas = schemas.get()
     let connections = dbs.get().connections
-    let storeEntities = {
-        byConnection: {}
-    }
+    let storeEntities = {}
     let nameSchema
     for (nameSchema in storeSchemas) {
-        let namedb = storeSchemas[nameSchema].db
-        let typeDB = connections[namedb]
-        if (typeDB.orm === C_TYPEORM) {
-            if (!storeEntities.byConnection[namedb])
-                storeEntities.byConnection[namedb] = []
-            storeEntities.byConnection[namedb].push(
+        let nameDB = storeSchemas[nameSchema].db
+        let typeDB = connections[nameDB]
+        if (typeDB.orm === C_TYPEORM)
+            storeEntities[nameSchema] =
                 new EntitySchema(
                     getSchemaEntitie({
                         schema: storeSchemas[nameSchema]
                     })
                 )
-            )
-
-
-        }
     }
+    console.log('storeEntities::', storeEntities)
     return storeEntities
 }
 
