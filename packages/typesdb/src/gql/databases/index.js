@@ -1,3 +1,4 @@
+import schemas from '../schemas'
 import typeorm, { C_TYPEORM } from './typeorm'
 // import knex from './knex'
 
@@ -35,17 +36,19 @@ const main = () => {
 
 
         },
-        init: async ({ oSchemas }) => {
-            let schemas = oSchemas.get()
-            let nameSchema
-            for (nameSchema in schemas) {
-                let nameDB = schemas[nameSchema].db
-                let typeDB = store.connections[nameDB]
-                if (typeDB.orm === C_TYPEORM)
-                    typeorm.addEntitie(schemas[nameSchema])
+        syncSchemas: async () => {
+            typeorm.syncSchemas()
+            // let storeSchemas = schemas.get()
+            // let nameSchema
+            // for (nameSchema in storeSchemas) {
+            //     let nameDB = storeSchemas[nameSchema].db
+            //     let typeDB = store.connections[nameDB]
+            //     if (typeDB.orm === C_TYPEORM)
+            //         typeorm.addEntitie(storeSchemas[nameSchema])
 
-            }
-            typeorm.init()
+            // }
+
+            // console.log('typeorm.get()::', typeorm.get())
         }
 
     }

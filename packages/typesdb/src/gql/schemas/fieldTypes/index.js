@@ -3,21 +3,22 @@ const types = {
     int: {
         graphql: 'Int',
         knex: 'integer',
-        typeorm:'integer'
+        typeorm: 'integer'
     },
     string: {
         graphql: 'String',
         knex: 'string',
-        typeorm:'varchar'
+        typeorm: 'varchar'
     },
     uuid: {
         graphql: 'ID',
         knex: 'uuid',
-        typeorm:'varchar'
+        typeorm: 'varchar'
     },
     ref: {
         graphql: 'is a ref get from oSchema.get() when is needed',
-        knex: 'is a ref get from oSchema.get() when is needed'
+        knex: 'is a ref get from oSchema.get() when is needed',
+        typeorm: 'is a ref get from oSchema.get() when is needed'
     },
     // type: {
     //     one_to_one: {

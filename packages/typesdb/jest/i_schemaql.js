@@ -1,12 +1,14 @@
-import { schemas } from '../src/gql'
+import { removeDataBase } from '../../removeDatabase'
+import { schemas, dbs } from '../src/gql'
 import { int, string, ref, uuid, relation } from '../src/gql'
 
 export default () => {
     describe('schema', () => {
         // let db
         // let sampleSize
-        let schema
+        let location = __dirname + 'schemaql.sqlite'
         beforeAll(async () => {
+            removeDataBase({ location })
             // {
             //     name: "db1Connection",
             //     type: "mysql",
@@ -19,21 +21,27 @@ export default () => {
             //     synchronize: true
             // }
             // schema = init_schemaql()
-            // schema.db.addConnection({
-            //     name: 'nameDB',
-            //     type: 'sqlite',
-            //     database: __dirname + 'schemaql.sqlite',
-            //     // client: 'sqlite3',
-            //     // connection: {
-            //     //     filename: global.path
-            //     // },
-            // })
+
+
         })
-        it('initialized global schemaDefs', () => {
-            console.log('schemas::', schemas)
-            // expect(schema).toEqual(expect.objectContaining({
-            //     addSchema: expect.any(Function)
-            // }))
+        it('add a dbs.connection', async () => {
+            dbs.addConnection({
+                name: 'nameDB',
+                type: 'sqlite',
+                database: location,
+                // client: 'sqlite3',
+                // connection: {
+                //     filename: global.path
+                // },
+            })
+            // console.log('dbs.get()::', dbs.get())
+            expect(dbs.get()).toEqual(
+                expect.objectContaining({
+                    connections: {
+                        nameDB: expect.any(Object)
+                    }
+                })
+            )
         })
 
         it('add schemas', () => {
@@ -84,15 +92,17 @@ export default () => {
                 }
             })
             // console.log('schema.schema.get()::', schemas.get())
-            // expect(schema.schema.get()).toEqual(expect.objectContaining({
-            //     sales: expect.any(Object),
-            //     sales_materials: expect.any(Object)
-            // }))
+            expect(schemas.get()).toEqual(expect.objectContaining({
+                sales: expect.any(Object),
+                salesmaterials: expect.any(Object),
+                catalogue_materials: expect.any(Object)
+            }))
 
         })
-        // // it('init Database', async () => {
-        // //     let result = await schema.db.init()
-        // // })
+        it('init Database', async () => {
+            dbs.syncSchemas()
+
+        })
         // it('startServer', async () => {
         //     let result = await schema.startServer()
         //     console.log('result::', result)

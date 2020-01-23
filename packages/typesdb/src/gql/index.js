@@ -1,8 +1,8 @@
 // import init_schemas from './schemas'
 // import init_databases from './databases'
 // import init_oGraphql from './graphql'
-export {default as schemas} from './schemas'
-
+export { default as schemas } from './schemas'
+export { default as dbs } from './databases'
 export * from './schemas/fieldTypes'
 
 // export default {

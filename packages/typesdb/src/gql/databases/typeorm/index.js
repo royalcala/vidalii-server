@@ -1,66 +1,27 @@
-import { EntitySchema } from "typeorm";
+import { getConnections } from './connections'
 export const C_TYPEORM = 'typeorm'
 
-const getSchemaColumn = ({ nameColumn, field }) => {
-    const { types, ...otherColumnOptions } = field
-    if (otherColumnOptions.ref)
-        console.log('is ref')
-    return {
-        name: nameColumn,
-        type: types.typeorm,
-        ...otherColumnOptions
-    }
-}
-
-const buildSchemaEntitie = schema => {
-    const { name, fields } = schema
-
-    let columns = {}
-    let nameField
-    for (nameField in fields) {
-        let field = fields[nameField]
-        console.log('nameField::', nameField)
-        console.log('field::', field)
-        if (!field.virtual)
-            columns[nameField] = getSchemaColumn({
-                nameColumn: nameField,
-                field
-            })
-
-    }
-
-    return {
-        name,
-        columns
-    }
-}
-
-const buildEntitiesOnStore = ({ store }) => {
-    store.schemas.forEach(
-        schema => {
-            const entitie = buildSchemaEntitie(schema)
-            console.log('entitie::', entitie)
-            store.entities.push(new EntitySchema(entitie))
-        }
-    )
-}
-
-
 const main = () => {
-    const store = {
-        schemas: [],
-        entities: []
-    }
+    // const store = {
+    //     entities: []
+    // }
     return {
-        addEntitie: schema => {
-            store.schemas.push(schema)
-        },
-        init: () => {
-            buildEntitiesOnStore({ store })
-            return {
-                entitieManager: () => { },
-                repository: () => { }
-            }
+        get: () => store,
+        syncSchemas: () => {
+            let connections = getConnections()
+            // let storeSchemas = schemas.get()
+            // let connections = dbs.get().connections
+            // let nameSchema
+            // for (nameSchema in storeSchemas) {
+            //     let nameDB = storeSchemas[nameSchema].db
+            //     let typeDB = connections[nameDB]
+            //     if (typeDB.orm === C_TYPEORM)
+            //         addEntitieToStore({
+            //             storeEntities: store.entities,
+            //             schema: storeSchemas[nameSchema]
+            //         })
+            // }
+            // console.log('store::', store)
         }
     }
 }
