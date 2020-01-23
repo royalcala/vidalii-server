@@ -1,12 +1,21 @@
-
+import { removeDataBase } from '../../removeDatabase'
 
 export default () => {
     describe('knex', () => {
         let knex
         let sampleSize
+        let location = __dirname + '/knex.sqlite'
         beforeAll(async () => {
+            removeDataBase({ location })
             sampleSize = global.sampleSize
-            knex = global.db
+
+            knex = require('knex')({
+                client: 'sqlite3',
+                connection: {
+                    filename: location
+                },
+                useNullAsDefault: true
+            });
         });
 
         it('create Table', async () => {
@@ -14,8 +23,8 @@ export default () => {
                 table.increments('the_id')
                 table.integer('folio')
                 table.string('spec')
-                table.index('folio')
-                table.index('spec')
+                // table.index('folio')
+                // table.index('spec')
             }
             let response = await knex.schema.createTable(
                 'tableKnex',
@@ -89,7 +98,7 @@ export default () => {
             try {
                 await Promise.all(promises)
             } catch (error) {
-                console.log('error::',error)
+                console.log('error::', error)
             }
 
             await trx.commit();

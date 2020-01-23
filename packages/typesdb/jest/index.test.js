@@ -6,16 +6,15 @@ import test_structure from './structureSchema'
 import test_mutation from './mutation'
 import test_knex from './knex'
 import test_schemaql from './schemaql'
-
+import test_instance_schemaql from './i_schemaql'
 import test_typeorm from './typeorm'
-// jest.setTimeout(1000000);
+jest.setTimeout(1000000);
 describe('schemaql', () => {
     // let db
-    let location = __dirname + '/db.sqlite'
+    // let location = __dirname + '/db.sqlite'
 
     beforeAll(async () => {
-        removeDataBase({ location })
-        global.path = location
+        // removeDataBase({ location })  
         // const Database = require('better-sqlite3');
         // db = new Database('./better.sqlite', { verbose: console.log });
         // db = new Database(location)
@@ -27,7 +26,7 @@ describe('schemaql', () => {
         //     useNullAsDefault: true
         // });
         // global.db = db
-        // global.sampleSize = 2
+        global.sampleSize = 100
         // global.schemaql = schemaql
 
     });
@@ -38,7 +37,8 @@ describe('schemaql', () => {
     // test1()
     // test_structure()
     // test_mutation()
-    // test_knex()
     // test_schemaql()
-    test_typeorm()
+    // test_typeorm()
+    // test_knex()
+    test_instance_schemaql()
 })

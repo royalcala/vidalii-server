@@ -1,23 +1,29 @@
-import knex from './knex'
+import typeorm, { C_TYPEORM } from './typeorm'
+// import knex from './knex'
 
-export default () => {
+const main = () => {
     const store = {
-        clients: {}
+        connections: {}
     }
     return {
         get: () => store,
-        addClient: ({ type = 'knex', name, client, connection, useNullAsDefault = true }) => {
+        addConnection: ({ orm = C_TYPEORM, type = 'sqlite', name, database }) => {
             try {
-                if (store.clients[name])
-                    console.log(`The clientdb:${name} will be remplaced with the new `)
-                if (type === 'knex') {
-                    store.clients[name] = {
+                if (store.connections[name])
+                    console.log(`The connection:${name} will be remplaced with the new `)
+                if (orm === C_TYPEORM) {
+                    store.connections[name] = {
+                        orm,
                         type,
-                        lib: require('knex')({
-                            client,
-                            connection,
-                            useNullAsDefault
-                        })
+                        name,
+                        database,
+                        synchronize: true
+                        // type,
+                        // lib: require('knex')({
+                        //     client,
+                        //     connection,
+                        //     useNullAsDefault
+                        // })
                     }
                 }
             } catch (error) {
@@ -31,22 +37,18 @@ export default () => {
         },
         init: async ({ oSchemas }) => {
             let schemas = oSchemas.get()
-            let promises = []
             let nameSchema
             for (nameSchema in schemas) {
                 let nameDB = schemas[nameSchema].db
-                let { type, lib } = store.clients[nameDB]
-                if (type === 'knex') {
-                    promises.push(knex({
-                        db: lib,
-                        schema: schemas[nameSchema],
-                        schemas
-                    }))
-                }
+                let typeDB = store.connections[nameDB]
+                if (typeDB.orm === C_TYPEORM)
+                    typeorm.addEntitie(schemas[nameSchema])
 
             }
-            let response = await Promise.all(promises)
-            return response
+            typeorm.init()
         }
+
     }
 }
+
+export default main()

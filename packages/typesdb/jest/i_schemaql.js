@@ -1,4 +1,4 @@
-import init_schemaql from '../src/gql'
+import { schemas } from '../src/gql'
 import { int, string, ref, uuid, relation } from '../src/gql'
 
 export default () => {
@@ -18,25 +18,26 @@ export default () => {
             //     entities: [__dirname + "/entity/*{.js,.ts}"],
             //     synchronize: true
             // }
-            schema = init_schemaql()
-            schema.db.addConnection({
-                name: 'nameDB',
-                type: 'sqlite',
-                database: __dirname + 'schemaql.sqlite',
-                // client: 'sqlite3',
-                // connection: {
-                //     filename: global.path
-                // },
-            })
+            // schema = init_schemaql()
+            // schema.db.addConnection({
+            //     name: 'nameDB',
+            //     type: 'sqlite',
+            //     database: __dirname + 'schemaql.sqlite',
+            //     // client: 'sqlite3',
+            //     // connection: {
+            //     //     filename: global.path
+            //     // },
+            // })
         })
         it('initialized global schemaDefs', () => {
+            console.log('schemas::', schemas)
             // expect(schema).toEqual(expect.objectContaining({
             //     addSchema: expect.any(Function)
             // }))
         })
 
         it('add schemas', () => {
-            schema.schema.add({
+            schemas.add({
                 name: 'sales',
                 db: 'nameDB',
                 fields: {
@@ -53,7 +54,7 @@ export default () => {
                 }
             })
 
-            schema.schema.add({
+            schemas.add({
                 name: 'salesmaterials',
                 db: 'nameDB',
                 fields: {
@@ -74,7 +75,7 @@ export default () => {
                 },
             })
 
-            schema.schema.add({
+            schemas.add({
                 name: 'catalogue_materials',
                 db: 'nameDB',
                 fields: {
@@ -82,23 +83,23 @@ export default () => {
                     name: string()
                 }
             })
-            // console.log('schema.schema.get()::', schema.schema.get())
+            // console.log('schema.schema.get()::', schemas.get())
             // expect(schema.schema.get()).toEqual(expect.objectContaining({
             //     sales: expect.any(Object),
             //     sales_materials: expect.any(Object)
             // }))
 
         })
-        // it('init Database', async () => {
-        //     let result = await schema.db.init()
+        // // it('init Database', async () => {
+        // //     let result = await schema.db.init()
+        // // })
+        // it('startServer', async () => {
+        //     let result = await schema.startServer()
+        //     console.log('result::', result)
         // })
-        it('startServer', async () => {
-            let result = await schema.startServer()
-            console.log('result::', result)
-        })
-        it('mutate schema', async () => {
+        // it('mutate schema', async () => {
 
-        })
+        // })
 
 
 
