@@ -7,7 +7,7 @@ import { removeDataBase } from '../../removeDatabase'
 // import test_knex from './knex'
 // import test_schemaql from './schemaql'
 import test_instance_schemaql from './i_schemaql'
-// import test_typeorm from './typeorm'
+import test_typeorm from './typeorm'
 jest.setTimeout(1000000);
 describe('schemaql', () => {
     // let db
@@ -38,7 +38,7 @@ describe('schemaql', () => {
     // test_structure()
     // test_mutation()
     // test_schemaql()
-    // test_typeorm()
     // test_knex()
+    // test_typeorm()
     test_instance_schemaql()
 })

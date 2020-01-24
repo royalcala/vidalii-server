@@ -51,9 +51,9 @@ export const getEntities = () => {
     }
     let nameSchema
     for (nameSchema in storeSchemas) {
-        let namedb = storeSchemas[nameSchema].db
-        let typeDB = connections[namedb]
-        if (typeDB.orm === C_TYPEORM) {
+        let namedb = storeSchemas[nameSchema].connection
+        let connection = connections[namedb]
+        if (connection.orm === C_TYPEORM) {
             if (!storeEntities.byConnection[namedb])
                 storeEntities.byConnection[namedb] = []
             storeEntities.byConnection[namedb].push(

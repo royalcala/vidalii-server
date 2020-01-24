@@ -21,3 +21,16 @@ export const initStore = () => ({
         }
     }
 })
+
+export const populateStore = ({ sdl, resolvers, store }) => ({
+    sdl: {
+        type: sdl.type({ storeTypes: store.sdl.types }),
+        query: sdl.query({ storeQuery: store.sdl.queries }),
+        mutation: sdl.mutation({ storeMutation: store.sdl.mutations })
+    },
+    resolvers: {
+        mutation: resolvers.mutation({ storeMutation: store.resolvers.mutations }),
+        query: resolvers.query({ storeQuery: store.resolvers.queries }),
+        type: resolvers.type({ storeTypes: store.resolvers.types }),
+    }
+})

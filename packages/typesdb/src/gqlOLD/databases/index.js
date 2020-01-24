@@ -18,7 +18,7 @@ const main = () => {
                         type,
                         name,
                         database,
-                        synchronize: true
+                        // synchronize: true
                         // type,
                         // lib: require('knex')({
                         //     client,
@@ -36,8 +36,8 @@ const main = () => {
 
 
         },
-        syncSchemas: async () => {
-            typeorm.syncSchemas()
+        startConnections: async () => {
+            await typeorm.syncSchemas()
             // let storeSchemas = schemas.get()
             // let nameSchema
             // for (nameSchema in storeSchemas) {
@@ -45,9 +45,7 @@ const main = () => {
             //     let typeDB = store.connections[nameDB]
             //     if (typeDB.orm === C_TYPEORM)
             //         typeorm.addEntitie(storeSchemas[nameSchema])
-
             // }
-
             // console.log('typeorm.get()::', typeorm.get())
         }
 

@@ -1,12 +1,13 @@
 import { removeDataBase } from '../../removeDatabase'
-import { schemas, dbs } from '../src/gql'
-import { int, string, ref, uuid, relation } from '../src/gql'
-
+import { schemas, dbs, gql } from '../src/gql'
+import { types } from '../src/gql'
+import { getManager } from "typeorm";
 export default () => {
     describe('schema', () => {
         // let db
         // let sampleSize
         let location = __dirname + '/ischemaql.sqlite'
+        const { int, string, ref, uuid, relation } = types
         beforeAll(async () => {
             removeDataBase({ location })
             // {
@@ -47,7 +48,7 @@ export default () => {
         it('add schemas', () => {
             schemas.add({
                 name: 'sales',
-                db: 'nameDB',
+                connection: 'nameDB',
                 fields: {
                     _id: uuid({ primary: true, unique: true }),
                     folio: string(),
@@ -64,7 +65,7 @@ export default () => {
 
             schemas.add({
                 name: 'salesmaterials',
-                db: 'nameDB',
+                connection: 'nameDB',
                 fields: {
                     _id: uuid(({ primary: true, unique: true })),
                     _id_material: ref({
@@ -85,9 +86,9 @@ export default () => {
 
             schemas.add({
                 name: 'catalogue_materials',
-                db: 'nameDB',
+                connection: 'nameDB',
                 fields: {
-                    _id: uuid(({ primary: true, unique: true })),
+                    _id: uuid(({ primary: true })),
                     name: string()
                 }
             })
@@ -99,8 +100,58 @@ export default () => {
             }))
 
         })
-        it('init Database', async () => {
-            await dbs.syncSchemas()
+        it('test Database', async () => {
+            let nameConnection = 'nameDB'
+            let nameTable = 'catalogue_materials'
+            await dbs.init()
+            const manager = getManager(nameConnection); // you can also get it via getConnection().manager
+            //insert
+            await manager.save(nameTable, { _id: '1', name: 'name1' });
+            let response = await manager.findOne(nameTable, 1)
+            expect(response).toEqual(
+                expect.objectContaining({
+                    _id: '1',
+                    name: 'name1'
+                })
+            )
+            //update
+            await manager.save(nameTable, { _id: '1', name: 'nameUpdated' });
+            response = await manager.findOne(nameTable, 1)
+            expect(response).toEqual(
+                expect.objectContaining({
+                    _id: '1',
+                    name: 'nameUpdated'
+                })
+            )
+            //insertMany
+            await manager.save(nameTable, [
+                { _id: '2', name: 'name' },
+                { _id: '3', name: 'name' }
+            ]);
+            response = await manager.find(nameTable);
+            expect(response).toEqual(
+                expect.objectContaining([
+                    { _id: '1', name: 'nameUpdated' },
+                    { _id: '2', name: 'name' },
+                    { _id: '3', name: 'name' },
+                ])
+            )
+            //removeOne
+            await manager.remove(nameTable, { _id: '1' });
+            response = await manager.find(nameTable);
+            expect(response).toEqual(
+                expect.objectContaining([
+                    { _id: '2', name: 'name' },
+                    { _id: '3', name: 'name' },
+                ])
+            )
+
+        })
+        it('test graphql', async () => {
+            // console.log('gql::',gql)
+            // console.log('gql.getGraphqlFromSchema()::', gql.getGraphqlFromSchema())
+            gql.startService()
+
         })
         // it('startServer', async () => {
         //     let result = await schema.startServer()

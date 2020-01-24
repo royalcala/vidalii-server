@@ -1,11 +1,10 @@
-import { instanceConnections } from './connections'
+import { startInstancesConnections } from './connections'
 export const C_TYPEORM = 'typeorm'
 
 const main = () => {
-    return {
-        get: () => store,
-        syncSchemas: async () => {
-            await instanceConnections()
+    return {        
+        init: () => {
+            return startInstancesConnections()
 
         }
     }

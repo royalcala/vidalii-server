@@ -1,7 +1,7 @@
 import { createConnection } from "typeorm";
 import { getEntities } from './entities'
 import dbs from '../../databases'
-export const instanceConnections = async () => {
+export const startInstancesConnections = async () => {
     const { byConnection } = getEntities()
     const storeConnections = dbs.get().connections
     let nameConnection
@@ -16,8 +16,8 @@ export const instanceConnections = async () => {
                 entities: byConnection[nameConnection],
                 // entitySchemas: byConnection[nameConnection],
                 synchronize: true,
-                logging: true,
-                logger: 'advanced-console',
+                // logging: true,
+                // logger: 'advanced-console',
             });
             return {
                 error: null

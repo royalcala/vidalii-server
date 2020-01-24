@@ -12,9 +12,9 @@ export default () => {
         let path3 = __dirname + '/3.sqlite'
         let entities = []
         beforeAll(async () => {
-            removeDataBase({ location: path1 })
-            removeDataBase({ location: path2 })
-            removeDataBase({ location: path3 })
+            // removeDataBase({ location: path1 })
+            // removeDataBase({ location: path2 })
+            // removeDataBase({ location: path3 })
             sampleSize = global.sampleSize
 
 
@@ -75,8 +75,8 @@ export default () => {
                 type: "sqlite",
                 database: path1,
                 entities: [entities[0]],
-                // logging: true,
-                // logger: 'advanced-console',
+                logging: true,
+                logger: 'advanced-console',
                 synchronize: true,
             });
             // const connection2 = await createConnection({

@@ -2,7 +2,10 @@ import sdlType from "./sdl/type";
 import sdlQuery from './sdl/query'
 import sdlMutation from './sdl/mutation'
 
-import rtype from './resolver/type'
+import rmutation from './resolvers/mutation'
+import rquery from './resolvers/query'
+import rtype from './resolvers/type'
+
 
 export const sdl = {
     type: sdlType,
@@ -11,7 +14,8 @@ export const sdl = {
 }
 
 
-export const resolver = {
+export const resolvers = {
     type: rtype,
-    mutation: ''
+    mutation: rmutation,
+    query: rquery
 }
