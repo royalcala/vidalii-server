@@ -4,7 +4,7 @@ import json from './json'
 const scalars = {
     sdl: json.sdl,
     resolvers: {
-        ...json.resolvers
+        ...json.resolver
     }
 }
 

@@ -1,37 +1,40 @@
 import { getConnection } from "typeorm"
-// import {
-//     Not, LessThan, LessThanOrEqual, MoreThan,
-//     MoreThanOrEqual, Equal, Like, Between, In, Any,
-//     IsNull
-// } from "typeorm";
-// const iterateConditions = ({ conditions }) => {
-//     let key
-//     for (key in conditions) {
-//         let value = conditions[key]
-//         if (Array.isArray(value))
+import {
+    Not, LessThan, LessThanOrEqual, MoreThan,
+    MoreThanOrEqual, Equal, Like, Between, In, Any,
+    IsNull
+} from "typeorm";
+const iterateFilter = ({ filter }) => {
+    let key
+    for (key in filter) {
+        let value = filter[key]
+        if (Array.isArray(value))
 
-//             if (typeof value === 'object')
-//                 iterateConditions({ acc, conditions })
-//     }
-// }
-export const find = async ({ connectionName, schemaName, conditions = {} }) => {
-    iterateConditions({ conditions })
+            if (typeof value === 'object')
+                iteratefilter({ acc, filter })
+    }
+}
+export const find = async ({ connectionName, schemaName, filter = {} }) => {
+    // console.log('filter1::', filter)
+    // iterateFilter({ filter })
+    // console.log('filter2::', filter)
     // https://typeorm.io/#/find-options
     return getConnection(connectionName)
         .getRepository(schemaName)
-        .find(conditions)
+        .find(filter)
 }
-export const insertOne = async ({ connectionName, schemaName, doc }) => {
-    return getConnection(connectionName)
+export const insert = async ({ connectionName, schemaName, doc }) => {
+    //doc [] for many or {} for one
+    let response = await getConnection(connectionName)
         .createQueryBuilder()
         .insert()
         .into(schemaName)
         .values(doc)
         .execute()
-
+    return response.identifiers
 }
 
-export const updateOne = () => {
+export const update = () => {
 
 }
 

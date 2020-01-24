@@ -5,24 +5,12 @@ import { getManager } from "typeorm";
 const axios = require('axios');
 export default () => {
     describe('schema', () => {
-        // let db
-        // let sampleSize
+        const port = 3000
+        const url = `http://localhost:${port}/graphql`
         let location = __dirname + '/ischemaql.sqlite'
         const { int, string, ref, uuid, relation } = types
         beforeAll(async () => {
             removeDataBase({ location })
-            // {
-            //     name: "db1Connection",
-            //     type: "mysql",
-            //     host: "localhost",
-            //     port: 3306,
-            //     username: "root",
-            //     password: "admin",
-            //     database: "db1",
-            //     entities: [__dirname + "/entity/*{.js,.ts}"],
-            //     synchronize: true
-            // }
-            // schema = init_schemaql()
 
 
         })
@@ -30,13 +18,8 @@ export default () => {
             dbs.addConnection({
                 name: 'nameDB',
                 type: 'sqlite',
-                database: location,
-                // client: 'sqlite3',
-                // connection: {
-                //     filename: global.path
-                // },
+                database: location
             })
-            // console.log('dbs.get()::', dbs.get())
             expect(dbs.get()).toEqual(
                 expect.objectContaining({
                     connections: {
@@ -148,39 +131,85 @@ export default () => {
             )
 
         })
-        it('test graphql', async () => {
-            const port = 3000
+        it('startService', async () => {
             let response = await gql.startService({ port })
-            const url = `http://localhost:${port}/graphql`
-            response = await axios({
+            console.log('response::',response)
+        })
+        it('mutatate', async () => {
+
+
+            let response = await axios({
                 url,
                 method: 'post',
                 data: {
-                    query: `{
-                        find_catalogue_materials {
+                    query: `
+                    mutation insert($data: JSON) {
+                        insert_catalogue_materials(data:$data) {
                           _id
                         }
-                      }`
+                      }`,
+                    variables: {
+                        data: [
+                            {
+                                _id: '400',
+                                name: 'hi world!'
+                            },
+                            {
+                                _id: '401',
+                                name: 'hi world!'
+                            }
+                        ]
+                    }
                 }
             })
             // console.log('response2::', response)
             // console.log('Object.keys(response)::', Object.keys(response))
             // console.log('response.status::', response.status)
-            // console.log('response.data::', response.data.data)
+            // console.log('response.data::', response.data)
             expect(response.status).toEqual(200)
             expect(response.data.errors).toEqual(undefined)
             expect(response.data.data).toEqual(
                 expect.objectContaining({
-                    find_catalogue_materials: [
-                        { _id: '2' }, { _id: '3' }
+                    insert_catalogue_materials: [
+                        { _id: '400' }, { _id: '401' }
                     ]
                 })
             )
+        })
 
-        })
-        it('test find with Operations', async()=>{
-            
-        })
+        // it('query', async () => {
+        //     const port = 3000
+        //     let response = await gql.startService({ port })
+        //     const url = `http://localhost:${port}/graphql`
+        //     response = await axios({
+        //         url,
+        //         method: 'post',
+        //         data: {
+        //             query: `
+        //             query getCharacter($filter: JSON) {
+        //                 find_catalogue_materials(filter:$filter) {
+        //                   _id
+        //                 }
+        //               }`,
+        //             variables: { filter: { hola: 1 } }
+        //         }
+        //     })
+        //     // console.log('response2::', response)
+        //     // console.log('Object.keys(response)::', Object.keys(response))
+        //     // console.log('response.status::', response.status)
+        //     // console.log('response.data::', response.data.data)
+        //     expect(response.status).toEqual(200)
+        //     expect(response.data.errors).toEqual(undefined)
+        //     expect(response.data.data).toEqual(
+        //         expect.objectContaining({
+        //             find_catalogue_materials: [
+        //                 { _id: '2' }, { _id: '3' }
+        //             ]
+        //         })
+        //     )
+
+        // })
+
 
 
 

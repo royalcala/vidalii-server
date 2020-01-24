@@ -1,6 +1,6 @@
 import init_schemaql from '../src/gql'
 import { int, string, ref, uuid, relation } from '../src/gql'
-
+const axios = require('axios');
 export default () => {
     describe('schema', () => {
         // let db
@@ -94,7 +94,7 @@ export default () => {
         // })
         it('startServer', async () => {
             let result = await schema.startServer()
-            console.log('result::', result)
+            
         })
         it('mutate schema', async () => {
 

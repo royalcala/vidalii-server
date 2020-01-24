@@ -1,6 +1,4 @@
 export default ({ storeTypes }) => ({ nameType, nameField, resolver }) => {
-    console.log('nameType::', nameType)
-    console.log('nameField::', nameField)
     if (!storeTypes[nameType])
         storeTypes[nameType] = {}
     if (storeTypes[nameType][nameField])

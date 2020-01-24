@@ -29,13 +29,8 @@ const main = () => {
             }
         },
         init: async () => {
+            //this is init on graphql.serviceStart()
             await typeorm.init()
-            // save in store insert, update, find,
-            // const storeSchemas = schemas.get()
-
-            // for (nameSchema in storeSchemas){
-
-            // }
         }
 
     }

@@ -8,7 +8,7 @@ const onField = ({ nameType, nameField, field, addToStore }) => {
     if (field.ref) {
         addToStore.sdl.type({
             nameType,
-            nameField: `${nameField}(conditions:JSON)`,
+            nameField: `${nameField}(filter:JSON)`,
             typeField: field.ref.relation === relation.one_to_many ?
                 `[${field.ref.schemaName}]` :
                 field.ref.schemaName
@@ -20,11 +20,11 @@ const onField = ({ nameType, nameField, field, addToStore }) => {
             nameField,
             resolver: async (parent, args) => {
                 //if is selected only key, dont run query and return id
-                const { conditions = {} } = args
+                const { filter = {} } = args
                 return crud.find({
                     connectionName: schemas.get()[field.ref.schemaName].connection,
                     schemaName: field.ref.schemaName,
-                    conditions,
+                    filter,
                 })
             }
         })
@@ -52,24 +52,25 @@ const onType = ({ nameType, type, addToStore }) => {
     const nameQuery = `find_${nameType}`
     addToStore.sdl.query({
         nameQuery,
-        args: '(conditions:JSON)',
+        args: '(filter:JSON)',
         typeReturn: `[${nameType}]`
     })
     addToStore.resolvers.query({
         nameQuery,
         resolver: async (parent, args) => {
-            const { conditions = {} } = args
+            console.log('args::', args)
+            const { filter = {} } = args
             return crud.find({
                 connectionName: type.connection,
                 schemaName: nameType,
-                conditions,
+                filter,
             })
         }
     })
 
 
     //graphql mutation
-    const nameMutation = `insertOne_${nameType}`
+    const nameMutation = `insert_${nameType}`
     addToStore.sdl.mutation({
         nameMutation,
         args: '(data:JSON)',
@@ -80,7 +81,7 @@ const onType = ({ nameType, type, addToStore }) => {
         nameMutation,
         resolver: async (parent, args) => {
             const { data } = args
-            return crud.insertOne({
+            return crud.insert({
                 connectionName: type.connection,
                 schemaName: nameType,
                 doc: data,
