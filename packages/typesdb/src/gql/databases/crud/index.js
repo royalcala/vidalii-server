@@ -1,16 +1,17 @@
 import { getConnection } from "typeorm"
 import { applyFilters } from './applyFilters'
-export const find = async ({ connectionName, schemaName, filter }) => {
-    console.log('connectionName::', connectionName)
-    console.log('schemaName::', schemaName)
-    console.log('filter2::', filter)
-    applyFilters({ filter })
-    console.log('filter3::', filter)
+export const find = async ({ connectionName, schemaName, filter }) => {    
+    applyFilters({ filter })    
     // https://typeorm.io/#/find-options
+    // let getsql = await getConnection(connectionName)
+    //     .getRepository(schemaName)
+    //     .find({_id:0})
+    // console.log('getsql::', getsql)
+
     let response = await getConnection(connectionName)
         .getRepository(schemaName)
         .find(filter)
-        console.log('response modify to get One::',response)
+    // console.log('response::', response)
     return response
 }
 export const insert = async ({ connectionName, schemaName, doc }) => {

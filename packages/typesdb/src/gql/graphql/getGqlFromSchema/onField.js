@@ -20,29 +20,44 @@ const onReferencedField = ({ nameType, nameField, field, addToStore }) => {
         nameType,
         nameField,
         resolver: async (parent, args = {}, context, info) => {
-            console.log('parent::', parent)
-            //send the parent ids 
-            //if is selected only key, dont run query and return id
-            
-            let filter = {}
-            filter[field.ref.fieldName] = {}
-            if (args.filter)
-                filter = {
-                    ...filter,
-                    ...args.filter
+            if (!parent[nameField])
+                throw new Error(`Error:ResolverReferencedField:${nameField} needed`);
+            // let filter = {}
+            // filter[field.ref.fieldName] = {}
+            const { filter = {} } = args
+            //order id of parent first on top for faster sql and indexing
+            if (filter.where)
+                if (Array.isArray(filter.where))
+                    filter.where = (filter.where).map(obj => {
+                        let newObj = {
+                            [field.ref.fieldName]: {},
+                            ...obj
+                        }
+                        newObj[field.ref.fieldName] = parent[nameField]
+                        return newObj
+                    })
+                else {
+                    let newObj = {
+                        [field.ref.fieldName]: {},
+                        ...filter.where
+                    }
+                    newObj[field.ref.fieldName] = parent[nameField]
+                    filter.where = newObj
+                }
+            else
+                filter['where'] = {
+                    [field.ref.fieldName]: parent[nameField]
                 }
 
-            filter[field.ref.fieldName] = parent[nameField]
-            
-            return crud.find({
+
+            let response = await crud.find({
                 connectionName: schemas.get()[field.ref.schemaName].connection,
                 schemaName: field.ref.schemaName,
                 filter,
             })
-            // return {
-            //     _id: '0',
-            //     name: 'material Zero'
-            // }
+            if (field.ref.relation === relation.one_to_one)
+                response = response[0]
+            return response
         }
     })
 }

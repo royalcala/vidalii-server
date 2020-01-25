@@ -200,11 +200,23 @@ export default () => {
                       }`,
                     variables: {
                         data:
-                        {
-                            _id: '0',
-                            _id_material: '0',
-                            cant: 11
-                        }
+                            [
+                                {
+                                    _id: '0',
+                                    _id_material: '0',
+                                    cant: 11
+                                },
+                                // {
+                                //     _id: '1',
+                                //     _id_material: '1',
+                                //     cant: 11
+                                // },
+                                // {
+                                //     _id: '2',
+                                //     _id_material: '2',
+                                //     cant: 11
+                                // }
+                            ]
                     }
                 }
             })
@@ -213,7 +225,8 @@ export default () => {
             expect(response.data.data).toEqual(
                 expect.objectContaining({
                     insert_sales_materials: [
-                        { _id: '0' }
+                        { _id: '0' },
+                        // { _id: '1' }, { _id: '2' }
                     ]
                 })
             )
@@ -308,22 +321,27 @@ export default () => {
                 method: 'post',
                 data: {
                     query: `
-                    query getCharacter($filter: JSON) {
+                    query getCharacter($filter: JSON $filter2:JSON) {
                         find_sales_materials(filter:$filter) {
                           _id
-                          _id_material{
+                          _id_material(filter:$filter2){
                               _id
                               name
                           }
                         }
                       }`,
-                    // variables: {
-                    //     filter: {
-                    //         where: {
-                    //             _id: ['$not', '$like', '0']
-                    //         }
-                    //     }
-                    // }
+                    variables: {
+                        filter2: {
+                            where: [
+                                {
+                                    name: ['$like', 'material Zero']
+                                },
+                                // {
+                                //     name: ['$not', '$like', 'material Zero']
+                                // }
+                            ]
+                        }
+                    }
                 }
             })
             // console.log('response.data.data::', response.data.data)

@@ -35,7 +35,13 @@ export const applyFilters = ({ filter }) => {
     for (key in filter) {
         let value = filter[key]
         if (Array.isArray(value)) {
-            if (value[0].charAt(0) === '$') {
+            if (typeof value[0] === 'object') {
+                //is a where[] OR
+                for (let index = 0; index < value.length; index++) {
+                    applyFilters({ filter: value[index] })
+                }
+            }
+            else if (value[0].charAt(0) === '$') {
                 let FilterName = stadarizedName(value[0])
                 if (value[1].charAt(0) === '$') {
                     let FilterName2 = stadarizedName(value[1])
