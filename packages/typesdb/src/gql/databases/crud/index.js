@@ -1,23 +1,10 @@
 import { getConnection } from "typeorm"
-import {
-    Not, LessThan, LessThanOrEqual, MoreThan,
-    MoreThanOrEqual, Equal, Like, Between, In, Any,
-    IsNull
-} from "typeorm";
-const iterateFilter = ({ filter }) => {
-    let key
-    for (key in filter) {
-        let value = filter[key]
-        if (Array.isArray(value))
-
-            if (typeof value === 'object')
-                iteratefilter({ acc, filter })
-    }
-}
+import { applyFilters } from './applyFilters'
 export const find = async ({ connectionName, schemaName, filter = {} }) => {
-    // console.log('filter1::', filter)
-    // iterateFilter({ filter })
-    // console.log('filter2::', filter)
+    console.log('filter1::', filter)
+    let result = applyFilters({ filter })
+    console.log('result::', result)
+    console.log('filter2::', filter)
     // https://typeorm.io/#/find-options
     return getConnection(connectionName)
         .getRepository(schemaName)

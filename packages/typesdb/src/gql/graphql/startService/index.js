@@ -15,7 +15,7 @@ export default async ({ port = 3000 } = {}) => {
         webServer.register(server.createHandler());
         await webServer.listen(port)
         // webServer.log.info(`server listening on ${webServer.server.address().port}`)
-        console.log(`server listening on ${JSON.stringify(webServer.server.address())}`)
+        // console.log(`server listening on ${JSON.stringify(webServer.server.address())}`)
         return {
             error: null,
             service: webServer.server.address()

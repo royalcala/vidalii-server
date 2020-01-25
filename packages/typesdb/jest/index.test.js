@@ -35,6 +35,7 @@ describe('schemaql', () => {
     });
     afterAll(async () => {
         // await db.close()
+        // process.exit(1)
     })
 
     // test1()

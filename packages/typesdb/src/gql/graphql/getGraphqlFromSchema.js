@@ -58,7 +58,6 @@ const onType = ({ nameType, type, addToStore }) => {
     addToStore.resolvers.query({
         nameQuery,
         resolver: async (parent, args) => {
-            console.log('args::', args)
             const { filter = {} } = args
             return crud.find({
                 connectionName: type.connection,

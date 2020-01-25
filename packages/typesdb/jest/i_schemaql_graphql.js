@@ -84,60 +84,11 @@ export default () => {
             }))
 
         })
-        it('test Database', async () => {
-            let nameConnection = 'nameDB'
-            let nameTable = 'catalogue_materials'
-            await dbs.init()
-            const manager = getManager(nameConnection); // you can also get it via getConnection().manager
-            //insert
-            await manager.save(nameTable, { _id: '1', name: 'name1' });
-            let response = await manager.findOne(nameTable, 1)
-            expect(response).toEqual(
-                expect.objectContaining({
-                    _id: '1',
-                    name: 'name1'
-                })
-            )
-            //update
-            await manager.save(nameTable, { _id: '1', name: 'nameUpdated' });
-            response = await manager.findOne(nameTable, 1)
-            expect(response).toEqual(
-                expect.objectContaining({
-                    _id: '1',
-                    name: 'nameUpdated'
-                })
-            )
-            //insertMany
-            await manager.save(nameTable, [
-                { _id: '2', name: 'name' },
-                { _id: '3', name: 'name' }
-            ]);
-            response = await manager.find(nameTable);
-            expect(response).toEqual(
-                expect.objectContaining([
-                    { _id: '1', name: 'nameUpdated' },
-                    { _id: '2', name: 'name' },
-                    { _id: '3', name: 'name' },
-                ])
-            )
-            //removeOne
-            await manager.remove(nameTable, { _id: '1' });
-            response = await manager.find(nameTable);
-            expect(response).toEqual(
-                expect.objectContaining([
-                    { _id: '2', name: 'name' },
-                    { _id: '3', name: 'name' },
-                ])
-            )
-
-        })
         it('startService', async () => {
             let response = await gql.startService({ port })
-            console.log('response::',response)
+            // console.log('response::', response)
         })
         it('mutatate', async () => {
-
-
             let response = await axios({
                 url,
                 method: 'post',
@@ -151,11 +102,11 @@ export default () => {
                     variables: {
                         data: [
                             {
-                                _id: '400',
+                                _id: '1',
                                 name: 'hi world!'
                             },
                             {
-                                _id: '401',
+                                _id: '2',
                                 name: 'hi world!'
                             }
                         ]
@@ -164,24 +115,46 @@ export default () => {
             })
             // console.log('response2::', response)
             // console.log('Object.keys(response)::', Object.keys(response))
-            // console.log('response.status::', response.status)
-            // console.log('response.data::', response.data)
+            // console.log('response.status::', response.status)            
             expect(response.status).toEqual(200)
             expect(response.data.errors).toEqual(undefined)
             expect(response.data.data).toEqual(
                 expect.objectContaining({
                     insert_catalogue_materials: [
-                        { _id: '400' }, { _id: '401' }
+                        { _id: '1' }, { _id: '2' }
                     ]
                 })
             )
         })
 
-        // it('query', async () => {
-        //     const port = 3000
-        //     let response = await gql.startService({ port })
-        //     const url = `http://localhost:${port}/graphql`
-        //     response = await axios({
+        // it('queryALL', async () => {
+        //     let response = await axios({
+        //         url,
+        //         method: 'post',
+        //         data: {
+        //             query: `
+        //             query getCharacter($filter: JSON = {}) {
+        //                 find_catalogue_materials(filter:$filter) {
+        //                   _id
+        //                 }
+        //               }`,
+        //             // variables: { }
+        //         }
+        //     })
+        //     expect(response.status).toEqual(200)
+        //     expect(response.data.errors).toEqual(undefined)
+        //     expect(response.data.data).toEqual(
+        //         expect.objectContaining({
+        //             find_catalogue_materials: [
+        //                 { _id: '1' }, { _id: '2' }
+        //             ]
+        //         })
+        //     )
+
+        // })
+
+        // it('query with filter', async () => {
+        //     let response = await axios({
         //         url,
         //         method: 'post',
         //         data: {
@@ -191,24 +164,51 @@ export default () => {
         //                   _id
         //                 }
         //               }`,
-        //             variables: { filter: { hola: 1 } }
+        //             variables: { filter: { where: { _id: 1 } } }
         //         }
         //     })
-        //     // console.log('response2::', response)
-        //     // console.log('Object.keys(response)::', Object.keys(response))
-        //     // console.log('response.status::', response.status)
-        //     // console.log('response.data::', response.data.data)
         //     expect(response.status).toEqual(200)
         //     expect(response.data.errors).toEqual(undefined)
         //     expect(response.data.data).toEqual(
         //         expect.objectContaining({
         //             find_catalogue_materials: [
-        //                 { _id: '2' }, { _id: '3' }
+        //                 { _id: '1' }
         //             ]
         //         })
         //     )
-
         // })
+
+        it('query with filter $', async () => {
+            let response = await axios({
+                url,
+                method: 'post',
+                data: {
+                    query: `
+                    query getCharacter($filter: JSON) {
+                        find_catalogue_materials(filter:$filter) {
+                          _id
+                        }
+                      }`,
+                    variables: {
+                        filter: {
+                            where: {
+                                _id: ['$not','$like', '10']
+                            }
+                        }
+                    }
+                }
+            })
+            console.log('response.data.data::', response.data.data)
+            // expect(response.status).toEqual(200)
+            // expect(response.data.errors).toEqual(undefined)
+            // expect(response.data.data).toEqual(
+            //     expect.objectContaining({
+            //         find_catalogue_materials: [
+            //             { _id: '1' }
+            //         ]
+            //     })
+            // )
+        })
 
 
 
