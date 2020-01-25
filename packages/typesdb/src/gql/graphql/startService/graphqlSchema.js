@@ -1,10 +1,10 @@
 import scalars from '../scalars'
-import getGraphqlFromSchema from "../getGraphqlFromSchema";
+import getGqlFromSchema from "../getGqlFromSchema";
 import store_to_gql from '../store_to_gql'
 const { gql } = require('apollo-server-fastify')
 
 export default () => {
-    let result = store_to_gql({ storeGql: getGraphqlFromSchema() })
+    let result = store_to_gql({ storeGql: getGqlFromSchema() })
     const typeDefs = gql`
         ${scalars.sdl}
         ${result.sdl.types}

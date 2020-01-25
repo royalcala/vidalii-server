@@ -88,7 +88,7 @@ export default () => {
             let response = await gql.startService({ port })
             // console.log('response::', response)
         })
-        it('mutatate', async () => {
+        it('mutatate Insert', async () => {
             let response = await axios({
                 url,
                 method: 'post',
@@ -127,56 +127,56 @@ export default () => {
             )
         })
 
-        // it('queryALL', async () => {
-        //     let response = await axios({
-        //         url,
-        //         method: 'post',
-        //         data: {
-        //             query: `
-        //             query getCharacter($filter: JSON = {}) {
-        //                 find_catalogue_materials(filter:$filter) {
-        //                   _id
-        //                 }
-        //               }`,
-        //             // variables: { }
-        //         }
-        //     })
-        //     expect(response.status).toEqual(200)
-        //     expect(response.data.errors).toEqual(undefined)
-        //     expect(response.data.data).toEqual(
-        //         expect.objectContaining({
-        //             find_catalogue_materials: [
-        //                 { _id: '1' }, { _id: '2' }
-        //             ]
-        //         })
-        //     )
+        it('queryALL', async () => {
+            let response = await axios({
+                url,
+                method: 'post',
+                data: {
+                    query: `
+                    query getCharacter($filter: JSON = {}) {
+                        find_catalogue_materials(filter:$filter) {
+                          _id
+                        }
+                      }`,
+                    // variables: { }
+                }
+            })
+            expect(response.status).toEqual(200)
+            expect(response.data.errors).toEqual(undefined)
+            expect(response.data.data).toEqual(
+                expect.objectContaining({
+                    find_catalogue_materials: [
+                        { _id: '1' }, { _id: '2' }
+                    ]
+                })
+            )
 
-        // })
+        })
 
-        // it('query with filter', async () => {
-        //     let response = await axios({
-        //         url,
-        //         method: 'post',
-        //         data: {
-        //             query: `
-        //             query getCharacter($filter: JSON) {
-        //                 find_catalogue_materials(filter:$filter) {
-        //                   _id
-        //                 }
-        //               }`,
-        //             variables: { filter: { where: { _id: 1 } } }
-        //         }
-        //     })
-        //     expect(response.status).toEqual(200)
-        //     expect(response.data.errors).toEqual(undefined)
-        //     expect(response.data.data).toEqual(
-        //         expect.objectContaining({
-        //             find_catalogue_materials: [
-        //                 { _id: '1' }
-        //             ]
-        //         })
-        //     )
-        // })
+        it('query with filter', async () => {
+            let response = await axios({
+                url,
+                method: 'post',
+                data: {
+                    query: `
+                    query getCharacter($filter: JSON) {
+                        find_catalogue_materials(filter:$filter) {
+                          _id
+                        }
+                      }`,
+                    variables: { filter: { where: { _id: 1 } } }
+                }
+            })
+            expect(response.status).toEqual(200)
+            expect(response.data.errors).toEqual(undefined)
+            expect(response.data.data).toEqual(
+                expect.objectContaining({
+                    find_catalogue_materials: [
+                        { _id: '1' }
+                    ]
+                })
+            )
+        })
 
         it('query with filter $', async () => {
             let response = await axios({
@@ -192,22 +192,22 @@ export default () => {
                     variables: {
                         filter: {
                             where: {
-                                _id: ['$not','$like', '10']
+                                _id: ['$not', '$like', '10']
                             }
                         }
                     }
                 }
             })
-            console.log('response.data.data::', response.data.data)
-            // expect(response.status).toEqual(200)
-            // expect(response.data.errors).toEqual(undefined)
-            // expect(response.data.data).toEqual(
-            //     expect.objectContaining({
-            //         find_catalogue_materials: [
-            //             { _id: '1' }
-            //         ]
-            //     })
-            // )
+            // console.log('response.data.data::', response.data.data)
+            expect(response.status).toEqual(200)
+            expect(response.data.errors).toEqual(undefined)
+            expect(response.data.data).toEqual(
+                expect.objectContaining({
+                    find_catalogue_materials: [
+                        { _id: '1' }, { _id: '2' }
+                    ]
+                })
+            )
         })
 
 

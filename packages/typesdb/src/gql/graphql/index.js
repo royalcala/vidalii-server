@@ -1,6 +1,6 @@
 
 import { sdl, resolvers } from './composition'
-import getGraphqlFromSchema from "./getGraphqlFromSchema";
+import getGqlFromSchema from './getGqlFromSchema';
 import { initStore, populateStore } from './structureStore'
 import startService from './startService'
 const main = () => {
@@ -10,7 +10,7 @@ const main = () => {
     return {
         addCustom,
         get: () => customStore,
-        getGraphqlFromSchema,
+        getGqlFromSchema,
         startService
     }
 }
