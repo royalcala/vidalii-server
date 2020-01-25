@@ -1,11 +1,17 @@
 import { getConnection } from "typeorm"
 import { applyFilters } from './applyFilters'
-export const find = async ({ connectionName, schemaName, filter = {} }) => {
+export const find = async ({ connectionName, schemaName, filter }) => {
+    console.log('connectionName::', connectionName)
+    console.log('schemaName::', schemaName)
+    console.log('filter2::', filter)
     applyFilters({ filter })
+    console.log('filter3::', filter)
     // https://typeorm.io/#/find-options
-    return getConnection(connectionName)
+    let response = await getConnection(connectionName)
         .getRepository(schemaName)
         .find(filter)
+        console.log('response modify to get One::',response)
+    return response
 }
 export const insert = async ({ connectionName, schemaName, doc }) => {
     //doc [] for many or {} for one
@@ -21,14 +27,14 @@ export const insert = async ({ connectionName, schemaName, doc }) => {
     //     .into(schemaName)
     //     .values(doc)
     //     .getSql()
-    let sqlquery = await getConnection(connectionName)
-        .createQueryBuilder()
-        .update(schemaName)
-        .set({ name: 'hellow' })
-        // .where("id = :id", { _id: 1 })
-        .where({ _id: 1 ,name:'2'})
-        .getSql()
-    console.log('sqlquery::', sqlquery)
+    // let sqlquery = await getConnection(connectionName)
+    //     .createQueryBuilder()
+    //     .update(schemaName)
+    //     .set({ name: 'hellow' })
+    //     // .where("id = :id", { _id: 1 })
+    //     .where({ _id: 1 ,name:'2'})
+    //     .getSql()
+    // console.log('sqlquery::', sqlquery)
     return response.identifiers
 }
 
