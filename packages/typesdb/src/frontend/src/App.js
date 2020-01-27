@@ -3,7 +3,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
-import Crud1 from './components/Crud1'
+import IndexCrud from './components/IndexCrud/'
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -29,7 +29,7 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Crud1 />
+      <IndexCrud />
     </ApolloProvider>
   )
 }
