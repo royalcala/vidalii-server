@@ -1,4 +1,4 @@
-import { removeDataBase } from '../../removeDatabase'
+import { removeDataBase } from '../../../removeDatabase'
 import { createConnection, createConnections, Connection } from "typeorm";
 // import { getConnectionManager, ConnectionManager, Connection } from "typeorm";
 import { EntitySchema } from "typeorm";

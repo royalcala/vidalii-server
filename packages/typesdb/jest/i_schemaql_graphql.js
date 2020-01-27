@@ -1,6 +1,6 @@
 import { removeDataBase } from '../../removeDatabase'
-import { schemas, dbs, gql } from '../src/gql'
-import { types } from '../src/gql'
+import { schemas, dbs, gql } from '../src/backend'
+import { types } from '../src/backend'
 import { getManager } from "typeorm";
 const axios = require('axios');
 export default () => {
@@ -59,9 +59,9 @@ export default () => {
                     }),
                     cant: int()
                 },
-                extend: {
+                extend: { //not implement yet
                     schema: 'sales',
-                    key: '_id',
+                    // primaries: ['_id'], automatic will get from schema(sales)
                     field: 'materials',
                     relation: relation.one_to_many,
                     // resolver: 'custom|subtableDefault',
@@ -232,88 +232,88 @@ export default () => {
             )
         })
 
-        // it('queryALL', async () => {
-        //     let response = await axios({
-        //         url,
-        //         method: 'post',
-        //         data: {
-        //             query: `
-        //             query getCharacter($filter: JSON = {}) {
-        //                 find_catalogue_materials(filter:$filter) {
-        //                   _id
-        //                 }
-        //               }`,
-        //             // variables: { }
-        //         }
-        //     })
-        //     expect(response.status).toEqual(200)
-        //     expect(response.data.errors).toEqual(undefined)
-        //     expect(response.data.data).toEqual(
-        //         expect.objectContaining({
-        //             find_catalogue_materials: [
-        //                 { _id: '0' }, { _id: '1' }, { _id: '2' }
-        //             ]
-        //         })
-        //     )
+        it('queryALL', async () => {
+            let response = await axios({
+                url,
+                method: 'post',
+                data: {
+                    query: `
+                    query getCharacter($filter: JSON = {}) {
+                        find_catalogue_materials(filter:$filter) {
+                          _id
+                        }
+                      }`,
+                    // variables: { }
+                }
+            })
+            expect(response.status).toEqual(200)
+            expect(response.data.errors).toEqual(undefined)
+            expect(response.data.data).toEqual(
+                expect.objectContaining({
+                    find_catalogue_materials: [
+                        { _id: '0' }, { _id: '1' }, { _id: '2' }
+                    ]
+                })
+            )
 
-        // })
+        })
 
-        // it('query with filter', async () => {
-        //     let response = await axios({
-        //         url,
-        //         method: 'post',
-        //         data: {
-        //             query: `
-        //             query getCharacter($filter: JSON) {
-        //                 find_catalogue_materials(filter:$filter) {
-        //                   _id
-        //                 }
-        //               }`,
-        //             variables: { filter: { where: { _id: 1 } } }
-        //         }
-        //     })
-        //     expect(response.status).toEqual(200)
-        //     expect(response.data.errors).toEqual(undefined)
-        //     expect(response.data.data).toEqual(
-        //         expect.objectContaining({
-        //             find_catalogue_materials: [
-        //                 { _id: '1' }
-        //             ]
-        //         })
-        //     )
-        // })
+        it('query with filter', async () => {
+            let response = await axios({
+                url,
+                method: 'post',
+                data: {
+                    query: `
+                    query getCharacter($filter: JSON) {
+                        find_catalogue_materials(filter:$filter) {
+                          _id
+                        }
+                      }`,
+                    variables: { filter: { where: { _id: 1 } } }
+                }
+            })
+            expect(response.status).toEqual(200)
+            expect(response.data.errors).toEqual(undefined)
+            expect(response.data.data).toEqual(
+                expect.objectContaining({
+                    find_catalogue_materials: [
+                        { _id: '1' }
+                    ]
+                })
+            )
+        })
 
-        // it('query with filter $', async () => {
-        //     let response = await axios({
-        //         url,
-        //         method: 'post',
-        //         data: {
-        //             query: `
-        //             query getCharacter($filter: JSON) {
-        //                 find_catalogue_materials(filter:$filter) {
-        //                   _id
-        //                 }
-        //               }`,
-        //             variables: {
-        //                 filter: {
-        //                     where: {
-        //                         _id: ['$not', '$like', '0']
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     })
-        //     // console.log('response.data.data::', response.data.data)
-        //     expect(response.status).toEqual(200)
-        //     expect(response.data.errors).toEqual(undefined)
-        //     expect(response.data.data).toEqual(
-        //         expect.objectContaining({
-        //             find_catalogue_materials: [
-        //                 { _id: '1' }, { _id: '2' }
-        //             ]
-        //         })
-        //     )
-        // })
+        it('query with filter $', async () => {
+            let response = await axios({
+                url,
+                method: 'post',
+                data: {
+                    query: `
+                    query getCharacter($filter: JSON) {
+                        find_catalogue_materials(filter:$filter) {
+                          _id
+                        }
+                      }`,
+                    variables: {
+                        filter: {
+                            where: {
+                                _id: ['$not', '$like', '0']
+                            }
+                        }
+                    }
+                }
+            })
+            // console.log('response.data.data::', response.data.data)
+            expect(response.status).toEqual(200)
+            expect(response.data.errors).toEqual(undefined)
+            expect(response.data.data).toEqual(
+                expect.objectContaining({
+                    find_catalogue_materials: [
+                        { _id: '1' }, { _id: '2' }
+                    ]
+                })
+            )
+        })
 
         it('query with ReferencedField', async () => {
             let response = await axios({

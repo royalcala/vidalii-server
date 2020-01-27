@@ -1,4 +1,4 @@
-import { removeDataBase } from '../../removeDatabase'
+import { removeDataBase } from '../../../removeDatabase'
 
 export default () => {
     describe('knex', () => {

@@ -1,6 +1,6 @@
 import { removeDataBase } from '../../removeDatabase'
-import { schemas, dbs, gql } from '../src/gql'
-import { types } from '../src/gql'
+import { schemas, dbs, gql } from '../src/backend'
+import { types } from '../src/backend'
 import { getManager } from "typeorm";
 const axios = require('axios');
 export default () => {
@@ -178,8 +178,8 @@ export default () => {
             )
 
         })
-        it('test find with Operations', async()=>{
-            
+        it('test find with Operations', async () => {
+
         })
 
 

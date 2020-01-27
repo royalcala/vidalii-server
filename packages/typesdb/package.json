@@ -5,6 +5,7 @@
   "author": "Roy Alcala Ortiz",
   "license": "MIT",
   "scripts": {
+    "server:test": "sudo nodemon --exec babel-node jest/serverForClient",
     "gqlApollo:test": "nodemon --exec babel-node jest/testGqlApollo",
     "isolate:test": "nodemon --exec babel-node jest/isolateTest",
     "test": "jest jest",
