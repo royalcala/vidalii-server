@@ -9,15 +9,27 @@ import { COMBINED } from './components/IndexCrud/FindCombined'
 import { IS_LOGGED_IN } from './components/IndexCrud/FindLocal'
 import { GET_CATALOGUES_MATERIALS } from './components/IndexCrud/Queries'
 const typeDefs = gql`
-  extend type Query {
-    isLoggedIn: String
-    find_catalogue_materials:[catalogue_materials]
-  }
-
-  extend type catalogue_materials {
+extend type catalogue_materials {
     _id:ID
     name:String
     isInCart: String
+  }
+  extend type state {
+      id:ID
+        name: String
+        hola:String
+      #  stateNested:stateNested
+    }
+  #   extend type stateNested {
+  #      id:ID
+  #       name: String
+  #       otherValue:String
+  #   }
+    
+  extend type Query {
+    isLoggedIn: String
+    find_catalogue_materials:[catalogue_materials]
+  
   }
 
   extend type Mutation {
@@ -26,6 +38,15 @@ const typeDefs = gql`
 `;
 
 const resolvers = {
+  //resolvers for backend in local @client
+  state: {
+    // hola: (parent) => {
+    //   return 'holis'
+    // },
+    // stateNested: (parent) => { //@client resolvers
+    //   console.log('parent::', parent)
+    // }
+  },
   catalogue_materials: {
     isInCart: (parent, _, { cache }) => {
       console.log('IN LOCAL RESOLVER:isInCart')
@@ -65,15 +86,15 @@ const link = new HttpLink({
   uri: "http://localhost:4000/graphql"
 });
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   cache,
-  link,
+  // link,
   onError: ({ networkError, graphQLErrors }) => {
     console.log('graphQLErrors::', graphQLErrors)
     console.log('networkError::', networkError)
   },
   typeDefs,
-  resolvers
+  resolvers,
 });
 //initialCache
 // cache.writeData({

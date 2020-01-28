@@ -59,9 +59,9 @@ export default () => {
           let fromCache = cache.readQuery({ query: GET_CATALOGUES_MATERIALS })
           console.log('*******fromCache::', fromCache)
           console.log('data::', data)
-          data.insert_catalogue_materials[0].name = 'nameeee'
-          fromCache.find_catalogue_materials.push(data.insert_catalogue_materials[0])
-          console.log('fromCache.find_catalogue_materials::',fromCache.find_catalogue_materials)
+          data.data.insert_catalogue_materials[0].name = 'nameeee'
+          fromCache.find_catalogue_materials.push(data.data.insert_catalogue_materials[0])
+          console.log('fromCache.find_catalogue_materials::', fromCache.find_catalogue_materials)
           cache.writeQuery({
             query: GET_CATALOGUES_MATERIALS,
             data: {

@@ -22,14 +22,14 @@ export default () => {
     // console.log('reloadFind::', reloadFind)
     return (
         <>
-            {/* <TestCache /> */}
+            <TestCache />
             {/* <FindLocal /> */}
-            <Insert />
+            {/* <Insert />
             Find From Server:
             <Find />
             <hr/>
             Finde From Server And Cache:
-            <FindCombined />
+            <FindCombined /> */}
         </>
     )
 }
