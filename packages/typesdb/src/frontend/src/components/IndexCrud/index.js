@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Find from './Find'
+import FindLocal from './FindLocal'
+import FindCombined from "./FindCombined";
 import Insert from "./Insert";
+import TestCache from "./TestCache";
 // import gql from 'graphql-tag';
 // import { useQuery } from '@apollo/react-hooks';
 
@@ -14,12 +17,19 @@ import Insert from "./Insert";
 // `;
 
 export default () => {
-    const reloadFind = useState(0);
-    console.log('reloadFind::', reloadFind)
+    console.log('In Index')
+    // const reloadFind = useState(0);
+    // console.log('reloadFind::', reloadFind)
     return (
         <>
-            <Insert reloadFind={[...reloadFind]} />
-            <Find reloadFind={[...reloadFind]} />
+            {/* <TestCache /> */}
+            {/* <FindLocal /> */}
+            <Insert />
+            Find From Server:
+            <Find />
+            <hr/>
+            Finde From Server And Cache:
+            <FindCombined />
         </>
     )
 }
