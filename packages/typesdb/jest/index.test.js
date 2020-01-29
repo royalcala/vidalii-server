@@ -9,8 +9,9 @@ import { removeDataBase } from '../../removeDatabase'
 
 
 // import test_instance_schemaql from './i_schemaql'
-import test_instance_schemaql_graphql from './i_schemaql_graphql'
+// import test_instance_schemaql_graphql from './i_schemaql_graphql'
 // import test_typeorm from './typeorm'
+import test_gqlStyle from './gqlStyle'
 // jest.setTimeout(1000000);
 describe('schemaql', () => {
     // let db
@@ -45,5 +46,6 @@ describe('schemaql', () => {
     // test_knex()
     // test_typeorm()
     // test_instance_schemaql()
-    test_instance_schemaql_graphql()
+    // test_instance_schemaql_graphql()
+    test_gqlStyle()
 })
