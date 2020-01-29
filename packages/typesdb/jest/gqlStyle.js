@@ -1,7 +1,8 @@
 import { removeDataBase } from '../../removeDatabase'
-import StoreTypes from '../src/backend/typedefs'
-import StoreResolvers from '../src/backend/typedefs'
-
+import StoreSDL from '../src/instances/StoreSDL'
+import StoreResolvers from '../src/instances/StoreResolvers'
+// ctrl + j close terminal
+// ctrl + shift + p + @ navigate on fx '' on files
 export default () => {
     describe('gqlStyleProgramming', () => {
         // const port = 3000
@@ -13,15 +14,19 @@ export default () => {
 
 
         })
-        it('StoreTypes', () => {
-            expect(StoreTypes.getStore()).toEqual(expect.any(String))
-            expect(StoreTypes.getGql()).toEqual(expect.objectContaining({
+        it('StoreSDL', () => {
+            expect(StoreSDL.getStore()).toEqual(expect.any(String))
+            expect(StoreSDL.getGql()).toEqual(expect.objectContaining({
                 kind: 'Document',
                 definitions: expect.any(Array)
             }))
         })
         it('StoreResolvers', () => {
-            
+            console.log('Stores::', StoreResolvers.getStore())
+            // console.log(' StoreResolvers.getStore()::', Stores.resolvers.getStore())
+        })
+        it('GraphqlServiceRunning', async () => {
+
         })
 
     })

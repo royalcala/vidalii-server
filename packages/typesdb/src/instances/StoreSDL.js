@@ -12,5 +12,13 @@ const Store = () => {
         getGql: () => gql(store)
     }
 }
+const instance = Store()
+const fs = require('fs');
+require("glob").sync('src/typeDefs/*.graphql')
+    .forEach(Path => {        
+        instance.add(
+            fs.readFileSync(Path, 'utf8').toString()
+        )
+    });
 
-export default Store()
+export default instance
