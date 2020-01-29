@@ -1,5 +1,6 @@
 import { removeDataBase } from '../../removeDatabase'
 import StoreTypes from '../src/backend/typedefs'
+import StoreResolvers from '../src/backend/typedefs'
 
 export default () => {
     describe('gqlStyleProgramming', () => {

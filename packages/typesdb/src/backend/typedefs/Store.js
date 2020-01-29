@@ -4,8 +4,8 @@ const Store = () => {
     let store = ''
 
     return {
-        add: templetaString => {
-            store = store.concat(templetaString)
+        add: graphqlFile => {
+            store = store.concat(graphqlFile)
             return 'store added'
         },
         getStore: () => store,

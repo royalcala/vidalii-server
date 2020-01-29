@@ -2,9 +2,12 @@ import Store from './Store'
 // import Connection from './Defs/Connection'
 // import Schema from './Defs/Schema'
 // import Field from './Defs/Field'
-require("glob").sync(__dirname + '/Defs/*')
-    .forEach(element => {
-        require(element)
+const fs = require('fs');
+require("glob").sync(__dirname + '/Defs/*.graphql')
+    .forEach(Path => {
+        Store.add(
+            fs.readFileSync(Path, 'utf8').toString()
+        )
     });
 // console.log('Store.getStore()::',Store.getStore())
 export default Store
