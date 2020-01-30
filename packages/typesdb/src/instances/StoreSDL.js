@@ -1,5 +1,4 @@
 const { gql } = require('apollo-server-fastify')
-
 const Store = () => {
     let store = ''
 

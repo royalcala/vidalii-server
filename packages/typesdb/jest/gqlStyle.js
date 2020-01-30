@@ -12,7 +12,6 @@ export default () => {
         beforeAll(async () => {
             // removeDataBase({ location })
 
-
         })
         it('StoreSDL', () => {
             expect(StoreSDL.getStore()).toEqual(expect.any(String))
