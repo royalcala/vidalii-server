@@ -19,6 +19,6 @@ type Mutation{
     connection_add(input:Connection_add):Connection    
 }
 type Query {
-    hellow(msg:String):String @upper @upper2
-    hellow2(msg:String):String @upper
+    hellow(msg:String):String 
+    hellow2(msg:String):String @upper @upper2
 }

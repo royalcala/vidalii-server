@@ -1,24 +1,11 @@
-// import dbs from '../../databases'
-// import graphqlSchema from './graphqlSchema'
-import storeSDL from './StoreSDL'
-import storeResolvers from './StoreResolvers'
-import storeDirectives from './StoreDirectives'
-const { ApolloServer } = require('apollo-server-fastify')
+import { serviveGraphql, query } from './GraphqlServices'
 const fastify = require('fastify')
-
 const start = async ({ port = 4000 } = {}) => {
     try {
-        // storeSDL.outPutFile('allgql/src/frontend','all.graphql')
+        // let response = await query(`{hellow}`)
+        // console.log('response::', response)
         const webServer = fastify()
-        console.log(storeSDL.get('sdl'))
-        console.log('RESOLVERS::', storeResolvers.getStore())
-        const { types, queries, mutations, directives } = storeResolvers.getStore()
-        const server = new ApolloServer({
-            typeDefs: storeSDL.get('gql'),
-            ...storeResolvers.getStore('apollo')
-        })
-
-        webServer.register(server.createHandler());
+        webServer.register(serviveGraphql.createHandler());
         webServer.register(require('fastify-cors'), {
             // put your options here
         })
@@ -35,8 +22,6 @@ const start = async ({ port = 4000 } = {}) => {
         console.log('El Error::', error)
         // process.exit(1)
     }
-
-
 }
 
 
