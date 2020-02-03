@@ -74,22 +74,40 @@ const Store = () => {
 const instance = Store()
 
 require("glob").sync('src/resolvers/mutations/*.js')
-    .forEach(path => {
-        // console.log('*****',path)
-        // console.log(require('../../'+path))
-        instance.add(require('../../' + path))
+    .forEach(path => {                
+        instance.add(
+            {
+                ...require('../../' + path),
+                type: 'mutation'
+            }
+        )
     })
 require("glob").sync('src/resolvers/queries/*.js')
     .forEach(path => {
-        instance.add(require('../../' + path))
+        instance.add(
+            {
+                ...require('../../' + path),
+                type: 'query'
+            }
+        )
     })
 require("glob").sync('src/resolvers/types/*.js')
-    .forEach(path => {
-        instance.add(require('../../' + path))
+    .forEach(path => {        
+        instance.add(
+            {
+                ...require('../../' + path),
+                type: 'type'
+            }
+        )
     })
 require("glob").sync('src/directives/*')
     .forEach(path => {
-        instance.add(require('../../' + path))
+        instance.add(
+            {
+                ...require('../../' + path),
+                type: 'directive'
+            }
+        )        
     })
 export default instance
 

@@ -3,11 +3,14 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
-import IndexCrud from './components/IndexCrud/'
 import gql from "graphql-tag";
-import { COMBINED } from './components/IndexCrud/FindCombined'
-import { IS_LOGGED_IN } from './components/IndexCrud/FindLocal'
-import { GET_CATALOGUES_MATERIALS } from './components/IndexCrud/Queries'
+// import IndexCrud from './components/IndexCrud/'
+// import { COMBINED } from './components/IndexCrud/FindCombined'
+// import { IS_LOGGED_IN } from './components/IndexCrud/FindLocal'
+// import { GET_CATALOGUES_MATERIALS } from './components/IndexCrud/Queries'
+// import {createConnection} from "typeorm";
+import ManagerDB from './components/ManagerDB'
+
 const typeDefs = gql`
 extend type catalogue_materials {
     _id:ID
@@ -141,7 +144,8 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <IndexCrud />
+      <div>Login</div>
+      <ManagerDB />
     </ApolloProvider>
   )
 }

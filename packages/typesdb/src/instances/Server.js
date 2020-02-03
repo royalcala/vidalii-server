@@ -5,8 +5,8 @@ import storeResolvers from './StoreResolvers'
 import storeDirectives from './StoreDirectives'
 const { ApolloServer } = require('apollo-server-fastify')
 const fastify = require('fastify')
-export default async ({ port = 4000 } = {}) => {
 
+const start = async ({ port = 4000 } = {}) => {
     try {
         const webServer = fastify()
         console.log(storeSDL.get('sdl'))
@@ -15,10 +15,6 @@ export default async ({ port = 4000 } = {}) => {
         const server = new ApolloServer({
             typeDefs: storeSDL.get('gql'),
             ...storeResolvers.getStore('apollo')
-            // schemaDirectives: {
-            //     upper: UpperCaseDirective,
-            //     upperCase: UpperCaseDirective
-            //   }
         })
 
         webServer.register(server.createHandler());
@@ -28,22 +24,21 @@ export default async ({ port = 4000 } = {}) => {
         await webServer.listen(port)
         // webServer.log.info(`server listening on ${webServer.server.address().port}`)
         console.log(`server listening on ${JSON.stringify(webServer.server.address())}`)
+        // process.on('SIGINT', () => { console.log("Bye bye!"); process.exit(); });
         return {
             error: null,
             service: webServer.server.address()
         }
     } catch (error) {
         // webServer.log.error(err)
-        console.log('error::', error)
-        return {
-            error
-        }
+        console.log('El Error::', error)
         // process.exit(1)
     }
-    //next work with merge
 
 
 }
 
+
+export default start
 
 

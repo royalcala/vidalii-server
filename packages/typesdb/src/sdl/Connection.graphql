@@ -2,23 +2,23 @@ enum Orm {
     KNEX
     TYPEORM    
   }
-input Connection_add{
-name:String
-type:String
-database:String
-orm:Orm
-}
 type Connection{
     _id:ID
     name:String
     type:String
     database:String
-    orm:Orm
+    orm:String
+}
+input Connection_add{
+name:String 
+type:String
+database:String
+orm:Orm
 }
 type Mutation{
     connection_add(input:Connection_add):Connection    
 }
 type Query {
-    hellow(msg:String):String @upper
+    hellow(msg:String):String @upper @upper2
     hellow2(msg:String):String @upper
 }

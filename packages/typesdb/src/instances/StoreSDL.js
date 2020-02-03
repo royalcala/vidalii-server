@@ -24,7 +24,7 @@ const instance = Store()
 const fs = require('fs');
 // require("glob").sync('src/typeDefs/*(Connection|Schema|Field).graphql')
 // require("glob").sync(__dirname + 'src/typeDefs/*.mutation.*')
-require("glob").sync('src/typeDefs/*.graphql')
+require("glob").sync('src/sdl/*.graphql')
     .forEach(Path => {
         instance.add(
             fs.readFileSync(Path, 'utf8').toString()
