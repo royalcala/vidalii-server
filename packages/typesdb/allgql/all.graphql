@@ -13,7 +13,7 @@ input Connection_add{
 name:String 
 type:String
 database:String
-orm:Orm = TYPEORM
+orm:Orm
 }
 type Mutation{
     connection_add(input:Connection_add):Connection    
@@ -22,3 +22,29 @@ type Query {
     hellow(msg:String):String @upper @upper2
     hellow2(msg:String):String @upper
 }
+enum TypesFields{
+   REF
+   INT
+   STRING
+   UUID
+}
+input Field_add{
+   name:String
+   _id_Schema:ID
+
+}
+type Field{
+   _id:ID
+   name:String
+   _id_Schema:ID
+   schema:Schema
+   type:TypesFields
+}
+type Schema{
+   _id: ID
+   name: String
+   _id_Connection: ID
+   connection: Connection
+}
+directive @upper on FIELD_DEFINITION
+directive @upper2 on FIELD_DEFINITION

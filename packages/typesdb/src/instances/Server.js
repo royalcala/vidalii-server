@@ -8,6 +8,7 @@ const fastify = require('fastify')
 
 const start = async ({ port = 4000 } = {}) => {
     try {
+        // storeSDL.outPutFile('allgql/src/frontend','all.graphql')
         const webServer = fastify()
         console.log(storeSDL.get('sdl'))
         console.log('RESOLVERS::', storeResolvers.getStore())

@@ -1,0 +1,7 @@
+input Introspective_filterByType{
+   nameType:String!
+   pathsFields:[String]=[]
+}
+extend type Query {
+   introspective_filterByType(input:Introspective_filterByType):String
+}

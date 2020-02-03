@@ -1,3 +1,6 @@
+const Path = require('path')
+const Glob = require("glob")
+
 const types = ({ parent, alias, fx, store }) => {
     if (parent === null)
         throw new Error(`You have an Error on resolver.type:${alias}. Needs a parent Name`)
@@ -73,41 +76,44 @@ const Store = () => {
 }
 const instance = Store()
 
-require("glob").sync('src/resolvers/mutations/*.js')
-    .forEach(path => {                
-        instance.add(
-            {
-                ...require('../../' + path),
-                type: 'mutation'
-            }
-        )
-    })
-require("glob").sync('src/resolvers/queries/*.js')
+Glob.sync('src/resolvers/mutations/*.js')
     .forEach(path => {
         instance.add(
             {
                 ...require('../../' + path),
+                alias: Path.basename('../../' + path, '.js'),
+                type: 'mutation'
+            }
+        )
+    })
+Glob.sync('src/resolvers/queries/*.js')
+    .forEach(path => {
+        instance.add(
+            {
+                ...require('../../' + path),
+                alias: Path.basename('../../' + path, '.js'),
                 type: 'query'
             }
         )
     })
-require("glob").sync('src/resolvers/types/*.js')
-    .forEach(path => {        
+Glob.sync('src/resolvers/types/*.js')
+    .forEach(path => {
         instance.add(
             {
                 ...require('../../' + path),
+                alias: Path.basename('../../' + path, '.js'),
                 type: 'type'
             }
         )
     })
-require("glob").sync('src/directives/*')
+Glob.sync('src/directives/*')
     .forEach(path => {
         instance.add(
             {
                 ...require('../../' + path),
                 type: 'directive'
             }
-        )        
+        )
     })
 export default instance
 

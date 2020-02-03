@@ -1,4 +1,6 @@
 const { gql } = require('apollo-server-fastify')
+const fs = require('fs-extra')
+const Glob = require("glob")
 const Store = () => {
     let store = ''
 
@@ -17,20 +19,31 @@ const Store = () => {
                     return store
                     break;
             }
-        }
+        },
+        // outPutFile: async (pathFile, nameFile) => {
+        //     try {
+        //         await fs.outputFile(`${pathFile}/${nameFile}`, store)
+
+        //         // const data = await fs.readFile(f, 'utf8')
+
+        //         // console.log(data) // => hello!
+        //     } catch (err) {
+        //         console.error(err)
+        //     }
+
+        // }
     }
 }
 const instance = Store()
-const fs = require('fs');
 // require("glob").sync('src/typeDefs/*(Connection|Schema|Field).graphql')
 // require("glob").sync(__dirname + 'src/typeDefs/*.mutation.*')
-require("glob").sync('src/sdl/*.graphql')
-    .forEach(Path => {
+Glob.sync('src/sdl/*.graphql')
+    .forEach(path => {
         instance.add(
-            fs.readFileSync(Path, 'utf8').toString()
+            fs.readFileSync(path, 'utf8').toString()
         )
     });
-require("glob").sync('src/directives/*.js')
+Glob.sync('src/directives/*.js')
     .forEach(path => {
         // console.log(path)
         // console.log(require('../../' + path))
