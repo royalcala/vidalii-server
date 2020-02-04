@@ -2,22 +2,8 @@ import { query } from "../../instances/GraphqlServices";
 
 module.exports = {
   fx: async (parent, { nameType, fields }) => {
-    console.log('fields::', fields)
-    // let response = await query(`{
-    //         __schema{
-    //           types{
-    //             name                
-    //             inputFields{
-    //               name
-    //               type{
-    //                 name
-    //               }
-    //             }
-    //           }
-    //         }
-    //       }`)
     let response = await query(`{
-      __schema{
+      __types{
         types${fields}
       }
     }`)

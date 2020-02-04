@@ -10,7 +10,7 @@ import gql from "graphql-tag";
 // import { GET_CATALOGUES_MATERIALS } from './components/IndexCrud/Queries'
 // import {createConnection} from "typeorm";
 import ManagerDB from './components/ManagerDB'
-
+import FormGql from "./components/FormGql"
 const typeDefs = gql`
 extend type catalogue_materials {
     _id:ID
@@ -91,7 +91,7 @@ const link = new HttpLink({
 
 export const client = new ApolloClient({
   cache,
-  // link,
+  link,
   onError: ({ networkError, graphQLErrors }) => {
     console.log('graphQLErrors::', graphQLErrors)
     console.log('networkError::', networkError)
@@ -138,14 +138,30 @@ export const client = new ApolloClient({
 //     console.log('networkError::', networkError)
 //   }
 // })
-
+// const Div = React.createElement(
+//   'div',
+//   {className: 'sidebar'},
+//   'Click Me'
+// )
+// const Rao = React.createElement(
+//   Div,
+//   { color: { hola: 'world' }, shadowSize: 2 },
+//   'Click Me'
+// )
+const RenderComponent = gql`{
+  View1 @directive{
+    div
+  }
+}`
+console.log('RenderComponent::', RenderComponent)
 function App() {
-
-
+  console.log('Render RootApp')
+  // return Rao
   return (
     <ApolloProvider client={client}>
       <div>Login</div>
       <ManagerDB />
+      <FormGql />
     </ApolloProvider>
   )
 }
