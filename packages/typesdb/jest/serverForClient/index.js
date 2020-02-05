@@ -6,4 +6,4 @@ startServer()
 async function startServer() {
   await webServer()
 }
-
+console.log('hola')

@@ -1,0 +1,13 @@
+{
+  "name": "test",
+  "scripts": {
+    "build": "babel src -d lib",
+    "test": "jest"
+  },
+  "dependencies": {
+    "graphql": "^14.6.0"
+  },
+  "devDependencies": {
+    "jest": "^25.1.0"
+  }
+}
