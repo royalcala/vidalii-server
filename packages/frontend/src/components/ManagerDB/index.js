@@ -3,11 +3,10 @@ import { html } from 'htm/react';
 import htm from 'htm';
 import loadable from '@loadable/component'
 // import Button from '@material-ui/core/Button';
-const loadComponent = () => {
+const importModule = () => {
     const store = {
         Button: loadable(() => import('@material-ui/core/Button'))
     }
-
     // return store[name]
     return {
         get: name => {
@@ -56,24 +55,36 @@ const Form1 = props => {
 
 //     return props => <Books {...props} books={books} />
 // })
+const CompoTest = props => {
+    console.log('props::', props)
 
-const getStrComponets = async ({ schema, str = '' }) => {
-    let id
-    for (id in schema) {
-        const { component: nameComponent, directives = [] } = schema[id]
-        const Component = await loadComponent().get(nameComponent)
-        str = `<${Component.default}><//>`
-        // str = Component.default
+    return <div>{props.children}</div>
+}
+const createComponents = async ({ schema }) => {
+    let elements = []
+    let key
+    for (key in schema) {
+        const { component: nameComponent, props, children, directives = [] } = schema[key]
+        const module = await importModule().get(nameComponent)
+        if (children.text)
+            elements.push(
+                React.createElement(module.default, { key }, children.text)
+                // React.createElement(CompoTest, [id,{ key: id, key2: id }], ['default text Child'])
+                // React.createElement('div', { key: id }, 'this div')
+            )
+        else if (children)
+            console.log('recursive composing children elements')
     }
 
-    return str
+    return elements
 }
-const Comp = () => <div>Hi1</div>
+// const Comp = () => <div>Hi1</div>
+const Comp = props => React.createElement('div', {}, 'Hi1')
 
 
 
 function h(type, props, ...children) {
-    console.log('h:::',type, props, children)
+    console.log('h:::', type, props, children)
     return React.createElement(type, props, children)
 }
 
@@ -89,25 +100,32 @@ const Dynamic = props => {
     React.useEffect(() => {
         // Actualiza el título del documento usando la API del navegador
         // document.title = `You clicked times`;
-        async function getComponets() {
-            const str = await getStrComponets({ schema })
-            // console.log('%c⧭', 'color: #f279ca', str);
-            setState({ components: str })
+        // async function getComponets() {
+        //     const str = await getStrComponets({ schema })
+        //     // console.log('%c⧭', 'color: #f279ca', str);
+        //     setState({ components: str })
+        // }
+        const initComponents = async () => {
+            const components = await createComponents({ schema })
+            setState({ components })
         }
-        getComponets()
+        initComponents()
 
     }, []);
 
-    console.log('component::', state.components)
+    console.log('component::', state)
     if (state.loading)
         return <Form1>
             <div>Im Child1..loading</div>
             <div>Im Child2...loading</div>
         </Form1>
     else
-        // return html`<${state.components}>ha<//>`
-        // return html(state.components)
-        return html2`<${Button}>with html2<//>`
+        return state.components
+    // return React.createElement(Comp, {}, 'Tetxt')
+    // return <div>test</div>
+    // return html`<${state.components}>ha<//>`
+    // return html(state.components)
+    // return html2`<${Button}>with html2<//>`
     // return html`<button>hellow</button>`
 }
 
