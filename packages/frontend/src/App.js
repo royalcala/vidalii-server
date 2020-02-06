@@ -153,15 +153,39 @@ const RenderComponent = gql`{
     div
   }
 }`
-console.log('RenderComponent::', RenderComponent)
+// console.log('RenderComponent::', RenderComponent)
+const schema = {
+  idComponent1: {
+    component: "Button",
+    // directives: ['query(gql,)', 'query(gql'],
+    // children: {
+    //     idComponent2: {
+    //         component: "Box",
+    //         directive: [''],
+    //         children: {
+    //             idComponent3: {
+    //                 component: "Input",
+    //                 value: "Initial"
+    //             }
+    //         }
+    //     }
+    // }
+  }
+}
+const test2 = {
+  a: 1,
+  b: {
+    a2: 1
+  }
+}
 function App() {
   console.log('Render RootApp')
   // return Rao
   return (
     <ApolloProvider client={client}>
       <div>Login</div>
-      <ManagerDB />
-      <FormGql />
+      <ManagerDB schema={schema} {...test2} />
+      {/* <FormGql /> */}
     </ApolloProvider>
   )
 }
