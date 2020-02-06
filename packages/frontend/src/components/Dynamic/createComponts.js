@@ -6,13 +6,12 @@ import loadable from '@loadable/component'
 //     false,
 //     /\.stories\.js$/
 //     )
-export const createComponents = async ({ schema }) => {
+export const createComponents = async (schema) => {
     console.log('Render createComponts')
     let components = []
     let key
     for (key in schema) {
         const { component: nameComponent, props = {}, children, directives = [] } = schema[key]
-        console.log('%c%s', 'color: #c9cc99', props);
         //works too
         // const module = await import(`./store/${nameComponent}`)
         const module = await loadable(() => import(`./store/${nameComponent}`)).load()
@@ -21,8 +20,16 @@ export const createComponents = async ({ schema }) => {
             components.push(
                 React.createElement(module.default, { key, ...props }, children.text)
             )
-        else if (children)
-            console.log('recursive composing children components')
+        else if (children) {
+            const ChildrenComponents = await createComponents(schema[key].children)
+            components.push(
+                React.createElement(module.default,
+                    { key, ...props },
+                    ChildrenComponents
+                )
+            )
+        }
+
     }
 
     return components

@@ -2,46 +2,65 @@ import React from 'react'
 import Dynamic from './components/Dynamic'
 const schema = {
   1: {
-    component: "Button",
+    component: "material-ui/Box",
+    children: {
+      11: {
+        component: "material-ui/Button",
+        // directives: ['query(gql,)', 'query(gql'],
+        props: {
+          variant: "contained",
+          color: "primary"
+        },
+        children: {
+          text: 'My text for material-ui/Button2'
+        }
+      },
+      12: {
+        component: "material-ui/Paper",
+        // directives: ['query(gql,)', 'query(gql'],
+        props: {
+          variant: "contained",
+          color: "primary"
+        },
+        children: {
+          text: 'My text for material-ui/Button2'
+        }
+      },
+    },
+  },
+  2: {
+    component: "material-ui/Button",
     // directives: ['query(gql,)', 'query(gql'],
     props: {
       variant: "contained",
       color: "primary"
     },
     children: {
-      text: 'HELLOW WORLD'
-    },
-  },
-  2: {
-    component: "Button",
-    // directives: ['query(gql,)', 'query(gql'],
-
-    children: {
-      text: 'My text for Button2'
+      text: 'My text for material-ui/Button2'
     }
   },
   3: {
-    component: "Button",
+    component: "material-ui/Button",
     // directives: ['query(gql,)', 'query(gql'],
 
     children: {
-      text: 'My text for Button2'
+      text: 'My text for material-ui/Button2'
     }
   },
   4: {
-    component: "Button",
+    component: "material-ui/Button",
     // directives: ['query(gql,)', 'query(gql'],
 
     children: {
-      text: 'My text for Button2'
+      text: 'My text for material-ui/Button2'
     }
   },
   5: {
-    component: "Button",
+    component: "material-ui/Button",
     // directives: ['query(gql,)', 'query(gql'],
 
     children: {
-      text: 'My text for Button2'
+      text: 'My text for material-ui/Button2'
     }
   },
 

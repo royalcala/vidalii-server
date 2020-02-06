@@ -7,7 +7,7 @@ const Dynamic = props => {
 
     React.useEffect(() => {
         const initComponents = async () => {
-            const Components = await createComponents({ schema })
+            const Components = await createComponents(schema)
             setState({ Components })
         }
         initComponents()
