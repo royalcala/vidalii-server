@@ -11,10 +11,10 @@ export const createComponents = async (schema) => {
     let components = []
     let key
     for (key in schema) {
-        const { component: nameComponent, props = {}, children, directives = [] } = schema[key]
+        const { type, props = {}, children, directives = [] } = schema[key]
         //works too
-        // const module = await import(`./store/${nameComponent}`)
-        const module = await loadable(() => import(`./store/${nameComponent}`)).load()
+        // const module = await import(`./store/${nameType}`)
+        const module = await loadable(() => import(`./store/${type}`)).load()
 
         if (children.text)
             components.push(
