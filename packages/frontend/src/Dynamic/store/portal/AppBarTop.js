@@ -7,6 +7,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import DirectionsIcon from '@material-ui/icons/Directions';
+import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
+// import { ReactComponent as Logo } from './logo.svg';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
 
 const useStyles = makeStyles(theme => ({
@@ -35,9 +38,12 @@ const Main = ({ toggleDrawer }) => {
 
     return (
         <Paper component="form" className={classes.root}>
-            <IconButton className={classes.iconButton} aria-label="menu" onClick={toggleDrawer} >
+            <IconButton className={classes.iconButton} aria-label="menu" onClick={toggleDrawer(true)} >
                 <MenuIcon />
             </IconButton>
+            {/* <SvgIcon>                
+                <Logo/>
+            </SvgIcon> */}
             <InputBase
                 className={classes.input}
                 placeholder="Search for Vidalii Modules"
@@ -50,7 +56,10 @@ const Main = ({ toggleDrawer }) => {
             <IconButton color="primary" className={classes.iconButton} aria-label="directions">
                 <DirectionsIcon />
             </IconButton>
+
+
         </Paper>
+
     );
 }
 
