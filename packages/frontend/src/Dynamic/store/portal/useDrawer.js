@@ -19,7 +19,8 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TemporaryDrawer() {
+export default () => {
+  console.log('Render Drawer')
   const classes = useStyles();
   const [state, setState] = React.useState({
     left: false
@@ -60,13 +61,12 @@ export default function TemporaryDrawer() {
     </div>
   );
 
-  const Component = <div>
+  const Component = () =>
     <Drawer open={state.left} onClose={toggleDrawer('left', false)}>
       {sideList('left')}
     </Drawer>
-  </div>
   return {
     Component,
-    toggle: () => toggleDrawer('left', !state.left)
+    toggle: toggleDrawer('left', !state.left)
   }
 }

@@ -29,18 +29,19 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function CustomizedInputBase() {
+const Main = ({ toggleDrawer }) => {
+    console.log('Render AppBarTop')
     const classes = useStyles();
-    
+
     return (
         <Paper component="form" className={classes.root}>
-            <IconButton className={classes.iconButton} aria-label="menu">
+            <IconButton className={classes.iconButton} aria-label="menu" onClick={toggleDrawer} >
                 <MenuIcon />
             </IconButton>
             <InputBase
                 className={classes.input}
                 placeholder="Search for Vidalii Modules"
-                inputProps={{ 'aria-label': 'asdfasdfsearch google maps' }}
+                inputProps={{ 'aria-label': 'search google maps' }}
             />
             <IconButton type="submit" className={classes.iconButton} aria-label="search">
                 <SearchIcon />
@@ -52,3 +53,17 @@ export default function CustomizedInputBase() {
         </Paper>
     );
 }
+
+// // export default AppBarTop
+// function areEqual(prevProps, nextProps) {
+//     console.log('%c⧭', 'color: #ff6600', prevProps);
+//     console.log('%c⧭', 'color: #cc0036', nextProps);
+//     return true
+
+//     /*
+//     retorna true si al pasar los nextProps a renderizar retorna
+//     el mismo resultado que al pasar los prevProps a renderizar,
+//     de otro modo retorna false
+//     */
+// }
+export default React.memo(Main, () => true);

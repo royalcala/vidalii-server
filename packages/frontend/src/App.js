@@ -1,11 +1,11 @@
 import React from 'react';
-import AppBarTop from './Dynamic/store/portal/AppBarTop'
+import Portal from './Dynamic/store/portal'
 
 
 export default () => {
 
 
   return (
-    <AppBarTop />
+    <Portal />
   )
 }
