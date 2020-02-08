@@ -6,10 +6,10 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import DirectionsIcon from '@material-ui/icons/Directions';
+// import DirectionsIcon from '@material-ui/icons/Directions';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 // import { ReactComponent as Logo } from './logo.svg';
-import SvgIcon from '@material-ui/core/SvgIcon';
+// import SvgIcon from '@material-ui/core/SvgIcon';
 
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
         flex: 1,
     },
     iconButton: {
-        padding: 10,
+        padding: 5,
     },
     divider: {
         height: 28,
@@ -54,7 +54,7 @@ const Main = ({ toggleDrawer }) => {
             </IconButton>
             <Divider className={classes.divider} orientation="vertical" />
             <IconButton color="primary" className={classes.iconButton} aria-label="directions">
-                <DirectionsIcon />
+                <AccountCircleRoundedIcon fontSize="large" />
             </IconButton>
 
 
@@ -65,8 +65,6 @@ const Main = ({ toggleDrawer }) => {
 
 // // export default AppBarTop
 // function areEqual(prevProps, nextProps) {
-//     console.log('%c⧭', 'color: #ff6600', prevProps);
-//     console.log('%c⧭', 'color: #cc0036', nextProps);
 //     return true
 
 //     /*
@@ -75,4 +73,5 @@ const Main = ({ toggleDrawer }) => {
 //     de otro modo retorna false
 //     */
 // }
-export default React.memo(Main, () => true);
+const neverReRender = () => true
+export default React.memo(Main, neverReRender);

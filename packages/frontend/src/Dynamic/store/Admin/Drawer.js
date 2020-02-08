@@ -1,35 +1,31 @@
 import React from 'react';
 import Drawer from '@material-ui/core/Drawer';
-
+import DrawerList from './Drawer.list'
 export default () => {
   console.log('Render Drawer')
   const [state, setState] = React.useState({
-    left: false
+    open: false
   });
 
-  const toggleDrawer = (side, open) => event => {
+  const toggleDrawer = open => event => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 
-    setState({ ...state, [side]: open });
+    setState({ ...state, open });
   };
 
 
 
-  const Component = (props) => {
-
-
+  const Component = () => {
     return (
-      <Drawer open={state.left} onClose={toggleDrawer('left', false)}>
-        {/* {sideList('left')} */}
-        {/* <ListDrawer /> */}
-        {props.children}
+      <Drawer open={state.open} onClose={toggleDrawer(false)}>
+        <DrawerList toggleDrawer={toggleDrawer} />
       </Drawer>
     )
   }
   return {
     Component,
-    toggleDrawer: (open) => toggleDrawer('left', open)
+    toggleDrawer: toggleDrawer
   }
 }

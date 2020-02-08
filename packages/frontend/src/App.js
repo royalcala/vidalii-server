@@ -1,8 +1,8 @@
 import React from 'react';
-import Portal from './Dynamic/store/portal'
+import Admin from './Dynamic/store/Admin'
 
 export default () => {
   return (
-    <Portal />
+    <Admin />
   )
 }
