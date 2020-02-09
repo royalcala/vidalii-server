@@ -6,48 +6,26 @@ import Grid from '@material-ui/core/Grid';
 ///Components
 import useDrawer from './Drawer'
 import Purchases from '../Modules/Purchases'
-import SalesDashboard from '../Modules/Sales.dash'
+// import SalesDashboard from '../Modules/Sales.dash'
 import SalesDoc from '../Modules/Sales.Doc'
 import Default from '../Modules/Default'
-import TopBar from './TopBar'
+// import TopBar from './TopBar'
 import TopBar2 from './TopBar2'
-const useStyles = makeStyles(theme => ({
-    // root: {
-    //     flexGrow: 1,
-    // },
-    // paper: {
-    //     padding: theme.spacing(2),
-    //     textAlign: 'center',
-    //     color: theme.palette.text.secondary,
-    // },
-}));
-
+import Box from '@material-ui/core/Box';
 
 export default () => {
     console.log('Render IndexPortal')
-    const classes = useStyles()
     const { Component: Drawer, toggleDrawer } = useDrawer()
     return (
-        <div 
-        // className={classes.root}
-        >
-            <Grid
-                container spacing={1}
-            >
-                <Grid item container xs={12}>
-                    <TopBar2 toggleDrawer={toggleDrawer} />
-                    {/* <TopBar toggleDrawer={toggleDrawer} /> */}
-                </Grid>
-                <Grid item xs={12}>
-                    <Switch>
-                        <Route path="/sales/document" component={SalesDoc} />
-                        <Route exact path="/purchases/:myKey/:myKey2" component={Purchases} />
-                        <Route exact path="/" component={Default} />
-                    </Switch>
-                </Grid>
-            </Grid>
+        <Box display="flex" flexDirection="column">
+            <TopBar2 toggleDrawer={toggleDrawer} />
+            <Switch>
+                <Route path="/sales/document" component={SalesDoc} />
+                <Route exact path="/purchases/:myKey/:myKey2" component={Purchases} />
+                <Route exact path="/" component={Default} />
+            </Switch>
             <Drawer />
-        </div>
+        </Box>
     )
 }
 

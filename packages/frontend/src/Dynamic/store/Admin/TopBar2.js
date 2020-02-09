@@ -8,11 +8,11 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import InputSearch from "../Vidalii/Input.Search";
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
-
+import Box from '@material-ui/core/Box';
 const useStyles = makeStyles(theme => ({
-    root: {
-        borderBottom: '1px solid #e8e8e8',
-    },
+    // root: {
+    //     borderBottom: '1px solid #e8e8e8',
+    // },
     iconButton: {
         padding: 0,
     },
@@ -23,10 +23,12 @@ const Main = ({ toggleDrawer }) => {
     const classes = useStyles();
 
     return (
-        <Grid
-            className={classes.root}
-            container
-        //  spacing={1}
+        <Box display="flex" flexDirection="row" flexWrap="nowrap"
+            // borderBottom={1}
+            //doesnt work the color here 
+            // borderColor="grey.200"
+            borderBottom='1px solid #e8e8e8'
+        // color="grey.200"
         >
             <Grid
                 className={classes.item}
@@ -61,7 +63,7 @@ const Main = ({ toggleDrawer }) => {
                     <AccountCircleRoundedIcon fontSize="large" />
                 </IconButton>
             </Grid>
-        </Grid>
+        </Box>
 
     );
 }
