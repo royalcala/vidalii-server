@@ -1,68 +1,56 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import { useTheme } from '@material-ui/core/styles';
+// import SvgIcon from '@material-ui/core/SvgIcon';
 import { ReactComponent as Logo } from './logo.svg';
 import TabAnt from '../Vidalii/Tab.Ant'
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import InputSearch from "../Vidalii/Input.Search";
+// import InputSearch from "../Vidalii/Input.Search";
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import Box from '@material-ui/core/Box';
-const useStyles = makeStyles(theme => ({
-    // root: {
-    //     borderBottom: '1px solid #e8e8e8',
-    // },
-    iconButton: {
-        padding: 0,
-    },
-}));
+// const useStyles = makeStyles(theme => ({
+//     // root: {
+//     //     borderBottom: '1px solid #e8e8e8',
+//     // },
+//     iconButton: {
+//         padding: 0,
+//     },
+// }));
 
 const Main = ({ toggleDrawer }) => {
     console.log('Render TopBar2')
-    const classes = useStyles();
+    // const classes = useStyles();
+    const theme = useTheme();
 
     return (
         <Box display="flex" flexDirection="row" flexWrap="nowrap"
+            justifyContent="space-between"
+            alignItems="center"
             // borderBottom={1}
             //doesnt work the color here 
             // borderColor="grey.200"
-            borderBottom='1px solid #e8e8e8'
+            // borderBottom={`1px solid #e8e8e8`}
+            borderBottom={`1px solid ${theme.palette.grey[200]}`}
         // color="grey.200"
         >
-            <Grid
-                className={classes.item}
-                item xs={1}
-                container
-                direction="row"
-                alignItems="center"
-            >
-                <IconButton className={classes.iconButton} aria-label="menu" onClick={toggleDrawer(true)}>
-                    <MenuIcon />
-                </IconButton>
-                <Logo width={45} height={45} />
-            </Grid>
-            <Grid
-                className={classes.item}
-                item xs={8} >
+            <Box
+                // flexGrow={1} 
+                display="flex" flexDirection="row" flexWrap="nowrap">
+                <Box>
+                    <IconButton aria-label="menu" onClick={toggleDrawer(true)}>
+                        <MenuIcon />
+                    </IconButton>
+                </Box>
+                <Box>
+                    <Logo width={45} height={45} />
+                </Box>
+            </Box>
+            <Box flexGrow={8}>
                 <TabAnt />
-            </Grid>
-            <Grid
-                className={classes.item}
-                item xs={2}>
-                {/* <InputSearch /> */}
-            </Grid>
-            <Grid
-                className={classes.item}
-                item
-                xs={1}
-                container
-                direction="row"
-                justify="flex-end">
-                <IconButton className={classes.iconButton} color="primary" aria-label="directions">
-                    <AccountCircleRoundedIcon fontSize="large" />
-                </IconButton>
-            </Grid>
+            </Box>
+            <Box color="primary.main" display="flex" flexDirection="row" flexWrap="nowrap">
+                <AccountCircleRoundedIcon fontSize="large" />
+            </Box>
         </Box>
 
     );
