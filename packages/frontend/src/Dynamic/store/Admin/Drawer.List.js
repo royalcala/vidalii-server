@@ -16,19 +16,19 @@ const useStyles = makeStyles({
         width: 'auto',
     },
 });
-function OldSchoolMenuLink({ label, to, activeOnlyWhenExact }) {
-    let match = useRouteMatch({
-        path: to,
-        exact: activeOnlyWhenExact
-    });
+// function OldSchoolMenuLink({ label, to, activeOnlyWhenExact }) {
+//     let match = useRouteMatch({
+//         path: to,
+//         exact: activeOnlyWhenExact
+//     });
 
-    return (
-        <div className={match ? "active" : ""}>
-            {match && "> "}
-            <Link to={to}>{label}</Link>
-        </div>
-    );
-}
+//     return (
+//         <div className={match ? "active" : ""}>
+//             {match && "> "}
+//             <Link to={to}>{label}</Link>
+//         </div>
+//     );
+// }
 export default ({ toggleDrawer }) => {
     console.log('Render ListDrawer')
     const classes = useStyles()

@@ -1,77 +1,53 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
-// import DirectionsIcon from '@material-ui/icons/Directions';
-import MenuIcon from '@material-ui/icons/Menu';
-import IconButton from '@material-ui/core/IconButton';
-import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
-import SearchIcon from '@material-ui/icons/Search';
-// import { ReactComponent as Logo } from './logo.svg';
+import { useTheme, makeStyles } from '@material-ui/core/styles';
 // import SvgIcon from '@material-ui/core/SvgIcon';
-
-
+import { ReactComponent as Logo } from './logo.svg';
+import TabAnt from '../Vidalii/Tab.Ant'
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+// import InputSearch from "../Vidalii/Input.Search";
+import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
+import Box from '@material-ui/core/Box';
 const useStyles = makeStyles(theme => ({
-    root: {
-        padding: '2px 4px',
-        display: 'flex',
-        alignItems: 'center',
-        width: '100%',
-    },
-    input: {
-        marginLeft: theme.spacing(1),
-        flex: 1,
-    },
+    // root: {
+    //     borderBottom: '1px solid #e8e8e8',
+    // },
     iconButton: {
-        padding: 5,
-    },
-    divider: {
-        height: 28,
-        margin: 4,
+        padding: 0,
     },
 }));
 
 const Main = ({ toggleDrawer }) => {
-    console.log('Render AppBarTop')
+    console.log('Render TopBar2')
     const classes = useStyles();
+    const theme = useTheme();
 
     return (
-        <Paper component="form" className={classes.root}>
-            <IconButton className={classes.iconButton} aria-label="menu" onClick={toggleDrawer(true)} >
+        <Box display="flex" flexDirection="row"
+            flexWrap="nowrap"
+            justifyContent="space-between"
+            alignItems="center"
+            // borderBottom={1}
+            //doesnt work the color here 
+            // borderColor="grey.200"
+            // borderBottom={`1px solid #e8e8e8`}
+            borderBottom={`1px solid ${theme.palette.grey[200]}`}
+        // color="grey.200"
+        >
+            <IconButton aria-label="menu" onClick={toggleDrawer(true)}>
                 <MenuIcon />
             </IconButton>
-            {/* <SvgIcon>                
-                <Logo/>
-            </SvgIcon> */}
-            <InputBase
-                className={classes.input}
-                placeholder="Search for Vidalii Modules"
-                inputProps={{ 'aria-label': 'search google maps' }}
-            />
-            <IconButton type="submit" className={classes.iconButton} aria-label="search">
-                <SearchIcon />
-            </IconButton>
-            <Divider className={classes.divider} orientation="vertical" />
+            <Logo width={45} height={45} />
+            <Box flexGrow={1}>
+                <TabAnt />
+            </Box>            
             <IconButton color="primary" className={classes.iconButton} aria-label="directions">
                 <AccountCircleRoundedIcon fontSize="large" />
-            </IconButton>
-
-
-        </Paper>
+            </IconButton>            
+        </Box>
 
     );
 }
 
-// // export default AppBarTop
-// function areEqual(prevProps, nextProps) {
-//     return true
-
-//     /*
-//     retorna true si al pasar los nextProps a renderizar retorna
-//     el mismo resultado que al pasar los prevProps a renderizar,
-//     de otro modo retorna false
-//     */
-// }
 const neverReRender = () => true
 export default React.memo(Main, neverReRender);

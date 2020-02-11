@@ -1,8 +1,9 @@
 import React from 'react';
 import Drawer from '@material-ui/core/Drawer';
-import DrawerList from './Drawer.list'
-export default () => {
+// import DrawerList from '../Admin/Drawer.list'
+export default (DrawerList) => {
   console.log('Render Drawer')
+  console.log('DrawerList:', DrawerList)
   const [state, setState] = React.useState({
     open: false
   });
@@ -18,6 +19,8 @@ export default () => {
 
 
   const Component = () => {
+    
+
     return (
       <Drawer open={state.open} onClose={toggleDrawer(false)}>
         <DrawerList toggleDrawer={toggleDrawer} />

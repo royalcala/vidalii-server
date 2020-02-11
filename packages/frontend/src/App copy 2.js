@@ -1,10 +1,10 @@
 import React from 'react'
 import Dynamic from './components/Dynamic'
 const schema = {
-  1: {
+  switchSession: {
     type: "material-ui/Box",
     children: {
-      11: {
+      admin: {
         type: "material-ui/Button",
         // directives: ['query(gql,)', 'query(gql'],
         props: {
@@ -15,7 +15,7 @@ const schema = {
           text: 'My text for material-ui/Button2'
         }
       },
-      12: {
+      login: {
         type: "material-ui/Paper",
         // directives: ['query(gql,)', 'query(gql'],
         props: {

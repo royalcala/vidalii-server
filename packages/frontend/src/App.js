@@ -1,9 +1,11 @@
 import React from 'react';
-import Admin from './Dynamic/store/Admin'
 import {
   createMuiTheme,
   ThemeProvider
 } from "@material-ui/core/styles";
+import Admin from './Dynamic/store/Admin'
+import Session from './Dynamic/store/Vidalii/Session'
+
 const theme = createMuiTheme({
   //custom mui here, this merge the default with this custom
   // palette: {
@@ -15,11 +17,12 @@ const theme = createMuiTheme({
   // }
 })
 
-
 export default () => {
+  console.log('session:', Session.propTypes)
   return (
     <ThemeProvider theme={theme}>
-      <Admin />
+      {/* <Admin /> */}
+      <Session user={{ name: 'Rao', email: 'My@email.com' }} />
     </ThemeProvider>
   )
 }
