@@ -1,11 +1,11 @@
 import React from "react";
 import loadable from '@loadable/component'
-import  useImportSchemas  from '../../Lib/useImportSchemas'
+import useImportSchemas from '../../Lib/useImportSchemas'
 // import { useImportSchemas } from '@vidalii/query-components'
 
 const Component = schema => {
     console.log('%c⧭', 'color: #e50000', schema);
-    const { loading } = useImportSchemas(schema)
+    const { loading, schemas } = useImportSchemas(schema)
     console.log('%c⧭', 'color: #733d00', 'loading:', loading);
     // const schemas = {
     //     admin: loadable(() => import(`./${schema.imports.admin}/`)),
@@ -17,7 +17,7 @@ const Component = schema => {
     if (loading)
         return <div>loading</div>
     else
-        return <div>loaded</div>
+        return <div>{JSON.stringify(schemas)}</div>
     // if (true)
     //     return <Admin />
     // else

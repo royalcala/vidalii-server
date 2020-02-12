@@ -3,7 +3,7 @@ export default {
     type: 'Admin',
     props: {},
     // children: [],
-    schemas: {
+    imports: {
         admin: 'admin',
         login: 'login'
     }
