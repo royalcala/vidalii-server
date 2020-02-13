@@ -1,7 +1,7 @@
 export default {
-    type: 'Admin',
-    props: {},    
-    imports: {
+    component: 'Admin',
+    props: {},
+    edges: {
         admin: 'admin',
         login: 'login'
     }

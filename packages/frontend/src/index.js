@@ -5,13 +5,15 @@ import 'typeface-roboto';
 // import App from './App';
 import * as serviceWorker from './serviceWorker';
 // import { BrowserRouter as Router } from "react-router-dom";
-import Component from "./Components/Initial";
-import Hola from './Hola'
+// import Component from "./node_initial";
+import node from './nodes/session'
+import Session from './components/Session'
 ReactDOM.render(
     // <Router><App /></Router>
     // Component
     // <Component Compo={Hola} />
-    Component()
+    // Component()
+    React.createElement(Session, node)
     , document.getElementById('root')
 )
 

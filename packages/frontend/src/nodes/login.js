@@ -1,6 +1,6 @@
 export default {
-    type: 'Login',        
-    imports: {
+    component: 'Login',
+    edges: {
         Admin: 'Admin',
         Login: 'Login'
     }

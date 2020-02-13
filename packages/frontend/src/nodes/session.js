@@ -1,7 +1,7 @@
 export default {
     // id: 'session', //the name is the id: must to be unique
-    type: 'Session',
-    imports: {
+    component: 'Session',
+    edges: {
         admin: 'admin',
         login: 'login'
     }
