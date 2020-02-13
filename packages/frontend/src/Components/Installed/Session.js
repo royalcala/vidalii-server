@@ -1,28 +1,17 @@
 import React from "react";
-import loadable from '@loadable/component'
 import useImportSchemas from '../../Lib/useImportSchemas'
-// import { useImportSchemas } from '@vidalii/query-components'
 
-const Component = schema => {
-    console.log('%c⧭', 'color: #e50000', schema);
-    const { loading, schemas } = useImportSchemas(schema)
-    console.log('%c⧭', 'color: #733d00', 'loading:', loading);
-    // const schemas = {
-    //     admin: loadable(() => import(`./${schema.imports.admin}/`)),
-    //     // login: loadable(() => import(`./${schema.imports.login}`))
-    // }
-    // console.log('schemas:', schemas)
-    // const Admin = loadable(() => import(`./${schema.imports.Admin}`))
-    // const Login = loadable(() => import(`./${schema.imports.Login}`))
+const Session = schema => {
+    console.log('Render Session')
+    const [session, setSession] = React.useState(false)
+    const { loading, imports } = useImportSchemas(schema)
     if (loading)
         return <div>loading</div>
+    if (session === true)
+        return imports.admin.Component
     else
-        return <div>{JSON.stringify(schemas)}</div>
-    // if (true)
-    //     return <Admin />
-    // else
-    //     return <Login />
+        return imports.login.Component
 
 }
 
-export default Component
+export default Session

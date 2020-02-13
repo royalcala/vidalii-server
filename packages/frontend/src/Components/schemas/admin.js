@@ -1,8 +1,6 @@
 export default {
-    id: 'admin',
     type: 'Admin',
-    props: {},
-    // children: [],
+    props: {},    
     imports: {
         admin: 'admin',
         login: 'login'

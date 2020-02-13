@@ -1,8 +1,6 @@
 export default {
-    id: 'session',
+    // id: 'session', //the name is the id: must to be unique
     type: 'Session',
-    props: {},
-    // children: [],
     imports: {
         admin: 'admin',
         login: 'login'

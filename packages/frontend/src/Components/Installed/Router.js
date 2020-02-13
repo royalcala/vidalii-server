@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const Component = () => {
+const Router = () => {
 
     if (true)
         return <div>Login</div>
@@ -10,4 +10,4 @@ const Component = () => {
 
 }
 
-export default Component
+export default Router

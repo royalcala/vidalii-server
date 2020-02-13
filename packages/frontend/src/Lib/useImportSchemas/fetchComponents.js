@@ -1,33 +1,41 @@
-import loadable from '@loadable/component'
-
-const mergeSchemasAndComponents = (schemas, components) => {
-
-}
-// const fetchComponents = async schemas => {
-//     console.log('%c⧭', 'color: #917399', schemas);
-//     const promises = schemas.map(
-//         ({ type }) => import(`${PATH}/Installed/${type}`)
-//     )
-//     let data = await Promise.all(promises);
-//     return data
-// }
-const fetchSchemas = async entries => {
-    const promises = entries.map(
-        ([key, value]) => {
-            return import(`../../Components/schemas/${value}`)
+import React from 'react'
+// import loadable from '@loadable/component'
+const mergeSchemasAndComponents = (entries, schemas, components) => {
+    const imports = {}
+    entries.forEach(
+        ([key], index) => {
+            imports[key] = {
+                schema: schemas[index],
+                Component: React.createElement(components[index], { ...schemas[index] }
+                )
+            }
         }
     )
-    let data = await Promise.all(promises);
-    return data.map(
-        element => element.default
+    return imports
+}
+const fetchComponents = async schemas => {
+    const promises = schemas.map(
+        // ({ type }) => loadable(() => import(`../../Components/Installed/${type}`)).load()
+        ({ type }) => import(`../../Components/Installed/${type}`)
+    )
+    let modules = await Promise.all(promises);
+    return modules.map(
+        module => module.default
     )
 }
-const mergeData = async (imports) => {
+const fetchSchemas = async entries => {
+    const promises = entries.map(
+        ([key, value]) => import(`../../Components/schemas/${value}`)
+    )
+    let modules = await Promise.all(promises);
+    return modules.map(
+        module => module.default
+    )
+}
+
+export default async (imports) => {
     const entries = Object.entries(imports)
     const schemas = await fetchSchemas(entries)
-    // const components = await fetchComponents(schemas)
-
-    // return mergeSchemasAndComponents(schemas, components)
-    return schemas
+    const components = await fetchComponents(schemas)
+    return mergeSchemasAndComponents(entries, schemas, components)
 }
-export default mergeData
