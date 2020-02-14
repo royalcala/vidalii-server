@@ -2,8 +2,7 @@ export default {
     component: 'Admin',
     props: {},
     edges: {
-        admin: 'admin',
-        login: 'login'
+        restore: '',
+        byUsername: '',
     }
 }
-//this build static files

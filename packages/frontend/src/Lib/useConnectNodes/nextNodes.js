@@ -10,7 +10,10 @@ const buildNextNodes = (edges, nodes, components, parentProps) => {
             imports.nodes[key] = nodes[index]
             imports.components[key] = React.createElement(
                 components[index],
-                { ...nodes[index] }
+                {
+                    ...nodes[index],
+                    parentProps: parentProps[key] ? parentProps[key] : {}
+                }
             )
         }
     )
