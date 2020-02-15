@@ -1,7 +1,7 @@
 export default {
     // id: 'session', //the name is the id: must to be unique
     component: 'Session',
-    edges: {
+    nextNodes: {
         admin: 'admin',
         login: 'login'
     }

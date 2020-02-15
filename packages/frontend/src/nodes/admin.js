@@ -1,7 +1,7 @@
 export default {
     component: 'Admin',
     props: {},
-    edges: {
+    nextNodes: {
         restore: '',
         byUsername: '',
     }

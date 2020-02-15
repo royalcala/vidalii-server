@@ -1,11 +1,11 @@
 import React from 'react'
 // import loadable from '@loadable/component'
-const buildNextNodes = (edges, nodes, components, parentProps) => {
+const buildNextNodes = (entriesNextNodes, nodes, components, parentProps) => {
     const imports = {
         nodes: {},
         components: {}
     }
-    edges.forEach(
+    entriesNextNodes.forEach(
         ([key], index) => {
             imports.nodes[key] = nodes[index]
             imports.components[key] = React.createElement(
@@ -19,7 +19,7 @@ const buildNextNodes = (edges, nodes, components, parentProps) => {
     )
     return imports
 }
-const nextComponents = async nodes => {
+const fetchNextComponents = async nodes => {
     const promises = nodes.map(
         // ({ component }) => loadable(() => import(`../../Components/Installed/${component}`)).load()
         ({ component }) => import(`../../components/${component}`)
@@ -29,19 +29,21 @@ const nextComponents = async nodes => {
         module => module.default
     )
 }
-const nextNodes = async edges => {
+const fetchNextNodes = async edges => {
     const promises = edges.map(
         ([key, value]) => import(`../../nodes/${value}`)
+
     )
     let modules = await Promise.all(promises);
+
     return modules.map(
         module => module.default
     )
 }
 
 export default async (node, parentProps) => {
-    const edges = Object.entries(node.edges)
-    const nodes = await nextNodes(edges)
-    const components = await nextComponents(nodes)
-    return buildNextNodes(edges, nodes, components, parentProps)
+    const entriesNextNodes = Object.entries(node.nextNodes)
+    const nodes = await fetchNextNodes(entriesNextNodes)
+    const components = await fetchNextComponents(nodes)
+    return buildNextNodes(entriesNextNodes, nodes, components, parentProps)
 }

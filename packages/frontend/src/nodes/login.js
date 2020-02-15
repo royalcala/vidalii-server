@@ -1,8 +1,7 @@
 export default {
     component: 'Login',
-    edges: {
-        Admin: 'Admin',
-        Login: 'Login'
+    nextNodes: {
+        login_byUsername: 'login_byUsername',
+        // Login: 'Login'
     }
 }
-//this build static files
