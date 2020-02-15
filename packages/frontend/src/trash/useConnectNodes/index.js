@@ -1,6 +1,6 @@
 import React from 'react'
 import nextNodes from './nextNodes'
-export default (node, parentProps = {}) => {
+export default (node = {}, parentProps = {}) => {
     const [state, setState] = React.useState({ loading: true })
     React.useEffect(
         () => {

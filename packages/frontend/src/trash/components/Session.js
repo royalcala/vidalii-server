@@ -1,14 +1,22 @@
-import React from "react"
-import Admin from './Admin'
-import Login from './Login'
+import React from "react";
+import useConnectNodes from '../Lib/useConnectNodes'
+
 const Session = node => {
     console.log('Render State')
     const [session, setSession] = React.useState(false)
-
+    const { loading, components } = useConnectNodes(
+        node,
+        {
+            admin: { setSession },
+            login: { setSession }
+        }
+    )
+    if (loading)
+        return <div>loading</div>
     if (session === true)
-        return <Admin {...setSession} />
+        return components.admin
     else
-        return <Login {...setSession} />
+        return components.login
 }
 Session.description = {
 

@@ -32,10 +32,8 @@ const fetchNextComponents = async nodes => {
 const fetchNextNodes = async edges => {
     const promises = edges.map(
         ([key, value]) => import(`../../nodes/${value}`)
-
     )
     let modules = await Promise.all(promises);
-
     return modules.map(
         module => module.default
     )

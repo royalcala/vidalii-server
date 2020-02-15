@@ -1,24 +1,29 @@
 import React from "react";
-import Login_container from '../components.ui/Login_container'
-
-
-const validateUsername = props => {
-
+import Box from "./Box";
+import Login_byUsername from './Login_byUsername'
+import Login_footer from './Login_footer'
+const style = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
 }
-const useByUsername = props => {
-    const [state, setState] = React.useState({
-        username: '',
-        password: ''
-    })
-    return {
-        state,
-        setState
-    }
+const styleHeader = {
+    height: '10%',
+}
+
+const boxFooter = {
 }
 const Login = props => {
-    console.log('Render Login')
-
-    return <Login_container useByUsername={useByUsername} />
+    console.log('Render Login Container')
+    return (
+        <Box {...style}>
+            <Box {...styleHeader}>Header</Box>
+            <Login_byUsername />
+            <Box {...boxFooter}>footer</Box>
+        </Box>
+    )
     // return <>
     //     <button onClick={() => {
     //         setSession(true)

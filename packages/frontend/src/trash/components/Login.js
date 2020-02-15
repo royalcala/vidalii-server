@@ -1,24 +1,48 @@
 import React from "react";
-import Login_container from '../components.ui/Login_container'
-
-
-const validateUsername = props => {
-
+import Box from "./Box";
+import useConnectNodes from '../Lib/useConnectNodes'
+const container = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
 }
-const useByUsername = props => {
-    const [state, setState] = React.useState({
-        username: '',
-        password: ''
-    })
-    return {
-        state,
-        setState
-    }
+const boxHeadr = {
+    height: '10%',
 }
-const Login = props => {
+const boxLogin = {
+    flexGrow: 1,
+    display: 'flex',
+    border: 1,
+    borderColor: "grey.300",
+    borderRadius: 8,
+    width: "33%",
+    // xs: {
+    // m: "auto",
+    // pt: "10%"
+    // mt: 4,
+    // ml: "30%",
+    // mr: "33%"
+    // }
+}
+const boxFooter = {
+}
+const Login = node => {
     console.log('Render Login')
-
-    return <Login_container useByUsername={useByUsername} />
+    const { setSession } = node.parentProps
+    // const { loading, components } = useConnectNodes(node)
+    // if (loading)
+    //     return <div>loading</div>
+    return (
+        <Box {...container}>
+            <Box {...boxHeadr}>Header</Box>
+            <Box {...boxLogin}>
+                {/* {components.Login_byUsername} */}
+            </Box >
+            <Box {...boxFooter}>footer</Box>
+        </Box>
+    )
     // return <>
     //     <button onClick={() => {
     //         setSession(true)

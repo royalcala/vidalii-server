@@ -6,14 +6,14 @@ import 'typeface-roboto';
 import * as serviceWorker from './serviceWorker';
 // import { BrowserRouter as Router } from "react-router-dom";
 // import Component from "./node_initial";
+import node from './nodes/session'
 import Session from './components/Session'
 ReactDOM.render(
     // <Router><App /></Router>
     // Component
     // <Component Compo={Hola} />
     // Component()
-    // React.createElement(Session, node)
-    <Session />
+    React.createElement(Session, node)
     , document.getElementById('root')
 )
 
