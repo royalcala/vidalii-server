@@ -1,20 +1,44 @@
 import React from "react"
-import Admin from './Admin'
-import Login from './Login'
-const Session = node => {
-    console.log('Render State')
-    const [session, setSession] = React.useState(false)
+import { useHistory } from "react-router-dom";
+const initStateSession = () => {
+    const store = {
+        session: false
+    }
+    return {
+        store,
+        setSession: ({ username, password }) => {
+            alert(username, password);
+            if (username === 'a@a.com' && password === 'p') {
+                alert('Correct')
+                store.session = true
+                // let history = useHistory();
 
-    if (session === true)
-        return <Admin {...setSession} />
-    else
-        return <Login {...setSession} />
+            }
+            else
+                alert('Error')
+
+
+            // setTimeout(() => {
+            //     alert('Error.:', JSON.stringify(values, null, 2));
+            // }, 400);
+
+        }
+    }
 }
-Session.description = {
 
-}
+const stateSession = initStateSession()
 
-export default Session
+export default stateSession
+// const Session = props => {
+//     console.log('Render State')
+//     const [session, setSession] = React.useState(false)
+
+//     return [session, setSession]
+
+// }
+
+
+// export default Session
 
 // import * as R from 'ramda'
 // const State = ({ node }) => {
