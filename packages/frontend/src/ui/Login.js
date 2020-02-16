@@ -1,22 +1,23 @@
 import React from 'react'
 import { Route, Switch } from "react-router-dom";
 import Box from 'ui/Box'
-import Login_container from 'ui/Login_container'
-import Login_footer from 'ui/Login_footer'
-import Login_byUsername from 'ui/Login_byUsername'
+import LoginContainer from 'ui/LoginContainer'
+import LoginByUsername from 'ui/LoginByUsername'
+import LoginFooter from 'ui/LoginFooter'
+
 
 const Login = props => {
-    console.log('Render Login',window.location.href,window.location.pathname)
+     console.log('Render Login')
     return (
-        <Login_container>
+        <LoginContainer>
             <Box height="10%" />
             <Switch>
-                <Route exact path="/" component={Login_byUsername} />
+                <Route exact path="/" component={LoginByUsername} />
                 {/* <Route path="/portfolio/:id" component={Portfolio} />
                 <Route path="/contact" component={Contact} /> */}
             </Switch>
-            <Login_footer />
-        </Login_container>
+            <LoginFooter />
+        </LoginContainer>
     )
 }
 

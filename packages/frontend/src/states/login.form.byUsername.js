@@ -1,5 +1,5 @@
 import React from 'react'
-import { Formik } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import stateSession from 'states/session'
 const FormByUsername = props => {
@@ -28,7 +28,9 @@ const FormByUsername = props => {
                 //         }, 400);
             }}
         >
-            {props.children}
+            <Form>
+                {props.children}
+            </Form>
         </Formik>
     );
 };

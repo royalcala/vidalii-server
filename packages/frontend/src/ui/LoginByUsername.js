@@ -1,9 +1,9 @@
 import React from 'react'
-import { useField, Form } from 'formik';
+import { useField } from 'formik';
 import Typography from '@material-ui/core/Typography';
 import Box from "./Box";
 import TextField from '@material-ui/core/TextField';
-import StateForm from "states/login";
+import FormByUsername from "states/login.form.byUsername";
 import { ReactComponent as Logo } from 'svg/google.svg';
 const container = {
     flexGrow: 1,
@@ -40,8 +40,8 @@ const MyInput = props => {
         </>
     );
 };
-const Login_byUsername = props => {
-    console.log('render Login_byUsername.ui')
+const LoginByUsername = props => {
+    console.log('render LoginByUsername.ui')
     return (
         <Box {...container}>
             <Logo width="100px" />
@@ -51,8 +51,7 @@ const Login_byUsername = props => {
             <Typography variant="subtitle1" gutterBottom>
                 Usa tu cuenta de google
             </Typography>
-            <StateForm >
-                <Form>
+            <FormByUsername >                
                     <MyInput
                         name="username"
                         fullWidth
@@ -67,11 +66,10 @@ const Login_byUsername = props => {
                         variant="outlined"
                         type="password"
                     />
-                    <button type="submit">Submit</button>
-                </Form>
-            </StateForm >
+                    <button type="submit">Submit</button>                
+            </FormByUsername >
         </Box>
     )
 }
 
-export default Login_byUsername
+export default LoginByUsername

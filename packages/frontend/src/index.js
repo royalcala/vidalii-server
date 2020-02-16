@@ -1,16 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import 'typeface-roboto';
-// import App from './App';
+import 'typeface-roboto';
+import IndexContext from 'IndexContext'
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter as Router } from "react-router-dom";
-// import Component from "./node_initial";
-import Session from 'ui/Session'
+
 ReactDOM.render(
-    <Router>
-        <Session />
-    </Router>
+    <IndexContext />
     , document.getElementById('root')
 )
 

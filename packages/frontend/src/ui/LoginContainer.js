@@ -11,8 +11,8 @@ const styleHeader = {
     height: '10%',
 }
 
-const Login = props => {
-    console.log('Render Login Container')
+const LoginContainer = props => {
+    console.log('Render LoginContainer Container')
     return (
         <Box {...style}>
             {props.children}
@@ -20,4 +20,4 @@ const Login = props => {
     )
 }
 
-export default Login
+export default LoginContainer

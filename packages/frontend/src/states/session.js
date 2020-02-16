@@ -29,6 +29,10 @@ const initStateSession = () => {
 const stateSession = initStateSession()
 
 export default stateSession
+
+const validateSession = () => {
+
+}
 // const Session = props => {
 //     console.log('Render State')
 //     const [session, setSession] = React.useState(false)
