@@ -7,7 +7,7 @@ import LoginFooter from 'ui/LoginFooter'
 
 
 const Login = props => {
-     console.log('Render Login')
+    console.log('Render Login')
     return (
         <LoginContainer>
             <Box height="10%" />

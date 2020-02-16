@@ -2,7 +2,7 @@ import gql from 'graphql-tag';
 
 
 export const SESSION_GET = gql`
-{
+query session_get{
   session_get @client{
       token 
       username 
@@ -11,11 +11,11 @@ export const SESSION_GET = gql`
 `;
 
 export const SESSION_SET = gql`
-{
-  session_set @client{
-    token
-    username
-  }
+mutation session_set($username: String! $password:String!) {
+session_set(username:$username password:$password) @client{
+  token
+  username
+}
 }
 `
 // export const HAS_SESSION = gql`

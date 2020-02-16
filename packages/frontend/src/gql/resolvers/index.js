@@ -1,6 +1,6 @@
 // import { GET_CART_ITEMS } from 'gql/actions'
-import session_get from 'gql/resolvers/query_session_get'
-import session_set from 'gql/resolvers/mutation_session_set'
+import session_get from 'gql/resolvers/session_get.query'
+import session_set from 'gql/resolvers/session_set.mutation'
 const resolvers = {
     hola: () => {
         console.log('Entroooo')

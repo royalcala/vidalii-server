@@ -10,7 +10,7 @@ import typeDefs from 'gql/sdl'
 
 const cache = new InMemoryCache();
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
     cache,
     // link: new HttpLink({
     //     uri: 'http://localhost:4000/graphql',
@@ -23,7 +23,9 @@ const client = new ApolloClient({
     resolvers,
     typeDefs,
 });
-
+console.log('client', Object.keys(client))
+// console.log(client.store.cache.data)
+// console.log(Object.keys(client.store.cache.data))
 // cache.writeData({
 //     data: {
 //         // isLoggedIn: !!localStorage.getItem('token'),
