@@ -6,7 +6,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloProvider } from '@apollo/react-hooks';
 import resolvers from 'gql/resolvers'
-import typeDefs from 'gql/typeDefs'
+import typeDefs from 'gql/sdl'
 
 const cache = new InMemoryCache();
 
@@ -24,13 +24,15 @@ const client = new ApolloClient({
     typeDefs,
 });
 
-cache.writeData({
-    data: {
-        // isLoggedIn: !!localStorage.getItem('token'),
-        isLoggedIn: false,
-        cartItems: [],
-    },
-});
+// cache.writeData({
+//     data: {
+//         // isLoggedIn: !!localStorage.getItem('token'),
+//         // Session: {
+//         //     has: false
+//         // },
+//         cartItems: [],
+//     },
+// });
 
 const IndexContext = () => {
     return (

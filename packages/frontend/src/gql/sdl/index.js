@@ -6,6 +6,7 @@ extend type Launch {
 }
 extend type Session{
   username:String
+  email:String
   name:String
   token:String
 }
@@ -13,12 +14,12 @@ extend type Session{
 extend type Query {
   isLoggedIn: Boolean!
   cartItems: [ID!]!
-  hola:String
+  hola:String 
   session_get:Session
 }
-  extend type Mutation {
+extend type Mutation {
     addOrRemoveFromCart(id: ID!): [ID!]!
-    session_validate(username:String! password:String! ):Session
+    session_validate(username:String! password:String! ):Session 
   }
 `;
 

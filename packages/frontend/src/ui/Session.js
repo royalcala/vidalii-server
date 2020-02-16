@@ -1,19 +1,19 @@
 import React from "react"
-import stateSession from 'states/session'
+import stateSession from 'localState/session'
 import Admin from 'ui/Admin'
 import Login from 'ui/Login'
 import { useQuery } from '@apollo/react-hooks';
-import { IS_LOGGED_IN } from 'gql/queries'
-import gql from 'graphql-tag'
+import { SESSION_GET } from 'gql/actions'
 
 
 const Session = props => {
     console.log('Render State')
-    const { loading, data } = useQuery(IS_LOGGED_IN);
-    console.log('%c⧭', 'color: #e57373', data);
+    const { loading, data } = useQuery(SESSION_GET);
+    console.log('%c⧭', 'color: #997326', data);
 
     if (loading)
         return <div>loading...</div>
-    return data.isLoggedIn ? <Admin /> : <Login />;    
+    else return data.session_get.token ? <Admin /> : <Login />;
+    //else  return <div>hn</div>
 }
 export default Session

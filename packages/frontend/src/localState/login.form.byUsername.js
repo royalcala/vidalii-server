@@ -1,7 +1,8 @@
 import React from 'react'
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import stateSession from 'states/session'
+import stateSession from 'localState/session'
+
 const FormByUsername = props => {
     console.log('render state login by username')
     return (

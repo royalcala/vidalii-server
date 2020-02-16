@@ -3,7 +3,7 @@ import { useField } from 'formik';
 import Typography from '@material-ui/core/Typography';
 import Box from "./Box";
 import TextField from '@material-ui/core/TextField';
-import FormByUsername from "states/login.form.byUsername";
+import FormByUsername from "localState/login.form.byUsername";
 import { ReactComponent as Logo } from 'svg/google.svg';
 const container = {
     flexGrow: 1,
@@ -51,22 +51,22 @@ const LoginByUsername = props => {
             <Typography variant="subtitle1" gutterBottom>
                 Usa tu cuenta de google
             </Typography>
-            <FormByUsername >                
-                    <MyInput
-                        name="username"
-                        fullWidth
-                        label="Correo Electrónico"
-                        variant="outlined"
-                        type="text"
-                    />
-                    <MyInput
-                        name="password"
-                        fullWidth
-                        label="Password"
-                        variant="outlined"
-                        type="password"
-                    />
-                    <button type="submit">Submit</button>                
+            <FormByUsername >
+                <MyInput
+                    name="username"
+                    fullWidth
+                    label="Correo Electrónico"
+                    variant="outlined"
+                    type="text"
+                />
+                <MyInput
+                    name="password"
+                    fullWidth
+                    label="Password"
+                    variant="outlined"
+                    type="password"
+                />
+                <button type="submit">Submit</button>
             </FormByUsername >
         </Box>
     )
