@@ -5,46 +5,59 @@ import Session from 'ui/Session'
 import {
     ApolloClient, InMemoryCache,
     HttpLink,
-     ApolloProvider
+    //  ApolloProvider
 } from '@apollo/client';
 // import { InMemoryCache } from 'apollo-cache-inmemory';
 import { persistCache } from 'apollo-cache-persist';
 // import { HttpLink } from 'apollo-link-http';
-// import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloProvider } from '@apollo/react-hooks';
 import resolvers from 'gql/resolvers'
 import typeDefs from 'gql/sdl'
 
 
+let count = 0
+export const cache = new InMemoryCache(
+    {
+        typePolicies: {
+            Session: {
+                fields: {
+                    username: {
+                        read(...data) {
+                            console.log('In cache.Session.username' + count++, data)
+                            return 'from Session.fields.username'
+                        }
+                    }
+                },
+            },
+            Query: {
+                fields: {
+                    initialData: {
+                        // keyArgs: ["number"],
+                        read(...data) {
+                            console.log('%c⧭', 'color: #ffcc00',
+                                'Query.initialData::', data);
+                            return 'from Query.fields.initialData'
+                        }
+                    },
+                    session_get: {
+                        read(...data) {
+                            console.log('in cache.Query.session_get:' + count++, data)
+                            return {
+                                // __typename: 'Session',
+                                token: 'from cache.Query.session_get' + count,
+                                username: 'from cache.Query.username'
+                            }
+                        }
+                    }
 
-const cache = new InMemoryCache(
-//     {
-//     typePolicies: {
-//         Session: {
-//             fields: {
-//                 username: {
-//                     read(name) {
-//                         console.log('%c⧭', 'color: #ffcc00', '*********username::', name);
-//                         return name.toUpperCase();
-//                     }
-//                 }
-//             },
-//         },
-//         Query: {
-//             fields: {
-//                 initialData: {
-//                     // keyArgs: ["number"],
-//                     read(name) {
-//                         console.log('%c⧭', 'color: #ffcc00', '*******username::', name);
-//                         return name.toUpperCase();
-//                     }
-//                 },
-//             },
-//         },
-//     },
-// }
+                },
+            },
+        },
+    }
 );
 console.log('%c⧭', 'color: #cc0088', cache);
 console.log('cache', Object.keys(cache))
+console.log('cache', cache.storeReader)
 
 
 
@@ -67,7 +80,8 @@ console.log('client', Object.keys(client))
 // console.log(Object.keys(client.store.cache.data))
 cache.writeData({
     data: {
-        initialData: 'hello world!'
+        initialData: 'fro initial cache hello world!',
+        // session_get: 'from initial cache'
         // isLoggedIn: !!localStorage.getItem('token'),
         // Session: {
         //     has: false
@@ -77,6 +91,7 @@ cache.writeData({
 });
 
 const IndexContext = () => {
+    console.log('Render IndexContext')
     // const [persistData, setClient] = useState(undefined);
     // console.log('%c⧭', 'color: #735656', persistData);
     // useEffect(() => {

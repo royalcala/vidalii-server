@@ -1,9 +1,9 @@
 export default (...data) => {
-    console.log('Access to query_session_get', data)
+    console.log('Resolver Query.session_get', data)
 
     return {
         __typename: 'Session',
         token: 'null',
-        username: 'roy alcala'
+        username: 'from resolver.Query.session_get'
     }
 }

@@ -2,6 +2,12 @@
 import session_get from 'gql/resolvers/session_get.query'
 import session_set from 'gql/resolvers/session_set.mutation'
 const resolvers = {
+    Session: {
+        username: (...data) => {
+            console.log('in Resolver.Session.username', data)
+            return 'from resolver.type.Session.username'
+        }
+    },
     hola: () => {
         console.log('Entroooo')
         return 'hellow'
