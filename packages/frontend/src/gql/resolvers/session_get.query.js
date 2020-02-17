@@ -1,9 +1,9 @@
-export default () => {
-    console.log('Access to query_session_get')
+export default (...data) => {
+    console.log('Access to query_session_get', data)
 
     return {
         __typename: 'Session',
-        token: null,
-        username: 'Roy Alcala'
+        token: 'null',
+        username: 'roy alcala'
     }
 }

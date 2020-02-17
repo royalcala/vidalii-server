@@ -8,6 +8,7 @@ extend type Session{
   token:String
 }
 extend type Query {
+  initialData:String
   hola:String 
   session_get:Session
 }
