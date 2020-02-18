@@ -3,10 +3,10 @@ const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
 
 module.exports = {
     // type: 'directive',
-    alias: 'upper',
+    // alias: 'upper',
     sdl: `directive @upper on FIELD_DEFINITION`,
     fx: class UpperCaseDirective extends SchemaDirectiveVisitor {
-   
+
 
         visitFieldDefinition(field) {
             const { resolve = defaultFieldResolver } = field;

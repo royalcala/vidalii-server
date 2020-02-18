@@ -86,6 +86,5 @@ loadResolvers(instance, 'type', 'src/resolvers/types/*.js')
 loadResolvers(instance, 'directive', 'src/directives/*')
 
 
-
 export default instance
 

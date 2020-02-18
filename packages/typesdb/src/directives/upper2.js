@@ -3,14 +3,14 @@ const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
 
 module.exports = {
     // type: 'directive',
-    alias: 'upper2',
+    // alias: 'upper2',
     sdl: `directive @upper2 on FIELD_DEFINITION`,
-    fx: class UpperCaseDirective extends SchemaDirectiveVisitor {
+    fx: class UpperCaseDirective2 extends SchemaDirectiveVisitor {
         static getDirectiveDeclaration(directiveName, schema) {
-            console.log('directiveName::', directiveName)
+            // console.log('directiveName::', directiveName)
             // console.log('schema::',schema)
             const previousDirective = schema.getDirective(directiveName)
-            console.log('previousDirective::', previousDirective)
+            // console.log('previousDirective::', previousDirective)
         }
         visitFieldDefinition(field) {
             const { resolve = defaultFieldResolver } = field;
