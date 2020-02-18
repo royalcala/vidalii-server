@@ -16,6 +16,7 @@ import { SESSION_SET, SESSION_GET } from 'gql/actions'
 //     `
 //   })
 //   .then(result => console.log(result));
+
 const FormByUsername = props => {
     console.log('render state login by username')
     return (

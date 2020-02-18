@@ -14,21 +14,21 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import resolvers from 'gql/resolvers'
 import typeDefs from 'gql/sdl'
 
-
+// console.log('InMemoryCache::', InMemoryCache)
 let count = 0
-export const cache = new InMemoryCache(
+const cache = new InMemoryCache(
     {
         typePolicies: {
-            Session: {
-                fields: {
-                    username: {
-                        read(...data) {
-                            console.log('In cache.Session.username' + count++, data)
-                            return 'from Session.fields.username'
-                        }
-                    }
-                },
-            },
+            // Session: {
+            //     fields: {
+            //         username: {
+            //             read(...data) {
+            //                 console.log('In cache.Session.username' + count++, data)
+            //                 return 'from cache.Session.fields.username'
+            //             }
+            //         }
+            //     },
+            // },
             Query: {
                 fields: {
                     initialData: {
@@ -39,28 +39,26 @@ export const cache = new InMemoryCache(
                             return 'from Query.fields.initialData'
                         }
                     },
-                    session_get: {
-                        read(...data) {
-                            console.log('in cache.Query.session_get:' + count++, data)
-                            return {
-                                // __typename: 'Session',
-                                token: 'from cache.Query.session_get' + count,
-                                username: 'from cache.Query.username'
-                            }
-                        }
-                    }
+                    // session_get: {
+                    //     read(...data) {
+                    //         console.log('in cache.Query.session_get:' + count++, data)
+                    //         return {
+                    //             // __typename: 'Session',
+                    //             id: '1',
+                    //             token: 'from cache.Query.session_get' + count,
+                    //             username: 'from cache.Query.username'
+                    //         }
+                    //     }
+                    // }
 
                 },
             },
         },
     }
 );
-console.log('%c⧭', 'color: #cc0088', cache);
+// console.log('%c⧭', 'color: #cc0088', cache);
 console.log('cache', Object.keys(cache))
-console.log('cache', cache.storeReader)
-
-
-
+// console.log('cache', cache.storeReader)
 
 export const client = new ApolloClient({
     cache,
@@ -76,46 +74,63 @@ export const client = new ApolloClient({
     typeDefs,
 });
 console.log('client', Object.keys(client))
-// console.log(client.store.cache.data)
-// console.log(Object.keys(client.store.cache.data))
-cache.writeData({
-    data: {
-        initialData: 'fro initial cache hello world!',
-        // session_get: 'from initial cache'
-        // isLoggedIn: !!localStorage.getItem('token'),
-        // Session: {
-        //     has: false
-        // },
-        // cartItems: [],
+
+const storage = {
+    setItem: (...data) => {
+        console.log('%c⧭', 'color: #00a3cc', 'setItem:', data);
+
+        return window.localStorage.setItem(data[0], data[1])
+        // return window.localStorage.setItem('my key', 'my value')
     },
-});
+    getItem: (...data) => {
+        console.log('%c⧭', 'color: #00a3cc', 'getItem:', data);
+        console.log(typeof window.localStorage.getItem(data[0]))
+        return window.localStorage.getItem(data[0])
+
+    },
+    removeItem: (...data) => {
+        console.log('%c⧭', 'color: #00a3cc', 'removeItem:', data);
+
+
+        return window.localStorage.removeItem(data[0])
+    },
+    clear: (...data) => {
+        console.log('%c⧭', 'color: #00a3cc', 'getItem:', data);
+
+        return window.localStorage.clear()
+    }
+}
 
 const IndexContext = () => {
     console.log('Render IndexContext')
-    // const [persistData, setClient] = useState(undefined);
-    // console.log('%c⧭', 'color: #735656', persistData);
-    // useEffect(() => {
-    //     // const initData = {
-    //     //     {/* your initial data */}
-    //     //   };
-    //     // See above for additional options, including other storage providers.
-    //     persistCache({
-    //         cache,
-    //         storage: window.localStorage
-    //     }).then(() => {
-    //         // client.onResetStore(async () => cache.writeData({ data: initData }));
-    //         setClient(client);
-    //     });
-    //     return () => { };
-    // }, []);
-
-    return (
-        <ApolloProvider client={client}>
-            <Router>
-                <Session />
-            </Router>
-        </ApolloProvider>
-    )
+    const [state, setState] = React.useState(undefined);    
+    React.useEffect(() => {
+        const initData = {
+            initialData: 'initialData from cache.writeData!'
+        };
+        cache.writeData({ data: initData })
+        // See above for additional options, including other storage providers.
+        persistCache({
+            cache,
+            // storage: window.localStorage
+            storage
+        }).then(() => {            
+            client.onResetStore(async () => cache.writeData({ data: initData }));
+            setState(client);
+        });
+        return () => { };
+    }, []);
+    if (state === undefined)
+        return <div>loading...</div>
+    else
+        return (
+            // <ApolloProvider client={client}>
+            <ApolloProvider client={state}>
+                <Router>
+                    <Session />
+                </Router>
+            </ApolloProvider>
+        )
 }
 
 export default IndexContext

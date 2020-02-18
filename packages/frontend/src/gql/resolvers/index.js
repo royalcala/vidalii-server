@@ -4,7 +4,7 @@ import session_set from 'gql/resolvers/session_set.mutation'
 const resolvers = {
     Session: {
         username: (...data) => {
-            console.log('in Resolver.Session.username', data)
+            console.log('client.Session.username', data)
             return 'from resolver.type.Session.username'
         }
     },

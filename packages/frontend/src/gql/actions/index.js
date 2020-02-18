@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 export const SESSION_GET = gql`
 query session_get{
   session_get @client{
+    id
       token 
       username 
   }

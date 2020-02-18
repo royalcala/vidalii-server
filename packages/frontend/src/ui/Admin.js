@@ -1,8 +1,7 @@
 import React from 'react'
 
 const Admin = props => {
-    console.log('Render Admin***')
-    console.log('%c⧭', 'color: #408059', props);
+    console.log('Render Admin***')    
 
     return <div>Admin</div>
 }

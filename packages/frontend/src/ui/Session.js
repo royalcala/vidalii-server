@@ -8,20 +8,22 @@ import { client } from 'IndexContext'
 
 const Session = props => {
     console.log('Render Session')
-    // const { loading, data } = useQuery(SESSION_GET);
-    // console.log('%c⧭', 'color: #997326', 'Session->useQuery', data);
-    const [{ loading, data }, setState] = React.useState({ loading: true })
+    const { loading, data } = useQuery(SESSION_GET,{
+        fetchPolicy:'cache-first'
+    });
+    console.log('%c⧭', 'color: #997326', 'Session:', data);
+    // const [{ loading, data }, setState] = React.useState({ loading: true })
 
-    React.useEffect(() => {
-        async function Hola() {
-            const data = await client.query({
-                query: SESSION_GET
-            })
-            console.log('data', data)
-            setState(data)
-        }
-        Hola()
-    }, []);
+    // React.useEffect(() => {
+    //     async function Hola() {
+    //         const data = await client.query({
+    //             query: SESSION_GET
+    //         })
+    //         console.log('data', data)
+    //         setState(data)
+    //     }
+    //     Hola()
+    // }, []);
     if (loading)
         return <div>loading...</div>
     else
