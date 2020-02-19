@@ -1,5 +1,4 @@
-import { defaultFieldResolver } from "graphql";
-const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
+import { defaultFieldResolver, SchemaDirectiveVisitor } from '../lib'
 const jwt = require('jsonwebtoken')
 
 module.exports = {

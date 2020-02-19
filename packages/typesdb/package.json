@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "nodemon": "nodemon --exec babel-node src",
-    "node": "babel-node src --no-deprecation",
+    "node": "babel-node src",
     "pm2:start": "pm2 start ecosystem.config.js",
     "pm2:stop:all": "pm2 stop all",
     "pm2:startCLI": "pm2 start src",
@@ -26,8 +26,7 @@
     "@babel/node": "^7.8.4",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.6.3",
-    "babel-plugin-ramda": "^2.0.0",
-    "nodemon": "^2.0.2"
+    "babel-plugin-ramda": "^2.0.0"
   },
   "dependencies": {
     "apollo-server-fastify": "^2.9.16",
@@ -42,6 +41,7 @@
     "ramda": "^0.26.1",
     "sqlite3": "^4.1.1",
     "typeorm": "^0.2.22",
-    "uuid": "^3.4.0"
+    "uuid": "^3.4.0",
+    "yup": "^0.28.1"
   }
 }
