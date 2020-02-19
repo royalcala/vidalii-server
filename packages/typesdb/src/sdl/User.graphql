@@ -4,11 +4,20 @@ enum Role{
   USER
   UNKNOWN
 }
-
-type User{
-    id:ID
+type User {
+    id:ID 
     username:String
     name:String
-    lastname:String
+    lastName:String
     role:Role
+}
+input InputUser{
+    username:String!
+    password:String!
+}
+extend type Query {
+    user_getAll:[User] @query
+}
+extend type Mutation {
+ user_create(inputUser:InputUser):User @user_create
 }

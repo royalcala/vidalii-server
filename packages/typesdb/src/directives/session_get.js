@@ -1,4 +1,5 @@
 import { defaultFieldResolver } from "graphql";
+import models from '../database'
 const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
 const jwt = require('jsonwebtoken')
 
@@ -12,22 +13,17 @@ module.exports = {
             // console.log('**********FIELD::', field)
             // console.log('field.astNode::', field.astNode.directives)
             field.resolve = async function (parent, { username, password }) {
-                if (username === 'alcala.rao@gmail.com' && password === 'a') {
-                    const fromDatabaseUser = {
-                        id: 1,
-                        username: 'alcala.rao@gmail.com',
-                        group:'admin'
-                    }
+                const user = models.users.find('username', username)
+                if (user && user.password === password) {
                     const token = jwt.sign(
-                        fromDatabaseUser,
+                        user,
                         process.env.JWT_SECRET,
                         {
                             expiresIn: '1d', // token will expire in 1days
                         },
                     )
-
                     return {
-                        user: fromDatabaseUser,
+                        user,
                         token
                     }
                 }

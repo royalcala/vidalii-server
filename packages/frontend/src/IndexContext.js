@@ -58,6 +58,7 @@ const cache = new InMemoryCache(
 );
 // console.log('%c⧭', 'color: #cc0088', cache);
 console.log('cache', Object.keys(cache))
+console.log('Object.getPrototypeOf(cache):', Object.getPrototypeOf(cache))
 // console.log('cache', cache.storeReader)
 
 export const client = new ApolloClient({
@@ -103,7 +104,7 @@ const storage = {
 
 const IndexContext = () => {
     console.log('Render IndexContext')
-    const [state, setState] = React.useState(undefined);    
+    const [state, setState] = React.useState(undefined);
     React.useEffect(() => {
         const initData = {
             initialData: 'initialData from cache.writeData!'
@@ -114,7 +115,7 @@ const IndexContext = () => {
             cache,
             // storage: window.localStorage
             storage
-        }).then(() => {            
+        }).then(() => {
             client.onResetStore(async () => cache.writeData({ data: initData }));
             setState(client);
         });
