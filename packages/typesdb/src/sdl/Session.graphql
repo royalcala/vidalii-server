@@ -1,11 +1,10 @@
 
-type User{
-id:ID
-username:String
+type Session{
 token:String
+user:User
 }
 
 
 extend type Query {
-    session_get(username:String! password:String!):User @session_get  
+    session_get(username:String! password:String!):Session @session_get  
 }

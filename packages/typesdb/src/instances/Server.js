@@ -1,6 +1,6 @@
 import { serviveGraphql, query } from './GraphqlServices'
 const fastify = require('fastify')
-const start = async ({ port = 4000 } = {}) => {
+const start = async () => {
     try {
         // let response = await query(`{hellow}`)
         // console.log('response::', response)
@@ -9,7 +9,7 @@ const start = async ({ port = 4000 } = {}) => {
         webServer.register(require('fastify-cors'), {
             // put your options here
         })
-        await webServer.listen(port)
+        await webServer.listen(process.env.SERVER_PORT)
         // webServer.log.info(`server listening on ${webServer.server.address().port}`)
         console.log(`server listening on ${JSON.stringify(webServer.server.address())}`)
         // process.on('SIGINT', () => { console.log("Bye bye!"); process.exit(); });

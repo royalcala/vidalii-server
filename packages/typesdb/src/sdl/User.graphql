@@ -1,0 +1,14 @@
+enum Role{
+  ADMIN
+  REVIEWER
+  USER
+  UNKNOWN
+}
+
+type User{
+    id:ID
+    username:String
+    name:String
+    lastname:String
+    role:Role
+}
