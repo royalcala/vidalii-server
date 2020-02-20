@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
 const typeDefs = gql`
+
 extend type Session{
   token:String
   username:String

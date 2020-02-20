@@ -8,8 +8,21 @@ import gql from 'graphql-tag';
 
 const Session = props => {
     console.log('Render Session')
-    const { loading, data } = useQuery(SESSION_GET);
-    // console.log('%c⧭', 'color: #997326', 'Session-->:', data);
+    const { loading, data, error } = useQuery(SESSION_GET, {
+        fetchPolicy: 'cache-only',
+        // variables: {
+        //     username: null,
+        //     password: null
+        // }
+        // onError: (...data) => {
+        //     console.log('%c⧭', 'color: #f2ceb6', 'onEroorrrr', data);
+        //     return {
+        //         hellow: 'World'
+        //     }
+        // }
+    });
+    // console.log('error::', error)
+    console.log('%c⧭', 'color: #997326', 'Session-->:', data);
     // const [{ loading, data }, setState] = React.useState({ loading: true })
 
     // React.useEffect(() => {
@@ -22,10 +35,12 @@ const Session = props => {
     //     }
     //     Hola()
     // }, []);
-    if (loading)
-        return <div>loading...</div>
+    if (loading || !data)
+        return <Login />
+    else if (data.session_get.token)
+        return <Admin />
     else
-        return data.session_get.token ? <Admin /> : <Login />;
+        return <div>Error:{error}</div>
     // return <div>Admin</div>
 }
 export default Session

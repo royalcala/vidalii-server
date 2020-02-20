@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const SESSION_GET = gql`
-query session_get{
-  session_get @client{
+query session_get($username:String $password:String){
+  session_get(username:$username password:$password){
       token 
       username 
   }

@@ -1,41 +1,18 @@
 import React from 'react'
 import { useField } from 'formik';
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import * as Yup from 'yup';
+import { useLazyQuery } from '@apollo/client';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Box from "./Box";
-import FormByUsername from "forms/login.byUsername";
+import useForm from "forms/login.byUsername";
 import { ReactComponent as Logo } from 'svg/google.svg';
+import { SESSION_GET } from 'gql/actions'
 
-const container = {
-    flexGrow: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    // justifyContent: 'space-around',
-    alignItems: 'center',
-    border: 1,
-    borderColor: "grey.300",
-    borderRadius: 8,
-    width: "25%",
-    p: "3%"
-    // xs: {
-    // m: "auto",
-    // pt: "10%"
-    // mt: 4,
-    // ml: "30%",
-    // mr: "33%"
-    // }
-}
 const MyInput = props => {
-    // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
-    // which we can spread on <input> and also replace ErrorMessage entirely.
     const [field, meta] = useField(props);
-
     return (
         <>
-            {/* <label htmlFor={props.id || props.name}>{label}</label> */}
-
             {meta.touched && meta.error ? (
                 <TextField {...field} {...props} error helperText={meta.error} />
             ) : <TextField {...field} {...props} />
@@ -45,9 +22,27 @@ const MyInput = props => {
 };
 const LoginByUsername = props => {
     console.log('render LoginByUsername.ui')
-    const history = useHistory();
+    const [session_get, { loading, data }] = useLazyQuery(SESSION_GET);
+    console.log('%c⧭', 'color: #917399', '****loading:::', loading);
+    const { Form } = useForm({
+        initialValues: {
+            username: '',
+            password: ''
+        },
+        validationSchema: Yup.object({
+            username: Yup.string()
+                .email('Wrong email. myemail@domain.com')
+                .required('Username is required'),
+            password: Yup.string().required('Password is required'),
+        }),
+        onSubmit: (value, { setSubmitting }) => {
+            setSubmitting(false)
+            session_get({ variables: value })
+        }
+    })
+
     return (
-        <Box {...container}>
+        <>
             <Logo width="100px" />
             <Typography variant="h5" gutterBottom>
                 Acceder
@@ -55,7 +50,7 @@ const LoginByUsername = props => {
             <Typography variant="subtitle1" gutterBottom>
                 Usa tu cuenta de google
             </Typography>
-            <FormByUsername >
+            <Form >
                 <MyInput
                     name="username"
                     fullWidth
@@ -72,12 +67,47 @@ const LoginByUsername = props => {
                 />
                 <button type="submit">Submit</button>
                 <br />
-                <Link href="" onClick={() => history.push("/recovery")}>
-                    Recover your password
-                </Link>
-            </FormByUsername >
-        </Box>
+                <Link to="/recovery">Recover your password</Link>
+            </Form >
+        </>
     )
 }
+// const LoginByUsername = props => {
+//     console.log('render LoginByUsername.ui')    
+//     const [session_get, { loading, data }] = useLazyQuery(SESSION_GET);
+//     console.log('%c⧭', 'color: #aa00ff', data);
+//     console.log('%c⧭', 'color: #00a3cc', loading);
+//     console.log('%c⧭', 'color: #00e600', session_get);
+//     return (
+//         <>
+//             <Logo width="100px" />
+//             <Typography variant="h5" gutterBottom>
+//                 Acceder
+//             </Typography>
+//             <Typography variant="subtitle1" gutterBottom>
+//                 Usa tu cuenta de google
+//             </Typography>
+//             <FormByUsername >
+//                 <MyInput
+//                     name="username"
+//                     fullWidth
+//                     label="Correo Electrónico"
+//                     variant="outlined"
+//                     type="text"
+//                 />
+//                 <MyInput
+//                     name="password"
+//                     fullWidth
+//                     label="Password"
+//                     variant="outlined"
+//                     type="password"
+//                 />
+//                 <button type="submit">Submit</button>
+//                 <br />
+//                 <Link to="/recovery">Recover your password</Link>
+//             </FormByUsername >
+//         </>
+//     )
+// }
 
 export default LoginByUsername
