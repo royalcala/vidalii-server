@@ -1,9 +1,11 @@
 import React from 'react'
 import { useField } from 'formik';
+import { useHistory } from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
-import Box from "./Box";
 import TextField from '@material-ui/core/TextField';
-import FormByUsername from "localState/login.form.byUsername";
+import Link from '@material-ui/core/Link';
+import Box from "./Box";
+import FormByUsername from "forms/login.byUsername";
 import { ReactComponent as Logo } from 'svg/google.svg';
 
 const container = {
@@ -43,6 +45,7 @@ const MyInput = props => {
 };
 const LoginByUsername = props => {
     console.log('render LoginByUsername.ui')
+    const history = useHistory();
     return (
         <Box {...container}>
             <Logo width="100px" />
@@ -68,6 +71,10 @@ const LoginByUsername = props => {
                     type="password"
                 />
                 <button type="submit">Submit</button>
+                <br />
+                <Link href="" onClick={() => history.push("/recovery")}>
+                    Recover your password
+                </Link>
             </FormByUsername >
         </Box>
     )

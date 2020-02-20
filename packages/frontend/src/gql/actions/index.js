@@ -1,15 +1,21 @@
 import gql from 'graphql-tag';
 
-
 export const SESSION_GET = gql`
 query session_get{
   session_get @client{
-    id
       token 
       username 
   }
 }
 `;
+// export const SESSION_GET = gql`
+// query session_get{
+//   session_get @client{
+//       token 
+//       username 
+//   }
+// }
+// `;
 
 export const SESSION_SET = gql`
 mutation session_set($username: String! $password:String!) {

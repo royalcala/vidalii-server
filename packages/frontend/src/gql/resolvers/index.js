@@ -2,16 +2,16 @@
 import session_get from 'gql/resolvers/session_get.query'
 import session_set from 'gql/resolvers/session_set.mutation'
 const resolvers = {
-    Session: {
-        username: (...data) => {
-            console.log('client.Session.username', data)
-            return 'from resolver.type.Session.username'
-        }
-    },
-    hola: () => {
-        console.log('Entroooo')
-        return 'hellow'
-    },
+    // Session: {
+    //     username: (...data) => {
+    //         console.log('client.Session.username', data)
+    //         return 'from resolver.type.Session.username'
+    //     }
+    // },
+    // hola: () => {
+    //     console.log('Entroooo')
+    //     return 'hellow'
+    // },
     // Launch: {
     //     isInCart: (launch, _, { cache }) => {
     //         const queryResult = cache.readQuery({ query: GET_CART_ITEMS });
@@ -28,8 +28,8 @@ const resolvers = {
         },
         session_get
     },
-    Mutation: {
-        session_set
+    // Mutation: {
+    //     session_set
         //     addOrRemoveFromCart: (_, { id }, { cache }) => {
         //         const queryResult = cache.readQuery({ query: GET_CART_ITEMS });
         //         if (queryResult) {
@@ -44,7 +44,7 @@ const resolvers = {
         //         }
         //         return [];
         //     },
-    },
+    // },
 };
 
 

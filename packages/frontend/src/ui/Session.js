@@ -4,14 +4,12 @@ import Login from 'ui/Login'
 import { useQuery } from '@apollo/react-hooks';
 // import { useQuery } from '@apollo/client';
 import { SESSION_GET } from 'gql/actions'
-import { client } from 'IndexContext'
+import gql from 'graphql-tag';
 
 const Session = props => {
     console.log('Render Session')
-    const { loading, data } = useQuery(SESSION_GET,{
-        fetchPolicy:'cache-first'
-    });
-    console.log('%c⧭', 'color: #997326', 'Session:', data);
+    const { loading, data } = useQuery(SESSION_GET);
+    // console.log('%c⧭', 'color: #997326', 'Session-->:', data);
     // const [{ loading, data }, setState] = React.useState({ loading: true })
 
     // React.useEffect(() => {

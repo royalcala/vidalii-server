@@ -2,14 +2,14 @@ import gql from 'graphql-tag';
 
 const typeDefs = gql`
 extend type Session{
+  token:String
   username:String
   email:String
   name:String
-  token:String
 }
 extend type Query {
-  initialData:String
-  hola:String 
+  # initialData:String
+  # hola:String 
   session_get:Session
 }
 extend type Mutation {

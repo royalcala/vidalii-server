@@ -1,4 +1,4 @@
-const uuidv1 = require('uuid/v1');
+const uuidv1 = require('uuid/v1')
 const users = [{
     id: uuidv1(),
     username: 'alcala.rao@gmail.com',
