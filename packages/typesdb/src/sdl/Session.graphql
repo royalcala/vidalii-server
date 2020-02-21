@@ -6,5 +6,5 @@ user:User
 
 
 extend type Query {
-    session_get(username:String! password:String!):Session @session_get  
+    session_get(username:String password:String):Session @session_get  
 }

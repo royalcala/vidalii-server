@@ -1,6 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router } from "react-router-dom";
-// import { ApolloClient } from 'apollo-client';
 import {
     ApolloClient, InMemoryCache,
     HttpLink,
@@ -14,67 +13,8 @@ import resolvers from 'gql/resolvers'
 import typeDefs from 'gql/sdl'
 import Session from 'ui/Session'
 
-let count = 0
-const cache = new InMemoryCache(
-    {
-        typePolicies: {
-            // Session: {
-            //     fields: {
-            //         username: {
-            //             read(...data) {
-            //                 console.log('In cache.Session.username' + count++, data)
-            //                 return 'from cache.Session.fields.username'
-            //             }
-            //         }
-            //     },
-            // },
-            // Query: {
-            //     fields: {
-            //         initialData: {
-            //             // keyArgs: ["number"],
-            //             read(...data) {
-            //                 console.log('%c⧭', 'color: #ffcc00',
-            //                     'Query.initialData::', data);
-            //                 return 'from Query.fields.initialData'
-            //             }
-            //         },
-            // session_get: {
-            //     read(...data) {
-            //         console.log('in cache.Query.session_get:' + count++, data)
-            //         return {
-            //             // __typename: 'Session',
-            //             id: '1',
-            //             token: 'from cache.Query.session_get' + count,
-            //             username: 'from cache.Query.username'
-            //         }
-            //     }
-            // }
 
-            // },
-        // },
-    },
-    }
-);
-// console.log('%c⧭', 'color: #cc0088', cache);
-// console.log('cache', Object.keys(cache))
-// console.log('Object.getPrototypeOf(cache):', Object.getPrototypeOf(cache))
-// console.log('cache', cache.storeReader)
 
-export const client = new ApolloClient({
-    cache,
-    link: new HttpLink({
-        uri: 'http://localhost:4000/graphql',
-        headers: {
-            authorization: localStorage.getItem('token'),
-            'client-name': 'Space Explorer [web]',
-            'client-version': '1.0.0',
-        },
-    }),
-    resolvers,
-    typeDefs,
-});
-// console.log('client', Object.keys(client))
-// console.log('Object.getPrototypeOf(client):', Object.getPrototypeOf(client))
 
 const storage = {
     setItem: (...data) => {
@@ -103,17 +43,37 @@ const IndexContext = () => {
     const [state, setState] = React.useState(undefined);
     React.useEffect(() => {
         console.log('initial data')
+        const cache = new InMemoryCache()
+
+        const client = new ApolloClient({
+            cache,
+            link: new HttpLink({
+                uri: 'http://localhost:4000/graphql',
+                headers: {
+                    authorization: localStorage.getItem('token'),
+                    'client-name': 'Space Explorer [web]',
+                    'client-version': '1.0.0',
+                },
+            }),
+            resolvers,
+            typeDefs,
+        });
         const initData = {
-            initialData: 'initialData from cache.writeData!'
+            token: null,
+            user: null
         };
         cache.writeData({ data: initData })
-        // See above for additional options, including other storage providers.
+        const namePersistCache = 'persist-storage-vidalii'
         persistCache({
+            key: namePersistCache,
             cache,
             // storage: window.localStorage
             storage
         }).then(() => {
-            client.onResetStore(async () => cache.writeData({ data: initData }));
+            client.onResetStore(async () => {
+                localStorage.removeItem(namePersistCache);
+                cache.writeData({ data: initData })
+            });
             setState(client);
         });
         return () => { };

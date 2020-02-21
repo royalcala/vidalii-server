@@ -1,6 +1,6 @@
 import React from 'react'
 // import Link from '@material-ui/core/Link';
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 const LoginRecovery = props => {
     // const history = useHistory();
     return (

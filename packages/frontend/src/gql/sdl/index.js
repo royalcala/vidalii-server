@@ -9,8 +9,9 @@ extend type Session{
   name:String
 }
 extend type Query {
-  # initialData:String
+  initialData:String
   # hola:String 
+  # token:String
   session_get:Session
 }
 extend type Mutation {

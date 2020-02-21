@@ -1,13 +1,13 @@
 import React from 'react'
-import { useField } from 'formik';
+import { useField, useFormik, Form } from 'formik';
 import { Link } from "react-router-dom";
 import * as Yup from 'yup';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useApolloClient } from "@apollo/react-hooks";
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import useForm from "forms/login.byUsername";
 import { ReactComponent as Logo } from 'svg/google.svg';
-import { SESSION_GET } from 'gql/actions'
+import { SESSION_GET, SESSION_GET_TOKEN } from 'gql/actions'
 
 const MyInput = props => {
     const [field, meta] = useField(props);
@@ -20,10 +20,10 @@ const MyInput = props => {
         </>
     );
 };
+
 const LoginByUsername = props => {
     console.log('render LoginByUsername.ui')
-    const [session_get, { loading, data }] = useLazyQuery(SESSION_GET);
-    console.log('%c⧭', 'color: #917399', '****loading:::', loading);
+    const client = useApolloClient()
     const { Form } = useForm({
         initialValues: {
             username: '',
@@ -35,9 +35,35 @@ const LoginByUsername = props => {
                 .required('Username is required'),
             password: Yup.string().required('Password is required'),
         }),
-        onSubmit: (value, { setSubmitting }) => {
+        onSubmit: async (variables, { setSubmitting }) => {
             setSubmitting(false)
-            session_get({ variables: value })
+            try {
+                let { data } = await client.query({
+                    query: SESSION_GET,
+                    variables,
+                    fetchPolicy: 'no-cache'
+                })     
+                //same effect to writeData
+                // client.writeQuery({
+                //     query: SESSION_GET_TOKEN,
+                //     data: {
+                //         token: data.session_get.token,
+                //         user: data.session_get.user
+                //     }
+                // })
+                //same effect to writeQuery
+                client.writeData({
+                    data: {
+                        token: data.session_get.token,
+                        user: data.session_get.user
+                    }
+                })
+                // console.log('data::', data)
+            } catch (error) {
+                console.log('%c⧭', 'color: #00b300', error);
+
+            }
+
         }
     })
 
@@ -72,42 +98,4 @@ const LoginByUsername = props => {
         </>
     )
 }
-// const LoginByUsername = props => {
-//     console.log('render LoginByUsername.ui')    
-//     const [session_get, { loading, data }] = useLazyQuery(SESSION_GET);
-//     console.log('%c⧭', 'color: #aa00ff', data);
-//     console.log('%c⧭', 'color: #00a3cc', loading);
-//     console.log('%c⧭', 'color: #00e600', session_get);
-//     return (
-//         <>
-//             <Logo width="100px" />
-//             <Typography variant="h5" gutterBottom>
-//                 Acceder
-//             </Typography>
-//             <Typography variant="subtitle1" gutterBottom>
-//                 Usa tu cuenta de google
-//             </Typography>
-//             <FormByUsername >
-//                 <MyInput
-//                     name="username"
-//                     fullWidth
-//                     label="Correo Electrónico"
-//                     variant="outlined"
-//                     type="text"
-//                 />
-//                 <MyInput
-//                     name="password"
-//                     fullWidth
-//                     label="Password"
-//                     variant="outlined"
-//                     type="password"
-//                 />
-//                 <button type="submit">Submit</button>
-//                 <br />
-//                 <Link to="/recovery">Recover your password</Link>
-//             </FormByUsername >
-//         </>
-//     )
-// }
-
 export default LoginByUsername
