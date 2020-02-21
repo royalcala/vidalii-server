@@ -4,8 +4,8 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import Session from 'ui/Session'
 import LoadingBackdrop from 'ui/Loading.Backdrop'
 import LoadingProgressBar from "ui/Loading.ProgressBar";
-import useStorage from "indexContext.Storege";
-
+import useStorage from "indexContext.useStorege";
+import Theme from "indexContext.Theme";
 const IndexContext = () => {
     console.log('Render IndexContext')
     const { loading, client } = useStorage()
@@ -13,12 +13,13 @@ const IndexContext = () => {
         return <LoadingProgressBar />
     else
         return (
-            // <ApolloProvider client={client}>
             <ApolloProvider client={client}>
-                <Router>
-                    <Session />
-                </Router>
-                <LoadingBackdrop />
+                <Theme>
+                    <Router>
+                        <Session />
+                    </Router>
+                    <LoadingBackdrop />
+                </Theme>
             </ApolloProvider>
         )
 }
