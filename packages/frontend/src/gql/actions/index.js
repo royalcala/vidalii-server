@@ -1,7 +1,14 @@
 import gql from 'graphql-tag';
 
 
-export const SESSION_GET_TOKEN = gql`{  
+export const UI_LOADING_BACKDROP = gql`
+query ui_loading_backdrop{
+  ui_loading_backdrop
+}
+`
+
+export const SESSION_GET_TOKEN = gql`
+query cacheToken{  
   token
 }`
 

@@ -4,7 +4,7 @@ import Login from 'ui/Login'
 import { useApolloClient, useQuery } from '@apollo/react-hooks';
 import { SESSION_GET_TOKEN } from 'gql/actions'
 import gql from 'graphql-tag';
-
+import LoadingProgressBar from "ui/Loading.ProgressBar";
 // const Session = props => {
 //     console.log('Render Session')
 //     const client = useApolloClient()
@@ -20,10 +20,10 @@ const Session = props => {
     console.log('Render Session')
     const { loading, data, error } = useQuery(SESSION_GET_TOKEN);
     // console.log('error::', error)
-    console.log('%c⧭', 'color: #997326', 'Session-->:', data);
+    // console.log('%c⧭', 'color: #997326', 'Session-->:', data);
 
     if (loading)
-        return <div>Loading...</div>
+        return <LoadingProgressBar />
     else if (data.token === null)
         return <Login />
     else

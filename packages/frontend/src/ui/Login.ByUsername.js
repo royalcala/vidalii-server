@@ -5,10 +5,11 @@ import * as Yup from 'yup';
 import { useLazyQuery, useApolloClient } from "@apollo/react-hooks";
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import useForm from "forms/login.byUsername";
 import { ReactComponent as Logo } from 'svg/google.svg';
 import { SESSION_GET, SESSION_GET_TOKEN } from 'gql/actions'
-
+import { useBackdrop } from 'ui_state'
 const MyInput = props => {
     const [field, meta] = useField(props);
     return (
@@ -24,6 +25,7 @@ const MyInput = props => {
 const LoginByUsername = props => {
     console.log('render LoginByUsername.ui')
     const client = useApolloClient()
+    const backdrop = useBackdrop(client)
     const { Form } = useForm({
         initialValues: {
             username: '',
@@ -37,12 +39,13 @@ const LoginByUsername = props => {
         }),
         onSubmit: async (variables, { setSubmitting }) => {
             setSubmitting(false)
+            backdrop(true)
             try {
                 let { data } = await client.query({
                     query: SESSION_GET,
                     variables,
                     fetchPolicy: 'no-cache'
-                })     
+                })
                 //same effect to writeData
                 // client.writeQuery({
                 //     query: SESSION_GET_TOKEN,
@@ -59,9 +62,10 @@ const LoginByUsername = props => {
                     }
                 })
                 // console.log('data::', data)
+                backdrop(false)
             } catch (error) {
                 console.log('%c⧭', 'color: #00b300', error);
-
+                backdrop(false)
             }
 
         }
@@ -91,7 +95,7 @@ const LoginByUsername = props => {
                     variant="outlined"
                     type="password"
                 />
-                <button type="submit">Submit</button>
+                <Button type="submit" variant="contained" color="primary">Submit</Button>
                 <br />
                 <Link to="/recovery">Recover your password</Link>
             </Form >
