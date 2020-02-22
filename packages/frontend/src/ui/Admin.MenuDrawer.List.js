@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -17,17 +17,16 @@ const useStyles = makeStyles({
     },
 });
 
-export default ({ toggleDrawer }) => {
+export default ({ openDrawer }) => {
     console.log('Render MenuDrawerList')
     const classes = useStyles()
     return (
         <div
             className={classes.list}
             role="presentation"
-            onClick={toggleDrawer(false)}
-            onKeyDown={toggleDrawer(false)}
+            onClick={openDrawer(false)}
+            onKeyDown={openDrawer(false)}
         >
-
             <List>
                 <Link to={
                     {
