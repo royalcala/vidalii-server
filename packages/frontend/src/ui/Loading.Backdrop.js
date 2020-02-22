@@ -1,7 +1,6 @@
 import React from 'react';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { useQuery, useApolloClient } from '@apollo/react-hooks';
 import { UI_LOADING_BACKDROP } from 'gql/actions'
@@ -12,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function SimpleBackdrop(props) {
+export default function SimpleBackdrop() {
     const client = useApolloClient()
     const { loading, data } = useQuery(UI_LOADING_BACKDROP);
     const classes = useStyles();

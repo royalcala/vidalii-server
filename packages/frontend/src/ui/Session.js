@@ -18,7 +18,7 @@ import LoadingProgressBar from "ui/Loading.ProgressBar";
 // }
 const Session = props => {
     console.log('Render Session')
-    const { loading, data, error } = useQuery(SESSION_GET_TOKEN);
+    const { loading, data } = useQuery(SESSION_GET_TOKEN);
     // console.log('error::', error)
     // console.log('%c⧭', 'color: #997326', 'Session-->:', data);
 

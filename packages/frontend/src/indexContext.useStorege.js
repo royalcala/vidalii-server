@@ -31,7 +31,8 @@ const storage = {
 const initData = {
     token: null,
     user: null,
-    ui_loading_backdrop: false
+    ui_loading_backdrop: false,
+    ui_menu_drawer: false
 };
 export default function Storage() {
     const [state, setState] = React.useState({ loading: true });
@@ -52,7 +53,7 @@ export default function Storage() {
             resolvers,
             typeDefs,
         });
-      
+
         cache.writeData({ data: initData })
         const namePersistCache = 'persist-storage-vidalii'
         persistCache({
@@ -62,8 +63,8 @@ export default function Storage() {
             storage
         }).then(() => {
             client.onResetStore(async () => {
-                localStorage.removeItem(namePersistCache);
                 cache.writeData({ data: initData })
+                // localStorage.removeItem(namePersistCache); //is overwritten
             });
             setState({ client });
         });

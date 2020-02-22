@@ -1,15 +1,20 @@
 import gql from 'graphql-tag';
 
+export const UI_MENU_DRAWER = gql`
+  query ui_menu_backdrop{
+    ui_menu_drawer @client
+  }`
+
 
 export const UI_LOADING_BACKDROP = gql`
 query ui_loading_backdrop{
-  ui_loading_backdrop
+  ui_loading_backdrop @client
 }
 `
 
 export const SESSION_GET_TOKEN = gql`
 query cacheToken{  
-  token
+  token @client
 }`
 
 
