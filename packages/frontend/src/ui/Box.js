@@ -33,9 +33,7 @@ const VidaliiBox = props => {
     return <MuiBox {...queries}>{children}</MuiBox>
     // return React.createElement(MuiBox, queries,children)
 }
-VidaliiBox.description = {
 
-}
 export default VidaliiBox
 // import { styled } from '@material-ui/core/styles';
 // import {

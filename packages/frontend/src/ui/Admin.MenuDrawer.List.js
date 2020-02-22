@@ -30,18 +30,20 @@ export default ({ openDrawer }) => {
             <List>
                 <Link to={
                     {
-                        pathname: `/sales/document`,
+                        pathname: `/purchases/panel`,
                         state: {
-                            from: "Drawer.list.js"
+                            hellow: "world"
                         }
                     }
                 }>
                     <ListItem>
                         <ListItemIcon><MailIcon /></ListItemIcon>
-                        <ListItemText primary="Sales Doc" />
+                        <ListItemText primary="Purchases->Panel" />
                     </ListItem>
                 </Link>
             </List>
+
+            {/* list2 */}
             <Divider />
             <List>
                 {['All mail', 'Trash', 'Spam'].map((text, index) => (

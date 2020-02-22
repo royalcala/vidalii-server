@@ -15,26 +15,46 @@ const Body = props => {
     return <Box {...style}>{props.children}</Box>
 
 }
-const Header = props => <Box height="10%" >{props.children}</Box>
+// const Header = props => <Box height="5%" >{props.children}</Box>
 const Content = props => {
     const style = {
-        flexGrow: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        // justifyContent: 'space-around',
-        alignItems: 'center',
-        border: 1,
-        borderColor: "grey.300",
-        borderRadius: 8,
-        width: "25%",
-        p: "3%"
-        // xs: {
-        // m: "auto",
-        // pt: "10%"
-        // mt: 4,
-        // ml: "30%",
-        // mr: "33%"
-        // }
+        xs: {
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            // border: 1,
+            // borderColor: "grey.300",
+            // borderRadius: 8,
+            // width: "25%",
+            // p: "3%",
+            m: "10%",
+            // bgcolor: "primary.main"
+        },
+        sm: {//mini tablet
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            // border: 1,
+            // borderColor: "grey.300",
+            // borderRadius: 8,
+            // width: "25%",
+            // p: "3%",
+            // bgcolor: "secondary.main"
+        },
+        md: {//mini laptop
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            border: 1,
+            borderColor: "grey.300",
+            borderRadius: 8,
+            width: "400px",
+            p: "3%",
+            // bgcolor: "success.main"
+        }
     }
     return <Box {...style}>{props.children}</Box>
 }
@@ -43,7 +63,7 @@ const Login = props => {
     console.log('Render Login')
     return (
         <Body>
-            <Header />
+            {/* <Header /> */}
             <Content>
                 <Switch>
                     <Route exact path="/" component={ByUsername} />

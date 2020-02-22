@@ -60,7 +60,7 @@ const LoginByUsername = props => {
                 />
                 <Button type="submit" variant="contained" color="primary">Siguiente</Button>
                 <br />
-                <Link to="/recovery">Recover your password</Link>
+                <Link to="/recovery">Recuperar tu contraseña</Link>
             </Form >
         </>
     )
