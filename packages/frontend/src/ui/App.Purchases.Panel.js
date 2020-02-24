@@ -9,9 +9,10 @@ import Breadcrumb from "ui/BreadCrumb.Simple";
 //create sites
 //create sites->connections
 //create queries,
-
-
 //tags-->${}
+
+
+
 const typeDefsServiceDB = `
 type Query{
     query(name:String):String
@@ -39,12 +40,11 @@ type Purchase_Item{
 id:ID
 itemDetails:Item
 cant:Number
-
 }
 type Purchase @db(connection:'myFirstDBSite1){
     id:ID @unique
     created_date:Date <<<---dateScalar
-    created_by:User
+    created_by:User 
     connection:CONNECTION
     header:Purchases_Header
     purchase_items:[Purchase_item]
@@ -55,11 +55,13 @@ enum SITE{
     site2
 }
 enum CONNNECTION{
+    all
     connection1
     connection2
 }
 extend type Query{
 purchase_panel(page:Number,connection:[CONNECTION]):[Purchase] @db_query(name:'myFirstQuery')
+purchase_search_by_id(id:ID,connection:[CONNECTION]):Purchase @searchWithMeta(key:"ID") @db_query(name:'mySecondQuery')
 }
 `
 

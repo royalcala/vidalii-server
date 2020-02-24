@@ -6,7 +6,7 @@
   "author": "Roy Alcala <alcala.rao@gmail.com>",
   "license": "none",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ]
+  "workspaces": {
+    "packages": ["packages/*"]
+  }
 }
