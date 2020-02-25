@@ -1,11 +1,11 @@
 import { defaultFieldResolver } from "graphql";
 const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
 import find from "#/src/orm/crud/find";
-const name = 'query'
+const name = 'insert'
 module.exports = {
     sdl: `directive @${name} on FIELD_DEFINITION`,
     resolver: {
-        [name]: class query extends SchemaDirectiveVisitor {
+        [name]: class insert extends SchemaDirectiveVisitor {
             visitFieldDefinition(field) {
                 const { resolve = defaultFieldResolver } = field;
                 field.resolve = async function (parent, args, context) {
@@ -19,9 +19,3 @@ module.exports = {
         }
     }
 }
-
-// https://typeorm.io/#select-query-builder/getting-the-generated-query
-// const sql = createQueryBuilder("user")
-//     .where("user.firstName = :firstName", { firstName: "Timber" })
-//     .orWhere("user.lastName = :lastName", { lastName: "Saw" })
-//     .getSql();

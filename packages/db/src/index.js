@@ -1,16 +1,22 @@
-require('dotenv').config()
-import { createConnection, getManager } from "typeorm";
-console.log('in @vidalii/db')
 // /home/vidalii/Documents/softwareCodes/vidalii-server/packages/typesdb/src/old/backendOld/databases/crud/applyFilters.js
-import gql from "#src/services/gql";
+require('dotenv').config()
+import { createConnection } from "typeorm";
+import startServer from "#src/services/server";
+// server()
+console.log('in @vidalii/db')
+const startConnection = async () => {
+    try {
+        const connection = await createConnection()
+        console.log(`The connection "${connection.name}" was created`)
+    } catch (error) {
+        console.log('Error:', error);
+
+    }
+}
+const main = async () => {
+    await startConnection()
+    await startServer()
+}
 
 
-// createConnection().then(async connection => {
-//     const entityManager = getManager()//connection     
-//     let category = {};
-//     category.name = "category1";
-
-//     let response = await entityManager.save('category', category)    
-//     console.log("Photo has been saved");
-
-// }).catch(error => console.log(error));
+main()

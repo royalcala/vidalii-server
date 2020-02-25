@@ -5,12 +5,12 @@
     "synchronize": true,
     "logging": false,
     "entities": [
-        "src/entities/*.js"
+        "src/orm/models/*.js"
     ],
     "migrations": [
-        "src/migration/**/*.ts"
+        "src/orm/migration/**/*.ts"
     ],
     "subscribers": [
-        "src/subscriber/**/*.ts"
+        "src/orm/subscriber/**/*.ts"
     ]
 }

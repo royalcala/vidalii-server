@@ -1,0 +1,11 @@
+
+
+
+type Query{
+    find(model:String,filter:JSON):JSON @query
+}
+type Mutation{
+    insert(model:String,data:String):String
+    update(model:String,data:String):String
+}
+
