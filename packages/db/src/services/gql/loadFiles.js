@@ -9,7 +9,7 @@ const loadFiles = path => {
         .forEach(path => {
             const data = require("#/" + path)
             store.sdls = store.sdls.concat('\n' + data.sdl)
-            store.resolvers = { ...store.resolver, ...data.resolver }
+            store.resolvers = { ...store.resolvers, ...data.resolver }
         })
     return store
 }

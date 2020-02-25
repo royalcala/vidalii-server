@@ -1,7 +1,7 @@
 import { defaultFieldResolver } from "graphql";
 const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
-import insert from "#/src/orm/crud/insert";
-const name = 'insert'
+import updateById from "#/src/orm/crud/updateById";
+const name = 'updateById'
 module.exports = {
     sdl: `directive @${name} on FIELD_DEFINITION`,
     resolver: {
@@ -10,7 +10,7 @@ module.exports = {
                 const { resolve = defaultFieldResolver } = field;
                 field.resolve = async function (parent, args, context) {
                     const { model, data } = args
-                    let response = await insert({ model, data })
+                    let response = await updateById({ model, data })
                     return response
                 };
             }

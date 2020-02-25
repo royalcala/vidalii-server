@@ -1,52 +1,42 @@
 import { getConnection } from "typeorm"
-import { applyFilters } from './applyFilters'
-export default async ({ connection = 'default', model, filter }) => {
-    applyFilters({ filter })
-    // https://typeorm.io/#/find-options
-    // let getsql = await getConnection(connectionName)
-    //     .getRepository(schemaName)
-    //     .find({_id:0})
-    // console.log('getsql::', getsql)
-
-    let response = await getConnection(connection)
-        .getRepository(model)
-        .find(filter)
-    console.log('response::', response)
-    return response
-}
-export const insert = async ({ connection = 'default', model, doc }) => {
-    //doc [] for many or {} for one
+export default async ({ connection = 'default', model, data }) => {
+    //data [] for many or {} for one
     // let response = await getConnection(connection)
     //     .createQueryBuilder()
     //     .insert()
     //     .into(model)
-    //     .values(doc)
+    //     .values(data)
     //     .execute()
-    let promises = []
-    await getConnection(connection).transaction(async transactionalEntityManager => {
-        while (doc.length) {
-            promises.push(
-                transactionalEntityManager
-                    .createQueryBuilder()
-                    .insert()
-                    .into('category1')
-                    .values(doc.splice(0, 999))
-                    .execute()
-            )
-        }
-    });
-
     try {
-        await Promise.all(promises)        
-    } catch (error) {
-        // console.log('error::', error)
+        let rows = Array.isArray(data) ? data : [data]
+
+        let promises = []
+        await getConnection(connection).transaction(async transactionalEntityManager => {
+            while (rows.length) {
+                promises.push(
+                    transactionalEntityManager
+                        .createQueryBuilder()
+                        .insert()
+                        .into(model)
+                        // .values(data.splice(0, 999))
+                        .values(rows.splice(0, 499))
+                        .execute()
+                )
+            }
+        });
+
+        let response = await Promise.all(promises)
+        return {
+            inserted: true,
+        }
+    } catch (error) {        
         throw new Error(error)
     }
     // let sqlquery = await getConnection(connectionName)
     //     .createQueryBuilder()
     //     .insert()
     //     .into(schemaName)
-    //     .values(doc)
+    //     .values(data)
     //     .getSql()
     // let sqlquery = await getConnection(connectionName)
     //     .createQueryBuilder()
@@ -55,6 +45,5 @@ export const insert = async ({ connection = 'default', model, doc }) => {
     //     // .where("id = :id", { _id: 1 })
     //     .where({ _id: 1 ,name:'2'})
     //     .getSql()
-    // console.log('sqlquery::', sqlquery)
-    return response.identifiers
+    // console.log('sqlquery::', sqlquery)    
 }

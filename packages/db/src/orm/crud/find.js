@@ -10,7 +10,6 @@ export default async ({ connection = 'default', model, filter }) => {
 
     let response = await getConnection(connection)
         .getRepository(model)
-        .find(filter)
-    console.log('response::', response)
+        .find(filter)    
     return response
 }

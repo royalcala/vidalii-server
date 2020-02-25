@@ -1,11 +1,8 @@
-
-
-
 type Query{
-    find(model:String,filter:JSON):JSON @query
+    find(model:String!,filter:JSON):JSON @query
 }
 type Mutation{
-    insert(model:String,data:String):String
-    update(model:String,data:String):String
+    insert(model:String!,data:JSON!):JSON @insert
+    updateById(model:String!,data:JSON!):JSON @updateById
 }
 

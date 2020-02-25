@@ -10,6 +10,10 @@ export const CategoryEntity = new EntitySchema({
         },
         name: {
             type: "varchar"
+        },
+        name2: {
+            type: "varchar",
+            nullable: true
         }
     }
 });
