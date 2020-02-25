@@ -1,7 +1,7 @@
 import { defaultFieldResolver } from "graphql";
 const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
 import find from "#/src/orm/crud/find";
-const name = 'query'
+const name = 'find'
 module.exports = {
     sdl: `directive @${name} on FIELD_DEFINITION`,
     resolver: {
