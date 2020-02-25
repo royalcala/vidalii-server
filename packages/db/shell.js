@@ -1,7 +1,28 @@
 const { spawn } = require('child_process');
 
+removeDatabase()
 remove()
 link()
+function removeDatabase() {
+    // rm dellLaptopSerials.txt
+    const command = spawn('rm', [
+        '/home/vidalii/Documents/softwareCodes/vidalii-server/packages/db/mydb.sqlite',
+    ])
+
+
+    command.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
+    });
+
+    command.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    command.on('close', (code) => {
+        console.log(`child process rm_DATABASE exited with code ${code}`);
+    });
+
+}
 function remove() {
     // rm dellLaptopSerials.txt
     const command = spawn('rm', [

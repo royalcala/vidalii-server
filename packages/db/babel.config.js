@@ -11,6 +11,16 @@ module.exports = {
   ],
   "plugins": [
     ["ramda"],
-    ["@babel/plugin-syntax-dynamic-import"]
+    ["@babel/plugin-syntax-dynamic-import"],
+    // ["module-resolver", {
+    //   "root": ["./"],
+    //   // "alias": {
+    //   //   "test": "./test",
+    //   //   "underscore": "lodash"
+    //   // }
+    // }]
+    ['babel-plugin-root-import', {
+      "rootPathPrefix": "#"
+    }]
   ]
 };

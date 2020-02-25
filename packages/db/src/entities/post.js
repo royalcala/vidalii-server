@@ -1,7 +1,7 @@
 import { EntitySchema } from "typeorm";
 
 export const Post = new EntitySchema({
-    name: "post2",
+    name: "post",
     columns: {
         id: {
             primary: true,
