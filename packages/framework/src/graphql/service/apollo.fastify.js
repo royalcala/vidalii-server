@@ -1,5 +1,5 @@
-import { directives, scalars, sdls } from './loadFiles'
-import context from './context'
+// import context from './context'
+// import { directives, scalars, sdls } from './loadFiles'
 const { ApolloServer } = require('apollo-server-fastify')
 
 /*
@@ -18,10 +18,13 @@ must to be extend Query, and extend Mutation
 // ]
 const reducer = data => data.reduce(
     (acc, element) => {
-        return {
-            sdl: acc.sdl.concat('\n', element.sdl),
-            resolver: { ...acc.resolver, ...element.resolver }
-        }
+        if (typeof element === 'string') {
+            // is a path to resolve
+        } else
+            return {
+                sdl: acc.sdl.concat('\n', element.sdl),
+                resolver: { ...acc.resolver, ...element.resolver }
+            }
     },
     {
         sdl: '',
@@ -29,7 +32,7 @@ const reducer = data => data.reduce(
     }
 )
 
-export default ({ scalars: [], directives: [], sdls: [], types: [], queries: [], mutations: [] }) => {
+export default ({ context, scalars: [], directives: [], sdls: [], types: [], queries: [], mutations: [] }) => {
     const Scalar = reducer(scalars)
     const Directive = reducer(directives)
     const Sdl = reducer(sdls)
@@ -38,8 +41,8 @@ export default ({ scalars: [], directives: [], sdls: [], types: [], queries: [],
     const Mutations = reducer(mutations)
     return new ApolloServer({
         typeDefs: `
-        ${Directive.sdl}
         ${Scalar.sdl}
+        ${Directive.sdl}
         ${Types.sdl}
         ${Sdl.sdl}
             type Query{
