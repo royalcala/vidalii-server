@@ -1,8 +1,37 @@
+type Site{
+    dns:String
+    ip:String
+    services:[Service]
+}
+enum Type_Service{
+    ROUTER
+    DB
+}
+type Service{
+    type:Type_Service
+    port:String
+    connections:[Connection]
+}
+enum Type_Connection{
+    INMEMORY
+    PERSIST
+}
+type Connection{
+    type:Type_Connection
+    name:String
+    models:[Model]
+}
+type Model{
+    name:String   
+    schema:JSON
+}
+
+
 type Query{
-    find(model:String!,filter:JSON):JSON @find
+    sites_get:Site @readJSON(path:"sites.json" cache:true)
+    find(model:String!,filter:JSON):JSON
 }
 type Mutation{
-    insert(model:String!,data:JSON!):JSON @insert
-    updateById(model:String!,data:JSON!):JSON @updateById
+    load_sites_withJSON(data:JSON):JSON @createJSON(path:"sites.json")
 }
 
