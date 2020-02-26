@@ -1,19 +1,22 @@
 import { defaultFieldResolver } from "graphql";
 const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
 const fs = require('fs-extra')
-const name = 'siteNormalizer'
+const name = 'createJSON'
 module.exports = {
-    sdl: `directive @${name}(path:String cache: Boolean=false) on FIELD_DEFINITION`,
+    sdl: `directive @${name}(path: String) on FIELD_DEFINITION`,
     resolver: {
         [name]: class defaultNameExtended extends SchemaDirectiveVisitor {
             visitFieldDefinition(field) {
-                const { path, cache } = this.args;
-                const blockToPath = 'uploads/' + path
+                const { path } = this.args;
+                const blockToPath = 'uploads/' + path                
                 const { resolve = defaultFieldResolver } = field;
-                field.resolve = async function () {
+                field.resolve = async function (parent, args, context) {
                     try {
-                        const data = fs.readJsonSync(blockToPath)
-                        return data
+                        const { data } = args
+                        fs.outputJsonSync(blockToPath, data)
+                        return {
+                            createJSON: true
+                        }
                     } catch (error) {
                         return {
                             error

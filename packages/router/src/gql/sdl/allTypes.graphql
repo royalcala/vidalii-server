@@ -28,7 +28,7 @@ type Model{
 
 
 type Query{
-    sites_get:Site @readJSON(path:"sites.json" cache:true)
+    sites_get:[Site] @readJSON(path:"sites.json") @sitesUnion
     find(model:String!,filter:JSON):JSON
 }
 type Mutation{

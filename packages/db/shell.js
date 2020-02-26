@@ -1,12 +1,12 @@
 const { spawn } = require('child_process');
 
 removeDatabase()
-remove()
-link()
+// remove()
+// link()
 function removeDatabase() {
     // rm dellLaptopSerials.txt
     const command = spawn('rm', [
-        '/home/vidalii/Documents/softwareCodes/vidalii-server/packages/db/mydb.sqlite',
+        '/home/vidalii/Documents/softwareCodes/vidalii-server/packages/db/databases/mydb.sqlite',
     ])
 
 

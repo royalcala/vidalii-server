@@ -20,7 +20,8 @@
     ],
     "models": [
         {
-            "id": "category"
+            "id": "category",
+            "id_connection": "1"
         }
     ]
 }
