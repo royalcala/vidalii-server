@@ -1,7 +1,7 @@
-type Query{
+extend type Query{
     find(model:String!,filter:JSON):JSON @find
 }
-type Mutation{
+extend type Mutation{
     insert(model:String!,data:JSON!):JSON @insert
     updateById(model:String!,data:JSON!):JSON @updateById
 }

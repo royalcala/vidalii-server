@@ -1,6 +1,7 @@
 import { defaultFieldResolver } from "graphql";
+import updateById from "../../orm/crud/updateById";
+// import updateById from "#/src/orm/crud/updateById";
 const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
-import updateById from "#/src/orm/crud/updateById";
 const name = 'updateById'
 module.exports = {
     sdl: `directive @${name} on FIELD_DEFINITION`,

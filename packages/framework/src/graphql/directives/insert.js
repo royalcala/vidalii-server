@@ -1,6 +1,7 @@
 import { defaultFieldResolver } from "graphql";
+import insert from "../../orm/crud/insert";
+// import insert from "#/src/orm/crud/insert";
 const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
-import insert from "#/src/orm/crud/insert";
 const name = 'insert'
 module.exports = {
     sdl: `directive @${name} on FIELD_DEFINITION`,

@@ -1,22 +1,36 @@
-// /home/vidalii/Documents/softwareCodes/vidalii-server/packages/typesdb/src/old/backendOld/databases/crud/applyFilters.js
 require('dotenv').config()
-import { createConnection } from "typeorm";
-import config from "#src/configs/dbs.json";
-import startServer from "#src/services/server";
-console.log('in @vidalii/db')
-const startConnection = async () => {
-    try {
-        const connection = await createConnection(config)
-        console.log(`The connection "${connection.name}" was created`)
-    } catch (error) {
-        console.log('Error:', error);
+//server
+import startServer from '@vidalii/framework/src/server/fastify'
+//graphql
+import apolloService from "@vidalii/framework/src/graphql/service/apollo.fastify";
+import contextJwt from '@vidalii/framework/src/graphql/context/jwt'
+import JSON from "@vidalii/framework/src/graphql/scalars/JSON";
+//orm
+import startConnection from "@vidalii/framework/src/orm/service/startConnection";
+import config from "./orm/config.json";
 
-    }
+startServices()
+
+async function startServices() {
+    await startConnection(config)
+    await startServer({
+        port: process.env.SERVER_PORT,
+        plugins: [
+            oneRoute,
+            apolloService({
+                scalars: [JSON],
+                directives: ["src/gql/directives/*.js"],
+                types: ["src/gql/types/*.js"],
+                queries: ["src/gql/queries/*.js"],
+                mutations: ["src/gql/mutations/*.js"],
+                sdls: ["src/gql/sdl/*.graphql"],
+                context: contextJwt
+            })
+        ]
+    })
 }
-const main = async () => {
-    await startConnection()
-    await startServer()
+async function oneRoute(fastify, options) {
+    fastify.get('/hello', async (request, reply) => {
+        return { hello: 'world' }
+    })
 }
-
-
-main()

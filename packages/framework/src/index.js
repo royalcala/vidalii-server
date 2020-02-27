@@ -1,6 +1,6 @@
-///default directives
+import { loadModules } from "./graphql/service/tools/loadPath";
+const fs = require('fs-extra')
 console.log('In @vidalii/framework')
-export default () => {
-    console.log('()=>In @vidalii/framework')
-    return true
-}
+
+export const scalars = () => loadModules(__dirname + '/graphql/scalars/*.js')
+export const directives = () => loadModules(__dirname + '/graphql/directives/*.js')

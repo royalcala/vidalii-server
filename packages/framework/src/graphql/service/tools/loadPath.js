@@ -2,15 +2,17 @@ const glob = require("glob")
 const fs = require('fs-extra')
 export const loadModules = path => glob.sync(path).reduce(
     (acc, path) => {
+        // console.log('%cPath:', 'color: #807160', path);
         let data = require(fs.realpathSync(path))
         return {
             sdl: acc.sdl.concat('\n' + data.sdl),
             resolver: { ...acc.resolver, ...data.resolver }
         }
-    }, {
-    sdl: '',
-    resolver: {}
-})
+    },
+    {
+        sdl: '',
+        resolver: {}
+    })
 
 export const loadGraphqls = path => glob.sync(path)
     .reduce((acc, path) => {
