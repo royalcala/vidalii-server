@@ -1,0 +1,6 @@
+type Type1{
+    a:String
+}
+extend type Query{
+    get_type1:String @hellow
+}

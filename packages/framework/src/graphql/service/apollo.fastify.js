@@ -1,7 +1,5 @@
-// import context from './context'
-// import { directives, scalars, sdls } from './loadFiles'
+import { loadModules, loadGraphqls } from "./loadPath";
 const { ApolloServer } = require('apollo-server-fastify')
-
 /*
 estructure of array elements: 
 module.exports = {
@@ -16,15 +14,26 @@ must to be extend Query, and extend Mutation
 //     fromFramework1, fromFramework2,
 //     fromCustomReadPath
 // ]
-const reducer = data => data.reduce(
+const isPath = ({ path, type }) => {
+    switch (type) {
+        case 'module':
+            return loadModules(path)
+        case 'graphql':
+            return loadGraphqls(path)
+    }
+}
+const reducer = (data, type = 'module') => data.reduce(
     (acc, element) => {
+        let response
         if (typeof element === 'string') {
-            // is a path to resolve
+            response = isPath({ path: element, type })
         } else
-            return {
-                sdl: acc.sdl.concat('\n', element.sdl),
-                resolver: { ...acc.resolver, ...element.resolver }
-            }
+            response = element
+
+        return {
+            sdl: acc.sdl.concat('\n', response.sdl),
+            resolver: { ...acc.resolver, ...response.resolver }
+        }
     },
     {
         sdl: '',
@@ -32,10 +41,10 @@ const reducer = data => data.reduce(
     }
 )
 
-export default ({ context, scalars: [], directives: [], sdls: [], types: [], queries: [], mutations: [] }) => {
+export default ({ context = null, scalars = [], directives = [], sdls = [], types = [], queries = [], mutations = [] } = {}) => {
     const Scalar = reducer(scalars)
     const Directive = reducer(directives)
-    const Sdl = reducer(sdls)
+    const Sdl = reducer(sdls, 'graphql')
     const Types = reducer(types)
     const Queries = reducer(queries)
     const Mutations = reducer(mutations)
@@ -70,23 +79,5 @@ export default ({ context, scalars: [], directives: [], sdls: [], types: [], que
             ...Directive.resolver
         },
         context
-    })
+    }).createHandler()
 }
-
-
-// export default ({ typeDefs, resolvers, schemaDirectives, context } = {}) => {
-//     return new ApolloServer({
-//         typeDefs: `
-//         ${directives.sdls}
-//         ${scalars.sdls}
-//         ${sdls}
-//         `,
-//         resolvers: {
-//             ...scalars.resolvers,
-//         },
-//         schemaDirectives: {
-//             ...directives.resolvers
-//         },
-//         context
-//     })
-// }

@@ -1,6 +1,11 @@
 
 
-
+// example plugin:
+// async function route(fastify, options) {
+//     fastify.get('/hello', async (request, reply) => {
+//         return { hello: 'world' }
+//     })
+// }
 //start({
 //     plugins:[
 //         [serviceGql.createHandler()],//graphql
@@ -10,7 +15,7 @@
 // })
 
 
-const start = async ({ plugins = [], port = 3000 } = {}) => {    
+const start = async ({ plugins = [], port = 3000 } = {}) => {        
     try {
         const fastify = require('fastify')()
         for (let index = 0; index < plugins.length; index++) {

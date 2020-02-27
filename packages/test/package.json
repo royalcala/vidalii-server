@@ -9,8 +9,9 @@
     "dev": "nodemon"
   },
   "dependencies": {
+    "@vidalii/framework": "1.0.0",
     "dotenv": "^8.2.0",
-    "@vidalii/framework": "1.0.0"
+    "fastify-cors": "^3.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",

@@ -2,7 +2,7 @@ const glob = require("glob")
 const fs = require('fs-extra')
 export const loadModules = path => glob.sync(path).reduce(
     (acc, path) => {
-        let data = require(path)
+        let data = require(fs.realpathSync(path))
         return {
             sdl: acc.sdl.concat('\n' + data.sdl),
             resolver: { ...acc.resolver, ...data.resolver }
@@ -14,7 +14,7 @@ export const loadModules = path => glob.sync(path).reduce(
 
 export const loadGraphqls = path => glob.sync(path)
     .reduce((acc, path) => {
-        let str = fs.readFileSync(path, 'utf8').toString()
+        let str = fs.readFileSync(fs.realpathSync(path), 'utf8').toString()
         return {
             sdl: acc.sdl.concat('\n' + str),
             resolver: {}
