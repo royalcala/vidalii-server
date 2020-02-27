@@ -11,7 +11,6 @@ import { directives } from "@vidalii/framework/src";
 //orm
 import startConnection from "@vidalii/framework/src/orm/service/startConnection";
 import config from "./orm/config.json";
-
 startServices()
 
 async function startServices() {

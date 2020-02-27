@@ -1,16 +1,16 @@
 {
     "name": "default",
     "type": "sqlite",
-    "database": "databases/mydb2.sqlite",
+    "database": "databases/db.sqlite",
     "synchronize": true,
     "logging": false,
     "entities": [
         "src/orm/models/*.js"
     ],
     "migrations": [
-        "src/orm/migration/**/*.ts"
+        "src/orm/migration/*.js"
     ],
     "subscribers": [
-        "src/orm/subscriber/**/*.ts"
+        "src/orm/subscriber/*.js"
     ]
 }

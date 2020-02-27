@@ -1,0 +1,15 @@
+{
+  "name": "@vidalii/framework-cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Roy Alcala Ortiz",
+  "license": "MIT",
+  "bin": {
+    "vidalii-init": "cli-init.js"
+  },
+  "dependencies": {
+    "chalk": "^3.0.0",
+    "fs-extra": "^8.1.0",
+    "yargs": "^15.1.0"
+  }
+}

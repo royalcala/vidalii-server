@@ -1,0 +1,1 @@
+console.log('in @vidalii/framework/src/cli')
