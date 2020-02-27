@@ -7,7 +7,7 @@
   "scripts": {
     "start": "babel-node --ignore=' ' src",
     "dev": "nodemon",
-    "vidalii-cli":"./node_modules/.bin/vidalii-init"
+    "test:vidalii-cli:init": "./node_modules/.bin/vidalii-cli --init"
   },
   "dependencies": {
     "@vidalii/framework": "^1.0.0",

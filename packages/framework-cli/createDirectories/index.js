@@ -1,39 +1,41 @@
 const fs = require('fs-extra')
 // fs.ensureDirSync //create only if not exit
-const rootAppDir = fs.realpathSync('./') + '/src' //root dir of the app
+const rootAppDir = fs.realpathSync('./') //root dir of the app
 
 const createGql = () => {
-    fs.ensureDirSync(rootAppDir + '/gql/directives')
-    fs.ensureDirSync(rootAppDir + '/gql/scalars')
-    fs.ensureDirSync(rootAppDir + '/gql/sdls')
-    fs.ensureDirSync(rootAppDir + '/gql/types')
-    fs.ensureDirSync(rootAppDir + '/gql/queries')
-    fs.ensureDirSync(rootAppDir + '/gql/mutations')
+    const dir = rootAppDir + '/src/gql/'
+    fs.ensureDirSync(dir + 'directives')
+    fs.ensureDirSync(dir + 'scalars')
+    fs.ensureDirSync(dir + 'sdls')
+    fs.ensureDirSync(dir + 'types')
+    fs.ensureDirSync(dir + 'queries')
+    fs.ensureDirSync(dir + 'mutations')
 }
 const createOrm = () => {
-    fs.ensureDirSync(rootAppDir + '/orm/models')
-    fs.ensureDirSync(rootAppDir + '/orm/migration')
-    fs.ensureDirSync(rootAppDir + '/orm/subscriber')
-    const config = {
-        "name": "default",
-        "type": "sqlite",
-        "database": "databases/local.sqlite",
-        "synchronize": true,
-        "logging": false,
-        "entities": [
-            "src/orm/models/*.js"
-        ],
-        "migrations": [
-            "src/orm/migration/*.js"
-        ],
-        "subscribers": [
-            "src/orm/subscriber/*.js"
-        ]
+    const dir = rootAppDir + '/src/orm/'
+    fs.ensureDirSync(dir + 'migration')
+    fs.ensureDirSync(dir + 'subscriber')
+    //templates Files
+    const exampleConfigDB = require("./template.config")
+    const exampleModel = require("./template.model")
+    fs.outputJsonSync(dir + 'config.json', exampleConfigDB)
+    fs.outputFileSync(dir + 'models/example.js', exampleModel)
+}
+const createIndex = ()=>{
+
+}
+const updatePackageJson = () => {
+    const pathFile = rootAppDir + 'package.json'
+    let packageJson = require(pathFile)
+    packageJson.scripts = {
+        ...packageJson.scripts,
+        "vidalii:dev": "babel-node --ignore=' ' -r dotenv/config src"
     }
-    fs.outputJsonSync(rootAppDir + '/orm/config.json', config)
+    fs.outputJsonSync(pathFile, packageJson)
 }
 
 module.exports = {
     createGql,
-    createOrm
+    createOrm,
+    updatePackageJson
 }

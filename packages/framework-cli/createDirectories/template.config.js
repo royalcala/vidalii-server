@@ -1,4 +1,4 @@
-{
+module.exports = {
     "name": "default",
     "type": "sqlite",
     "database": "databases/local.sqlite",
@@ -8,9 +8,9 @@
         "src/orm/models/*.js"
     ],
     "migrations": [
-        "src/orm/migration/**/*.ts"
+        "src/orm/migration/*.js"
     ],
     "subscribers": [
-        "src/orm/subscriber/**/*.ts"
+        "src/orm/subscriber/*.js"
     ]
 }

@@ -1,0 +1,4 @@
+https://github.com/sindresorhus/find-up
+Find a file or directory by walking up parent directories
+https://github.com/patorjk/figlet.js
+https://github.com/piuccio/cowsay
