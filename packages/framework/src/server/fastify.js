@@ -6,7 +6,7 @@
 //         return { hello: 'world' }
 //     })
 // }
-//start({
+//startService({
 //     plugins:[
 //         [serviceGql.createHandler()],//graphql
 //         [require('fastify-cors'),{}],
@@ -15,7 +15,7 @@
 // })
 
 
-const start = async ({ plugins = [], port = 3000 } = {}) => {        
+const startService = async ({ plugins = [], port = 3000 } = {}) => {
     try {
         const fastify = require('fastify')()
         for (let index = 0; index < plugins.length; index++) {
@@ -27,7 +27,7 @@ const start = async ({ plugins = [], port = 3000 } = {}) => {
         // fastify.register(serviceGql.createHandler());
         // fastify.register(require('fastify-cors'), {
         // })
-        
+
         await fastify.listen(port)
         // fastify.log.info(`server listening on ${fastify.server.address().port}`)
         console.log(`server listening on ${JSON.stringify(fastify.server.address())}`)
@@ -43,6 +43,6 @@ const start = async ({ plugins = [], port = 3000 } = {}) => {
     }
 }
 
-export default start
+export default startService
 
 
