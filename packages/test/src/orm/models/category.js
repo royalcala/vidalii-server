@@ -1,6 +1,4 @@
-// import { EntitySchema } from "typeorm";
 import { EntitySchema } from "@vidalii/framework/src/orm/lib/EntitySchema";
-
 export const CategoryEntity = new EntitySchema({
     name: "category",
     columns: {
@@ -12,7 +10,7 @@ export const CategoryEntity = new EntitySchema({
         name: {
             type: "varchar"
         },
-        name2: {
+        lastname: {
             type: "varchar",
             nullable: true
         }

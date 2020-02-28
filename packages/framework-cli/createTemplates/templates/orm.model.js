@@ -1,5 +1,4 @@
-module.exports =
-`import { EntitySchema } from "@vidalii/framework/src/orm/lib/EntitySchema";
+import { EntitySchema } from "@vidalii/orm/lib/EntitySchema";
 export const ExampleModel = new EntitySchema({
     name: "example",
     columns: {
@@ -13,4 +12,3 @@ export const ExampleModel = new EntitySchema({
         }
     }
 });
-`

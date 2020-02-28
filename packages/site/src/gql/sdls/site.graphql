@@ -1,0 +1,17 @@
+type Service{
+    id:ID
+    id_site:ID
+    alias:String
+    dns:String
+    port:Int
+}
+type Site{
+    id:ID    
+    alias:String
+    dns:String
+    ipv4:String 
+    services(filter:JSON):[Service] @connect(key:"id" model:"services" modelKey:"id_site")
+}
+extend type Query{
+site_find(filter:JSON):[Site] @connect(model:"site")
+}

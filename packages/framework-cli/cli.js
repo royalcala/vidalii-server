@@ -1,14 +1,28 @@
 #!/usr/bin/env node
 const argv = require('yargs').argv
-console.log('%cargv', 'color: #f2ceb6', argv);
 const chalk = require("chalk")
-const { createGql, createOrm, updatePackageJson } = require('./createDirectories')
+const fs = require('fs-extra')
+const rootAppDir = fs.realpathSync('./') //root dir of the app
+const mkdir = require('./createDirectories')
+const templates = require('./createTemplates')
+const package = require('./updatePackagesFile')
 
 if (argv.init) {
-    createGql()
-    createOrm()
-    updatePackageJson()
-    console.log(chalk.green(
-        '**used --init**'
-    ));
+    if (fs.existsSync(rootAppDir + '/src')) {
+        console.log(chalk.red(
+            '***Error. You first must to backup the dir:/src and delete***'
+        ))
+    } else {
+        mkdir.createGql()
+        mkdir.createOrm()
+        templates.createIndex()
+        templates.createOrm()
+        package.update()
+        console.log(chalk.green(
+            '**Correct.Vidalii --init was exec**'
+        ));
+    }
+
+
+
 }
