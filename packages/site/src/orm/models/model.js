@@ -1,6 +1,6 @@
 import { EntitySchema } from "@vidalii/orm/lib/EntitySchema";
 export const ExampleModel = new EntitySchema({
-    name: "models",
+    name: "model",
     columns: {
         id: {
             primary: true,

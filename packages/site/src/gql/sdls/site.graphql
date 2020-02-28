@@ -1,17 +1,30 @@
+enum ServiceType{
+    ROUTER
+    DB
+}
+
 type Service{
     id:ID
     id_site:ID
     alias:String
     dns:String
     port:Int
+    type:ServiceType
 }
-type Site{
+type Server{
     id:ID    
     alias:String
     dns:String
     ipv4:String 
-    services(filter:JSON):[Service] @connect(key:"id" model:"services" modelKey:"id_site")
+    services(filter:JSON):[Service] @connect(key:"id" model:"service" modelKey:"id_site")
+}
+enum SiteProvider{
+    LINODE
+}
+type Site{
+    id:ID
+    provider:SiteProvider
 }
 extend type Query{
-site_find(filter:JSON):[Site] @connect(model:"site")
+server(filter:JSON):[Server] @connect(model:"server")
 }
