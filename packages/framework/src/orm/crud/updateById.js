@@ -2,7 +2,7 @@ import { getConnection } from "typeorm"
 export default async ({ connection = 'default', model, data }) => {
     try {
         let rows = Array.isArray(data) ? data : [data]
-
+        console.log('%crows::', 'color: #00e600', rows);
         let promises = []
         await getConnection(connection).transaction(async transactionalEntityManager => {
             for (let index = 0; index < rows.length; index++) {
@@ -13,7 +13,6 @@ export default async ({ connection = 'default', model, data }) => {
                         .update(model)
                         .set(others)
                         .where("id = :id", { id })
-                        // .where("id = :id", id)
                         .execute()
                 )
             }

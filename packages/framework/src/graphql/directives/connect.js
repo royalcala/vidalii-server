@@ -1,6 +1,5 @@
 import { defaultFieldResolver } from "graphql";
 import find from "../../orm/crud/find";
-// import find from "#/src/orm/crud/find";
 const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
 const name = 'connect'
 module.exports = {
@@ -51,11 +50,3 @@ function resolveModelPreDefinedAndNextType({ key, model, modelKey, field }) {
         return response
     };
 }
-
-
-
-// https://typeorm.io/#select-query-builder/getting-the-generated-query
-// const sql = createQueryBuilder("user")
-//     .where("user.firstName = :firstName", { firstName: "Timber" })
-//     .orWhere("user.lastName = :lastName", { lastName: "Saw" })
-//     .getSql();

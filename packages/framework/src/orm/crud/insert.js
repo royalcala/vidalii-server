@@ -19,7 +19,7 @@ export default async ({ connection = 'default', model, data }) => {
                         .insert()
                         .into(model)
                         // .values(data.splice(0, 999))
-                        .values(rows.splice(0, process.env.INSERT_BATCH_SIZE))
+                        .values(rows.splice(0, 499))
                         .execute()
                 )
             }

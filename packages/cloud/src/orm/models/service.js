@@ -7,7 +7,7 @@ export const ExampleModel = new EntitySchema({
             type: "int",
             generated: true
         },
-        id_site: {
+        id_server: {
             type: "int"
         },
         alias: {
@@ -20,7 +20,11 @@ export const ExampleModel = new EntitySchema({
         },
         port: {
             type: "int"
-        }
+        },
+        type: {
+            type: "varchar",
+            length: 150
+        },
 
     }
 });

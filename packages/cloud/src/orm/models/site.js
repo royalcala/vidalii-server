@@ -1,7 +1,7 @@
 import { EntitySchema } from "@vidalii/orm/lib/EntitySchema";
 // https://stackoverflow.com/questions/32290167/what-is-the-maximum-length-of-a-dns-name
 export const ExampleModel = new EntitySchema({
-    name: "server",
+    name: "site",
     columns: {
         id: {
             primary: true,
@@ -10,15 +10,24 @@ export const ExampleModel = new EntitySchema({
         },
         alias: {
             type: "varchar",
+            length: 150,
+            nullable:true
+        },
+        provider: {
+            type: "varchar",
             length: 150
         },
-        dns: {
+        region: {
             type: "varchar",
-            length: 253
-        },
-        ipv4: {
-            type: "varchar",
-            length: 11
+            length: 150
         }
+        // dns: {
+        //     type: "varchar",
+        //     length: 253
+        // },
+        // ipv4: {
+        //     type: "varchar",
+        //     length: 11
+        // }
     }
 });
