@@ -2,11 +2,11 @@ import { getConnection } from "typeorm"
 import { applyFilters } from './applyFilters'
 export default async ({ connection = 'default', model, filter }) => {
     applyFilters({ filter })
-    console.log('%cfilter2:', 'color: #917399', filter);
-    console.log(typeof filter)
-    let newOne = JSON.stringify(filter)
-    console.log('%cNewOne::', 'color: #ffa640', newOne);
-    newOne = JSON.parse(newOne)
+    // console.log('%cfilter2:', 'color: #917399', filter);
+    // console.log(typeof filter)
+    filter = JSON.stringify(filter)
+    // console.log('%cNewOne::', 'color: #ffa640', newOne);
+    filter = JSON.parse(filter)
     // https://typeorm.io/#/find-options
     // let getsql = await getConnection(connectionName)
     //     .getRepository(schemaName)
@@ -18,7 +18,7 @@ export default async ({ connection = 'default', model, filter }) => {
     let response = await getConnection(connection)
         .getRepository(model)
         // .find(filter)
-        .find(newOne)
+        .find(filter)
     // .find({ ...filter })
     // .find({ where: { id: 2 } })
     // .find(hola)

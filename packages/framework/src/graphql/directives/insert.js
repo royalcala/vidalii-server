@@ -20,8 +20,8 @@ module.exports = {
 
 function resolveInField(field) {
     field.resolve = async function (parent, args) {
-        const { model, data } = args
-        let response = await insert({ model, data })
+        const { model, dataInsert } = args
+        let response = await insert({ model, dataInsert })
         return response
 
     };
@@ -29,8 +29,8 @@ function resolveInField(field) {
 
 function resolveModelPreDefined({ model, field }) {
     field.resolve = async function (parent, args) {
-        const { data } = args
-        let response = await insert({ model, data })
+        const { dataInsert } = args
+        let response = await insert({ model, dataInsert })
         return response
     };
 }

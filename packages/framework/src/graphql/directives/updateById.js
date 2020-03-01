@@ -19,17 +19,16 @@ module.exports = {
 
 function resolveInField(field) {
     field.resolve = async function (parent, args) {
-        const { model, data } = args
-        let response = await updateById({ model, data })
+        const { model, dataUpdate } = args
+        let response = await updateById({ model, dataUpdate })
         return response
     };
 }
 
 function resolveModelPreDefined({ model, field }) {
     field.resolve = async function (parent, args) {
-        const { data } = args
-        console.log('%cdata:', 'color: #f2ceb6', data);
-        let response = await updateById({ model, data })
+        const { dataUpdate } = args        
+        let response = await updateById({ model, dataUpdate })
         return response
     };
 }

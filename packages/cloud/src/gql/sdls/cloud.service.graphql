@@ -1,0 +1,32 @@
+extend type Server{
+    services:[Service] @connect(key: "id" model: "service" modelKey: "id_server")
+}
+enum ServiceType{
+    ROUTER
+    DB
+}
+
+type Service{
+    id:ID
+    id_server:ID
+    alias:String
+    dns:String
+    port:Int
+    type:ServiceType
+}
+
+
+extend type Query{
+service_find:[Service] @connect(model: "service")
+}
+
+input Service_Insert{
+    id_server:ID
+    alias:String
+    dns:String
+    port:Int
+    type:ServiceType
+}
+extend type Mutation{
+    service_insert(dataInsert:[Service_Insert]):JSON @insert(model:"service")
+}

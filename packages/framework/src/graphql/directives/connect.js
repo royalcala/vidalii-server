@@ -45,7 +45,7 @@ function addResolve({ field, key, model, modelKey }) {
 
     function resolveInField(field) {
         // const { resolve = defaultFieldResolver } = field;
-        field.resolve = async function (parent, args) {
+        field.resolve = async function (parent, args) {            
             const { model, filter = {} } = args
             let response = await find({ model, filter })
             return response
@@ -53,9 +53,8 @@ function addResolve({ field, key, model, modelKey }) {
     }
 
     function resolveModelPreDefined({ model, field }) {
-        field.resolve = async function (parent, args) {
-            const { filter = {} } = args
-            console.log('%cfilter::', 'color: #0088cc', filter);
+        field.resolve = async function (parent, args) {                    
+            const { filter = {} } = args            
             let response = await find({ model, filter })
             return response
         };

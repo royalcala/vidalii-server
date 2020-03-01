@@ -1,7 +1,7 @@
 import { getConnection } from "typeorm"
-export default async ({ connection = 'default', model, data }) => {
+export default async ({ connection = 'default', model, dataUpdate }) => {
     try {
-        let rows = Array.isArray(data) ? data : [data]        
+        let rows = Array.isArray(dataUpdate) ? dataUpdate : [dataUpdate]
         let promises = []
         await getConnection(connection).transaction(async transactionalEntityManager => {
             for (let index = 0; index < rows.length; index++) {
@@ -20,7 +20,7 @@ export default async ({ connection = 'default', model, data }) => {
         let response = await Promise.all(promises)
         // return always
         // {
-        //     "data": {
+        //     "dataUpdate": {
         //       "updateById": [
         //         {
         //           "generatedMaps": [],

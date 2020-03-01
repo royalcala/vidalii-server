@@ -1,14 +1,14 @@
 import { getConnection } from "typeorm"
-export default async ({ connection = 'default', model, data }) => {
-    //data [] for many or {} for one
+export default async ({ connection = 'default', model, dataInsert }) => {
+    //dataInsert [] for many or {} for one
     // let response = await getConnection(connection)
     //     .createQueryBuilder()
     //     .insert()
     //     .into(model)
-    //     .values(data)
+    //     .values(dataInsert)
     //     .execute()
     try {
-        let rows = Array.isArray(data) ? data : [data]
+        let rows = Array.isArray(dataInsert) ? dataInsert : [dataInsert]
 
         let promises = []
         await getConnection(connection).transaction(async transactionalEntityManager => {
@@ -18,7 +18,7 @@ export default async ({ connection = 'default', model, data }) => {
                         .createQueryBuilder()
                         .insert()
                         .into(model)
-                        // .values(data.splice(0, 999))
+                        // .values(dataInsert.splice(0, 999))
                         .values(rows.splice(0, 499))
                         .execute()
                 )
@@ -29,14 +29,14 @@ export default async ({ connection = 'default', model, data }) => {
         return {
             inserted: true,
         }
-    } catch (error) {        
+    } catch (error) {
         throw new Error(error)
     }
     // let sqlquery = await getConnection(connectionName)
     //     .createQueryBuilder()
     //     .insert()
     //     .into(schemaName)
-    //     .values(data)
+    //     .values(dataInsert)
     //     .getSql()
     // let sqlquery = await getConnection(connectionName)
     //     .createQueryBuilder()

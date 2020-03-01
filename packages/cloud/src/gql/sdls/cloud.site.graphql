@@ -1,15 +1,5 @@
-enum ServiceType{
-    ROUTER
-    DB
-}
-
-type Service{
-    id:ID
-    id_server:ID
-    alias:String
-    dns:String
-    port:Int
-    type:ServiceType
+enum SiteProvider{
+    LINODE
 }
 
 type Site{
@@ -22,11 +12,6 @@ type Site{
 extend type Query{
 sites_find:[Site] @connect(model:"site")
 }
-
-enum SiteProvider{
-    LINODE
-}
-
 input Site_Insert{
     alias:String
     provider:SiteProvider
@@ -42,7 +27,7 @@ input Site_Update{
 
 extend type Mutation{
 "You can insert multiples documents data:[doc1,doc2,...etc] or data:{oneDoc}"
-sites_insert(data:[Site_Insert]):JSON @insert(model:"site")
+site_insert(dataInsert:[Site_Insert]):JSON @insert(model:"site")
 "You can update multiples documents data:[doc1,doc2,...etc] or data:{oneDoc}"
-sites_update(data:[Site_Update]):JSON @updateById(model:"site")
+site_update(dataUpdate:[Site_Update]):JSON @updateById(model:"site")
 }
