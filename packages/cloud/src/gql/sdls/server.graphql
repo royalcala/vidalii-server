@@ -1,5 +1,5 @@
 extend type Site{
-servers(filter: JSON): [Server] @connect(key: "id" model: "server" modelKey: "id_site")
+servers:[Server] @connect(key: "id" model: "server" modelKey: "id_site")
 }
 type Server{
     id: ID
@@ -7,9 +7,9 @@ type Server{
     alias: String
     dns: String
     ipv4: String
-    services(filter: JSON): [Service] @connect(key: "id" model: "service" modelKey: "id_server")
+    services:[Service] @connect(key: "id" model: "service" modelKey: "id_server")
 }
 
 extend type Query{
-    server_find(filter: JSON): [Server] @connect(model: "server")
+    server_find:[Server] @connect(model: "server")
 }

@@ -12,15 +12,17 @@ module.exports = {
   "plugins": [
     // ["ramda"],
     ["@babel/plugin-syntax-dynamic-import"],
-    // ["module-resolver", {
-    //   "root": ["./"],
-    //   // "alias": {
-    //   //   "test": "./test",
-    //   //   "underscore": "lodash"
-    //   // }
-    // }]
-    ['babel-plugin-root-import', {
-      "rootPathPrefix": "#"
+    ["module-resolver", {
+      // "root": ["./src"],
+      "alias": {
+        "@scalars": "./src/graphql/scalars",
+        "@crud": "./src/orm/crud"
+        // "services": "./services",//change into src when its in production
+        // "@vidalii": "@vidalii/framework/src"
+      }
     }]
+    // ['babel-plugin-root-import', {
+    //   "rootPathPrefix": "#"
+    // }]
   ]
 };

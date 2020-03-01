@@ -20,7 +20,7 @@ type Site{
 }
 
 extend type Query{
-sites_find(filter:JSON):[Site] @connect(model:"site")
+sites_find:[Site] @connect(model:"site")
 }
 
 enum SiteProvider{
