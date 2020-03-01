@@ -1,0 +1,15 @@
+extend type Site{
+servers(filter: JSON): [Server] @connect(key: "id" model: "server" modelKey: "id_site")
+}
+type Server{
+    id: ID
+    id_site: ID
+    alias: String
+    dns: String
+    ipv4: String
+    services(filter: JSON): [Service] @connect(key: "id" model: "service" modelKey: "id_server")
+}
+
+extend type Query{
+    server_find(filter: JSON): [Server] @connect(model: "server")
+}

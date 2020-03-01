@@ -23,7 +23,10 @@ async function startServices() {
                 // types: ["src/gql/types/*.js"],
                 // queries: ["src/gql/queries/*.js"],
                 // mutations: ["src/gql/mutations/*.js"],
-                sdls: ["src/gql/sdls/*.graphql"],
+                sdls: [
+                    "src/gql/sdls/*.graphql",
+                    "src/gql/sdls/*.js"
+                ],
                 context: contextJwt
             })
         ]

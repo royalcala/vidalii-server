@@ -11,26 +11,20 @@ type Service{
     port:Int
     type:ServiceType
 }
-type Server{
-    id:ID 
-    id_site:ID   
-    alias:String
-    dns:String
-    ipv4:String 
-    services(filter:JSON):[Service] @connect(key:"id" model:"service" modelKey:"id_server")
-}
-enum SiteProvider{
-    LINODE
-}
+
 type Site{
     id:ID
     alias:String
     provider:SiteProvider
-    region:String
-    servers(filter:JSON):[Server] @connect(key:"id" model:"server" modelKey:"id_site")
+    region:String  
 }
+
 extend type Query{
 sites_find(filter:JSON):[Site] @connect(model:"site")
+}
+
+enum SiteProvider{
+    LINODE
 }
 
 input Site_Insert{
@@ -38,12 +32,14 @@ input Site_Insert{
     provider:SiteProvider
     region:String
 }
+
 input Site_Update{
     id:ID!
     alias:String
     provider:SiteProvider
     region:String
 }
+
 extend type Mutation{
 "You can insert multiples documents data:[doc1,doc2,...etc] or data:{oneDoc}"
 sites_insert(data:[Site_Insert]):JSON @insert(model:"site")
