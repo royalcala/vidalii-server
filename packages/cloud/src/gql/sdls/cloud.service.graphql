@@ -1,9 +1,21 @@
+extend type Query{
+    service_find:[Service] @connect(model: "service")
+}
+extend type Mutation{
+    service_insert(dataInsert:[Service_Insert]):JSON @insert(model:"service")
+    service_start(id:ID):JSON 
+}
 extend type Server{
     services:[Service] @connect(key: "id" model: "service" modelKey: "id_server")
 }
 enum ServiceType{
     ROUTER
     DB
+}
+enum ServiceStatus{
+    RUNNING
+    STOPPED
+    ERROR
 }
 
 type Service{
@@ -13,11 +25,7 @@ type Service{
     dns:String
     port:Int
     type:ServiceType
-}
-
-
-extend type Query{
-service_find:[Service] @connect(model: "service")
+    status:ServiceStatus
 }
 
 input Service_Insert{
@@ -26,7 +34,4 @@ input Service_Insert{
     dns:String
     port:Int
     type:ServiceType
-}
-extend type Mutation{
-    service_insert(dataInsert:[Service_Insert]):JSON @insert(model:"service")
 }
