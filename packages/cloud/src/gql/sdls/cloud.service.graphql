@@ -3,7 +3,7 @@ extend type Query{
 }
 extend type Mutation{
     service_insert(dataInsert:[Service_Insert]):JSON @insert(model:"service")
-    service_start(id:ID):JSON 
+    service_start:JSON @service_start
 }
 extend type Server{
     services:[Service] @connect(key: "id" model: "service" modelKey: "id_server")

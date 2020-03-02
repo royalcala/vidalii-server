@@ -1,7 +1,5 @@
-import { defaultFieldResolver } from "graphql";
+import { SchemaDirectiveVisitor } from '@vidalii/graphql/lib/graphql'
 import find from "../../orm/crud/find";
-const { SchemaDirectiveVisitor } = require('apollo-server-fastify')
-// const { resolver: { JSON } } = require('../scalars/JSON')
 const JSON = require('graphql-type-json').default;
 const name = 'connect'
 module.exports = {
@@ -14,10 +12,6 @@ module.exports = {
             }
             visitFieldDefinition(field) {
                 const { key = null, model = null, modelKey = null } = this.args;
-                // console.log('Properties:', field.args, Object.getOwnPropertyNames(field));
-                // console.log(
-                //     JSON.stringify(field.args)
-                // )
                 addArgs(field)
                 addResolve({ field, key, model, modelKey })
 
@@ -26,7 +20,7 @@ module.exports = {
     }
 }
 
-function addArgs(field) {    
+function addArgs(field) {
     field.args.push({
         name: 'filter',
         description: 'example filter:{where:{id:1,other:2}}',
@@ -44,8 +38,7 @@ function addResolve({ field, key, model, modelKey }) {
         resolveModelPreDefinedAndNextType({ key, model, modelKey, field })
 
     function resolveInField(field) {
-        // const { resolve = defaultFieldResolver } = field;
-        field.resolve = async function (parent, args) {            
+        field.resolve = async function (parent, args) {
             const { model, filter = {} } = args
             let response = await find({ model, filter })
             return response
@@ -53,8 +46,8 @@ function addResolve({ field, key, model, modelKey }) {
     }
 
     function resolveModelPreDefined({ model, field }) {
-        field.resolve = async function (parent, args) {                    
-            const { filter = {} } = args            
+        field.resolve = async function (parent, args) {
+            const { filter = {} } = args
             let response = await find({ model, filter })
             return response
         };

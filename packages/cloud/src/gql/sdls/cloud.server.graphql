@@ -8,7 +8,6 @@ type Server{
     alias: String
     dns: String
     ipv4: String
-    services:[Service] @connect(key: "id" model: "service" modelKey: "id_server")
 }
 
 extend type Query{

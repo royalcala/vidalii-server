@@ -14,7 +14,6 @@
 //     ]
 // })
 
-
 const startService = async ({ plugins = [], port = 3000 } = {}) => {
     try {
         const fastify = require('fastify')()

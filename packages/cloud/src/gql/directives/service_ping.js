@@ -1,6 +1,6 @@
 import { GraphQLID, SchemaDirectiveVisitor } from "@vidalii/graphql/lib/graphql";
 
-const name = 'service_start'
+const name = 'service_ping'
 module.exports = {
     sdl: `directive @${name} on FIELD_DEFINITION`,
     resolver: {
@@ -23,7 +23,7 @@ function addArgs(field) {
 }
 
 function addResolve(field) {
-    field.resolve = async (parent, args) => {
+    field.resolve = (parent, args) => {
         const { id } = args
         //service test
         return 'hellow world!'

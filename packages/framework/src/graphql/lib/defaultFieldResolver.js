@@ -1,1 +1,0 @@
-export { defaultFieldResolver } from "graphql";
