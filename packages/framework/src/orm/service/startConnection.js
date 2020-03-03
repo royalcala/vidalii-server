@@ -1,4 +1,4 @@
-import { createConnection } from "typeorm";
+import { createConnection } from "@orm";
 
 export default async (config) => {
     try {

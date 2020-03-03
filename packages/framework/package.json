@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "compile:watch": "npx babel src --watch --out-file lib/index.js",
-    "start:babel-node": "babel-node src",
-    "dev": "nodemon"
+    "start:babel-node": "babel-node src/graphql/gql-extracts",
+    "nodemon": "nodemon"
   },
   "dependencies": {
     "apollo-server-fastify": "^2.10.1",
@@ -17,6 +17,7 @@
     "fastify-cors": "^3.0.2",
     "fs-extra": "^8.1.0",
     "glob": "^7.1.6",
+    "graphql-tag": "^2.10.3",
     "graphql-type-json": "^0.3.1",
     "jsonwebtoken": "^8.5.1",
     "sqlite3": "^4.1.1",
