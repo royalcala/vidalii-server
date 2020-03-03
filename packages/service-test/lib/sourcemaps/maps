@@ -1,0 +1,58 @@
+"use strict";
+
+var _server = _interopRequireDefault(require("@vidalii/framework/src/server"));
+
+var _jwt = _interopRequireDefault(require("@vidalii/framework/src/graphql/context/jwt"));
+
+var _src = require("@vidalii/framework/src");
+
+var _config = _interopRequireDefault(require("./orm/config.json"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//the imports require babel package module-resolver  and alias of "@vidalii": "@vidalii/framework/src/"
+//server 
+//graphql
+//orm
+startServices();
+
+async function startServices() {
+  await (0, _server.default)({
+    ormConfig: _config.default,
+    port: process.env.SERVER_PORT,
+    gqlConfig: {
+      scalars: [(0, _src.scalars)()],
+      directives: [(0, _src.directives)(), "src/gql/directives/*.js"],
+      // types: ["src/gql/types/*.js"],
+      // queries: ["src/gql/queries/*.js"],
+      // mutations: ["src/gql/mutations/*.js"],
+      sdls: ["src/gql/sdls/*.graphql", "src/gql/sdls/*.js"],
+      context: _jwt.default
+    }
+  });
+}
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ExampleModel = void 0;
+
+var _EntitySchema = require("@vidalii/framework/src/orm/lib/EntitySchema");
+
+const ExampleModel = new _EntitySchema.EntitySchema({
+  name: "example",
+  columns: {
+    id: {
+      primary: true,
+      type: "int",
+      generated: true
+    },
+    name: {
+      type: "varchar"
+    }
+  }
+});
+exports.ExampleModel = ExampleModel;
+
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9pbmRleC5qcyIsIi4uLy4uL3NyYy9vcm0vbW9kZWxzL2V4YW1wbGUuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFFQTs7QUFFQTs7QUFDQTs7QUFFQTs7OztBQVBBO0FBQ0E7QUFFQTtBQUdBO0FBR0EsYUFBYTs7QUFDYixlQUFlLGFBQWYsR0FBK0I7QUFDM0IsUUFBTSxxQkFBUztBQUNYLElBQUEsU0FBUyxFQUFULGVBRFc7QUFFWCxJQUFBLElBQUksRUFBRSxPQUFPLENBQUMsR0FBUixDQUFZLFdBRlA7QUFHWCxJQUFBLFNBQVMsRUFBRTtBQUNQLE1BQUEsT0FBTyxFQUFFLENBQUMsbUJBQUQsQ0FERjtBQUVQLE1BQUEsVUFBVSxFQUFFLENBQ1Isc0JBRFEsRUFFUix5QkFGUSxDQUZMO0FBTVA7QUFDQTtBQUNBO0FBQ0EsTUFBQSxJQUFJLEVBQUUsQ0FDRix3QkFERSxFQUVGLG1CQUZFLENBVEM7QUFhUCxNQUFBLE9BQU8sRUFBRTtBQWJGO0FBSEEsR0FBVCxDQUFOO0FBbUJIOzs7Ozs7OztBQzlCRDs7QUFDTyxNQUFNLFlBQVksR0FBRyxJQUFJLDBCQUFKLENBQWlCO0FBQ3pDLEVBQUEsSUFBSSxFQUFFLFNBRG1DO0FBRXpDLEVBQUEsT0FBTyxFQUFFO0FBQ0wsSUFBQSxFQUFFLEVBQUU7QUFDQSxNQUFBLE9BQU8sRUFBRSxJQURUO0FBRUEsTUFBQSxJQUFJLEVBQUUsS0FGTjtBQUdBLE1BQUEsU0FBUyxFQUFFO0FBSFgsS0FEQztBQU1MLElBQUEsSUFBSSxFQUFFO0FBQ0YsTUFBQSxJQUFJLEVBQUU7QUFESjtBQU5EO0FBRmdDLENBQWpCLENBQXJCIiwiZmlsZSI6Im1hcHMiLCJzb3VyY2VzQ29udGVudCI6WyIvL3RoZSBpbXBvcnRzIHJlcXVpcmUgYmFiZWwgcGFja2FnZSBtb2R1bGUtcmVzb2x2ZXIgIGFuZCBhbGlhcyBvZiBcIkB2aWRhbGlpXCI6IFwiQHZpZGFsaWkvZnJhbWV3b3JrL3NyYy9cIlxuLy9zZXJ2ZXIgXG5pbXBvcnQgc2VydmljZXMgZnJvbSAnQHZpZGFsaWkvc2VydmVyJ1xuLy9ncmFwaHFsXG5pbXBvcnQgY29udGV4dEp3dCBmcm9tICdAdmlkYWxpaS9ncmFwaHFsL2NvbnRleHQvand0J1xuaW1wb3J0IHsgc2NhbGFycywgZGlyZWN0aXZlcyB9IGZyb20gXCJAdmlkYWxpaVwiO1xuLy9vcm1cbmltcG9ydCBvcm1Db25maWcgZnJvbSBcIi4vb3JtL2NvbmZpZy5qc29uXCI7XG5cbnN0YXJ0U2VydmljZXMoKVxuYXN5bmMgZnVuY3Rpb24gc3RhcnRTZXJ2aWNlcygpIHtcbiAgICBhd2FpdCBzZXJ2aWNlcyh7XG4gICAgICAgIG9ybUNvbmZpZywgICAgICAgIFxuICAgICAgICBwb3J0OiBwcm9jZXNzLmVudi5TRVJWRVJfUE9SVCxcbiAgICAgICAgZ3FsQ29uZmlnOiB7XG4gICAgICAgICAgICBzY2FsYXJzOiBbc2NhbGFycygpXSxcbiAgICAgICAgICAgIGRpcmVjdGl2ZXM6IFtcbiAgICAgICAgICAgICAgICBkaXJlY3RpdmVzKCksXG4gICAgICAgICAgICAgICAgXCJzcmMvZ3FsL2RpcmVjdGl2ZXMvKi5qc1wiXG4gICAgICAgICAgICBdLFxuICAgICAgICAgICAgLy8gdHlwZXM6IFtcInNyYy9ncWwvdHlwZXMvKi5qc1wiXSxcbiAgICAgICAgICAgIC8vIHF1ZXJpZXM6IFtcInNyYy9ncWwvcXVlcmllcy8qLmpzXCJdLFxuICAgICAgICAgICAgLy8gbXV0YXRpb25zOiBbXCJzcmMvZ3FsL211dGF0aW9ucy8qLmpzXCJdLFxuICAgICAgICAgICAgc2RsczogW1xuICAgICAgICAgICAgICAgIFwic3JjL2dxbC9zZGxzLyouZ3JhcGhxbFwiLFxuICAgICAgICAgICAgICAgIFwic3JjL2dxbC9zZGxzLyouanNcIlxuICAgICAgICAgICAgXSxcbiAgICAgICAgICAgIGNvbnRleHQ6IGNvbnRleHRKd3RcbiAgICAgICAgfVxuICAgIH0pXG59IiwiaW1wb3J0IHsgRW50aXR5U2NoZW1hIH0gZnJvbSBcIkB2aWRhbGlpL29ybS9saWIvRW50aXR5U2NoZW1hXCI7XG5leHBvcnQgY29uc3QgRXhhbXBsZU1vZGVsID0gbmV3IEVudGl0eVNjaGVtYSh7XG4gICAgbmFtZTogXCJleGFtcGxlXCIsXG4gICAgY29sdW1uczoge1xuICAgICAgICBpZDoge1xuICAgICAgICAgICAgcHJpbWFyeTogdHJ1ZSxcbiAgICAgICAgICAgIHR5cGU6IFwiaW50XCIsXG4gICAgICAgICAgICBnZW5lcmF0ZWQ6IHRydWVcbiAgICAgICAgfSxcbiAgICAgICAgbmFtZToge1xuICAgICAgICAgICAgdHlwZTogXCJ2YXJjaGFyXCJcbiAgICAgICAgfVxuICAgIH1cbn0pOyJdfQ==

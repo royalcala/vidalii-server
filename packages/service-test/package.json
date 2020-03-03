@@ -1,5 +1,5 @@
 {
-    "name": "@vidalii/server",
+    "name": "@vidalii/service-test",
     "version": "1.0.0",
     "main": "src",
     "author": "Roy Alcala Ortiz",
@@ -7,7 +7,13 @@
     "scripts": {
         "nodemon": "nodemon",
         "vidalii-cli:init": "./node_modules/.bin/vidalii-cli --init",
-        "vidalii:dev": "babel-node --ignore=' ' --require dotenv/config src"
+        "vidalii:dev": "babel-node --ignore=' ' --require dotenv/config src",
+        "compile:src:dir": "npx babel src --out-dir lib/dir",
+        "compile:src:oneFile": "npx babel src --out-file lib/oneFile/index.js",
+        "compile:src:sourcemaps": "npx babel src --out-file lib/sourcemaps/maps --source-maps inline",
+        "start:lib:dir": "node lib/dir",
+        "start:lib:oneFile": "node lib/oneFile",
+        "start:lib:sourcesmaps": "node lib/sroucemaps"
     },
     "dependencies": {
         "@vidalii/framework": "^1.0.0",

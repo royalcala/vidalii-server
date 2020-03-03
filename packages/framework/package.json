@@ -5,7 +5,8 @@
   "author": "Roy Alcala Ortiz",
   "license": "MIT",
   "scripts": {
-    "start": "babel-node src",
+    "compile:watch": "npx babel src --watch --out-file lib/index.js",
+    "start:babel-node": "babel-node src",
     "dev": "nodemon"
   },
   "dependencies": {

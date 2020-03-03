@@ -1,0 +1,24 @@
+enum ServiceState{
+    RUNNING
+    STOPPED
+    ERROR
+}
+type Services{
+    id:ID
+    alias:String
+    port:Int
+    state:ServiceState
+    file:String
+}
+extend type Query{
+    services_find:[Services] @connect(model:"service")
+}
+extend type Mutation{
+  service_insert(dataInsert:[ServiceInsert]):JSON 
+    @insert(model:"service")
+    @insert_validate(yup:"service_insert")
+}
+input ServiceInsert{
+    alias:String
+    file:String
+}

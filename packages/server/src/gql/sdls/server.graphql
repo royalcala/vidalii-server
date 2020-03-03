@@ -1,0 +1,7 @@
+type Server{
+    ip:String
+    dns:String
+}
+extend type Query{
+    server_ip:Server
+}
