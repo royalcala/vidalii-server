@@ -16,9 +16,13 @@ extend type Query{
 extend type Mutation{
   service_insert(dataInsert:[ServiceInsert]):JSON 
     @insert(model:"service")
-    @insert_validate(yup:"service_insert")
+    #@insert_validate(schema:"service_insert")
 }
 input ServiceInsert{
     alias:String
     file:String
+}
+
+extend input ServiceInsert{
+    hola:String
 }
