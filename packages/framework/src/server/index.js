@@ -20,3 +20,6 @@ export default async function startServices({ ormConfig, port, gqlConfig }) {
         ]
     })
 }
+
+//1.- read sdls
+//2.- insert defulat _Directives{ hellow:String @hellow}

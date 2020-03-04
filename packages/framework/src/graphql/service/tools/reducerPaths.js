@@ -32,7 +32,7 @@ const checkType = element => {
             return element
     }
 }
-const reducer = data => data.reduce(
+export const reducer = data => data.reduce(
     (acc, element) => {
         const { sdl, resolver } = checkType(element)
         return {
@@ -50,7 +50,7 @@ export default ({ context = null, scalars = [], directives = [], sdls = [], type
     const Scalar = reducer(scalars)
     const Directive = reducer(directives)
     // const Sdl = reducer(sdls, 'graphql')
-    const Sdl = reducer(sdls)    
+    const Sdl = reducer(sdls)
     const Types = reducer(types)
     const Queries = reducer(queries)
     const Mutations = reducer(mutations)

@@ -1,0 +1,7 @@
+type Server{
+    ip:String
+}
+
+extend type Query{
+    hellow:String
+}
