@@ -9,7 +9,7 @@ module.exports = {
       },
     ]
   ],
-  "plugins": [
+  plugins: [
     // ["ramda"],
     ["@babel/plugin-syntax-dynamic-import"],
     ["module-resolver", {
@@ -22,6 +22,7 @@ module.exports = {
         "@apollo": "apollo-server-fastify",
         "@graphql": "graphql",
         "@graphql-tag": "graphql-tag",
+        "@fs-extra": "fs-extra",
 
         //previous
         "@scalars": "./src/graphql/scalars",

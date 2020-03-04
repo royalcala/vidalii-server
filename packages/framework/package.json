@@ -6,12 +6,14 @@
   "license": "MIT",
   "scripts": {
     "compile:watch": "npx babel src --watch --out-file lib/index.js",
-    "start:babel-node": "babel-node src/graphql/gql-extracts",
+    "start:babel-node": "babel-node src/transpiler",
     "nodemon": "nodemon"
   },
   "dependencies": {
+    "@babel/core": "^7.8.6",
     "apollo-server-fastify": "^2.10.1",
     "axios": "^0.19.2",
+    "babel-preset-minify": "^0.5.1",
     "dotenv": "^8.2.0",
     "fastify": "^2.12.0",
     "fastify-cors": "^3.0.2",
@@ -25,7 +27,6 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",
-    "@babel/core": "^7.8.4",
     "@babel/node": "^7.8.4",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.6.3",

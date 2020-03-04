@@ -13,6 +13,7 @@ module.exports.createGql = () => {
 }
 module.exports.createOrm = () => {
     const dir = rootAppDir + '/src/orm/'
+    fs.ensureDirSync(dir + 'schemas')
     fs.ensureDirSync(dir + 'models')
     fs.ensureDirSync(dir + 'migration')
     fs.ensureDirSync(dir + 'subscriber')
