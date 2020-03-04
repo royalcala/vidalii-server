@@ -18,11 +18,11 @@ module.exports = rootPath => {
     //src/orm
     writeFile(
         __dirname + "/templates/orm.config.json",
-        rootPath + 'src/orm/config.json'
+        rootPath + '/src/orm/config.json'
     )
     writeFile(
         __dirname + "/templates/orm.model.js",
-        rootPath + 'src/orm/models/example.js'
+        rootPath + '/src/orm/models/example.js'
     )
 }
 // const rootAppDir = fs.realpathSync('./') //root dir of the app

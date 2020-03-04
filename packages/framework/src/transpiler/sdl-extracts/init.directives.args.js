@@ -1,8 +1,7 @@
 const fs = require('fs-extra')
 const extractDirectivesArgs = directives => {
     const store = {}
-    Object.keys(directives).forEach(nameDirective => {
-        console.log('%cnameDirective', 'color: #00bf00', nameDirective);
+    Object.keys(directives).forEach(nameDirective => {        
         try {
             // '@cloud/' + 'gql.dirArg.' + 'model'
             // "@cloud/gql.dirArg.model"
@@ -15,9 +14,7 @@ const extractDirectivesArgs = directives => {
 
         }
     });
-
-    console.log('%cStore:', 'color: #ffa640', store);
-
+    return store
 }
 
 export default extractDirectivesArgs

@@ -1,8 +1,9 @@
 import { transformFileSync, transformSync } from '@babel/core';
 const buildTemplate = require('./templates')
 const fs = require('fs-extra')
-// console.log('%cBabel::', 'color: #00b300', babel.transformSync);
 
+// console.log('%cBabel::', 'color: #00b300', babel.transformSync);
+// https://lihautan.com/step-by-step-guide-for-writing-a-babel-transformation/
 
 // const code = 'const n = 1';
 // // const codeWithSourceMap = 
@@ -42,8 +43,9 @@ const fs = require('fs-extra')
 // console.log(output); // 'const x = 1;'
 // console.log('transpiler')
 
-const transpiler = (src, template) => {
+const transpiler = ({ sdls = [], template = 'microservice' } = {}) => {
+    const path = fs.realpathSync('.') + '/output/proyect1'
+    buildTemplate('microservice', path)
 
 }
-
-buildTemplate('microservice',fs.realpathSync('proyects/one'))
+// console.log(fs.realpathSync('.'))
