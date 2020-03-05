@@ -1,5 +1,5 @@
 import { SchemaDirectiveVisitor } from "@apollo";
-export const buildDirective = ({ name, args = '', onDefs = [], resolver = {} }) => {
+export const buildDirective = ({ name, args = '', defs = [], resolver = {} }) => {
     let extendedClass = SchemaDirectiveVisitor
     Object.entries(resolver).forEach(
         ([nameFx, fx]) => {
@@ -7,7 +7,7 @@ export const buildDirective = ({ name, args = '', onDefs = [], resolver = {} }) 
         }
     )
     return {
-        sdl: `directive @${name}${args} on ${onDefs.join(' | ')}`,
+        sdl: `directive @${name}${args} on ${defs.join(' | ')}`,
         resolver: {
             [name]: extendedClass
         }

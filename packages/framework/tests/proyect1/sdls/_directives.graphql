@@ -1,3 +1,0 @@
-type _Directives{
-    connect:JSON @connect(status:"check")
-}

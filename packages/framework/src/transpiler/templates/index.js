@@ -13,4 +13,6 @@ const buildTemplate = (typeTemplate, rootPath) => {
         }
 
 }
-module.exports = buildTemplate
+// module.exports = buildTemplate
+
+export default buildTemplate
