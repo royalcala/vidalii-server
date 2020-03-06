@@ -1,6 +1,6 @@
-import { config1, config2 } from "@vidalii/lib.myAccount.nameFile";
-import a from "@vidalii/lib.myAccount2.nameFile";
-//myAccount.nameFile <-- unique name
+import { SchemaDirectiveVisitor } from 'npm.graphql2'
+const JSON = require('npm.requireeModulee********************')
+import find from "lib.crud.find";
 
 module.exports = {
     name: 'hello',

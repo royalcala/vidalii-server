@@ -15,7 +15,8 @@ module.exports = {
     ["module-resolver", {
       // "root": ["./src"],
       "alias": {
-        "@vidalii":"./src",
+        "@vidalii": "./src",
+        //"npm.(.+)": ([, name]) => `${name}`,
         "@cloud": "./src/cloud",
         "@scalar-json": "graphql-type-json",
         "@orm": "typeorm",
