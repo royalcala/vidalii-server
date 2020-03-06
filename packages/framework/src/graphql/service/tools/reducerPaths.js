@@ -24,11 +24,10 @@ must to be extend Query, and extend Mutation
 // ]
 const checkType = element => {
     switch (typeof element) {
-        case 'string':
+        case 'string'://globpath
             //is a path "/dir1/dir2/*.js" get all and reduce in {sdl,resolver}
             return loadFiles(element)
-        default:
-            //is a {sdl,resolver} = obj
+        default://module is a {sdl,resolver} = obj
             return element
     }
 }

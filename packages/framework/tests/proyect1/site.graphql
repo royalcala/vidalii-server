@@ -1,0 +1,3 @@
+extend type Query{
+    hellow:String @hello(model:"site" config:"je")
+}

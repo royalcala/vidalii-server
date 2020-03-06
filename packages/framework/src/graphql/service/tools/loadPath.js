@@ -4,6 +4,8 @@ var { extname } = require('path');
 //Return the extension:
 // var ext = path.extname('/Users/Refsnes/demo_path.js'); == .js
 
+
+
 // https://www.npmjs.com/package/minimatch
 export const loadFiles = minimatch => glob.sync(minimatch).reduce(
     (acc, path) => {

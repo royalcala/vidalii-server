@@ -25,7 +25,6 @@ const typeDefs = `
     }
 `
 
-
 const directives = getDirectives(typeDefs)
 //*-download gql.directive[name]
 

@@ -1,7 +1,8 @@
 const fs = require('fs-extra')
 const templateMicroservice = require('./microservice')
-const buildTemplate = (typeTemplate, rootPath) => {
-    if (fs.existsSync(rootPath + '/src'))
+const templateCloud = require('./cloud')
+const buildTemplate = ({ typeTemplate, rootPath, overwrite = false }) => {
+    if (overwrite === false && fs.existsSync(rootPath + '/src'))
         console.log(
             `***Error. You first must to backup the dir:${rootPath}/src and delete***`
         )
@@ -10,6 +11,8 @@ const buildTemplate = (typeTemplate, rootPath) => {
             case 'microservice':
                 templateMicroservice(rootPath)
                 break;
+            case 'cloud':
+                templateCloud(rootPath)
         }
 
 }

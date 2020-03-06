@@ -6,8 +6,7 @@
   "license": "MIT",
   "scripts": {
     "compile:watch": "npx babel src --watch --out-file lib/index.js",
-    "start:babel-node": "babel-node src/transpiler",
-    "start:babel-node:test":"babel-node tests/proyect1",
+    "start:babel-node": "babel-node tests",
     "nodemon": "nodemon"
   },
   "dependencies": {

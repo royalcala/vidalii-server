@@ -16,12 +16,12 @@ module.exports = rootPath => {
         rootPath + '/src/index.js'
     )
     //src/orm
-    writeFile(
-        __dirname + "/templates/orm.config.json",
-        rootPath + '/src/orm/config.json'
-    )
-    writeFile(
-        __dirname + "/templates/orm.model.js",
-        rootPath + '/src/orm/models/example.js'
-    )
+    // writeFile(
+    //     __dirname + "/templates/orm.config.json",
+    //     rootPath + '/src/orm/config.json'
+    // )
+    // writeFile(
+    //     __dirname + "/templates/orm.model.js",
+    //     rootPath + '/src/orm/models/example.js'
+    // )
 }

@@ -1,12 +1,32 @@
-// import { reducer } from "./graphql/service/tools/reducerPaths";
+import { reducer } from "./graphql/service/tools/reducerPaths";
+import { fetchDirectivesFiles } from "./transpiler/fetchFiles";
 // import startServer from "./server";
-import { buildTemplate } from "./transpiler";
+import {
+     buildTemplate,
+     getImports,
+     transpiler,
+     sdlExtract
+} from "./transpiler";
+const { parse } = require("@graphql/language");
 
 
-export const buildProyect = ({ typeTemplate, rootPath }) => {
-     buildTemplate(typeTemplate, rootPath)
+export const buildProyect = ({ typeTemplate, rootPath, sdls = [] }) => {
+
+}
+export const buildDeveloperMode = ({ typeTemplate, rootPath, overwrite = false, sdls = [] }) => {
+     //create directories and files
+     //create cloud files
+     //ast
+     const { sdl } = reducer(sdls)
+     const ast = parse(sdl)
+     const { directives } = sdlExtract(ast)
+     fetchDirectivesFiles(`${rootPath}/src/cloud`, directives)
+     buildTemplate({ typeTemplate, rootPath, overwrite })
 }
 
+export const buildProductionMode = () => {
+
+}
 
 
 // export const startProyect = ({ sdls = [] }) => {

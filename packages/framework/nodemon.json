@@ -1,5 +1,14 @@
 {
-    "ignore": ["**/*.test.ts", "**/*.spec.ts", ".git", "node_modules"],
-    "watch": ["src"],
-    "exec": "yarn run start:babel-node"    
+    "ignore": [
+        "**/*.test.ts",
+        "**/*.spec.ts",
+        ".git",
+        "node_modules",
+        "tests/generated"
+    ],
+    "watch": [
+        "src",
+        "tests"
+    ],
+    "exec": "yarn run start:babel-node"
 }

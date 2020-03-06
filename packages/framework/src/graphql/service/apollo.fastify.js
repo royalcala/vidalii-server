@@ -16,7 +16,7 @@ must to be extend Query, and extend Mutation
 // ]
 // { context = null, scalars = [], directives = [], sdls = [], types = [], queries = [], mutations = [] } 
 export default (reducerOptions = {}) => {
-    const { Scalar, Directive, Types, Sdl, Queries, Mutations, context } = reducer(reducerOptions)    
+    const { Scalar, Directive, Types, Sdl, Queries, Mutations, context } = reducer(reducerOptions)
     return new ApolloServer({
         typeDefs: `
         ${Scalar.sdl}
@@ -25,22 +25,22 @@ export default (reducerOptions = {}) => {
         ${Sdl.sdl}
             type Query{
             ${Queries.sdl}
-            hellow:String
+            vidaliiHellow:String
             }
             type Mutation{
             ${Mutations.sdl}
-            hellow:String
+            vidaliiHellow:String
             }
         `,
         resolvers: {
             ...Scalar.resolver,
             ...Types.resolver,
             Query: {
-                hellow: () => 'world!',
+                vidaliiHellow: () => 'world!',
                 ...Queries.resolver,
             },
             Mutation: {
-                hellow: () => 'world!',
+                vidaliiHellow: () => 'world!',
                 ...Mutations.resolver,
             }
         },
