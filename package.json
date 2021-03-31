@@ -1,12 +1,45 @@
 {
-  "name": "vidalii-server",
+  "name": "@vidalii/server",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "repository": "https://github.com/royalcala/vidalii-server.git",
-  "author": "Roy Alcala <alcala.rao@gmail.com>",
-  "license": "none",
-  "private": true,
-  "workspaces": {
-    "packages": ["packages/*"]
+  "bin": {
+    "vidalii-server": "./cli/cli.js"
+  },
+  "files": [
+    "dist",
+    "src/components/server"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "git:stage:all": " git add .",
+    "git:commit": "git commit -m '...'",
+    "create:dist": "rm -rf dist && mkdir dist && tsc --project tsconfig.json",
+    "publish:public": " npm version patch && npm publish",
+    "publish:public:patch:git": "npm run git:stage:all && npm run git:commit && npm version patch && npm run create:dist && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/royalcala/vidalii-server.git"
+  },
+  "author": {
+    "email": "alcala.rao@gmail.com",
+    "name": "Roy Alcala Ortiz"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/royalcala/vidalii-server/issues"
+  },
+  "homepage": "https://github.com/royalcala/vidalii-server#readme",
+  "dependencies": {
+    "@vidalii/backend": "^0.0.29",
+    "@vidalii/backend-session": "^1.0.0",
+    "@vidalii/version-backend": "^1.0.0",
+    "ssh2": "^0.8.9",
+    "yargs": "^15.4.1"
+  },
+  "devDependencies": {
+    "@types/ssh2": "^0.5.46",
+    "@types/yargs": "^16.0.1"
   }
 }

@@ -1,3 +1,0 @@
-extend type Query {
-   introspective_filterByType(nameType:String! fields:String!):JSON
-}

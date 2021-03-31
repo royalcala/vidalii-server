@@ -1,6 +1,0 @@
-type Schema{
-   _id: ID
-   name: String
-   _id_Connection: ID
-   connection: Connection
-}

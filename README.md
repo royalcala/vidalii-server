@@ -1,2 +1,1 @@
-# vidalii-server
-vidalii server express
+# vidalii-server-backend

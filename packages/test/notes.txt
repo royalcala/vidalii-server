@@ -1,6 +1,0 @@
-https://github.com/babel/babel/issues/8945
-
-Thanks everyone for the suggestions, using this command from packA from my repo:
-https://github.com/judikdavid/babel-7/tree/master/packages/packA
-npx babel-node --root-mode upward --ignore=" " index.js
-everything is working. So --root-mode takes care of finding the root babel.config.js in your project, and --ignore=' ' takes care to transpile other packages that you could have in your monorepo.

@@ -1,1 +1,0 @@
-export { createConnection } from "typeorm";
